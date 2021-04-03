@@ -1,24 +1,37 @@
 package it.polimi.ingsw.model.market;
 
+
+import java.io.FileNotFoundException;
+
 public class GameBoard {
 
-    ResourceMarket resourceMarket;
-    ProductionCardMarket productionCardMarket;
-    private static GameBoard instance = null;
+    ResourceMarket resourceMarket = new ResourceMarket();
+    ProductionCardMarket productionCardMarket = new ProductionCardMarket();
 
-    private GameBoard() {}
+    private static GameBoard gameBoardInstance = null;
 
-    public static GameBoard getInstance() {
 
-        // Create gameboard instance if not present;
-        if (instance == null) {
-            instance = new GameBoard();
+
+
+    /**
+     * @throws FileNotFoundException -- shown during the parsing phase
+     *
+     */
+    private GameBoard() throws FileNotFoundException {}
+
+
+
+
+    /**
+     * @return gameBoardInstance: returns the single instance of the playerboard
+     * created for a match
+     */
+    public static GameBoard getInstance() throws FileNotFoundException {
+
+        /* Create gameboard instance if not present; */
+        if (gameBoardInstance == null) {
+            gameBoardInstance = new GameBoard();
         }
-        return instance;
-    }
-
-    public GameBoard(ResourceMarket resourceMarket, ProductionCardMarket productionCardMarket) {
-        this.resourceMarket = resourceMarket;
-        this.productionCardMarket = productionCardMarket;
+        return gameBoardInstance;
     }
 }
