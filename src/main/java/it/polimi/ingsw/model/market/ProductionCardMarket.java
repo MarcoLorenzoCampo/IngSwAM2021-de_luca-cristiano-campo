@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.market;
 
 
-import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
 import java.io.FileNotFoundException;
@@ -38,14 +37,22 @@ public class ProductionCardMarket {
      * are considered "availableCards".
      */
     public List<ProductionCard> getAvailableCards() {
-
         return availableCards;
     }
 
-
+    /**
+     * Available cards are set only when creating the singleton instance of
+     * the gameBoard.
+     */
     private void setAvailableCards() {
-        availableCards = new LinkedList<>(playableProductionCards.stream()
-                .collect(Collectors.toMap(ProductionCard::key, color -> color, (f, s) -> f)).values());
+
+        availableCards = new LinkedList<> (
+                playableProductionCards.
+                stream().
+                collect(Collectors.
+                        toMap(ProductionCard::key, color -> color, (f, s) -> f)).
+                values()
+        );
     }
 
 
@@ -56,19 +63,20 @@ public class ProductionCardMarket {
 
     /**
      * @param boughtCard -- gets replaced the availableCards deck
-     * @throws NullPointerException -- thrown if boughtCard can't be replaced
-     * with another same (COLOR, LEVEL) card
+     * Use of Optionals to add a card of the same (Level, Color) of the one
+     *                   just bought if present;
      */
-    private void replaceBoughtCard(ProductionCard boughtCard) throws IndexOutOfBoundsException {
+    private void replaceBoughtCard(ProductionCard boughtCard) {
 
         availableCards.remove(boughtCard);
 
         //getting a new card from the deck with matching color and level
-        availableCards.add(playableProductionCards.
+        playableProductionCards.
                 stream().
                 filter(c -> c.getColor().equals(boughtCard.getColor())).
                 filter(c -> c.getLevel().equals(boughtCard.getLevel())).
-                collect(Collectors.toList()).get(0));
+                findFirst().
+                ifPresent(availableCards::add);
     }
 
 
@@ -79,13 +87,6 @@ public class ProductionCardMarket {
     public void buyCard(ProductionCard boughtCard) {
 
         playableProductionCards.remove(boughtCard);
-
-        try {
-            replaceBoughtCard(boughtCard);
-
-        } catch(IndexOutOfBoundsException e) {
-            System.out.println("No more cards with signature: level: "
-                    + boughtCard.getLevel() + ", color: " + boughtCard.getColor());
-        }
+        replaceBoughtCard(boughtCard);
     }
 }

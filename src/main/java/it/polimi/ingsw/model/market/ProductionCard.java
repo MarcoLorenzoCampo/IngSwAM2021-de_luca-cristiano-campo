@@ -57,7 +57,17 @@ public class ProductionCard extends BaseProduction {
         if (!(o instanceof ProductionCard)) return false;
         ProductionCard that = (ProductionCard) o;
         return getVictoryPoints() == that.getVictoryPoints() && getLevel() == that.getLevel()
-                && getColor() == that.getColor() && Objects.equals(getRequirements(), that.getRequirements());
+                && getColor() == that.getColor()
+                && Objects.equals(getRequirements(), that.getRequirements());
+    }
+
+    /* Overriding for testing purposes */
+    public boolean equalsColorLevel(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProductionCard)) return false;
+        ProductionCard that = (ProductionCard) o;
+        return getLevel() == that.getLevel()
+                && getColor() == that.getColor();
     }
 
     /* method needed in the ProductionCardMarket */
