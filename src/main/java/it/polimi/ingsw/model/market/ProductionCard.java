@@ -61,6 +61,11 @@ public class ProductionCard extends BaseProduction {
                 && Objects.equals(getRequirements(), that.getRequirements());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLevel(), getColor());
+    }
+
     /* Overriding for testing purposes */
     public boolean equalsColorLevel(Object o) {
         if (this == o) return true;

@@ -3,13 +3,12 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,51 +19,66 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductionCardMarketTest {
 
     private ProductionCardMarket productionCardMarket;
-    private List<ProductionCard> availableCards;
 
     @BeforeEach
     void setup() {
         try {
             productionCardMarket = new ProductionCardMarket();
-            availableCards = productionCardMarket.getAvailableCards();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * testing the behavior when a specific (color, level) is missing
+     * testing the behavior when a specific Color is missing
+     *
      */
     @Test
-    void noMoreCardsTest() {
+    void noMoreCardsOfSpecificColorTest() {
+        //Arrange
 
+        //Act
+
+        //Assert
+    }
+
+    @Test
+    void showAvailableCardsTest() {
+        productionCardMarket.showAvailableCards();
     }
 
     @Test
     void getAvailableCardsTest() {
-        assertNotNull(availableCards);
+        assertNotNull(productionCardMarket.getAvailableCards());
     }
 
     /**
      * Testing available cards are generated correctly
-     * Uses equalsColorLevel method {@link ProductionCard}
+     * Uses @Override HashCode
+     * {@link ProductionCard}
      */
     @Test
     void availableCardsPropertiesTest() {
 
-        productionCardMarket.showAvailableCards();
-        boolean noRepeated = true;
-        for(int i=0; i < availableCards.toArray().length; i++) {
-            for(int j=0; j < availableCards.toArray().length; j++) {
+        //Arrange
+        int numberOfLevels;
+        int numberOfColors;
+        Set<ProductionCard> s;
 
-                if(i != j) {
-                    if(availableCards.get(i)
-                            .equalsColorLevel(availableCards.get(j))) noRepeated = false;
-                }
-            }
-        }
-        assertTrue(noRepeated);
-        assertEquals(availableCards.toArray().length, 12);
+        //Act
+        numberOfColors = Color.values().length;
+        numberOfLevels = Level.values().length;
+        s = new HashSet<>(productionCardMarket.getAvailableCards());
+
+        //Assert
+        assertAll(
+                /* checks number of available cards */
+                () -> assertEquals(productionCardMarket.getAvailableCards().toArray().length,
+                        numberOfLevels*numberOfColors),
+                /* checks every (Level, Color) is different */
+                () -> assertEquals(productionCardMarket.getAvailableCards().toArray().length,
+                        s.toArray().length)
+        );
     }
 
     /**
@@ -74,20 +88,25 @@ class ProductionCardMarketTest {
     @Test
     void removeCardTest() {
 
+        //Arrange
         /* buying a random card from the available ones */
         ProductionCard boughtCard = productionCardMarket
                 .getAvailableCards()
-                .get(new Random().nextInt(availableCards.toArray().length));
+                .get(new Random().nextInt(productionCardMarket.getAvailableCards()
+                        .toArray().length));
 
+        //Act
         productionCardMarket.buyCard(boughtCard);
 
+        //Assert
         assertAll(
                 /* removing from available cards */
                 () -> assertFalse(productionCardMarket.getAvailableCards().contains(boughtCard)),
 
                 /* a new card with the same level and color replaces the bought card */
                 () -> assertTrue(
-                        availableCards.stream().anyMatch(c -> c.equalsColorLevel(boughtCard)))
+                        productionCardMarket.getAvailableCards().
+                                stream().anyMatch(c -> c.equalsColorLevel(boughtCard)))
         );
     }
 }

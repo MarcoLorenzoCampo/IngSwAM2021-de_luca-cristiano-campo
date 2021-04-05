@@ -45,7 +45,7 @@ public class ResourceMarket {
             }
         }
 
-        Collections.shuffle(realResources);
+        //Collections.shuffle(realResources);
 
         extraMarble = realResources.get(dimensions[0]*dimensions[1]);
 
@@ -84,7 +84,7 @@ public class ResourceMarket {
      */
     private void placeExtraMarble(int index) {
 
-        Resource temp = resourceBoard.get(index).getLast();
+        ResourceType temp = resourceBoard.get(index).getLast().getResourceType();
 
         for(int i=resourceBoard.get(index).toArray().length - 1; i > 0; i--) {
             resourceBoard.get(index).get(i)
@@ -92,7 +92,7 @@ public class ResourceMarket {
         }
 
         resourceBoard.get(index).get(0).setResourceType(extraMarble.getResourceType());
-        extraMarble = temp;
+        extraMarble.setResourceType(temp);
     }
 
     /**

@@ -28,19 +28,42 @@ class ResourceMarketTest {
     @Test
     void getMarketBoardTest() {
         assertNotNull(resourceMarket.getResourceBoard());
-        System.out.println(resourceMarket.getResourceBoard().size());
     }
 
     @Test
-    void pickResourcesTest() {
+    void pickOutOfBoundsResourcesTest() {
 
-        int boundsBreaker = resourceMarket.getResourceBoard().size()
+        //Arrange
+        int positiveBoundBreaker;
+        int negativeBoundBreaker;
+
+        //Act
+        positiveBoundBreaker = resourceMarket.getResourceBoard().size()
                 + new Random().nextInt();
+        negativeBoundBreaker = - (new Random().nextInt());
 
-        resourceMarket.pickResources(0);
+        //Assert
         assertAll(
                 () -> assertThrows(IndexOutOfBoundsException.class,
-                        () -> resourceMarket.pickResources(boundsBreaker))
+                        () -> resourceMarket.pickResources(positiveBoundBreaker)),
+
+                () -> assertThrows(IndexOutOfBoundsException.class,
+                        () -> resourceMarket.pickResources(negativeBoundBreaker))
+        );
+    }
+
+    @Test
+    void pickInBoundsResourcesTest() {
+
+        //Arrange
+        int acceptedBound;
+
+        //Act
+        acceptedBound = new Random().nextInt(resourceMarket.getResourceBoard().size());
+
+        //Assert
+        assertDoesNotThrow(
+                () -> resourceMarket.pickResources(acceptedBound)
         );
     }
 }
