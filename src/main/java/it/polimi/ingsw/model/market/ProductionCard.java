@@ -15,6 +15,8 @@ public class ProductionCard extends BaseProduction {
     private int victoryPoints;
     private ArrayList<ResourceTag> requirements;
 
+    /* no need for a public constructor */
+    private ProductionCard() { }
 
     public Level getLevel() {
         return level;
@@ -31,7 +33,7 @@ public class ProductionCard extends BaseProduction {
         return requirements;
     }
 
-    public void setLevel(Level level) {
+    /*public void setLevel(Level level) {
         this.level = level;
     }
     public void setColor(Color color) {
@@ -42,7 +44,7 @@ public class ProductionCard extends BaseProduction {
     }
     public void setRequirements(ArrayList<ResourceTag> requirements) {
         this.requirements = requirements;
-    }
+    }*/
 
     /* Overriding for testing purposes */
     @Override
@@ -66,7 +68,6 @@ public class ProductionCard extends BaseProduction {
         return Objects.hash(getLevel(), getColor());
     }
 
-    /* Overriding for testing purposes */
     public boolean equalsColorLevel(Object o) {
         if (this == o) return true;
         if (!(o instanceof ProductionCard)) return false;

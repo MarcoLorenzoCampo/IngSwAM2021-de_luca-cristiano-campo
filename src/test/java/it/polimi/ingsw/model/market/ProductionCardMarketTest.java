@@ -63,21 +63,21 @@ class ProductionCardMarketTest {
         //Arrange
         int numberOfLevels;
         int numberOfColors;
-        Set<ProductionCard> s;
+        Set<ProductionCard> distinctSet;
 
         //Act
         numberOfColors = Color.values().length;
         numberOfLevels = Level.values().length;
-        s = new HashSet<>(productionCardMarket.getAvailableCards());
+        distinctSet = new HashSet<>(productionCardMarket.getAvailableCards());
 
         //Assert
         assertAll(
                 /* checks number of available cards */
                 () -> assertEquals(productionCardMarket.getAvailableCards().toArray().length,
                         numberOfLevels*numberOfColors),
-                /* checks every (Level, Color) is different */
+                /* checks (Level, Color) is different for every card*/
                 () -> assertEquals(productionCardMarket.getAvailableCards().toArray().length,
-                        s.toArray().length)
+                        distinctSet.toArray().length)
         );
     }
 
@@ -107,6 +107,24 @@ class ProductionCardMarketTest {
                 () -> assertTrue(
                         productionCardMarket.getAvailableCards().
                                 stream().anyMatch(c -> c.equalsColorLevel(boughtCard)))
+        );
+    }
+
+    @Test
+    void cardsPropertiesTest() {
+
+        //Arrange
+        ProductionCard p1;
+        ProductionCard p2;
+
+        //Act
+        p1 = productionCardMarket.getAvailableCards().get(0);
+        p2 = productionCardMarket.getAvailableCards().get(0);
+
+        //Assert
+        assertAll(
+                () -> assertEquals(p1, p2),
+                () -> assertNotNull(p1.getRequirements())
         );
     }
 }
