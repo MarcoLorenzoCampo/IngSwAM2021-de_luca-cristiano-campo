@@ -9,7 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ResourceMarketParserTest {
 
-    ResourceMarketParser resourceMarketParser = new ResourceMarketParser();
+    ResourceMarketParser resourceMarketParser;
+
+    @BeforeEach
+    void setUp() {
+        resourceMarketParser = new ResourceMarketParser();
+    }
 
     @Test
     void parseResourceBoardContent() throws FileNotFoundException {

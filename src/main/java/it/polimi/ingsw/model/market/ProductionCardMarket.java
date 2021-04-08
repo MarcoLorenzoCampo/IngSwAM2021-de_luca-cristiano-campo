@@ -9,9 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author Marco Lorenzo Campo
- */
+
 public class ProductionCardMarket {
 
     private final List<ProductionCard> playableProductionCards;

@@ -1,1 +1,6 @@
 it/polimi/ingsw/AppTest.class
+it/polimi/ingsw/model/market/ResourceMarketTest.class
+it/polimi/ingsw/model/market/ProductionCardMarketTest.class
+it/polimi/ingsw/model/market/GameBoardTest.class
+it/polimi/ingsw/parsers/ResourceMarketParserTest.class
+it/polimi/ingsw/parsers/ProductionCardsParserTest.class

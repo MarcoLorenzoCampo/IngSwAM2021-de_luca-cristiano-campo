@@ -4,11 +4,12 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.utilities.FaithResource;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Resource;
+import it.polimi.ingsw.model.utilities.builders.ResourceBoardBuilder;
+import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
 import it.polimi.ingsw.parsers.ResourceMarketParser;
 
 import java.io.FileNotFoundException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.LinkedList;
 
 
 /**
@@ -16,83 +17,118 @@ import java.util.stream.Collectors;
  */
 public class ResourceMarket {
 
-    private Resource extraMarble;
-    private final ArrayList<LinkedList<Resource>> resourceBoard;
+    private ResourceType extraMarble;
+    private final ResourceType[][] resourceBoard;
+    private final int[] dimensions;
 
     /**
-     * Data Structure: ArrayList of LinkedLists, each one contains
-     * either a row or column of the real marketBoard.
-     *
-     * It allows to pick resources based on a single int
      * @throws FileNotFoundException -- parsing exception
      */
     public ResourceMarket() throws FileNotFoundException {
 
-        String[] JSONResources;
-        List<Resource> realResources = new LinkedList<>();
-
         ResourceMarketParser resourceMarketParser = new ResourceMarketParser();
+        ResourceBoardBuilder boardBuilder = new ResourceBoardBuilder();
 
-        int[] dimensions = resourceMarketParser.parseResourceMarketDimensions();
-        JSONResources = resourceMarketParser.parseResourceMarketContent();
+        dimensions = resourceMarketParser.parseResourceMarketDimensions();
+        String[] jsonResources = resourceMarketParser.parseResourceMarketContent();
+        //Collections.shuffle(Arrays.asList(jsonResources));
 
-        /* creating a list of resources from JSON file */
-        for (String jsonResource : JSONResources) {
-            if (jsonResource.equals(ResourceType.FAITH.toString())) {
-                realResources.add(new FaithResource());
-            } else {
-                realResources.add(new MaterialResource(jsonResource));
-            }
-        }
+        extraMarble = ResourceType.valueOf(jsonResources[dimensions[1]*dimensions[0]]);
 
-        //Collections.shuffle(realResources);
+        resourceBoard = boardBuilder.build(dimensions, jsonResources);
+    }
 
-        extraMarble = realResources.get(dimensions[0]*dimensions[1]);
+    /**
+     * "Places" the extra marble, shifting the content
+     * of the board
+     * @param index -- selects the dimension to be shifted
+     */
+    private void placeExtraMarble(int index, ResourceType temp) {
 
+        if((index >=0) && (index < dimensions[1])) {
 
-        resourceBoard = new ArrayList<>();
+            /* add to pickedResources every element in position ( xx , index) */
+            for (int row = dimensions[0]-1; row>=0; row--) {
+                for (int col = 0; col < dimensions[1]; col++) {
 
-        for(int i=0; i < dimensions[1]; i++) {
-            LinkedList<Resource> temp = new LinkedList<>();
-            for(int j=0; j < realResources.toArray().length - 1; j++) {
+                    if (col == index) {
 
-                /* adds columns meaning first 4 elements */
-                if(j % dimensions[1] == i) {
-                    temp.add(realResources.get(j));
+                        for(int i=0; i < dimensions[1]-2; i++) {
+                            resourceBoard[row-i][col] = resourceBoard[row-i-1][col];
+                        }
+
+                        resourceBoard[0][index] = extraMarble;
+                        extraMarble = temp;
+
+                        return;
+                    }
                 }
             }
-            resourceBoard.add(temp);
         }
 
-        int cicles = 0;
-        for(int i = dimensions[1]; i < dimensions[1]+dimensions[0]; i++) {
-            LinkedList<Resource> temp = new LinkedList<>();
-            for(int j = dimensions[1]*cicles; j < dimensions[1]*(cicles+1); j++) {
-                temp.add(realResources.get(j));
+        /* pick one of the rows */
+        if((index > dimensions[0]) && (index < dimensions[1]+dimensions[0])) {
+
+            /* add to pickedResources every element in position ( index , xx ) */
+            for (int row=0; row < resourceBoard.length; row++) {
+
+                if(row == (index-dimensions[0]-1)) {
+
+                    if (resourceBoard[row].length - 1 >= 0)
+                        System.arraycopy(resourceBoard[row], 1, resourceBoard[row], 0, resourceBoard[row].length - 1);
+
+                    resourceBoard[row][dimensions[1]-1] = extraMarble;
+                    extraMarble = temp;
+
+                    return;
+                }
             }
-            Collections.reverse(temp);
-            resourceBoard.add(temp);
-            cicles++;
+
         }
+
     }
 
 
     /**
-     * Places the extra marble, shifting the content
-     * of the board
-     * @param index -- selects the dimension to be shifted
+     * @param index dimension picked
+     * @return list of the resources chosen from market
+     * @throws IndexOutOfBoundsException if the player's input exceed
+     * market's dimension
      */
-    private void placeExtraMarble(int index) {
+    private LinkedList<ResourceType> pickResourceLine(int index) throws IndexOutOfBoundsException{
 
-        ResourceType temp = resourceBoard.get(index).getLast().getResourceType();
+        LinkedList<ResourceType> pickedResources = new LinkedList<>();
 
-        for(int i=resourceBoard.get(index).toArray().length - 1; i > 0; i--) {
-            resourceBoard.get(index).get(i)
-                    .setResourceType(resourceBoard.get(index).get(i-1).getResourceType());
+        /* pick one of the columns */
+        if((index >=0) && (index < dimensions[1])) {
+
+            /* add to pickedResources every element in position ( xx , index) */
+            for (ResourceType[] resourceTypes : resourceBoard) {
+                for (int col = 0; col < resourceTypes.length; col++) {
+
+                    if (col == index) {
+                        pickedResources.addLast(resourceTypes[col]);
+                    }
+                }
+            }
+            return pickedResources;
         }
 
-        resourceBoard.get(index).get(0).setResourceType(extraMarble.getResourceType());
-        extraMarble.setResourceType(temp);
+        /* pick one of the rows */
+        if((index > dimensions[0]) && (index < dimensions[1]+dimensions[0])) {
+
+            /* add to pickedResources every element in position ( index , xx ) */
+            for (int row=0; row < resourceBoard.length; row++) {
+                for (int col=resourceBoard[row].length-1; col >=0 ; col--) {
+
+                    if(row == (index-dimensions[0]-1))
+                        pickedResources.addLast(resourceBoard[row][col]);
+                }
+            }
+            return pickedResources;
+        }
+
+        throw new IndexOutOfBoundsException();
     }
 
     /**
@@ -100,16 +136,19 @@ public class ResourceMarket {
      * {@link MaterialResource}
      * {@link FaithResource}
      */
-    public void pickResources(int index) throws IndexOutOfBoundsException {
+    public void pickResources(int index) {
 
-        LinkedList<Resource> obtainedResources = resourceBoard.get(index);
+        LinkedList<ResourceType> pickedFromMarket = pickResourceLine(index);
 
-        placeExtraMarble(index);
+        placeExtraMarble(index, pickedFromMarket.getLast());
+
+        ResourceBuilder resourceBuilder = new ResourceBuilder();
+        LinkedList<Resource> obtainedResources = resourceBuilder.build(pickedFromMarket);
 
         obtainedResources.forEach(Resource::deposit);
     }
 
-    public ArrayList<LinkedList<Resource>> getResourceBoard() {
+    public ResourceType[][] getResourceBoard() {
         return resourceBoard;
     }
 }

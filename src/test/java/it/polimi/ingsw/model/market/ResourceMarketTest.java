@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.market;
 
+import it.polimi.ingsw.enumerations.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
@@ -17,7 +19,7 @@ class ResourceMarketTest {
     private ResourceMarket resourceMarket;
 
     @BeforeEach
-    void init() {
+    void setUp() {
         try {
             resourceMarket = new ResourceMarket();
         } catch (FileNotFoundException e) {
@@ -38,7 +40,7 @@ class ResourceMarketTest {
         int negativeBoundBreaker;
 
         //Act
-        positiveBoundBreaker = resourceMarket.getResourceBoard().size()
+        positiveBoundBreaker = resourceMarket.getResourceBoard().length
                 + new Random().nextInt();
         negativeBoundBreaker = - (new Random().nextInt());
 
@@ -56,14 +58,22 @@ class ResourceMarketTest {
     void pickInBoundsResourcesTest() {
 
         //Arrange
-        int acceptedBound;
+        int acceptedBoundColumn;
+        int acceptedBoundRow;
 
         //Act
-        acceptedBound = new Random().nextInt(resourceMarket.getResourceBoard().size());
+        acceptedBoundColumn = 1;    //new Random().nextInt(resourceMarket.getResourceBoard().length);
+        acceptedBoundRow = 5;   //new Random().nextInt()
 
         //Assert
-        assertDoesNotThrow(
-                () -> resourceMarket.pickResources(acceptedBound)
+        assertAll(
+                () -> assertDoesNotThrow(
+                        () -> resourceMarket.pickResources(acceptedBoundColumn)
+                ),
+
+                () -> assertDoesNotThrow(
+                        () -> resourceMarket.pickResources(acceptedBoundRow)
+                )
         );
     }
 }

@@ -28,31 +28,18 @@ public class ProductionCard extends BaseProduction {
         return victoryPoints;
     }
 
-    /* this method has a lambda function as a parameter, a discount method */
+
     public ArrayList<ResourceTag> getRequirements() {
         return requirements;
     }
 
-    /*public void setLevel(Level level) {
-        this.level = level;
-    }
-    public void setColor(Color color) {
-        this.color = color;
-    }
-    public void setVictoryPoints(int victoryPoints) {
-        this.victoryPoints = victoryPoints;
-    }
-    public void setRequirements(ArrayList<ResourceTag> requirements) {
-        this.requirements = requirements;
-    }*/
 
-    /* Overriding for testing purposes */
     @Override
     public String toString() {
         return "[ color = " + color + " level = " + level + " ]";
     }
 
-    /* Overriding for testing purposes */
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

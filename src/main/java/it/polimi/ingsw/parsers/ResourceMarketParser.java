@@ -1,9 +1,15 @@
 package it.polimi.ingsw.parsers;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.utilities.FaithResource;
+import it.polimi.ingsw.model.utilities.MaterialResource;
+import it.polimi.ingsw.model.utilities.Resource;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ResourceMarketParser {
 
