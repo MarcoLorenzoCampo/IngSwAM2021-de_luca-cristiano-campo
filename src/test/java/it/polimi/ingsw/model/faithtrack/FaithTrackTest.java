@@ -20,6 +20,11 @@ class FaithTrackTest {
     }
 
     @Test
+    void notNullTrack() {
+        assertNotNull(faithTrack);
+    }
+
+    @Test
     void checkMarkerPositionTest(){
         //Arrange
         Tile t1 = new PopeTile(15, Constants.ORANGE);
@@ -39,14 +44,14 @@ class FaithTrackTest {
     @Test
     void pickFavorPointsTest() {
         //Arrange
-        Tile t1 = new PopeTile(8, Constants.YELLOW);
-        Tile t2 = new PopeTile(16, Constants.ORANGE);
-        Tile t3 = new PopeTile(24, Constants.RED);
+        PopeTile t1 = new PopeTile(8, Constants.YELLOW);
+        PopeTile t2 = new PopeTile(16, Constants.ORANGE);
+        PopeTile t3 = new PopeTile(24, Constants.RED);
 
         //Act
-        int result1 = faithTrack.pickFavorPoints((PopeTile) t1);
-        int result2 = faithTrack.pickFavorPoints((PopeTile) t2);
-        int result3 = faithTrack.pickFavorPoints((PopeTile) t3);
+        int result1 = faithTrack.pickFavorPoints(t1);
+        int result2 = faithTrack.pickFavorPoints(t2);
+        int result3 = faithTrack.pickFavorPoints(t3);
 
         //Considering that the player has taken all 3 favor points.
         //Assert
@@ -58,14 +63,14 @@ class FaithTrackTest {
     @Test
     void pickFavorPoints2Test() {
         //Arrange
-        Tile t1 = new PopeTile(3, Constants.NEUTRAL);
-        Tile t2 = new PopeTile(14, Constants.ORANGE);
-        Tile t3 = new PopeTile(18, Constants.NEUTRAL);
+        PopeTile t1 = new PopeTile(3, Constants.NEUTRAL);
+        PopeTile t2 = new PopeTile(14, Constants.ORANGE);
+        PopeTile t3 = new PopeTile(18, Constants.NEUTRAL);
 
         //Act
-        int result1 = faithTrack.pickFavorPoints((PopeTile) t1);
-        int result2 = faithTrack.pickFavorPoints((PopeTile) t2);
-        int result3 = faithTrack.pickFavorPoints((PopeTile) t3);
+        int result1 = faithTrack.pickFavorPoints(t1);
+        int result2 = faithTrack.pickFavorPoints(t2);
+        int result3 = faithTrack.pickFavorPoints(t3);
 
         //Considering that the player has taken only the second favor tile
         //Assert
@@ -77,14 +82,14 @@ class FaithTrackTest {
     @Test
     void pickFavorPoints3Test() {
         //Arrange
-        Tile t1 = new PopeTile(6, Constants.YELLOW);
-        Tile t2 = new PopeTile(9, Constants.NEUTRAL);
-        Tile t3 = new PopeTile(23, Constants.RED);
+        PopeTile t1 = new PopeTile(6, Constants.YELLOW);
+        PopeTile t2 = new PopeTile(9, Constants.NEUTRAL);
+        PopeTile t3 = new PopeTile(23, Constants.RED);
 
         //Act
-        int result1 = faithTrack.pickFavorPoints((PopeTile) t1);
-        int result2 = faithTrack.pickFavorPoints((PopeTile) t2);
-        int result3 = faithTrack.pickFavorPoints((PopeTile) t3);
+        int result1 = faithTrack.pickFavorPoints(t1);
+        int result2 = faithTrack.pickFavorPoints(t2);
+        int result3 = faithTrack.pickFavorPoints(t3);
 
         //Considering that the player has taken first and third favor tiles
         //Assert
@@ -94,10 +99,10 @@ class FaithTrackTest {
     }
 
     @Test //need other classes
-    void sendControlTest(){}
+    void sendControlTest(){ }
 
     @Test //need other classes
-    void receiveControlTest(){}
+    void receiveControlTest(){ }
 
     @Test
     void isPopeTileTest() {

@@ -8,6 +8,7 @@ import java.util.Map;
 
 
 public class FaithTrack {
+
     List<Tile> faithTrack = new ArrayList<>();
     private int finalPoints;
     private int faithMarker;
@@ -27,59 +28,31 @@ public class FaithTrack {
 
 
     private void initFaithTrack() {
-        Tile tile0 = new SimpleTile(0, Constants.NEUTRAL);
-        Tile tile1 = new SimpleTile(1, Constants.NEUTRAL);
-        Tile tile2 = new SimpleTile(2, Constants.NEUTRAL);
-        Tile tile3 = new SimpleTile(3, Constants.NEUTRAL);
-        Tile tile4 = new SimpleTile(4, Constants.NEUTRAL);
-        Tile tile5 = new SimpleTile(5, Constants.YELLOW);
-        Tile tile6 = new SimpleTile(6, Constants.YELLOW);
-        Tile tile7 = new SimpleTile(7, Constants.YELLOW);
-        Tile tile8 = new PopeTile(8, Constants.YELLOW);
-        Tile tile9 = new SimpleTile(9, Constants.NEUTRAL);
-        Tile tile10 = new SimpleTile(10, Constants.NEUTRAL);
-        Tile tile11 = new SimpleTile(11, Constants.NEUTRAL);
-        Tile tile12 = new SimpleTile(12, Constants.ORANGE);
-        Tile tile13 = new SimpleTile(13, Constants.ORANGE);
-        Tile tile14 = new SimpleTile(14, Constants.ORANGE);
-        Tile tile15 = new SimpleTile(15, Constants.ORANGE);
-        Tile tile16 = new PopeTile(16, Constants.ORANGE);
-        Tile tile17 = new SimpleTile(17, Constants.NEUTRAL);
-        Tile tile18 = new SimpleTile(18, Constants.NEUTRAL);
-        Tile tile19 = new SimpleTile(19, Constants.RED);
-        Tile tile20 = new SimpleTile(20, Constants.RED);
-        Tile tile21 = new SimpleTile(21, Constants.RED);
-        Tile tile22 = new SimpleTile(22, Constants.RED);
-        Tile tile23 = new SimpleTile(23, Constants.RED);
-        Tile tile24 = new PopeTile(24, Constants.RED);
-
-        faithTrack.add(tile0);
-        faithTrack.add(tile1);
-        faithTrack.add(tile2);
-        faithTrack.add(tile3);
-        faithTrack.add(tile4);
-        faithTrack.add(tile5);
-        faithTrack.add(tile6);
-        faithTrack.add(tile7);
-        faithTrack.add(tile8);
-        faithTrack.add(tile9);
-        faithTrack.add(tile10);
-        faithTrack.add(tile11);
-        faithTrack.add(tile12);
-        faithTrack.add(tile13);
-        faithTrack.add(tile14);
-        faithTrack.add(tile15);
-        faithTrack.add(tile16);
-        faithTrack.add(tile17);
-        faithTrack.add(tile18);
-        faithTrack.add(tile19);
-        faithTrack.add(tile20);
-        faithTrack.add(tile21);
-        faithTrack.add(tile22);
-        faithTrack.add(tile23);
-        faithTrack.add(tile24);
-
-
+        faithTrack.add(new SimpleTile(0, Constants.NEUTRAL));
+        faithTrack.add(new SimpleTile(1, Constants.NEUTRAL));
+        faithTrack.add(new SimpleTile(2, Constants.NEUTRAL));
+        faithTrack.add(new SimpleTile(3, Constants.NEUTRAL));
+        faithTrack.add(new SimpleTile(4, Constants.NEUTRAL));
+        faithTrack.add(new SimpleTile(5, Constants.YELLOW));
+        faithTrack.add(new SimpleTile(6, Constants.YELLOW));
+        faithTrack.add(new SimpleTile(7, Constants.YELLOW));
+        faithTrack.add(new PopeTile(8, Constants.YELLOW));
+        faithTrack.add(new SimpleTile(9, Constants.NEUTRAL));
+        faithTrack.add(new SimpleTile(10, Constants.NEUTRAL));
+        faithTrack.add(new SimpleTile(11, Constants.NEUTRAL));
+        faithTrack.add(new SimpleTile(12, Constants.ORANGE));
+        faithTrack.add(new SimpleTile(13, Constants.ORANGE));
+        faithTrack.add(new SimpleTile(14, Constants.ORANGE));
+        faithTrack.add(new SimpleTile(15, Constants.ORANGE));
+        faithTrack.add(new PopeTile(16, Constants.ORANGE));
+        faithTrack.add(new SimpleTile(17, Constants.NEUTRAL));
+        faithTrack.add(new SimpleTile(18, Constants.NEUTRAL));
+        faithTrack.add(new SimpleTile(19, Constants.RED));
+        faithTrack.add(new SimpleTile(20, Constants.RED));
+        faithTrack.add(new SimpleTile(21, Constants.RED));
+        faithTrack.add(new SimpleTile(22, Constants.RED));
+        faithTrack.add(new SimpleTile(23, Constants.RED));
+        faithTrack.add(new PopeTile(24, Constants.RED));
     }
 
     private void initCheckpoint() {
@@ -151,10 +124,7 @@ public class FaithTrack {
     }
 
     public boolean isPopeTile(int faithMarker){
-        if((faithMarker == 8) || (faithMarker == 16) || (faithMarker == 24)){
-            return true;
-        }
-        return false;
+        return (faithMarker == 8) || (faithMarker == 16) || (faithMarker == 24);
     }
 
     public List<Tile> getFaithTrack() {

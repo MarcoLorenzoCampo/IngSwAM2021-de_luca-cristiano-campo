@@ -7,6 +7,6 @@ package it.polimi.ingsw.exceptions;
 public class NameTakenException extends Exception{
 
     public NameTakenException(String takenName) {
-        System.out.println(takenName + " is already taken, choose a different one!");
+        super(takenName + " is already taken, choose a different one!");
     }
 }
