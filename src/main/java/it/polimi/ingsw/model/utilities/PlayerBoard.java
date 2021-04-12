@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model.utilities;
 
 public abstract class PlayerBoard {
 

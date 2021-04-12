@@ -1,14 +1,16 @@
 package it.polimi.ingsw.model.actions;
 
+import it.polimi.ingsw.enumerations.PossibleAction;
+
 public class BuyProductionCardAction implements Action{
 
-    @Override
-    public boolean isValid() {
-        return false;
+    public PossibleAction getActionTag() {
+        return actionTag;
     }
 
-    @Override
-    public void runAction() {
+    private final PossibleAction actionTag = PossibleAction.BUY_PRODUCTION_CARD;
 
+    @Override
+    public void isValid() {
     }
 }

@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.actions;
 
+import it.polimi.ingsw.enumerations.PossibleAction;
+import it.polimi.ingsw.exceptions.InvalidActionException;
+import it.polimi.ingsw.exceptions.InvalidPlayerException;
+
 public interface Action {
 
     /**
@@ -8,10 +12,5 @@ public interface Action {
      *
      * @return true if the action can be done, otherwise false
      */
-    boolean isValid();
-
-    /**
-     * Makes a player do the action he chose
-     */
-    void runAction();
+    void isValid() throws InvalidPlayerException, InvalidActionException;
 }

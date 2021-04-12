@@ -1,10 +1,12 @@
 package it.polimi.ingsw.enumerations;
 
+import it.polimi.ingsw.model.actions.Action;
+
 /**
  * Enumerates all the possible action requests
  * a player can query
  */
-public enum PossibleActions {
+public enum PossibleAction {
 
     BUY_PRODUCTION_CARD,
     PLACE_LEADER_CARD,

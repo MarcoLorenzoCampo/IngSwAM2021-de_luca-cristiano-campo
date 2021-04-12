@@ -42,8 +42,7 @@ public class ProductionCardMarket {
         availableCards = new LinkedList<> (playableProductionCards
                 .stream()
                 .collect(Collectors.toMap(ProductionCard::key, color -> color, (f, s) -> f))
-                .values()
-        );
+                .values());
     }
 
 

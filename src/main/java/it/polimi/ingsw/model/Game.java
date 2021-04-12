@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
 import it.polimi.ingsw.model.market.GameBoard;
+import it.polimi.ingsw.model.player.Player;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
@@ -32,7 +33,6 @@ public class Game implements Serializable {
         gameInstance = getGameInstance();
         gameBoard = GameBoard.getGameBoardInstance();
         playerList = new LinkedList<>();
-        currentPlayer = null;
         currentState = new GameState();
     }
 
@@ -100,4 +100,9 @@ public class Game implements Serializable {
     public int getMaxCardsBought() {
         return MAX_CARDS_BOUGHT;
     }
+
+    public GameState getCurrentState() {
+        return currentState;
+    }
+
 }
