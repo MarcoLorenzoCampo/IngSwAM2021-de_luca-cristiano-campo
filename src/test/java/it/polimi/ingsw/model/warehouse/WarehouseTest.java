@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 
 public class WarehouseTest {
     Warehouse warehouse;
@@ -20,7 +22,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void addOneResource() {
+    void addOneResourceTest() {
         //Arrange
         MaterialResource input = new MaterialResource(ResourceType.COIN);
 
@@ -44,7 +46,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void OverFillOneSlot(){
+    void OverFillOneSlotTest(){
         //Arrange
         MaterialResource input = new MaterialResource(ResourceType.COIN);
 
@@ -61,7 +63,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void fillWarehouseInOrder(){
+    void fillWarehouseInOrderTest(){
         //Arrange
         MaterialResource firstResource = new MaterialResource(ResourceType.COIN);
         MaterialResource secondResource = new MaterialResource(ResourceType.SHIELD);
@@ -88,7 +90,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void fillWarehouseWithSwaps(){
+    void fillWarehouseWithSwapsTest(){
         //Arrange
         MaterialResource firstResource = new MaterialResource(ResourceType.COIN);
         MaterialResource secondResource = new MaterialResource(ResourceType.SHIELD);
@@ -113,7 +115,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void noSlotsForAnotherType(){
+    void noSlotsForAnotherTypeTest(){
         //Arrange
         MaterialResource firstResource = new MaterialResource(ResourceType.COIN);
         MaterialResource secondResource = new MaterialResource(ResourceType.SHIELD);
@@ -137,7 +139,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void addExtraInventory(){
+    void addExtraInventoryTest(){
         //Arrange
         ResourceType extraInventoryType = ResourceType.COIN;
 
@@ -151,7 +153,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void overFillExtraSlotWithFreeSlots(){
+    void overFillExtraSlotWithFreeSlotsTest(){
         //Arrange
         MaterialResource input = new MaterialResource(ResourceType.COIN);
         ResourceType extraInventoryType = ResourceType.COIN;
@@ -181,7 +183,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void OverfillExtraSlotWithNoFreeSlots(){
+    void OverfillExtraSlotWithNoFreeSlotsTest(){
         //Arrange
         MaterialResource firstResource = new MaterialResource(ResourceType.COIN);
         MaterialResource secondResource = new MaterialResource(ResourceType.SHIELD);
@@ -208,7 +210,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void cannotSwapLasTwoSlots(){
+    void cannotSwapLasTwoSlotsTest(){
         //Arrange
         MaterialResource firstResource = new MaterialResource(ResourceType.COIN);
         MaterialResource secondResource = new MaterialResource(ResourceType.SHIELD);
@@ -232,7 +234,7 @@ public class WarehouseTest {
 
 
     @Test
-    void RemoveAllResources(){
+    void RemoveAllResourcesTest(){
         //Arrange
         ResourceTag toBeRemoved1 = new ResourceTag(ResourceType.SHIELD, 1);
         ResourceTag toBeRemoved2 = new ResourceTag(ResourceType.SERVANT, 2);
@@ -259,7 +261,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void RemoveMoreResourcesThanAllowed(){
+    void RemoveMoreResourcesThanAllowedTest(){
         //Arrange
         ResourceTag toBeRemoved = new ResourceTag(ResourceType.COIN, 4);
         MaterialResource foundResource = new MaterialResource(ResourceType.COIN);
@@ -283,7 +285,7 @@ public class WarehouseTest {
     }
 
     @Test
-    void RemoveResourceNotPresent(){
+    void RemoveResourceNotPresentTest(){
         //Arrange
         ResourceTag toBeRemoved = new ResourceTag(ResourceType.COIN, 4);
 
@@ -293,5 +295,20 @@ public class WarehouseTest {
         //Assert
         warehouse.isWarehouseValid();
         Assertions.assertEquals(3, warehouse.getShelves().size());
+    }
+
+    @Test
+    void InventoryEmptyTest(){
+        //Arrange
+        Map<ResourceType, Integer> warehouseInventory;
+
+        //Act
+        warehouseInventory = warehouse.getInventory();
+
+        //Assert
+        for (Map.Entry<ResourceType, Integer> iterator : warehouseInventory.entrySet()) {
+            Assertions.assertEquals(0, iterator.getValue());
+        }
+        Assertions.assertEquals(4, warehouseInventory.entrySet().size());
     }
 }

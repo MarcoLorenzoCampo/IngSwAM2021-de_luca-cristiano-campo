@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.warehouse;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
+import it.polimi.ingsw.model.strongbox.Strongbox;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
@@ -261,5 +262,20 @@ public class Warehouse {
         else{
             throw  new CannotRemoveResourceException(tag.getType(), tag.getQuantity());
         }
+    }
+
+    /**
+     *
+     * @return -- returns a dictionary with each entry being a type of resource and the quantity stored
+     *            in the strongbox
+     */
+    public Map<ResourceType, Integer> getInventory(){
+        Strongbox inventory = new Strongbox();
+        for (Shelf iterator: shelves) {
+            if(!iterator.getType().equals(ResourceType.UNDEFINED)){
+                inventory.getInventory().put(iterator.getType(), getInventory().get(iterator.getType())+iterator.getQuantity());
+            }
+        }
+        return inventory.getInventory();
     }
 }
