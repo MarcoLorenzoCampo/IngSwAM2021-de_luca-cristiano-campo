@@ -1,7 +1,4 @@
-it/polimi/ingsw/model/player/ActionValidator.class
-it/polimi/ingsw/exceptions/InvalidActionException.class
 it/polimi/ingsw/enumerations/Color.class
-it/polimi/ingsw/model/utilities/PlayerBoard.class
 it/polimi/ingsw/model/utilities/DevelopmentTag.class
 it/polimi/ingsw/model/actions/GetResourceFromMarketAction.class
 it/polimi/ingsw/model/utilities/Tag.class
@@ -28,10 +25,8 @@ it/polimi/ingsw/model/actions/RearrangeInventoryAction.class
 it/polimi/ingsw/enumerations/PossibleAction.class
 it/polimi/ingsw/model/utilities/ResourceTag.class
 it/polimi/ingsw/parsers/ProductionCardsParser$1.class
-it/polimi/ingsw/model/player/InventoryManager.class
 it/polimi/ingsw/model/player/Player.class
 it/polimi/ingsw/App.class
-it/polimi/ingsw/model/player/ProductionSet.class
 it/polimi/ingsw/model/actions/ActivateProductionsAction.class
 it/polimi/ingsw/exceptions/EndGameException.class
 it/polimi/ingsw/model/utilities/Resource.class

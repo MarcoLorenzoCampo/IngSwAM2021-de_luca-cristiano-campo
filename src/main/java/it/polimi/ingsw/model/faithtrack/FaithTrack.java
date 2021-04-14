@@ -98,7 +98,7 @@ public class FaithTrack {
      * @return points due to checkpoints
      */
     public int checkMarkerPosition(){
-        return checkpoints.get(Math.floorDiv(this.faithMarker,3));
+        return checkpoints.get(Math.floorDiv(this.faithMarker, 3));
     }
 
     //updating favor points

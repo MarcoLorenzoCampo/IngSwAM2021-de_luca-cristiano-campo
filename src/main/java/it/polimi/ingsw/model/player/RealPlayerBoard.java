@@ -12,8 +12,8 @@ import java.util.List;
 public class RealPlayerBoard extends PlayerBoard {
 
     private int boughCardsNumber;
-    private String owner;
-    private FaithTrack faithTrack;
+    private final String owner;
+    private final FaithTrack faithTrack;
     List<LeaderCard> ownedLeaderCards;
 
     public RealPlayerBoard(String owner) {
