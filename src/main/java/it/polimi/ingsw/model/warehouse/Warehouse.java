@@ -222,7 +222,6 @@ public class Warehouse {
                 throw new DiscardResourceException();
             }
         }
-
         else{
             if(placeInEmpty(input)) {
                 sortShelves();

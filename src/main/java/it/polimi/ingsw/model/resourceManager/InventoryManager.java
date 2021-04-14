@@ -12,9 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-public class ResourceManager {
+public class InventoryManager {
     private ArrayList<MaterialResource> buffer;
     private Warehouse warehouse;
     private Strongbox strongbox;
@@ -23,7 +22,7 @@ public class ResourceManager {
     private ArrayList<ResourceType> exchange;
     private ArrayList<ResourceType> discount;
 
-    public ResourceManager(){
+    public InventoryManager(){
         buffer = new ArrayList<>();
         warehouse = new Warehouse();
         strongbox = new Strongbox();
@@ -65,6 +64,10 @@ public class ResourceManager {
         return inventory;
     }
 
+    public void deposit (MaterialResource input){
+        buffer.add(input);
+    }
+
     public void addDiscountLeader(ResourceType effect){
         discount.add(effect);
     }
@@ -73,18 +76,14 @@ public class ResourceManager {
         exchange.add(effect);
     }
 
-    public void addResourceToWarehouse (int index){
+    public void removeFromBuffer(int index){
+        buffer.remove(buffer.get(index));
+    }
+
+    public void addResourceToWarehouse (int index) throws DiscardResourceException{
         ResourceType key = buffer.get(index).getResourceType();
-        try{
-            warehouse.addResource(buffer.get(index));
-            inventory.put(key, inventory.get(key)+1);
-            buffer.remove(buffer.get(index));
-        } catch (DiscardResourceException exception){
-            buffer =
-                (ArrayList<MaterialResource>) buffer.stream()
-                .filter(MaterialResource -> !MaterialResource.getResourceType().equals(buffer.get(index).getResourceType()))
-                .collect(Collectors.toList());
-        }
+        warehouse.addResource(buffer.get(index));
+        inventory.put(key, inventory.get(key) + 1);
     }
 
     public void addResourceToStrongbox(ResourceType input){
