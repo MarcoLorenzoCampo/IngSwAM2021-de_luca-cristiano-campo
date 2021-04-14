@@ -27,13 +27,11 @@ public class ResourceMarket {
      * @throws FileNotFoundException -- parsing exception
      */
     public ResourceMarket() throws FileNotFoundException {
-        ResourceMarketParser resourceMarketParser = new ResourceMarketParser();
-        ResourceBoardBuilder boardBuilder = new ResourceBoardBuilder();
-        dimensions = resourceMarketParser.parseResourceMarketDimensions();
-        String[] jsonResources = resourceMarketParser.parseResourceMarketContent();
+        dimensions = ResourceMarketParser.parseResourceMarketDimensions();
+        String[] jsonResources = ResourceMarketParser.parseResourceMarketContent();
         Collections.shuffle(Arrays.asList(jsonResources));
         extraMarble = ResourceType.valueOf(jsonResources[dimensions[1]*dimensions[0]]);
-        resourceBoard = boardBuilder.build(dimensions, jsonResources);
+        resourceBoard = ResourceBoardBuilder.build(dimensions, jsonResources);
     }
 
     /**
@@ -115,11 +113,9 @@ public class ResourceMarket {
      * {@link FaithResource}
      */
     public void pickResources(int index) {
-
         LinkedList<ResourceType> pickedFromMarket = pickResourceLine(index);
         placeExtraMarble(index, pickedFromMarket.getLast());
-        ResourceBuilder resourceBuilder = new ResourceBuilder();
-        LinkedList<Resource> obtainedResources = resourceBuilder.build(pickedFromMarket);
+        LinkedList<Resource> obtainedResources = ResourceBuilder.build(pickedFromMarket);
         obtainedResources.forEach(Resource::deposit);
     }
 

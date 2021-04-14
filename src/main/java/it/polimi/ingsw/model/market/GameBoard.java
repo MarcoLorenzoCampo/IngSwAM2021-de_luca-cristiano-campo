@@ -1,7 +1,11 @@
 package it.polimi.ingsw.model.market;
 
 
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
+
 import java.io.FileNotFoundException;
+import java.util.List;
 
 
 public class GameBoard {

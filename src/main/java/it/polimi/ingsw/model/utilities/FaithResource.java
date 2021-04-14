@@ -25,6 +25,6 @@ public class FaithResource extends Resource {
                 .getCurrentPlayer()
                 .getPlayerBoard()
                 .getFaithTrack()
-                .increaseFaithMarker(1);
+                .increaseFaithMarker();
     }
 }

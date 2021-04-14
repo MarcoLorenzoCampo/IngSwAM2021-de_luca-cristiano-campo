@@ -20,8 +20,7 @@ public class ProductionCardMarket {
      * is incorrect or JSON file is missing.
      */
     public ProductionCardMarket() throws FileNotFoundException {
-        ProductionCardsParser productionCardsParser = new ProductionCardsParser();
-        playableProductionCards = productionCardsParser.parseProductionDeck();
+        playableProductionCards = ProductionCardsParser.parseProductionDeck();
         Collections.shuffle(playableProductionCards);
         setAvailableCards();
     }

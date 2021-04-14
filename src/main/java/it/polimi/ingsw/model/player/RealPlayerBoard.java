@@ -1,24 +1,35 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.exceptions.EndGameException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
-import it.polimi.ingsw.model.utilities.PlayerBoard;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class RealPlayerBoard extends PlayerBoard {
 
     private int boughCardsNumber;
     private String owner;
     private FaithTrack faithTrack;
-    private ProductionSet productionSet;
-    //List<LeaderCards> ownedLeaderCards;
+    List<LeaderCard> ownedLeaderCards;
 
     public RealPlayerBoard(String owner) {
         this.owner = owner;
-        productionSet = new ProductionSet();
         faithTrack = new FaithTrack();
-        //ownedLeaderCards = new LinkedList<>();
         boughCardsNumber = 0;
+    }
+
+    public void setOwnedLeaderCards(List<LeaderCard> ownedLeaderCards) {
+        this.ownedLeaderCards = ownedLeaderCards;
+    }
+
+    @Override
+    public void getAction(Action performedAction) throws InvalidPlayerException,
+            InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException {
+        super.getAction(performedAction);
     }
 
     public void increaseBoughCardsCount() throws EndGameException {
@@ -33,9 +44,5 @@ public class RealPlayerBoard extends PlayerBoard {
 
     public FaithTrack getFaithTrack() {
         return faithTrack;
-    }
-
-    public ProductionSet getProductionSet() {
-        return productionSet;
     }
 }

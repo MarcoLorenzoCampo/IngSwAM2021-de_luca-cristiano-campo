@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
 
-public class ActivateProductionsAction implements Action {
+public class ActivateProductionsAction extends Action {
 
     public PossibleAction getActionTag() {
         return actionTag;
@@ -12,6 +12,5 @@ public class ActivateProductionsAction implements Action {
 
     @Override
     public void isValid() {
-
     }
 }

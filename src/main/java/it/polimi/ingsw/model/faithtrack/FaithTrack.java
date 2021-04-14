@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.faithtrack;
 
+import it.polimi.ingsw.enumerations.Constants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +12,10 @@ import java.util.Map;
 public class FaithTrack {
 
     List<Tile> faithTrack = new ArrayList<>();
-    private int finalPoints;
+    private final int finalPoints;
     private int faithMarker;
     private int currentFavorPoints;
-    public Map<Integer, Integer> cardVaticanSpace = new HashMap<Integer, Integer>();
+    public Map<Integer, Integer> cardVaticanSpace = new HashMap<>();
 
     List<Integer> checkpoints = new ArrayList<>();
 
@@ -68,21 +70,18 @@ public class FaithTrack {
     }
 
     /**
-     * @param n: faithmarker advances n times;
      *         it checks the type of tile;
-     *         it takes favorpoints;
+     *         it takes favor points;
      *         it eventually activates vatican reports
      */
-    public void increaseFaithMarker(int n){
-        for(int i=0; i<n; i++) {
-            this.faithMarker++;
-            if(isPopeTile(faithMarker)) {
-                PopeTile currentTile = (PopeTile) this.faithTrack.get(faithMarker);
-                if(currentTile.getIsActive()){
-                    pickFavorPoints(currentTile);
-                    sendControl(currentTile);
-                    currentTile.setIsActive(false);
-                }
+    public void increaseFaithMarker(){
+        this.faithMarker++;
+        if(isPopeTile(faithMarker)) {
+            PopeTile currentTile = (PopeTile) this.faithTrack.get(faithMarker);
+            if(currentTile.getIsActive()){
+                pickFavorPoints(currentTile);
+                sendControl(currentTile);
+                currentTile.setIsActive(false);
             }
         }
     }
@@ -99,9 +98,7 @@ public class FaithTrack {
      * @return points due to checkpoints
      */
     public int checkMarkerPosition(){
-        double faithMarkerDouble = this.faithMarker/3;
-        double faithMarkerFloor = Math.floor(faithMarkerDouble);
-        return checkpoints.get((int)(faithMarkerFloor));
+        return checkpoints.get(Math.floorDiv(this.faithMarker,3));
     }
 
     //updating favor points
@@ -112,7 +109,7 @@ public class FaithTrack {
         return currentFavorPoints;
     }
 
-    //comparison between players' faithmarker
+    //comparison between players' faith marker
     public void sendControl(PopeTile popeT){
         // need other classes
     }

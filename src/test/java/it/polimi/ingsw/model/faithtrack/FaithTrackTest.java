@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.faithtrack;
 
+import it.polimi.ingsw.enumerations.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

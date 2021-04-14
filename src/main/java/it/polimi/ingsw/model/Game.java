@@ -4,7 +4,9 @@ import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
 import it.polimi.ingsw.model.market.GameBoard;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
@@ -23,6 +25,7 @@ public class Game implements Serializable {
     private static Game gameInstance;
     private GameState currentState;
     private Player currentPlayer;
+    private List<LeaderCard> leadersDeck;
 
     /**
      * Initializes the main elements of a game: gameInstance,
@@ -30,10 +33,12 @@ public class Game implements Serializable {
      * @throws FileNotFoundException -- parsing error
      */
     public void init() throws FileNotFoundException {
+
         gameInstance = getGameInstance();
         gameBoard = GameBoard.getGameBoardInstance();
         playerList = new LinkedList<>();
         currentState = new GameState();
+        leadersDeck = LeaderCardsDeckBuilder.deckBuilder();
     }
 
     /**
@@ -61,6 +66,8 @@ public class Game implements Serializable {
     public void addPlayer(String newName) throws NameTakenException, NoMorePlayersException {
         checkNewName(newName);
         playerList.add(new Player(newName));
+        playerList.getLast().getPlayerBoard().setOwnedLeaderCards(
+                leadersDeck.subList((playerList.size()-1)*4, playerList.size()*4-1));
     }
 
     /**

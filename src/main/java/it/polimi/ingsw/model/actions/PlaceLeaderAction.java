@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
 
-public class PlaceLeaderAction implements Action {
+public class PlaceLeaderAction extends Action {
 
     public PossibleAction getActionTag() {
         return actionTag;

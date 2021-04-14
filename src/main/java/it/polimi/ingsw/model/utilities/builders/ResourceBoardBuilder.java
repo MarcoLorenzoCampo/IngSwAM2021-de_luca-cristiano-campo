@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 /**
  * @author Marco Lorenzo Campo
  *
- * Utility needed to clean the constructor for the
+ * Utility class needed to clean the constructor for the
  * resourceMarket
  */
-public class ResourceBoardBuilder {
+public final class ResourceBoardBuilder {
 
-    public ResourceType[][] build(int[] dimensions, String[] content) {
+    public static ResourceType[][] build(int[] dimensions, String[] content) {
 
         ResourceType[][] resourceBoard = new ResourceType[dimensions[0]][dimensions[1]];
 

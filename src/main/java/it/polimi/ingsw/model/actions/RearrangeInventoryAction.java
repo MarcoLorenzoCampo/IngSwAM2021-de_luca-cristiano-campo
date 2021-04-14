@@ -2,7 +2,10 @@ package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
 
-public class RearrangeInventoryAction implements Action{
+/**
+ * Allows the player to swap shelves, single resources can't be swapped.
+ */
+public class RearrangeInventoryAction extends Action{
 
     private final PossibleAction actionTag = PossibleAction.REARRANGE_INVENTORY;
 

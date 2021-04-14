@@ -10,14 +10,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 
-public class ProductionCardsParser {
+public final class ProductionCardsParser {
 
     /**
      * Parser for the "production_cards_deck.json" file
      * @return List of production cards (the deck)
      * @throws FileNotFoundException -- if incorrect JSON path
      */
-    public List<ProductionCard> parseProductionDeck() throws FileNotFoundException {
+    public static List<ProductionCard> parseProductionDeck() throws FileNotFoundException {
 
         String productionCardsPath = "src/main/resources/production_cards_deck.json";
         BufferedReader bufferedReader = new BufferedReader(new FileReader(productionCardsPath));

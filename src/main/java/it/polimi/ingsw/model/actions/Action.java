@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model.actions;
 
-import it.polimi.ingsw.enumerations.PossibleAction;
-import it.polimi.ingsw.exceptions.InvalidActionException;
-import it.polimi.ingsw.exceptions.InvalidPlayerException;
+import it.polimi.ingsw.exceptions.*;
 
-public interface Action {
+/**
+ * Actions are messages sent by the GUI/CLI to the controller, they are validated and run if possible.
+ * Action is abstract, and other specific actions extend it.
+ */
+public abstract class Action {
 
     /**
      * Method to verify the player can perform the action with the parameter
@@ -12,5 +14,5 @@ public interface Action {
      *
      * @return true if the action can be done, otherwise false
      */
-    void isValid() throws InvalidPlayerException, InvalidActionException;
+    public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException { }
 }

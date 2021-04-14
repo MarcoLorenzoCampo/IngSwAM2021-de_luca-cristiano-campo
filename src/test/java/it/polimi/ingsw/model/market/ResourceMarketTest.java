@@ -53,7 +53,6 @@ class ResourceMarketTest {
     }
 
     @Test
-    @Disabled
     void pickInBoundsResourcesTest() {
 
         //Arrange

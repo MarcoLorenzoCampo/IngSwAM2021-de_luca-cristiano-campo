@@ -7,8 +7,11 @@ import it.polimi.ingsw.model.utilities.Resource;
 
 import java.util.LinkedList;
 
-public class ResourceBuilder {
-    public LinkedList<Resource> build(LinkedList<ResourceType> pickedFromMarket) {
+/**
+ * Utility class needed to build resources based on a specific ResourceType.
+ */
+public final class ResourceBuilder {
+    public static LinkedList<Resource> build(LinkedList<ResourceType> pickedFromMarket) {
 
         LinkedList<Resource> obtainedResources = new LinkedList<>();
 

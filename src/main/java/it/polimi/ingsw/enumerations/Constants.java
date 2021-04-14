@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.faithtrack;
+package it.polimi.ingsw.enumerations;
 
 public class Constants {
     public static final int NEUTRAL = 0;

@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
 
-public class DiscardLeaderCardAction implements Action{
+public class DiscardLeaderCardAction extends Action{
 
     private final PossibleAction actionTag = PossibleAction.DISCARD_LEADER_CARD;
 

@@ -1,16 +1,17 @@
 package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
-import it.polimi.ingsw.exceptions.InvalidActionException;
+import it.polimi.ingsw.exceptions.GetResourceFromMarketException;
+import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.player.ActionValidator;
+import it.polimi.ingsw.model.utilities.ActionValidator;
 
-public class GetResourceFromMarketAction implements Action {
+public class GetResourceFromMarketAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.GET_RESOURCE_FROM_MARKET;
-    String actionSender;
-    int index;
+    private final String actionSender;
+    private final int index;
 
     public GetResourceFromMarketAction(String actionSender, int index) {
         this.actionSender = actionSender;
@@ -18,10 +19,10 @@ public class GetResourceFromMarketAction implements Action {
     }
 
     @Override
-    public void isValid() throws InvalidPlayerException, InvalidActionException {
+    public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException {
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
-        ActionValidator.validateGetFromMarket(index);
+        ActionValidator.validateGetFromMarket();
 
         runAction();
     }

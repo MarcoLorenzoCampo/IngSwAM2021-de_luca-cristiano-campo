@@ -7,4 +7,8 @@ public class DevelopmentTag extends Tag {
     private Color color;
     private Level level;
 
+    public DevelopmentTag(int quantity, Color color, Level level) {
+        this.color = color;
+        this.level = level;
+    }
 }
