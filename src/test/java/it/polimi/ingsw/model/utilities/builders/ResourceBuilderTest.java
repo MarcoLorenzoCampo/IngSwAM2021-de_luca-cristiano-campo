@@ -1,4 +1,4 @@
-package it.polimi.ingsw.utilities;
+package it.polimi.ingsw.model.utilities.builders;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.utilities.FaithResource;
@@ -15,15 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ResourceBuilderTest {
 
-    ResourceBuilder resourceBuilder;
-    ResourceBoardBuilder resourceBoardBuilder;
-
-    @BeforeEach
-    void setup() {
-        resourceBuilder = new ResourceBuilder();
-        resourceBoardBuilder = new ResourceBoardBuilder();
-    }
-
     @Test
     void buildResourceTest() {
 
@@ -35,7 +26,7 @@ public class ResourceBuilderTest {
         resourceTypes.add(ResourceType.STONE);
         resourceTypes.add(ResourceType.FAITH);
 
-        resourcesUnderTest = resourceBuilder.build(resourceTypes);
+        resourcesUnderTest = ResourceBuilder.build(resourceTypes);
 
         //Assert
         assertAll(

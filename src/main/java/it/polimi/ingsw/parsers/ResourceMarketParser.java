@@ -11,13 +11,13 @@ import java.io.FileReader;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ResourceMarketParser {
+public final class ResourceMarketParser {
 
     /**
      *  Parsing function for ResourceMarket's dimension
      * @throws FileNotFoundException -- if incorrect JSON path
      */
-    public int[] parseResourceMarketDimensions() throws FileNotFoundException {
+    public static int[] parseResourceMarketDimensions() throws FileNotFoundException {
 
 
         String configPath = "src/main/resources/resourceBoard_dimensions.json";
@@ -30,7 +30,7 @@ public class ResourceMarketParser {
      *  Parsing function for ResourceMarket's content
      * @throws FileNotFoundException -- if incorrect JSON path
      */
-    public String[] parseResourceMarketContent() throws FileNotFoundException {
+    public static String[] parseResourceMarketContent() throws FileNotFoundException {
 
         String resourcesPath = "src/main/resources/given_resources.json";
         Gson resourceBoardConfigReader = new Gson();

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.utilities;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.Game;
 
 public class FaithResource extends Resource {
 
@@ -20,6 +21,10 @@ public class FaithResource extends Resource {
 
     @Override
     public void deposit() {
-        //playerBoard.faithTrack.move();
+        Game.getGameInstance()
+                .getCurrentPlayer()
+                .getPlayerBoard()
+                .getFaithTrack()
+                .increaseFaithMarker();
     }
 }

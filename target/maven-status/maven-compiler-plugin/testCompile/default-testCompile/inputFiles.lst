@@ -1,4 +1,8 @@
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/test/java/it/polimi/ingsw/model/warehouse/WarehouseTest.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/test/java/it/polimi/ingsw/model/faithtrack/FaithTrackTest.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/test/java/it/polimi/ingsw/utilities/ResourceBuilderTest.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/test/java/it/polimi/ingsw/AppTest.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/test/java/it/polimi/ingsw/model/GameTest.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/test/java/it/polimi/ingsw/parsers/ProductionCardsParserTest.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/test/java/it/polimi/ingsw/model/market/ProductionCardMarketTest.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/test/java/it/polimi/ingsw/parsers/ResourceMarketParserTest.java

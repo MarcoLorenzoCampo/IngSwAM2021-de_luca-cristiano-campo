@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.market;
 
-import it.polimi.ingsw.enumerations.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -9,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 
 /**
  * @author Marco Lorenzo Campo

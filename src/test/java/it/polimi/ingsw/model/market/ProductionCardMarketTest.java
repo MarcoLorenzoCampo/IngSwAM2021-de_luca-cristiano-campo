@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.market;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
@@ -12,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -79,7 +77,7 @@ class ProductionCardMarketTest {
         assertAll(
                 /* checks number of available cards */
                 () -> assertEquals(productionCardMarket.getAvailableCards().toArray().length,
-                        numberOfLevels*numberOfColors),
+                        (numberOfLevels-1)*numberOfColors),
                 /* checks (Level, Color) is different for every card*/
                 () -> assertEquals(productionCardMarket.getAvailableCards().toArray().length,
                         distinctSet.toArray().length)

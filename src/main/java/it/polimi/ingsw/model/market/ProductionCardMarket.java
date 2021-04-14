@@ -15,20 +15,15 @@ public class ProductionCardMarket {
     private final List<ProductionCard> playableProductionCards;
     private List<ProductionCard> availableCards;    /* Each Player sees the available cards only */
 
-
     /**
      * @throws FileNotFoundException -- thrown when any path for JSON parsing
      * is incorrect or JSON file is missing.
      */
     public ProductionCardMarket() throws FileNotFoundException {
-
-        ProductionCardsParser productionCardsParser = new ProductionCardsParser();
-        playableProductionCards = productionCardsParser.parseProductionDeck();
-
+        playableProductionCards = ProductionCardsParser.parseProductionDeck();
         Collections.shuffle(playableProductionCards);
         setAvailableCards();
     }
-
 
     /**
      * @return availableCards: the only cards player see and can buy
@@ -43,14 +38,10 @@ public class ProductionCardMarket {
      * the gameBoard.
      */
     private void setAvailableCards() {
-
-        availableCards = new LinkedList<> (
-                playableProductionCards.
-                stream().
-                collect(Collectors.
-                        toMap(ProductionCard::key, color -> color, (f, s) -> f)).
-                values()
-        );
+        availableCards = new LinkedList<> (playableProductionCards
+                .stream()
+                .collect(Collectors.toMap(ProductionCard::key, color -> color, (f, s) -> f))
+                .values());
     }
 
 
@@ -65,7 +56,6 @@ public class ProductionCardMarket {
      *                   just bought if present;
      */
     private void replaceBoughtCard(ProductionCard boughtCard) {
-
         availableCards.remove(boughtCard);
 
         //getting a new card from the deck with matching color and level
@@ -83,7 +73,6 @@ public class ProductionCardMarket {
      *                  base deck.
      */
     public void buyCard(ProductionCard boughtCard) {
-
         playableProductionCards.remove(boughtCard);
         replaceBoughtCard(boughtCard);
     }
