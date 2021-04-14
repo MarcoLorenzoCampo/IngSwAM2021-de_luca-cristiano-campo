@@ -65,10 +65,6 @@ public class ResourceManager {
         return inventory;
     }
 
-    public void deposit (MaterialResource input){
-        buffer.add(input);
-    }
-
     public void addDiscountLeader(ResourceType effect){
         discount.add(effect);
     }
