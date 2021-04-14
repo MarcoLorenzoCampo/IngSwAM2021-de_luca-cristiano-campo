@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 
 public class WarehouseTest {
     Warehouse warehouse;
@@ -297,18 +295,4 @@ public class WarehouseTest {
         Assertions.assertEquals(3, warehouse.getShelves().size());
     }
 
-    @Test
-    void InventoryEmptyTest(){
-        //Arrange
-        Map<ResourceType, Integer> warehouseInventory;
-
-        //Act
-        warehouseInventory = warehouse.getInventory();
-
-        //Assert
-        for (Map.Entry<ResourceType, Integer> iterator : warehouseInventory.entrySet()) {
-            Assertions.assertEquals(0, iterator.getValue());
-        }
-        Assertions.assertEquals(4, warehouseInventory.entrySet().size());
-    }
 }

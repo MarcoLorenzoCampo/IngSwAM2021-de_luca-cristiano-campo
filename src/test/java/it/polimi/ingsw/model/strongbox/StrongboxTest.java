@@ -72,4 +72,5 @@ public class StrongboxTest {
         //Assert
         Assertions.assertEquals(toBeRead.entrySet(), strongbox.getInventory().entrySet());
     }
+
 }

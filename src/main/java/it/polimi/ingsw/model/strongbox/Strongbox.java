@@ -31,6 +31,15 @@ public class Strongbox {
 
     /**
      *
+     * @param input -- resource to be added in the strongbox, it is only of type COIN, STONE, SERVANT or SHIELD
+     * @param quantity -- quantity to be added
+     */
+    public void addResource(ResourceType input, int quantity) {
+        strongbox.put(input, strongbox.get(input)+quantity);
+    }
+
+    /**
+     *
      * @param tag - type and quantity of resource that needs to be removed
      * @throws CannotRemoveResourceException -- exception that states that the request wasn't either
      *                                          partially or completely satisfied
