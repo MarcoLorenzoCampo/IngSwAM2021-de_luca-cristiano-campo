@@ -29,7 +29,6 @@ public final class ActionValidator {
      * throw exception.
      */
     public static void senderValidation(String actionSender) throws InvalidPlayerException {
-
         if(!actionSender.equals(Game.getGameInstance().getCurrentPlayer().getName()))
             throw new InvalidPlayerException();
     }
