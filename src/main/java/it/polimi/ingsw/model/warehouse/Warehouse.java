@@ -13,6 +13,12 @@ import java.util.stream.Collectors;
 public class Warehouse {
     private ArrayList<Shelf> shelves;
 
+
+    public ArrayList<Shelf> getShelves() {
+        return shelves;
+    }
+
+
     /**
      * warehouse constructor, initializes shelves as an arraylist of size 3 with all elements as
      * UNDEFINED with 0 quantity, this means that the slot can be filled
@@ -24,9 +30,6 @@ public class Warehouse {
         }
     }
 
-    public ArrayList<Shelf> getShelves() {
-        return shelves;
-    }
 
     /**
      *
@@ -36,6 +39,7 @@ public class Warehouse {
     public void addExtraInventory(ResourceType type){
         shelves.add(new Shelf(type, 2));
     }
+
 
     /**
      *
@@ -69,6 +73,7 @@ public class Warehouse {
         return true;
     }
 
+
     /**
      *
      * @param desired -- desired type of resource that whose presence in the shelves needs to be checked
@@ -81,6 +86,7 @@ public class Warehouse {
                 .findFirst();
         return check.isPresent();
     }
+
 
     /**
      * sorts shelves based on the quantity they hold, this guarantees that the player will always
@@ -104,6 +110,7 @@ public class Warehouse {
         }
     }
 
+
     /**
      * if the quantity of a shelf is 0, it sets its type to UNDEFINED stating
      * that it can hold any resource
@@ -113,6 +120,7 @@ public class Warehouse {
             shelves.get(i).clear();
         }
     }
+
 
     /**
      *
@@ -186,6 +194,7 @@ public class Warehouse {
         else return false;
     }
 
+
     /**
      *
      * @param input -- resource that the player wants to place in their warehouse
@@ -231,6 +240,7 @@ public class Warehouse {
             }
         }
     }
+
 
     /**
      *

@@ -10,6 +10,7 @@ import java.util.Map;
 public class Strongbox {
     Map<ResourceType, Integer> strongbox;
 
+
     /**
      * Strongbox initialization, it always holds all the elements
      */
@@ -21,6 +22,7 @@ public class Strongbox {
         strongbox.put(ResourceType.SERVANT,0);
     }
 
+
     /**
      *
      * @param input -- resource to be added in the strongbox, it is only of type COIN, STONE, SERVANT or SHIELD
@@ -28,6 +30,7 @@ public class Strongbox {
     public void addResource(ResourceType input) {
         strongbox.put(input, strongbox.get(input)+1);
     }
+
 
     /**
      *
@@ -37,6 +40,7 @@ public class Strongbox {
     public void addResource(ResourceType input, int quantity) {
         strongbox.put(input, strongbox.get(input)+quantity);
     }
+
 
     /**
      *
@@ -52,6 +56,7 @@ public class Strongbox {
         }
         if(quantity > 0) throw new CannotRemoveResourceException(tag.getType(), quantity);
     }
+
 
     /**
      *

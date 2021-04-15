@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.resourceManagerTest;
 
-import it.polimi.ingsw.model.resourceManager.InventoryManager;
+import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
