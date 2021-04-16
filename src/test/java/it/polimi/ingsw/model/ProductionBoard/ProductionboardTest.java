@@ -67,4 +67,44 @@ public class ProductionboardTest {
                 ()->Assertions.assertEquals(1, productionBoard.getInventory().get(chosen.getColor())[Level.ANY.ordinal()])
         );
     }
+
+    @Test
+    void placeProductionCardAboveOther(){
+        //Arrange
+        ArrayList<ProductionCard> available1 =
+                (ArrayList<ProductionCard>) productionCardMarket.getAvailableCards()
+                        .stream()
+                        .filter(productionCard -> productionCard.getLevel().equals(Level.ONE))
+                        .collect(Collectors.toList());
+        ArrayList<ProductionCard> available2 =
+                (ArrayList<ProductionCard>) productionCardMarket.getAvailableCards()
+                .stream()
+                .filter(productionCard -> productionCard.getLevel().equals(Level.TWO))
+                .collect(Collectors.toList());
+        boolean canPutCard1;
+        boolean canPutCard2;
+        int indexOfChosenCard =0;
+        int indexOfChosenSlot =0;
+        ProductionCard chosen1;
+        ProductionCard chosen2;
+
+        //Act
+        chosen1 = available1.get(indexOfChosenCard);
+        canPutCard1 = productionBoard.checkPutCard(indexOfChosenSlot, chosen1);
+        productionBoard.placeProductionCard(indexOfChosenSlot,chosen1);
+
+        chosen2 = available2.get(indexOfChosenCard);
+        canPutCard2 = productionBoard.checkPutCard(indexOfChosenSlot, chosen2);
+        productionBoard.placeProductionCard(indexOfChosenSlot,chosen2);
+
+        //Assert
+        Assertions.assertAll(
+                ()->Assertions.assertTrue(canPutCard1),
+                ()->Assertions.assertTrue(canPutCard2),
+                ()->Assertions.assertEquals(chosen2.getLevel(), productionBoard.getProductionSlots()[indexOfChosenSlot].getLevel()),
+                ()->Assertions.assertEquals(chosen2.getColor(), productionBoard.getProductionSlots()[indexOfChosenSlot].getProductionCard().getColor())
+        );
+    }
+
+
 }

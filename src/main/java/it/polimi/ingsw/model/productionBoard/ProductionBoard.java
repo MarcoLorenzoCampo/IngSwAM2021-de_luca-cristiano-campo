@@ -31,6 +31,8 @@ public class ProductionBoard {
         inventory.put(Color.BLUE, new int[4]);
         victoryPoints = 0;
         finalProduction = new BaseProduction();
+        finalProduction.setOutputResources( new ArrayList<>());
+        finalProduction.setInputResources(new ArrayList<>());
     }
 
     public ArrayList<BaseProduction> getLeaderProductions() {
