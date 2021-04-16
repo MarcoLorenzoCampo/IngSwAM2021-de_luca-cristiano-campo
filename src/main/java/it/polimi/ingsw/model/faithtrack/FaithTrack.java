@@ -12,7 +12,7 @@ import java.util.Map;
 public class FaithTrack {
 
     List<Tile> faithTrack = new ArrayList<>();
-    private final int finalPoints;
+    private int finalPoints;
     private int faithMarker;
     private int currentFavorPoints;
     public Map<Integer, Integer> cardVaticanSpace = new HashMap<>();
@@ -71,8 +71,10 @@ public class FaithTrack {
 
     /**
      *         it checks the type of tile;
-     *         it takes favor points;
-     *         it eventually activates vatican reports
+     *         if the player is the first to enter in a Vatican space, the player makes it inactive
+     *         it eventually takes favor points;
+     *         it eventually activates vatican reports.
+     *
      */
     public void increaseFaithMarker(){
         this.faithMarker++;
@@ -81,7 +83,7 @@ public class FaithTrack {
             if(currentTile.getIsActive()){
                 pickFavorPoints(currentTile);
                 sendControl(currentTile);
-                currentTile.setIsActive(false);
+                ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
             }
         }
     }
@@ -97,8 +99,10 @@ public class FaithTrack {
     /**
      * @return points due to checkpoints
      */
-    public int checkMarkerPosition(){
-        return checkpoints.get(Math.floorDiv(this.faithMarker,3));
+    public int calculationCheckPoints(){
+
+        return checkpoints.get(Math.floorDiv(this.faithMarker, 3));
+
     }
 
     //updating favor points
@@ -122,6 +126,10 @@ public class FaithTrack {
 
     public boolean isPopeTile(int faithMarker){
         return (faithMarker == 8) || (faithMarker == 16) || (faithMarker == 24);
+    }
+
+    public void calculationFinalPoints(){
+        this.finalPoints = this.currentFavorPoints + calculationCheckPoints();
     }
 
     public List<Tile> getFaithTrack() {
@@ -154,5 +162,21 @@ public class FaithTrack {
 
     public void setCheckpoints(List<Integer> checkpoints) {
         this.checkpoints = checkpoints;
+    }
+
+    public int getFinalPoints() {
+        return finalPoints;
+    }
+
+    public void setFinalPoints(int finalPoints) {
+        this.finalPoints = finalPoints;
+    }
+
+    public Map<Integer, Integer> getCardVaticanSpace() {
+        return cardVaticanSpace;
+    }
+
+    public void setCardVaticanSpace(Map<Integer, Integer> cardVaticanSpace) {
+        this.cardVaticanSpace = cardVaticanSpace;
     }
 }

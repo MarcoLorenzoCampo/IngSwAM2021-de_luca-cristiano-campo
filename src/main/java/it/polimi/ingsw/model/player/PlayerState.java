@@ -10,16 +10,18 @@ package it.polimi.ingsw.model.player;
  */
 public class PlayerState {
 
-    private boolean hasPlaceableLeaders;
     private boolean hasActivatedProductions;
     private boolean hasPickedResources;
     private boolean hasBoughCard;
 
+    private boolean hasPlaceableLeaders;
+
     public PlayerState() {
         hasActivatedProductions = false;
         hasPickedResources = false;
-        hasPlaceableLeaders = true;
         hasBoughCard = false;
+
+        hasPlaceableLeaders = true;
     }
 
     public void noMoreLeaderCards() {
@@ -44,7 +46,6 @@ public class PlayerState {
     public boolean getHasBoughCard() {
         return hasBoughCard;
     }
-
 
     public void endTurnReset() {
         hasActivatedProductions = false;

@@ -66,12 +66,9 @@ class ResourceMarketTest {
         //Assert
         assertAll(
                 () -> assertDoesNotThrow(
-                        () -> resourceMarket.pickResources(acceptedBoundColumn)
-                ),
-
+                        () -> resourceMarket.pickResources(acceptedBoundColumn)),
                 () -> assertDoesNotThrow(
-                        () -> resourceMarket.pickResources(acceptedBoundRow)
-                )
+                        () -> resourceMarket.pickResources(acceptedBoundRow))
         );
     }
 }

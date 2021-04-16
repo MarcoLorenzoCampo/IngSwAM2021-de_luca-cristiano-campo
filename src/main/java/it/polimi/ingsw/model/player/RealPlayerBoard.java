@@ -12,8 +12,8 @@ import java.util.List;
 public class RealPlayerBoard extends PlayerBoard {
 
     private int boughCardsNumber;
-    private String owner;
-    private FaithTrack faithTrack;
+    private final String owner;
+    private final FaithTrack faithTrack;
     List<LeaderCard> ownedLeaderCards;
 
     public RealPlayerBoard(String owner) {
@@ -28,7 +28,8 @@ public class RealPlayerBoard extends PlayerBoard {
 
     @Override
     public void getAction(Action performedAction) throws InvalidPlayerException,
-            InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException {
+            InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, EndTurnException,
+            NoMatchingRequisitesException, LeaderCardException {
         super.getAction(performedAction);
     }
 
@@ -44,5 +45,10 @@ public class RealPlayerBoard extends PlayerBoard {
 
     public FaithTrack getFaithTrack() {
         return faithTrack;
+    }
+
+
+    public List<LeaderCard> getOwnedLeaderCards() {
+        return ownedLeaderCards;
     }
 }

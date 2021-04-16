@@ -4,9 +4,6 @@ import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class ExtraProductionLeaderCard extends LeaderCard {
 
     DevelopmentTag[] requirements;
@@ -19,6 +16,12 @@ public class ExtraProductionLeaderCard extends LeaderCard {
         super(victoryPoints, effectType, requirements);
         this.inputResources = inputResources;
         this.outputResources = outputResources;
+    }
+
+    @Override
+    public void setActive() {
+        super.setActive();
+        //manca
     }
 
     public ResourceTag[] getInputResources() {

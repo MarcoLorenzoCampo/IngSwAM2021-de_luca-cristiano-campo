@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
+import it.polimi.ingsw.exceptions.EndTurnException;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.model.Game;
@@ -16,7 +17,7 @@ public class EndTurnAction extends Action {
     }
 
     @Override
-    public void isValid() throws InvalidPlayerException, InvalidGameStateException {
+    public void isValid() throws InvalidPlayerException, InvalidGameStateException, EndTurnException {
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
 
@@ -24,6 +25,8 @@ public class EndTurnAction extends Action {
                 .getCurrentPlayer()
                 .getPlayerState()
                 .endTurnReset();
+
+        throw new EndTurnException(actionSender);
     }
 
     public static PossibleAction getActionTag() {
