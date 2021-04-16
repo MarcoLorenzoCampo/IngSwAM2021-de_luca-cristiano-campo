@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.resourceManager.InventoryManager;
+import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 
 public class Player {
 
