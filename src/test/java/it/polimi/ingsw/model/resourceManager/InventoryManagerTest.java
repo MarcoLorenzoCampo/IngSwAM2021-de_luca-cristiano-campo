@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.resourceManager;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 

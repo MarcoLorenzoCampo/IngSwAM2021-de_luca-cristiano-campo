@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.inventoryManager.InventoryManager;;
+import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 
 public class Player {
 
@@ -9,6 +9,8 @@ public class Player {
     private final RealPlayerBoard playerBoard;
     private boolean firstToPlay = false;
     private final PlayerState playerState;
+
+
     private final InventoryManager inventoryManager;
 
     public Player(String name) {

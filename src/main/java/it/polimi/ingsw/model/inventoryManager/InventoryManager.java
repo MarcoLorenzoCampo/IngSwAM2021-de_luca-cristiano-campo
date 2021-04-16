@@ -169,4 +169,7 @@ public class InventoryManager {
         strongbox.removeResource(priceOneResource);
     }
 
+    public void deposit(MaterialResource materialResource) {
+        buffer.add(materialResource);
+    }
 }
