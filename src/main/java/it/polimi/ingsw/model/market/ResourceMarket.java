@@ -116,7 +116,7 @@ public class ResourceMarket {
         LinkedList<ResourceType> pickedFromMarket = pickResourceLine(index);
         placeExtraMarble(index, pickedFromMarket.getLast());
         LinkedList<Resource> obtainedResources = ResourceBuilder.build(pickedFromMarket);
-        //obtainedResources.forEach(Resource::deposit);
+        obtainedResources.forEach(Resource::deposit);
     }
 
     public ResourceType[][] getResourceBoard() {
