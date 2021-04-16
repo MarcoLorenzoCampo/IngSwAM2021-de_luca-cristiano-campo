@@ -4,6 +4,8 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.exceptions.LeaderCardException;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
 public class PlaceLeaderAction extends Action {
@@ -22,8 +24,18 @@ public class PlaceLeaderAction extends Action {
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
         ActionValidator.leaderValidator(leaderToActivate);
+        //ActionValidator.checkLeaderRequirements();
 
+        runAction();
+    }
 
+    private void runAction() {
+        Game.getGameInstance()
+                .getCurrentPlayer()
+                .getPlayerBoard()
+                .getOwnedLeaderCards()
+                .get(leaderToActivate)
+                .setActive();
     }
 
     public PossibleAction getActionTag() {

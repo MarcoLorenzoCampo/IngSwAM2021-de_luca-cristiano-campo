@@ -23,6 +23,11 @@ public class ExtraInventoryLeaderCard extends LeaderCard {
     @Override
     public void setActive() {
         super.setActive();
+        Game.getGameInstance()
+                .getCurrentPlayer()
+                .getInventoryManager()
+                .getWarehouse()
+                .addExtraInventory(extraInventoryType);
     }
 
     public ResourceTag[] getRequirements() {
