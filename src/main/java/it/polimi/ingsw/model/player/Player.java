@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.model.resourceManager.InventoryManager;
+
 public class Player {
 
     private final String playerName;
@@ -9,12 +11,20 @@ public class Player {
     private final PlayerState playerState;
 
 
+    private final InventoryManager inventoryManager;
+
     public Player(String name) {
 
         this.playerBoard = new RealPlayerBoard(name);
         this.playerName = name;
         this.victoryPoints = 0;
-        playerState = new PlayerState();
+        this.playerState = new PlayerState();
+        this.inventoryManager = new InventoryManager();
+    }
+
+
+    public InventoryManager getInventoryManager() {
+        return inventoryManager;
     }
 
     public void setFirstToPlay() {

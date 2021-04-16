@@ -14,5 +14,5 @@ public abstract class Action {
      *
      * @return true if the action can be done, otherwise false
      */
-    public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException { }
+    public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, NoMatchingRequisitesException, EndTurnException, LeaderCardException { }
 }

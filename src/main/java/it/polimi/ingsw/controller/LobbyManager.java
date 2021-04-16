@@ -9,17 +9,18 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LobbyManager {
+public final class LobbyManager {
 
-    private final int MAX_PLAYERS = 4;
+    private static final int MAX_PLAYERS = 4;
+    private static int numberOfTurns = 0;
 
-    private List<Player> playerList;
+    private static List<Player> playerList = new LinkedList<>();
 
-    public LobbyManager() {
-        playerList = new LinkedList<>();
+    private LobbyManager() {
+        throw new UnsupportedOperationException("Utility class must not be initiated!");
     }
 
-    public void addNewPlayer(String nickname) throws NameTakenException, NoMorePlayersException {
+    public static void addNewPlayer(String nickname) throws NameTakenException, NoMorePlayersException {
         if(playerList.size() == MAX_PLAYERS)
             throw new NoMorePlayersException("Exceeded max number of players!");
 
@@ -30,10 +31,16 @@ public class LobbyManager {
         playerList.add(new Player(nickname));
     }
 
-    public void setPlayingOrder() {
+    public static void setPlayingOrder() {
 
         Collections.shuffle(playerList);
         playerList.get(0).setFirstToPlay();
         Game.getGameInstance().setCurrentPlayer(playerList.get(0));
+    }
+
+    public static void setNextTurn() {
+        numberOfTurns++;
+        Game.getGameInstance()
+                .setCurrentPlayer(playerList.get(numberOfTurns%playerList.size()));
     }
 }

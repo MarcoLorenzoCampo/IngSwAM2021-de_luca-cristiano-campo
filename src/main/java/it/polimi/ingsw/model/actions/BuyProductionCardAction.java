@@ -4,11 +4,12 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.BuyCardFromMarketException;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
+import it.polimi.ingsw.exceptions.NoMatchingRequisitesException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
-public class BuyProductionCardAction extends Action{
+public class BuyProductionCardAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.BUY_PRODUCTION_CARD;
     private final String actionSender;
@@ -20,11 +21,10 @@ public class BuyProductionCardAction extends Action{
     }
 
     @Override
-    public void isValid() throws InvalidPlayerException, InvalidGameStateException, BuyCardFromMarketException {
+    public void isValid() throws InvalidPlayerException, InvalidGameStateException, BuyCardFromMarketException, NoMatchingRequisitesException {
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
         ActionValidator.validateBuyCardFromMarketAction(boughtCard);
-        ActionValidator.validateCardRequisites(boughtCard);
 
         runAction();
     }

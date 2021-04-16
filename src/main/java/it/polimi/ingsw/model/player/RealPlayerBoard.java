@@ -28,7 +28,8 @@ public class RealPlayerBoard extends PlayerBoard {
 
     @Override
     public void getAction(Action performedAction) throws InvalidPlayerException,
-            InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException {
+            InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, EndTurnException,
+            NoMatchingRequisitesException, LeaderCardException {
         super.getAction(performedAction);
     }
 
@@ -44,5 +45,10 @@ public class RealPlayerBoard extends PlayerBoard {
 
     public FaithTrack getFaithTrack() {
         return faithTrack;
+    }
+
+
+    public List<LeaderCard> getOwnedLeaderCards() {
+        return ownedLeaderCards;
     }
 }

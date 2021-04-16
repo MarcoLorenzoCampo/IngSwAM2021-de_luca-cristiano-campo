@@ -8,25 +8,20 @@ import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InventoryManager {
-    private ArrayList<MaterialResource> buffer;
-    private Warehouse warehouse;
-    private Strongbox strongbox;
-    private int penalty;
-    private Map<ResourceType, Integer> inventory;
+    private LinkedList<MaterialResource> buffer;
+    private final Warehouse warehouse;
+    private final Strongbox strongbox;
+    private final Map<ResourceType, Integer> inventory;
     private ArrayList<ResourceType> exchange;
     private ArrayList<ResourceType> discount;
 
     public InventoryManager(){
-        buffer = new ArrayList<>();
+        buffer = new LinkedList<>();
         warehouse = new Warehouse();
         strongbox = new Strongbox();
-        penalty = 0;
         inventory = new HashMap<>();
         inventory.put(ResourceType.COIN, 0);
         inventory.put(ResourceType.STONE,0);
@@ -36,30 +31,21 @@ public class InventoryManager {
         discount =new ArrayList<>();
     }
 
-    public ArrayList<MaterialResource> getBuffer() {
+    public LinkedList<MaterialResource> getBuffer() {
         return buffer;
     }
-
     public Warehouse getWarehouse() {
         return warehouse;
     }
-
     public Strongbox getStrongbox() {
         return strongbox;
     }
-
-    public int getPenalty() {
-        return penalty;
-    }
-
     public ArrayList<ResourceType> getExchange() {
         return exchange;
     }
-
     public ArrayList<ResourceType> getDiscount() {
         return discount;
     }
-
     public Map<ResourceType, Integer> getInventory() {
         return inventory;
     }
@@ -80,7 +66,8 @@ public class InventoryManager {
         buffer.remove(buffer.get(index));
     }
 
-    public void addResourceToWarehouse (int index) throws DiscardResourceException{
+    public void addResourceToWarehouse (int index) throws DiscardResourceException {
+
         ResourceType key = buffer.get(index).getResourceType();
         warehouse.addResource(buffer.get(index));
         inventory.put(key, inventory.get(key) + 1);
@@ -115,5 +102,4 @@ public class InventoryManager {
     public void removeFromStrongbox(ResourceTag priceOneResource) throws CannotRemoveResourceException{
         strongbox.removeResource(priceOneResource);
     }
-
 }

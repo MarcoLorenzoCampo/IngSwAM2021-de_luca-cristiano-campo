@@ -1,14 +1,39 @@
 package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
+import it.polimi.ingsw.exceptions.InvalidGameStateException;
+import it.polimi.ingsw.exceptions.InvalidPlayerException;
+import it.polimi.ingsw.exceptions.LeaderCardException;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.utilities.ActionValidator;
 
-public class DiscardLeaderCardAction extends Action{
+public class DiscardLeaderCardAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.DISCARD_LEADER_CARD;
 
-    @Override
-    public void isValid() {
+    String actionSender;
+    int leaderToDiscard;
 
+    public DiscardLeaderCardAction(String actionSender, int leaderToDiscard) {
+        this.actionSender = actionSender;
+        this.leaderToDiscard = leaderToDiscard;
+    }
+
+    @Override
+    public void isValid() throws InvalidGameStateException, InvalidPlayerException, LeaderCardException {
+        ActionValidator.gameStateValidation();
+        ActionValidator.senderValidation(actionSender);
+        ActionValidator.leaderValidator(leaderToDiscard);
+
+        runAction();
+    }
+
+    private void runAction() {
+        Game.getGameInstance()
+                .getCurrentPlayer()
+                .getPlayerBoard()
+                .getOwnedLeaderCards()
+                .remove(leaderToDiscard);
     }
 
     public PossibleAction getActionTag() {
