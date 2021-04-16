@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.model.market.ResourceMarketTest" time="0.003" tests="3" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0.011" tests="11" errors="0" skipped="1" failures="0">
   <properties>
     <property name="java.specification.version" value="15"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -51,7 +51,17 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="59.0"/>
   </properties>
-  <testcase name="pickOutOfBoundsResourcesTest" classname="it.polimi.ingsw.model.market.ResourceMarketTest" time="0"/>
-  <testcase name="getMarketBoardTest" classname="it.polimi.ingsw.model.market.ResourceMarketTest" time="0.001"/>
-  <testcase name="pickInBoundsResourcesTest" classname="it.polimi.ingsw.model.market.ResourceMarketTest" time="0.001"/>
+  <testcase name="addResourceToWarehouse" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0.002"/>
+  <testcase name="removeFromBuffer" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0.001"/>
+  <testcase name="inventoryTest" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0">
+    <skipped message="void it.polimi.ingsw.model.resourceManager.InventoryManagerTest.inventoryTest() is @Disabled"/>
+  </testcase>
+  <testcase name="depositTest" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0.001"/>
+  <testcase name="discountPrice" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0"/>
+  <testcase name="addResourceToStrongbox" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0"/>
+  <testcase name="removeFromWarehouse" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0"/>
+  <testcase name="updateRemoveInventory" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0.001"/>
+  <testcase name="addExchangeLeader" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0"/>
+  <testcase name="addDiscountLeader" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0"/>
+  <testcase name="removeFromStrongbox" classname="it.polimi.ingsw.model.resourceManager.InventoryManagerTest" time="0"/>
 </testsuite>

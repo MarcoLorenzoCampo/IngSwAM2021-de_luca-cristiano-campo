@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.resourceManager;
 
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.model.utilities.MaterialResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class InventoryManagerTest {
 
+    @Mock
     Player testPlayer;
     InventoryManager inventoryManager;
 
@@ -53,16 +56,37 @@ class InventoryManagerTest {
     }
 
     @Test
-    @Disabled
     void inventoryTest() {
     }
 
     @Test
-    void addDiscountLeader() {
+    void addDiscountLeaderTest() {
+        //Arrange
+        //Act
+        inventoryManager.addDiscountLeader(ResourceType.COIN);
+        inventoryManager.addDiscountLeader(ResourceType.SERVANT);
+
+        //Assert
+        assertAll(
+                () -> assertNotNull(inventoryManager.getDiscount()),
+                () -> assertEquals(ResourceType.COIN, inventoryManager.getDiscount().get(0)),
+                () -> assertNotEquals(ResourceType.SHIELD, inventoryManager.getDiscount().get(1))
+        );
     }
 
     @Test
     void addExchangeLeader() {
+        //Arrange
+        //Act
+        inventoryManager.addExchangeLeader(ResourceType.COIN);
+        inventoryManager.addExchangeLeader(ResourceType.SERVANT);
+
+        //Assert
+        assertAll(
+                () -> assertNotNull(inventoryManager.getExchange()),
+                () -> assertEquals(ResourceType.COIN, inventoryManager.getExchange().get(0)),
+                () -> assertNotEquals(ResourceType.SHIELD, inventoryManager.getExchange().get(1))
+        );
     }
 
     @Test
