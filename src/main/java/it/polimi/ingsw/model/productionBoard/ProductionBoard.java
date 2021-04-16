@@ -9,10 +9,7 @@ import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class ProductionBoard {
     private ProductionSlot[] productionSlots  ;
@@ -84,6 +81,18 @@ public class ProductionBoard {
             }
         }
     }
+
+    public void addLeaderProduction(ResourceTag[] input, ResourceTag[] output){
+        BaseProduction leaderProduction = new BaseProduction();
+        ArrayList<ResourceTag> inputAsList= new ArrayList<>();
+        ArrayList<ResourceTag> outputAsList= new ArrayList<>();
+        Collections.addAll(inputAsList, input);
+        Collections.addAll(outputAsList, output);
+        leaderProduction.setInputResources(inputAsList);
+        leaderProduction.setOutputResources(outputAsList);
+        leaderProductions.add(leaderProduction);
+    }
+
 
     public void selectBaseProduction(ResourceType input1,ResourceType input2, ResourceType output){
         updateFinalProduction(finalProduction.getInputResources(), new ResourceTag(input1, 1));
