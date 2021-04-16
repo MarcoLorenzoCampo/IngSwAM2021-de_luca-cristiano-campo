@@ -4,7 +4,9 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.utilities.FaithResource;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Resource;
+import it.polimi.ingsw.model.utilities.ResourceTag;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -22,6 +24,22 @@ public final class ResourceBuilder {
                 obtainedResources.add(new MaterialResource(resourceType));
             }
         }
+        return obtainedResources;
+    }
+
+    public static LinkedList<Resource> build(ArrayList<ResourceTag> generatedFromProduction){
+        LinkedList<Resource> obtainedResources = new LinkedList<>();
+
+        for (ResourceTag iterator: generatedFromProduction) {
+            for (int i = 0; i < iterator.getQuantity(); i++) {
+                if(iterator.getType().equals(ResourceType.FAITH)) {
+                    obtainedResources.add(new FaithResource());
+                } else {
+                    obtainedResources.add(new MaterialResource(iterator.getType()));
+                }
+            }
+        }
+
         return obtainedResources;
     }
 }
