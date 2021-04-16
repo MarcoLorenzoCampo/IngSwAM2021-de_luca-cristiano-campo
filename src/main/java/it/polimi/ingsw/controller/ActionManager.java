@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.actions.Action;
+import it.polimi.ingsw.actions.Action;
 
 /**
  * Utility class  for basic action handling.

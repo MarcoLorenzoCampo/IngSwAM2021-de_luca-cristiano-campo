@@ -1,8 +1,6 @@
-package it.polimi.ingsw.model.actions;
+package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.player.Player;
 
 /**
  * Actions are messages sent by the GUI/CLI to the controller, they are validated and run if possible.

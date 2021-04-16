@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.actions;
+package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.BuyCardFromMarketException;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.actions.Action;
+import it.polimi.ingsw.actions.Action;
 
 public abstract class PlayerBoard {
 
