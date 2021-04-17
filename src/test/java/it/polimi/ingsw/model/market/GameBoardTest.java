@@ -13,12 +13,12 @@ class GameBoardTest {
     GameBoard gameboard;
 
     @BeforeEach
-    void setUp() throws FileNotFoundException {
+    void setUp() {
         gameboard = GameBoard.getGameBoardInstance();
     }
 
     @Test
-    void getInstanceTest() throws FileNotFoundException {
+    void getInstanceTest() {
         assertNotNull(GameBoard.getGameBoardInstance());
     }
 

@@ -4,11 +4,11 @@ import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.market.GameBoard;
 import it.polimi.ingsw.model.player.Player;
 
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 
 /**
  * @author Marco Lorenzo Campo
+ * Singleton class, only one game instance is available in each game.
  */
 public class Game implements Serializable {
 
@@ -16,20 +16,8 @@ public class Game implements Serializable {
 
     private static GameBoard gameBoard;
     private static Game gameInstance;
-    private GameState currentState;
+    private static GameState currentState;
     private Player currentPlayer;
-
-    /**
-     * Initializes the main elements of a game: gameInstance,
-     * gameBoard for all players and a empty player list to be filled.
-     * @throws FileNotFoundException -- parsing error
-     */
-    public void init() throws FileNotFoundException {
-
-        gameInstance = getGameInstance();
-        gameBoard = GameBoard.getGameBoardInstance();
-        currentState = new GameState();
-    }
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
@@ -48,11 +36,13 @@ public class Game implements Serializable {
      * @return gameInstance: returns the single instance of the game
      * created for a match
      */
-    public static Game getGameInstance()  {
+    public static Game getGameInstance() {
 
         /* Create game instance if not present; */
         if (gameInstance == null) {
             gameInstance = new Game();
+            gameBoard = GameBoard.getGameBoardInstance();
+            currentState = new GameState();
         }
         return gameInstance;
     }

@@ -27,6 +27,8 @@ public final class ActionManager {
             //
         } catch (LeaderCardException e) {
             //
+        } catch (EndGameException e) {
+            e.printStackTrace();
         }
     }
 }

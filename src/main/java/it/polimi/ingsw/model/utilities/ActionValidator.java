@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.utilities;
 
+import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.*;
@@ -71,7 +72,8 @@ public final class ActionValidator {
      */
     private static boolean validateProductionCardRequirements(ProductionCard toValidate) {
         List<ResourceTag> requirements = toValidate.getRequirements();
-        Map<ResourceType, Integer> actualInventory = Game.getGameInstance().getCurrentPlayer().getInventoryManager().getInventory();
+        Map<ResourceType, Integer> actualInventory = Game.getGameInstance().getCurrentPlayer()
+                .getInventoryManager().getInventory();
 
         for (ResourceTag requirement : requirements) {
             if(requirement.getQuantity() > actualInventory.get(requirement.getType()))
@@ -84,10 +86,35 @@ public final class ActionValidator {
      * Verifies a leader card can be discarded.
      * @throws LeaderCardException generic exception regarding leader cards.
      */
-    public static void leaderValidator(int index) throws LeaderCardException {
+    public static void leaderValidator(int index) throws LeaderCardException, NoMatchingRequisitesException {
+
         if(!Game.getGameInstance().getCurrentPlayer().getPlayerState().getHasPlaceableLeaders()
             || index >= Game.getGameInstance().getCurrentPlayer().getPlayerBoard().getOwnedLeaderCards().size())
             throw new LeaderCardException("You don't own that card!");
+
+        if(!validateLeaderRequirements(Game.getGameInstance()
+                .getCurrentPlayer().getPlayerBoard().getOwnedLeaderCards().get(index).getRequisites()))
+            throw new NoMatchingRequisitesException();
+    }
+
+    private static boolean validateLeaderRequirements(DevelopmentTag[] requirements) {
+        for(DevelopmentTag iterator : requirements) {
+            if(Game.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard().getInventory()
+                    .get(iterator.getColor())[iterator.getLevel().ordinal()]<iterator.getQuantity())
+                return false;
+        }
+        return true;
+    }
+
+    private static boolean validateLeaderRequirements(ResourceTag[] requirements) {
+        Map<ResourceType, Integer> actualInventory = Game.getGameInstance().getCurrentPlayer()
+                .getInventoryManager().getInventory();
+
+        for (ResourceTag requirement : requirements) {
+            if(requirement.getQuantity() > actualInventory.get(requirement.getType()))
+                return false;
+        }
+        return true;
     }
 
     /**

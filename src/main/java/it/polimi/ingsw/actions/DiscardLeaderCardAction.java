@@ -4,6 +4,7 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.exceptions.LeaderCardException;
+import it.polimi.ingsw.exceptions.NoMatchingRequisitesException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
@@ -20,7 +21,7 @@ public class DiscardLeaderCardAction extends Action {
     }
 
     @Override
-    public void isValid() throws InvalidGameStateException, InvalidPlayerException, LeaderCardException {
+    public void isValid() throws InvalidGameStateException, InvalidPlayerException, LeaderCardException, NoMatchingRequisitesException {
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
         ActionValidator.leaderValidator(leaderToDiscard);

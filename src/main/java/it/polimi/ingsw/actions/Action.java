@@ -2,6 +2,8 @@ package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.exceptions.*;
 
+import java.io.FileNotFoundException;
+
 /**
  * Actions are messages sent by the GUI/CLI to the controller, they are validated and run if possible.
  * Action is abstract, and other specific actions extend it.
@@ -16,5 +18,5 @@ public abstract class Action {
      */
     public void isValid() throws InvalidPlayerException, InvalidGameStateException,
             GetResourceFromMarketException, BuyCardFromMarketException,
-            NoMatchingRequisitesException, EndTurnException, LeaderCardException { }
+            NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException { }
 }

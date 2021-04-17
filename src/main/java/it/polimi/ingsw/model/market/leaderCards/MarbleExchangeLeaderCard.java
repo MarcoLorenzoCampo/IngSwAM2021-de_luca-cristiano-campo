@@ -4,9 +4,6 @@ import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
-import it.polimi.ingsw.model.utilities.ResourceTag;
-
-import java.util.List;
 
 public class MarbleExchangeLeaderCard extends LeaderCard {
 

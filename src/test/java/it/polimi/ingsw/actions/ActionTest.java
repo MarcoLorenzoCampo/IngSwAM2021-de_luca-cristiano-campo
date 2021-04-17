@@ -31,7 +31,7 @@ class ActionTest {
     void getResourceFromMarketActionTest()
             throws InvalidPlayerException, NoMatchingRequisitesException,
             InvalidGameStateException, EndTurnException, LeaderCardException,
-            GetResourceFromMarketException, BuyCardFromMarketException {
+            GetResourceFromMarketException, BuyCardFromMarketException, EndGameException {
 
         //Arrange
         Action getResourceFromMarketAction;

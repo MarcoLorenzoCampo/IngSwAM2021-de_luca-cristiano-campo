@@ -2,9 +2,13 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
+import it.polimi.ingsw.exceptions.EndGameException;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.io.FileNotFoundException;
 import java.util.HashSet;
@@ -21,14 +25,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductionCardMarketTest {
 
     private ProductionCardMarket productionCardMarket;
+    private Player testPlayer;
+    @Mock
+    Game testGame;
 
     @BeforeEach
     void setUp() {
-        try {
-            productionCardMarket = new ProductionCardMarket();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        productionCardMarket = new ProductionCardMarket();
+        testPlayer = new Player("UnderTest");
+        testGame = Game.getGameInstance();
+        Game.getGameInstance().setCurrentPlayer(testPlayer);
     }
 
     /**
@@ -89,7 +95,7 @@ class ProductionCardMarketTest {
      * available cards
      */
     @Test
-    void removeCardTest() {
+    void removeCardTest() throws EndGameException {
 
         //Arrange
         /* buying a random card from the available ones */
