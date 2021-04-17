@@ -12,11 +12,11 @@ import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
 import java.util.*;
 
 public class ProductionBoard {
-    private ProductionSlot[] productionSlots  ;
-    private ArrayList<BaseProduction> leaderProductions;
-    private Map<Color, int[]> inventory;
+    private final ProductionSlot[] productionSlots  ;
+    private final ArrayList<BaseProduction> leaderProductions;
+    private final Map<Color, int[]> inventory;
     private int victoryPoints;
-    private BaseProduction finalProduction;
+    private final BaseProduction finalProduction;
 
     public ProductionBoard(){
         productionSlots = new ProductionSlot[3];

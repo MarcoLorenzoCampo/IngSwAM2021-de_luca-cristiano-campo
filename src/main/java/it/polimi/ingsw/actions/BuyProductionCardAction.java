@@ -1,15 +1,10 @@
 package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
-import it.polimi.ingsw.exceptions.BuyCardFromMarketException;
-import it.polimi.ingsw.exceptions.InvalidGameStateException;
-import it.polimi.ingsw.exceptions.InvalidPlayerException;
-import it.polimi.ingsw.exceptions.NoMatchingRequisitesException;
-import it.polimi.ingsw.model.MultiplayerGame;
+import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.utilities.ActionValidator;
-
-import java.io.FileNotFoundException;
 
 public class BuyProductionCardAction extends Action {
 
@@ -23,7 +18,7 @@ public class BuyProductionCardAction extends Action {
     }
 
     @Override
-    public void isValid() throws InvalidPlayerException, InvalidGameStateException, BuyCardFromMarketException, NoMatchingRequisitesException {
+    public void isValid() throws InvalidPlayerException, InvalidGameStateException, BuyCardFromMarketException, NoMatchingRequisitesException, EndGameException {
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
         ActionValidator.validateBuyCardFromMarketAction(boughtCard);
@@ -31,8 +26,8 @@ public class BuyProductionCardAction extends Action {
         runAction();
     }
 
-    private void runAction() {
-        MultiplayerGame.getGameInstance()
+    private void runAction() throws EndGameException {
+        Game.getGameInstance()
                 .getGameBoard()
                 .getProductionCardMarket()
                 .buyCard(boughtCard);

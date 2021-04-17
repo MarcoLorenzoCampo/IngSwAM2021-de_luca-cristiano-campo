@@ -4,10 +4,9 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.exceptions.LeaderCardException;
-import it.polimi.ingsw.model.MultiplayerGame;
+import it.polimi.ingsw.exceptions.NoMatchingRequisitesException;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.utilities.ActionValidator;
-
-import java.io.FileNotFoundException;
 
 public class PlaceLeaderAction extends Action {
 
@@ -21,17 +20,16 @@ public class PlaceLeaderAction extends Action {
         this.leaderToActivate = leaderToActivate;
     }
     @Override
-    public void isValid() throws InvalidGameStateException, InvalidPlayerException, LeaderCardException {
+    public void isValid() throws InvalidGameStateException, InvalidPlayerException, LeaderCardException, NoMatchingRequisitesException {
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
         ActionValidator.leaderValidator(leaderToActivate);
-        //ActionValidator.checkLeaderRequirements();
 
         runAction();
     }
 
     private void runAction() {
-        MultiplayerGame.getGameInstance()
+        Game.getGameInstance()
                 .getCurrentPlayer()
                 .getPlayerBoard()
                 .getOwnedLeaderCards()

@@ -4,19 +4,18 @@ import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.market.GameBoard;
 import it.polimi.ingsw.model.player.Player;
 
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 
 /**
  * @author Marco Lorenzo Campo
  * Singleton class, only one game instance is available in each game.
  */
-public class MultiplayerGame implements Serializable {
+public class Game implements Serializable {
 
     private static final int MAX_CARDS_BOUGHT = 7;
 
     private static GameBoard gameBoard;
-    private static MultiplayerGame multiplayerGameInstance;
+    private static Game gameInstance;
     private static GameState currentState;
     private Player currentPlayer;
 
@@ -28,24 +27,24 @@ public class MultiplayerGame implements Serializable {
      * @throws EndGameException telling the controller game is ending next turn
      */
     public void endGame() throws EndGameException {
-        throw new EndGameException("MultiplayerGame ended! " + currentPlayer.getName() + " won!");
+        throw new EndGameException("Game ended! " + currentPlayer.getName() + " won!");
     }
 
-    private MultiplayerGame() { }
+    private Game() { }
 
     /**
-     * @return multiplayerGameInstance: returns the single instance of the game
+     * @return gameInstance: returns the single instance of the game
      * created for a match
      */
-    public static MultiplayerGame getGameInstance() {
+    public static Game getGameInstance() {
 
         /* Create game instance if not present; */
-        if (multiplayerGameInstance == null) {
-            multiplayerGameInstance = new MultiplayerGame();
+        if (gameInstance == null) {
+            gameInstance = new Game();
             gameBoard = GameBoard.getGameBoardInstance();
             currentState = new GameState();
         }
-        return multiplayerGameInstance;
+        return gameInstance;
     }
 
     /* getters */

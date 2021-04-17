@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model.market;
 
-import it.polimi.ingsw.model.MultiplayerGame;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +19,7 @@ class ResourceMarketTest {
 
     @BeforeEach
     void setUp() {
-        MultiplayerGame.getGameInstance().setCurrentPlayer(new Player("TestPlayer"));
+        Game.getGameInstance().setCurrentPlayer(new Player("TestPlayer"));
         resourceMarket = new ResourceMarket();
     }
 

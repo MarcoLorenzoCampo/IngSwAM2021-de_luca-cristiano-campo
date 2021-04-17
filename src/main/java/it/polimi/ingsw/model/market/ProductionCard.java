@@ -34,7 +34,7 @@ public class ProductionCard extends BaseProduction {
     }
 
     public void placeCard() {
-        //MultiplayerGame.getGameInstance().getCurrentPlayer().getPlayerBoard()...
+        //Game.getGameInstance().getCurrentPlayer().getPlayerBoard()...
     }
 
     @Override

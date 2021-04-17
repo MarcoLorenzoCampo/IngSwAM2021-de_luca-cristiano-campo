@@ -1,10 +1,8 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.MultiplayerGame;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.actions.Action;
-
-import java.io.FileNotFoundException;
 
 /**
  * Utility class  for basic action handling.
@@ -14,7 +12,7 @@ public final class ActionManager {
     public static void actionReceiver(Action receivedAction) {
 
         try {
-            MultiplayerGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getAction(receivedAction);
+            Game.getGameInstance().getCurrentPlayer().getPlayerBoard().getAction(receivedAction);
         } catch (InvalidPlayerException e) {
             e.printStackTrace();
         } catch (InvalidGameStateException e) {
@@ -29,6 +27,8 @@ public final class ActionManager {
             //
         } catch (LeaderCardException e) {
             //
+        } catch (EndGameException e) {
+            e.printStackTrace();
         }
     }
 }

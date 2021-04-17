@@ -11,4 +11,12 @@ public class DevelopmentTag extends Tag {
         this.color = color;
         this.level = level;
     }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public Color getColor() {
+        return color;
+    }
 }

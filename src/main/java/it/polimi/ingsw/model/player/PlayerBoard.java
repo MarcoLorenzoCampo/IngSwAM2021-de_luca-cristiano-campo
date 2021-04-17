@@ -9,7 +9,7 @@ public abstract class PlayerBoard {
 
     public void getAction(Action performedAction) throws InvalidPlayerException, InvalidGameStateException,
             GetResourceFromMarketException, BuyCardFromMarketException,
-            NoMatchingRequisitesException, EndTurnException, LeaderCardException {
+            NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException {
 
         performedAction.isValid();
     }

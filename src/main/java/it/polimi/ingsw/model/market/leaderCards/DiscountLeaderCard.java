@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.market.leaderCards;
 
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.model.MultiplayerGame;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 
 public class DiscountLeaderCard extends LeaderCard {
@@ -18,7 +18,7 @@ public class DiscountLeaderCard extends LeaderCard {
     @Override
     public void setActive() {
         super.setActive();
-        MultiplayerGame.getGameInstance()
+        Game.getGameInstance()
                 .getCurrentPlayer()
                 .getInventoryManager()
                 .addDiscountLeader(discountedResource);

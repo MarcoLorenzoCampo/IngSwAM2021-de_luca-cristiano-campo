@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
+import it.polimi.ingsw.exceptions.EndGameException;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
 import java.io.FileNotFoundException;
@@ -73,9 +75,10 @@ public class ProductionCardMarket {
      * @param boughtCard: when a card is bought, it gets removed from the
      *                  base deck.
      */
-    public void buyCard(ProductionCard boughtCard) {
+    public void buyCard(ProductionCard boughtCard) throws EndGameException {
         playableProductionCards.remove(boughtCard);
         replaceBoughtCard(boughtCard);
+        Game.getGameInstance().getCurrentPlayer().getPlayerBoard().increaseBoughCardsCount();
     }
 
     /**

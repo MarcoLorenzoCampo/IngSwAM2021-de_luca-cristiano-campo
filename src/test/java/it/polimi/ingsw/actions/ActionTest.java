@@ -1,14 +1,12 @@
 package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.MultiplayerGame;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -17,15 +15,15 @@ class ActionTest {
     @Mock
     Player testPlayer;
     @Mock
-    MultiplayerGame testMultiplayerGame;
+    Game testGame;
 
 
 
     @BeforeEach
     void setUp() {
         testPlayer = new Player("testPlayer");
-        testMultiplayerGame = MultiplayerGame.getGameInstance();
-        testMultiplayerGame.setCurrentPlayer(testPlayer);
+        testGame = Game.getGameInstance();
+        testGame.setCurrentPlayer(testPlayer);
     }
 
     @Disabled
@@ -33,7 +31,7 @@ class ActionTest {
     void getResourceFromMarketActionTest()
             throws InvalidPlayerException, NoMatchingRequisitesException,
             InvalidGameStateException, EndTurnException, LeaderCardException,
-            GetResourceFromMarketException, BuyCardFromMarketException {
+            GetResourceFromMarketException, BuyCardFromMarketException, EndGameException {
 
         //Arrange
         Action getResourceFromMarketAction;
@@ -41,7 +39,7 @@ class ActionTest {
         //Act
         getResourceFromMarketAction =
                 new GetResourceFromMarketAction("testPlayer", 1);
-        testMultiplayerGame.getCurrentPlayer().getPlayerBoard().getAction(getResourceFromMarketAction);
+        testGame.getCurrentPlayer().getPlayerBoard().getAction(getResourceFromMarketAction);
 
         //Assert
         assertAll();

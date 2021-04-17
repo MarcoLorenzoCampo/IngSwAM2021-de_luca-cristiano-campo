@@ -2,10 +2,9 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
-import it.polimi.ingsw.model.MultiplayerGame;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 
-import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,12 +35,12 @@ public final class LobbyManager {
 
         Collections.shuffle(playerList);
         playerList.get(0).setFirstToPlay();
-        MultiplayerGame.getGameInstance().setCurrentPlayer(playerList.get(0));
+        Game.getGameInstance().setCurrentPlayer(playerList.get(0));
     }
 
     public static void setNextTurn() {
         numberOfTurns++;
-        MultiplayerGame.getGameInstance()
+        Game.getGameInstance()
                 .setCurrentPlayer(playerList.get(numberOfTurns%playerList.size()));
     }
 }

@@ -1,10 +1,8 @@
 package it.polimi.ingsw.model.token;
 
 import it.polimi.ingsw.enumerations.Color;
-import it.polimi.ingsw.model.MultiplayerGame;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.ProductionCardMarket;
-
-import java.io.FileNotFoundException;
 
 public class TokenDiscard implements IToken{
 
@@ -13,7 +11,7 @@ public class TokenDiscard implements IToken{
 
     public TokenDiscard(Color color) {
         this.color = color;
-        this.productionCardMarketReference = MultiplayerGame.getGameInstance().getGameBoard().getProductionCardMarket();
+        this.productionCardMarketReference = Game.getGameInstance().getGameBoard().getProductionCardMarket();
     }
 
     /**
