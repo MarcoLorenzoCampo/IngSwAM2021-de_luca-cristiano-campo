@@ -5,9 +5,11 @@ import it.polimi.ingsw.exceptions.BuyCardFromMarketException;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.exceptions.NoMatchingRequisitesException;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.MultiplayerGame;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.utilities.ActionValidator;
+
+import java.io.FileNotFoundException;
 
 public class BuyProductionCardAction extends Action {
 
@@ -30,7 +32,7 @@ public class BuyProductionCardAction extends Action {
     }
 
     private void runAction() {
-        Game.getGameInstance()
+        MultiplayerGame.getGameInstance()
                 .getGameBoard()
                 .getProductionCardMarket()
                 .buyCard(boughtCard);

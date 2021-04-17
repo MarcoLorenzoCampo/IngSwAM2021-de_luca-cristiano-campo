@@ -2,11 +2,8 @@ package it.polimi.ingsw.model.market.leaderCards;
 
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.MultiplayerGame;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
-import it.polimi.ingsw.model.utilities.ResourceTag;
-
-import java.util.List;
 
 public class MarbleExchangeLeaderCard extends LeaderCard {
 
@@ -20,7 +17,7 @@ public class MarbleExchangeLeaderCard extends LeaderCard {
     @Override
     public void setActive() {
         super.setActive();
-        Game.getGameInstance()
+        MultiplayerGame.getGameInstance()
                 .getCurrentPlayer()
                 .getInventoryManager()
                 .addExchangeLeader(exchangeResource);

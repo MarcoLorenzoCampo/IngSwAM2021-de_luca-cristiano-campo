@@ -8,17 +8,17 @@ import java.io.FileNotFoundException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class GameBoardTest {
+class MultiplayerGameBoardTest {
 
     GameBoard gameboard;
 
     @BeforeEach
-    void setUp() throws FileNotFoundException {
+    void setUp() {
         gameboard = GameBoard.getGameBoardInstance();
     }
 
     @Test
-    void getInstanceTest() throws FileNotFoundException {
+    void getInstanceTest() {
         assertNotNull(GameBoard.getGameBoardInstance());
     }
 

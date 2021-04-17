@@ -23,10 +23,7 @@ public class ResourceMarket {
     private final ResourceType[][] resourceBoard;
     private final int[] dimensions;
 
-    /**
-     * @throws FileNotFoundException -- parsing exception
-     */
-    public ResourceMarket() throws FileNotFoundException {
+    public ResourceMarket() {
         dimensions = ResourceMarketParser.parseResourceMarketDimensions();
         String[] jsonResources = ResourceMarketParser.parseResourceMarketContent();
         Collections.shuffle(Arrays.asList(jsonResources));
@@ -78,7 +75,7 @@ public class ResourceMarket {
      * @throws IndexOutOfBoundsException if the player's input exceed
      * market's dimension
      */
-    private LinkedList<ResourceType> pickResourceLine(int index) throws IndexOutOfBoundsException{
+    private LinkedList<ResourceType> pickResourceLine(int index) throws IndexOutOfBoundsException {
 
         LinkedList<ResourceType> pickedResources = new LinkedList<>();
         /* pick one of the columns */

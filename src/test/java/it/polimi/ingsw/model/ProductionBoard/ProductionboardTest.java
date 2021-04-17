@@ -18,13 +18,9 @@ public class ProductionboardTest {
     ProductionCardMarket productionCardMarket;
 
     @BeforeEach
-    void setProductionBoard(){
+    void setProductionBoard() {
         productionBoard = new ProductionBoard();
-        try {
-            productionCardMarket = new ProductionCardMarket();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        productionCardMarket = new ProductionCardMarket();
     }
 
     @Test

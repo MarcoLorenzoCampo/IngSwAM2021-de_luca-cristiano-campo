@@ -1,40 +1,45 @@
 package it.polimi.ingsw.parsers;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.model.utilities.FaithResource;
-import it.polimi.ingsw.model.utilities.MaterialResource;
-import it.polimi.ingsw.model.utilities.Resource;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.LinkedList;
-import java.util.List;
 
 public final class ResourceMarketParser {
 
     /**
      *  Parsing function for ResourceMarket's dimension
-     * @throws FileNotFoundException -- if incorrect JSON path
      */
-    public static int[] parseResourceMarketDimensions() throws FileNotFoundException {
+    public static int[] parseResourceMarketDimensions() {
 
-
+        FileReader reader = null;
         String configPath = "src/main/resources/resourceBoard_dimensions.json";
         Gson resourceBoardConfigReader = new Gson();
 
-        return resourceBoardConfigReader.fromJson(new FileReader(configPath), int[].class);
+        try {
+            reader = new FileReader(configPath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        assert reader != null;
+        return resourceBoardConfigReader.fromJson(reader, int[].class);
     }
 
     /**
      *  Parsing function for ResourceMarket's content
-     * @throws FileNotFoundException -- if incorrect JSON path
      */
-    public static String[] parseResourceMarketContent() throws FileNotFoundException {
+    public static String[] parseResourceMarketContent() {
 
+        FileReader reader = null;
         String resourcesPath = "src/main/resources/given_resources.json";
         Gson resourceBoardConfigReader = new Gson();
 
-        return resourceBoardConfigReader.fromJson(new FileReader(resourcesPath), String[].class);
+        try {
+            reader = new FileReader(resourcesPath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        assert reader != null;
+        return resourceBoardConfigReader.fromJson(reader, String[].class);
     }
 }

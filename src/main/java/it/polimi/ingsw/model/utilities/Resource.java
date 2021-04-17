@@ -8,11 +8,8 @@ public abstract class Resource {
 
     private ResourceType resourceType;
 
-
-
-    /* collect() is used to deposit the resource. Overridden by MaterialResource and FaithResource */
-    public void deposit() {
-    }
+    /* deposit() is used to deposit the resource. Overridden by MaterialResource and FaithResource */
+    public void deposit() { }
 
     /* default setter */
     public void setResourceType(ResourceType resourceType) {
@@ -43,7 +40,6 @@ public abstract class Resource {
     public ResourceType getResourceType() {
         return resourceType;
     }
-
 
     @Override
     public boolean equals(Object o) {

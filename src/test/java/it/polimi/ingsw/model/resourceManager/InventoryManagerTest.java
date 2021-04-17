@@ -1,13 +1,11 @@
 package it.polimi.ingsw.model.resourceManager;
 
-import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.MultiplayerGame;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -29,7 +27,7 @@ class InventoryManagerTest {
     @BeforeEach
     void setUp() {
         testPlayer = new Player("testPlayer");
-        Game.getGameInstance().setCurrentPlayer(testPlayer);
+        MultiplayerGame.getGameInstance().setCurrentPlayer(testPlayer);
         inventoryManager = testPlayer.getInventoryManager();
     }
 

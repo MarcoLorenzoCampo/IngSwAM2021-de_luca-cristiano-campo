@@ -14,16 +14,23 @@ public final class ProductionCardsParser {
 
     /**
      * Parser for the "production_cards_deck.json" file
+     *
      * @return List of production cards (the deck)
-     * @throws FileNotFoundException -- if incorrect JSON path
      */
-    public static List<ProductionCard> parseProductionDeck() throws FileNotFoundException {
+    public static List<ProductionCard> parseProductionDeck() {
 
         String productionCardsPath = "src/main/resources/production_cards_deck.json";
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(productionCardsPath));
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(productionCardsPath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        assert bufferedReader != null;
         JsonArray json = new Gson().fromJson(bufferedReader, JsonArray.class);
-
-        return new Gson().fromJson(String.valueOf(json), new TypeToken<List<ProductionCard>>() { }.getType());
+            return new Gson().fromJson(String.valueOf(json), new TypeToken<List<ProductionCard>>() {
+            }.getType());
     }
-
 }
+

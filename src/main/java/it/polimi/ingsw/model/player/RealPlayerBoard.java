@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.MultiplayerGame;
 import it.polimi.ingsw.actions.Action;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class RealPlayerBoard extends PlayerBoard {
@@ -34,8 +35,8 @@ public class RealPlayerBoard extends PlayerBoard {
 
     public void increaseBoughCardsCount() throws EndGameException {
         boughtCardsNumber++;
-        if(boughtCardsNumber == Game.getGameInstance().getMaxCardsBought())
-            Game.getGameInstance().endGame();
+        if(boughtCardsNumber == MultiplayerGame.getGameInstance().getMaxCardsBought())
+            MultiplayerGame.getGameInstance().endGame();
     }
 
     public String getOwner() {

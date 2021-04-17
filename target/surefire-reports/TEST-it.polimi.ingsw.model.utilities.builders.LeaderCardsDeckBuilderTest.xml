@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilderTest" time="0.003" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilderTest" time="0.002" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="15"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/jdk-15.0.2/lib"/>
-    <property name="sun.java.command" value="/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire/surefirebooter12115775872528956970.jar /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire 2021-04-16T13-16-29_958-jvmRun1 surefire12364468866635812625tmp surefire_05244105060269315654tmp"/>
+    <property name="sun.java.command" value="/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire/surefirebooter13634592746052623342.jar /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire 2021-04-16T15-08-37_497-jvmRun1 surefire6529161494341893953tmp surefire_07455237876507115762tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/test-classes:/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/classes:/home/marco/.m2/repository/org/junit/jupiter/junit-jupiter/5.8.0-M1/junit-jupiter-5.8.0-M1.jar:/home/marco/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.0-M1/junit-jupiter-api-5.8.0-M1.jar:/home/marco/.m2/repository/org/apiguardian/apiguardian-api/1.1.1/apiguardian-api-1.1.1.jar:/home/marco/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/marco/.m2/repository/org/junit/platform/junit-platform-commons/1.8.0-M1/junit-platform-commons-1.8.0-M1.jar:/home/marco/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.8.0-M1/junit-jupiter-params-5.8.0-M1.jar:/home/marco/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.8.0-M1/junit-jupiter-engine-5.8.0-M1.jar:/home/marco/.m2/repository/org/junit/platform/junit-platform-engine/1.8.0-M1/junit-platform-engine-1.8.0-M1.jar:/home/marco/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.4.20/kotlin-stdlib-jdk8-1.4.20.jar:/home/marco/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.4.20/kotlin-stdlib-1.4.20.jar:/home/marco/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.4.20/kotlin-stdlib-common-1.4.20.jar:/home/marco/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/home/marco/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.4.20/kotlin-stdlib-jdk7-1.4.20.jar:/home/marco/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/home/marco/.m2/repository/org/mockito/mockito-core/3.8.0/mockito-core-3.8.0.jar:/home/marco/.m2/repository/net/bytebuddy/byte-buddy/1.10.20/byte-buddy-1.10.20.jar:/home/marco/.m2/repository/net/bytebuddy/byte-buddy-agent/1.10.20/byte-buddy-agent-1.10.20.jar:/home/marco/.m2/repository/org/objenesis/objenesis/3.1/objenesis-3.1.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire/surefirebooter12115775872528956970.jar"/>
+    <property name="surefire.real.class.path" value="/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire/surefirebooter13634592746052623342.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="15.0.2+7-27"/>
     <property name="user.name" value="marco"/>

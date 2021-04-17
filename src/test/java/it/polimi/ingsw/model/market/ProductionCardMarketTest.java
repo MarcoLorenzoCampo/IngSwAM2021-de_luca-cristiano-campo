@@ -24,11 +24,7 @@ class ProductionCardMarketTest {
 
     @BeforeEach
     void setUp() {
-        try {
-            productionCardMarket = new ProductionCardMarket();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        productionCardMarket = new ProductionCardMarket();
     }
 
     /**

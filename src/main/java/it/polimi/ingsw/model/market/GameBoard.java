@@ -14,10 +14,7 @@ public class GameBoard {
     private final ProductionCardMarket productionCardMarket;
     private static GameBoard gameBoardInstance = null;
 
-    /**
-     * @throws FileNotFoundException -- shown during the parsing phase
-     */
-    private GameBoard() throws FileNotFoundException {
+    private GameBoard() {
         resourceMarket = new ResourceMarket();
         productionCardMarket = new ProductionCardMarket();
     }
@@ -26,7 +23,7 @@ public class GameBoard {
      * @return gameBoardInstance: returns the single instance of the playerboard
      * created for a match
      */
-    public static GameBoard getGameBoardInstance() throws FileNotFoundException {
+    public static GameBoard getGameBoardInstance() {
         /* Create gameboard instance if not present; */
         if (gameBoardInstance == null) {
             gameBoardInstance = new GameBoard();

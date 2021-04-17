@@ -4,8 +4,10 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.GetResourceFromMarketException;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.MultiplayerGame;
 import it.polimi.ingsw.model.utilities.ActionValidator;
+
+import java.io.FileNotFoundException;
 
 public class GetResourceFromMarketAction extends Action {
 
@@ -28,7 +30,7 @@ public class GetResourceFromMarketAction extends Action {
     }
 
     private void runAction() {
-        Game.getGameInstance()
+        MultiplayerGame.getGameInstance()
                 .getGameBoard()
                 .getResourceMarket()
                 .pickResources(index);

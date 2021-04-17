@@ -2,16 +2,18 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.token.IToken;
+import it.polimi.ingsw.model.token.LorenzoTokenPile;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LorenzoPlayerBoard extends PlayerBoard{
     private final FaithTrack lorenzoFaithTrack;
-    private final List<IToken> lorenzoActionToken;
+    private final LorenzoTokenPile lorenzoActions;
 
-    public LorenzoPlayerBoard() {
-        lorenzoActionToken = new ArrayList<>();
+    public LorenzoPlayerBoard() throws FileNotFoundException {
+        lorenzoActions = new LorenzoTokenPile();
         lorenzoFaithTrack = new FaithTrack();
     }
 
@@ -19,7 +21,7 @@ public class LorenzoPlayerBoard extends PlayerBoard{
         return lorenzoFaithTrack;
     }
 
-    public List<IToken> getLorenzoActionToken() {
-        return lorenzoActionToken;
+    public LorenzoTokenPile getLorenzoActionToken() {
+        return lorenzoActions;
     }
 }

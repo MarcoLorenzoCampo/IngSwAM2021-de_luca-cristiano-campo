@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.market;
 
 
+import it.polimi.ingsw.enumerations.Color;
+import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
 import java.io.FileNotFoundException;
@@ -9,17 +11,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.enumerations.Level.*;
+
 
 public class ProductionCardMarket {
 
     private final List<ProductionCard> playableProductionCards;
     private List<ProductionCard> availableCards;    /* Each Player sees the available cards only */
 
-    /**
-     * @throws FileNotFoundException -- thrown when any path for JSON parsing
-     * is incorrect or JSON file is missing.
-     */
-    public ProductionCardMarket() throws FileNotFoundException {
+    public ProductionCardMarket() {
         playableProductionCards = ProductionCardsParser.parseProductionDeck();
         Collections.shuffle(playableProductionCards);
         setAvailableCards();
@@ -34,8 +34,9 @@ public class ProductionCardMarket {
     }
 
     /**
-     * Available cards are set only when creating the singleton instance of
-     * the gameBoard.
+     * Available cards are set when creating the singleton instance of
+     * the gameBoard and when rebuilding the deck after Lorenzo discards
+     * some cards.
      */
     private void setAvailableCards() {
         availableCards = new LinkedList<> (playableProductionCards
@@ -75,5 +76,42 @@ public class ProductionCardMarket {
     public void buyCard(ProductionCard boughtCard) {
         playableProductionCards.remove(boughtCard);
         replaceBoughtCard(boughtCard);
+    }
+
+    /**
+     * Used during the singleplayer game by Lorenzo il Magnifico.
+     * The methods removes two of a specified color, the lowest level available.
+     * @param color is the specific color to be removed.
+     */
+    public void lorenzoRemovesTwo(Color color) {
+        int times = 2;
+
+        for(ProductionCard iterator : availableCards) {
+            if(iterator.getColor().equals(color)
+                    && iterator.getLevel().equals(lowestLevelAvailable(color)) && times>0) {
+
+                playableProductionCards.remove(iterator);
+                replaceBoughtCard(iterator);
+                times--;
+            }
+        }
+    }
+
+    /**
+     * Method to find the lowest level card available for a specific color.
+     * @param color, specific color to look for.
+     * @return the lowest level available.
+     */
+    private Level lowestLevelAvailable(Color color) {
+        for(ProductionCard iterator : availableCards) {
+            if(iterator.getColor().equals(color)) {
+                switch (iterator.getLevel()) {
+                    case ONE : return ONE;
+                    case TWO : return TWO;
+                    case THREE : return THREE;
+                }
+            }
+        }
+        throw new NullPointerException();
     }
 }

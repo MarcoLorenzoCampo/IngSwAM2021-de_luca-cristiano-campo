@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.utilities.BaseProduction;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
@@ -35,7 +34,7 @@ public class ProductionCard extends BaseProduction {
     }
 
     public void placeCard() {
-        //Game.getGameInstance().getCurrentPlayer().getPlayerBoard()...
+        //MultiplayerGame.getGameInstance().getCurrentPlayer().getPlayerBoard()...
     }
 
     @Override
