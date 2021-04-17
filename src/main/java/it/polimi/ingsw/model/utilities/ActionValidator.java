@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.utilities;
 
-import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.*;
@@ -105,6 +104,7 @@ public final class ActionValidator {
         }
         return true;
     }
+
 
     private static boolean validateLeaderRequirements(ResourceTag[] requirements) {
         Map<ResourceType, Integer> actualInventory = Game.getGameInstance().getCurrentPlayer()
