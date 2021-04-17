@@ -66,7 +66,26 @@ public class InventoryManager {
         return inventory;
     }
 
-
+    //
+    //
+    //
+    //
+    //
+    //
+    // Va implementato il metodo che conta i punti vittoria finali (somma inventario / 5)
+    // Va implementato il metodo che cambia la biglia bianca con una scelta, oppure la elimina
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
     /**
      *
      * @param effect -- type of discount to be applied, stated in the leader card of type discount
