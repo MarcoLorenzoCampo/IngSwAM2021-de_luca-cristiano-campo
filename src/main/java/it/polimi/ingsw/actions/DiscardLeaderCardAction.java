@@ -21,7 +21,8 @@ public class DiscardLeaderCardAction extends Action {
     }
 
     @Override
-    public void isValid() throws InvalidGameStateException, InvalidPlayerException, LeaderCardException, NoMatchingRequisitesException {
+    public void isValid() throws InvalidGameStateException, InvalidPlayerException,
+            LeaderCardException, NoMatchingRequisitesException {
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
         ActionValidator.leaderValidator(leaderToDiscard);

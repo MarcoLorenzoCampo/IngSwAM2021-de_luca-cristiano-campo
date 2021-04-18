@@ -7,6 +7,13 @@ import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
+/**
+ * Action to notify a player's turn has ended and the LobbyManager should get ready to
+ * accept messages from the next player.
+ * Basic validation:
+ * 1) Verifies the sender is the current player;
+ * 2) Verifies the game state is adequate.
+ */
 public class EndTurnAction extends Action {
 
     private static final PossibleAction actionTag = PossibleAction.END_TURN;
@@ -16,6 +23,11 @@ public class EndTurnAction extends Action {
         this.actionSender = actionSender;
     }
 
+    /**
+     * @throws InvalidPlayerException: the Name of the player who requested this action;
+     * @throws InvalidGameStateException: GameState isn't adequate to receive the input.
+     * @throws EndTurnException: notifies the controller current turn is over.
+     */
     @Override
     public void isValid() throws InvalidPlayerException, InvalidGameStateException, EndTurnException {
         ActionValidator.gameStateValidation();

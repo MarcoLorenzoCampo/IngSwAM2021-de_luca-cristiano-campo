@@ -18,5 +18,5 @@ public abstract class Action {
      */
     public void isValid() throws InvalidPlayerException, InvalidGameStateException,
             GetResourceFromMarketException, BuyCardFromMarketException,
-            NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException { }
+            NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException, InvalidProductionSlotException { }
 }

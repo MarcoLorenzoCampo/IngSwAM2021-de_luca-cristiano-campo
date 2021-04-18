@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.market.leaderCards;
 
 import it.polimi.ingsw.enumerations.EffectType;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
@@ -21,7 +22,11 @@ public class ExtraProductionLeaderCard extends LeaderCard {
     @Override
     public void setActive() {
         super.setActive();
-        //manca
+        Game.getGameInstance()
+                .getCurrentPlayer()
+                .getPlayerBoard()
+                .getProductionBoard()
+                .addLeaderProduction(inputResources, outputResources);
     }
 
     public ResourceTag[] getInputResources() {

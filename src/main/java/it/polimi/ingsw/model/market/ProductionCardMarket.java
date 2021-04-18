@@ -9,6 +9,7 @@ import it.polimi.ingsw.parsers.ProductionCardsParser;
 
 import java.io.FileNotFoundException;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,15 +37,19 @@ public class ProductionCardMarket {
     }
 
     /**
-     * Available cards are set when creating the singleton instance of
-     * the gameBoard and when rebuilding the deck after Lorenzo discards
-     * some cards.
+     * Available cards are set and sorted by level when creating the
+     * singleton instance of the gameBoard
      */
     private void setAvailableCards() {
         availableCards = new LinkedList<> (playableProductionCards
                 .stream()
                 .collect(Collectors.toMap(ProductionCard::key, color -> color, (f, s) -> f))
                 .values());
+
+        availableCards = availableCards
+                .stream()
+                .sorted(Comparator.comparing(ProductionCard::getLevel))
+                .collect(Collectors.toList());
     }
 
 
@@ -54,7 +59,7 @@ public class ProductionCardMarket {
     }
 
     /**
-     * @param boughtCard -- gets replaced the availableCards deck
+     * @param boughtCard gets replaced the availableCards deck
      * Use of Optionals to add a card of the same (Level, Color) of the one
      *                   just bought if present;
      */
@@ -70,7 +75,6 @@ public class ProductionCardMarket {
                 ifPresent(availableCards::add);
     }
 
-
     /**
      * @param boughtCard: when a card is bought, it gets removed from the
      *                  base deck.
@@ -78,7 +82,10 @@ public class ProductionCardMarket {
     public void buyCard(ProductionCard boughtCard) throws EndGameException {
         playableProductionCards.remove(boughtCard);
         replaceBoughtCard(boughtCard);
-        Game.getGameInstance().getCurrentPlayer().getPlayerBoard().increaseBoughCardsCount();
+        Game.getGameInstance()
+                .getCurrentPlayer()
+                .getPlayerBoard()
+                .increaseBoughCardsCount();
     }
 
     /**

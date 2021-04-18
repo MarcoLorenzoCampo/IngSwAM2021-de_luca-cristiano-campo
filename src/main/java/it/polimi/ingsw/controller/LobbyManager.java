@@ -9,17 +9,26 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Utility class to manage the players and the sequence of turns.
+ */
 public final class LobbyManager {
 
     private static final int MAX_PLAYERS = 4;
     private static int numberOfTurns = 0;
 
-    private static List<Player> playerList = new LinkedList<>();
+    private static final List<Player> playerList = new LinkedList<>();
 
     private LobbyManager() {
         throw new UnsupportedOperationException("Utility class must not be initiated!");
     }
 
+    /**
+     * Adds a new player if the validation steps are verified.
+     * @param nickname: The name chosen by the player.
+     * @throws NameTakenException: Name is already in use.
+     * @throws NoMorePlayersException: there are 4 players already.
+     */
     public static void addNewPlayer(String nickname) throws NameTakenException, NoMorePlayersException {
         if(playerList.size() == MAX_PLAYERS)
             throw new NoMorePlayersException("Exceeded max number of players!");

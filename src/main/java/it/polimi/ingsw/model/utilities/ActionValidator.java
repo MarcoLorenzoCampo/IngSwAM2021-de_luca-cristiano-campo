@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.utilities;
 
-import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.*;
@@ -83,6 +82,18 @@ public final class ActionValidator {
     }
 
     /**
+     * Validates if the {@link it.polimi.ingsw.actions.BuyProductionCardAction} provided a valid slot
+     * to place the card once other steps have been validated.
+     * @param productionSlotIndex: index in which the card should be placed.
+     * @throws InvalidProductionSlotException: notifies the controller the destination slot is invalid.
+     */
+    public static void validateProductionSlot(int productionSlotIndex, ProductionCard boughtCard)
+            throws InvalidProductionSlotException {
+        //if(ckeck index valid slot) = true throw
+        throw new InvalidProductionSlotException();
+    }
+
+    /**
      * Verifies a leader card can be discarded.
      * @throws LeaderCardException generic exception regarding leader cards.
      */
@@ -97,6 +108,9 @@ public final class ActionValidator {
             throw new NoMatchingRequisitesException();
     }
 
+    /**
+     * Validation of DevelopmentTags.
+     */
     private static boolean validateLeaderRequirements(DevelopmentTag[] requirements) {
         for(DevelopmentTag iterator : requirements) {
             if(Game.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard().getInventory()
@@ -106,6 +120,9 @@ public final class ActionValidator {
         return true;
     }
 
+    /**
+     * Validation of ResourceTags.
+     */
     private static boolean validateLeaderRequirements(ResourceTag[] requirements) {
         Map<ResourceType, Integer> actualInventory = Game.getGameInstance().getCurrentPlayer()
                 .getInventoryManager().getInventory();
@@ -118,7 +135,7 @@ public final class ActionValidator {
     }
 
     /**
-     * whenever one exclusive action is run, the player state will be changed, making future validations
+     * Whenever one exclusive action is run, the player state will be changed, making future validations
      * for the exclusive actions always throw exceptions.
      */
     public static void performedExclusiveAction() {

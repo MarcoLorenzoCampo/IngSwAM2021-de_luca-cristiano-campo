@@ -31,6 +31,7 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/builders/ResourceBoardBuilder.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/warehouse/Shelf.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/actions/ActivateProductionsAction.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/token/LorenzoTokenPile.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/ResourceTag.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/exceptions/GetResourceFromMarketException.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/MaterialResource.java
@@ -39,6 +40,7 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/faithtrack/SimpleTile.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/exceptions/DiscardResourceException.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/player/PlayerBoard.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/builders/LorenzoTokensBuilder.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/Resource.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/builders/LeaderCardsDeckBuilder.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/enumerations/EffectType.java

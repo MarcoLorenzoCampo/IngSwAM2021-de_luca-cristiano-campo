@@ -11,13 +11,24 @@ public class GetResourceFromMarketAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.GET_RESOURCE_FROM_MARKET;
     private final String actionSender;
-    private final int index;
+    private final int indexToPickFrom;
 
-    public GetResourceFromMarketAction(String actionSender, int index) {
+    /**
+     * Public builder for this action.
+     * @param actionSender the Name of the player who requested this action
+     * @param indexToPickFrom the slot in which the card should be placed
+     */
+    public GetResourceFromMarketAction(String actionSender, int indexToPickFrom) {
         this.actionSender = actionSender;
-        this.index = index;
+        this.indexToPickFrom = indexToPickFrom;
     }
 
+    /**
+     * Verifies via the {@link ActionValidator} if the action can be performed.
+     * @throws InvalidPlayerException: wrong current player
+     * @throws InvalidGameStateException: wrong game state to perform this action
+     * @throws GetResourceFromMarketException: action refused because of the current player state.
+     */
     @Override
     public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException {
         ActionValidator.gameStateValidation();
@@ -27,11 +38,14 @@ public class GetResourceFromMarketAction extends Action {
         runAction();
     }
 
+    /**
+     * Action to perform if verified.
+     */
     private void runAction() {
         Game.getGameInstance()
                 .getGameBoard()
                 .getResourceMarket()
-                .pickResources(index);
+                .pickResources(indexToPickFrom);
     }
 
     public PossibleAction getActionTag() {
