@@ -64,7 +64,6 @@ public final class ActionValidator {
     }
 
     /**
-     *
      * @param toValidate Production Card to validate.
      * @return returns the outcome of the validation. true means the card can be purchased,
      * false means the caller will throw an exception.
@@ -89,8 +88,11 @@ public final class ActionValidator {
      */
     public static void validateProductionSlot(int productionSlotIndex, ProductionCard boughtCard)
             throws InvalidProductionSlotException {
-        //if(ckeck index valid slot) = true throw
-        throw new InvalidProductionSlotException();
+
+        if(!Game.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard()
+                .checkPutCard(productionSlotIndex, boughtCard)) {
+            throw new InvalidProductionSlotException();
+        }
     }
 
     /**

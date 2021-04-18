@@ -24,4 +24,10 @@ public class LorenzoPlayerBoard extends PlayerBoard{
     public LorenzoTokenPile getLorenzoActionToken() {
         return lorenzoActions;
     }
+
+    public void lorenzoMoves(int moves) {
+        for(int i=0; i<moves; i++) {
+            lorenzoFaithTrack.increaseFaithMarker();
+        }
+    }
 }

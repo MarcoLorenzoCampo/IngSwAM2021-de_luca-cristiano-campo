@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.token;
 
+import it.polimi.ingsw.model.Game;
+
 public class TokenMove implements IToken{
 
     int moves;
@@ -20,6 +22,6 @@ public class TokenMove implements IToken{
      */
     @Override
     public void tokenAction() {
-
+        //make lorenzo move "moves" times and shuffle if "shuffle" is true;
     }
 }

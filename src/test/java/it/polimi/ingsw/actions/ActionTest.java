@@ -1,29 +1,28 @@
 package it.polimi.ingsw.actions;
 
+import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class ActionTest {
 
-    @Mock
     Player testPlayer;
-    @Mock
     Game testGame;
-
-
 
     @BeforeEach
     void setUp() {
         testPlayer = new Player("testPlayer");
         testGame = Game.getGameInstance();
+        testGame.getCurrentState().setGameState(PossibleGameStates.GAME_STARTED);
         testGame.setCurrentPlayer(testPlayer);
+        testPlayer.getPlayerState().endTurnReset();
     }
 
     @Disabled
@@ -39,10 +38,10 @@ class ActionTest {
         //Act
         getResourceFromMarketAction =
                 new GetResourceFromMarketAction("testPlayer", 1);
-        testGame.getCurrentPlayer().getPlayerBoard().getAction(getResourceFromMarketAction);
 
         //Assert
-        assertAll();
+        assertAll(
+        );
     }
 
 
