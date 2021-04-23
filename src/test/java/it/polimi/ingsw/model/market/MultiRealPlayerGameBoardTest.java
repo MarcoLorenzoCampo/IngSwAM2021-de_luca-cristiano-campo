@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class MultiPlayerGameBoardTest {
+class MultiRealPlayerGameBoardTest {
 
     GameBoard gameboard;
 

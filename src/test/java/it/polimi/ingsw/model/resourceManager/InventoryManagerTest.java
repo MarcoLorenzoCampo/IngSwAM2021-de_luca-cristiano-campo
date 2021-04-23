@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.resourceManager;
 
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,14 +21,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class InventoryManagerTest {
 
     @Mock
-    Player testPlayer;
+    RealPlayer testRealPlayer;
     InventoryManager inventoryManager;
 
     @BeforeEach
     void setUp() {
-        testPlayer = new Player("testPlayer");
-        MultiPlayerGame.getGameInstance().setCurrentPlayer(testPlayer);
-        inventoryManager = testPlayer.getInventoryManager();
+        testRealPlayer = new RealPlayer("testRealPlayer");
+        PlayingGame.getGameInstance().setCurrentPlayer(testRealPlayer);
+        inventoryManager = testRealPlayer.getInventoryManager();
     }
 
     @Test

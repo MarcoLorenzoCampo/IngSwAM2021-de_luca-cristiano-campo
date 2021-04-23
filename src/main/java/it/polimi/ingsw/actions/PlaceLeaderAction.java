@@ -3,7 +3,6 @@ package it.polimi.ingsw.actions;
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
 /**

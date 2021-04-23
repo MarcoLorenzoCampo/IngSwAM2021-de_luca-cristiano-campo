@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.actions.Action;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
@@ -40,8 +40,8 @@ public class RealPlayerBoard extends PlayerBoard {
 
     public void increaseBoughCardsCount() throws EndGameException {
         boughtCardsNumber++;
-        if(boughtCardsNumber == MultiPlayerGame.getGameInstance().getMaxCardsBought())
-            MultiPlayerGame.getGameInstance().endGame();
+        if(boughtCardsNumber == PlayingGame.getGameInstance().getMaxCardsBought())
+            PlayingGame.getGameInstance().endGame();
     }
 
     public String getOwner() {

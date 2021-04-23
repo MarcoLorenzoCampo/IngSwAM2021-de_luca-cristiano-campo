@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlayerTest {
+class RealPlayerTest {
 
-    Player testPlayer;
+    RealPlayer testRealPlayer;
 
     @BeforeEach
     void setUp() {
-        testPlayer = new Player("testPlayer");
+        testRealPlayer = new RealPlayer("testRealPlayer");
     }
 
     @Test
@@ -20,25 +20,25 @@ class PlayerTest {
         int victoryPoints = 3;
 
         //Act
-        testPlayer.setVictoryPoints(victoryPoints);
+        testRealPlayer.setVictoryPoints(victoryPoints);
 
         //Assert
         assertAll(
-                () -> assertEquals(testPlayer.getVictoryPoints(), victoryPoints),
-                () -> assertNotNull(testPlayer.getInventoryManager()),
-                () -> assertNotNull(testPlayer.getPlayerState()),
-                () -> assertNotNull(testPlayer.getPlayerBoard()),
-                () -> assertNotNull(testPlayer.getName())
+                () -> assertEquals(testRealPlayer.getVictoryPoints(), victoryPoints),
+                () -> assertNotNull(testRealPlayer.getInventoryManager()),
+                () -> assertNotNull(testRealPlayer.getPlayerState()),
+                () -> assertNotNull(testRealPlayer.getPlayerBoard()),
+                () -> assertNotNull(testRealPlayer.getName())
         );
     }
 
     @Test
     void setFirstToPlay() {
         //Act
-        testPlayer.setFirstToPlay();
+        testRealPlayer.setFirstToPlay();
 
         //Assert
-        assertTrue(testPlayer.getIsFirstToPlay());
+        assertTrue(testRealPlayer.getIsFirstToPlay());
     }
 
     /**
@@ -50,7 +50,7 @@ class PlayerTest {
         PlayerState basicState;
 
         //Act
-        basicState = testPlayer.getPlayerState();
+        basicState = testRealPlayer.getPlayerState();
 
         //Assert
         assertAll(
@@ -67,7 +67,7 @@ class PlayerTest {
         PlayerState performedActionState;
 
         //Act
-        performedActionState = testPlayer.getPlayerState();
+        performedActionState = testRealPlayer.getPlayerState();
 
         performedActionState.performedExclusiveAction();
 

@@ -5,11 +5,10 @@ import it.polimi.ingsw.exceptions.EndTurnException;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.model.game.IGame;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
 /**
- * Action to notify a player's turn has ended and the LobbyManager should get ready to
+ * Action to notify a player's turn has ended and the MultiPLayerLobbyManager should get ready to
  * accept messages from the next player.
  * Basic validation:
  * 1) Verifies the sender is the current player;

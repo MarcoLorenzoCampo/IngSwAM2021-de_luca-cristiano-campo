@@ -3,28 +3,28 @@ package it.polimi.ingsw.model.game;
 import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.market.GameBoard;
 import it.polimi.ingsw.model.market.IGameBoard;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.RealPlayer;
 
 /**
  * @author Marco Lorenzo Campo
  * Singleton class, only one multiplayer game instance is available in each game.
  */
-public class MultiPlayerGame extends Game implements IGame {
+public class PlayingGame extends Game implements IGame {
 
     private static final int MAX_CARDS_BOUGHT = 7;
 
     private IGameBoard iGameBoard;
-    private static MultiPlayerGame multiPlayerGameInstance;
+    private static PlayingGame playingGameInstance;
     private static GameState currentState;
 
-    private MultiPlayerGame(IGameBoard iGameBoard) {
+    private PlayingGame(IGameBoard iGameBoard) {
         this.iGameBoard = iGameBoard;
     }
 
-    private MultiPlayerGame() { }
+    private PlayingGame() { }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        super.setCurrentPlayer(currentPlayer);
+    public void setCurrentPlayer(RealPlayer currentRealPlayer) {
+        super.setCurrentPlayer(currentRealPlayer);
     }
 
     /**
@@ -35,20 +35,20 @@ public class MultiPlayerGame extends Game implements IGame {
     }
 
     /**
-     * @return multiPlayerGameInstance: returns the single instance of the game
+     * @return playingGameInstance: returns the single instance of the game
      * created for a match
      */
-    public static MultiPlayerGame getGameInstance() {
+    public static PlayingGame getGameInstance() {
 
         /* Create game instance if not present; */
-        if (multiPlayerGameInstance == null) {
-            multiPlayerGameInstance = new MultiPlayerGame(GameBoard.getGameBoardInstance());
+        if (playingGameInstance == null) {
+            playingGameInstance = new PlayingGame(GameBoard.getGameBoardInstance());
             currentState = new GameState();
         }
-        return multiPlayerGameInstance;
+        return playingGameInstance;
     }
 
-    public Player getCurrentPlayer() {
+    public RealPlayer getCurrentPlayer() {
         return super.getCurrentPlayer();
     }
 

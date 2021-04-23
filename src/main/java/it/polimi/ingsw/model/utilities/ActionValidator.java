@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.utilities;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.ProductionCard;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public final class ActionValidator {
      * @throws InvalidGameStateException if what stated above happens.
      */
     public static void gameStateValidation() throws InvalidGameStateException {
-        if (MultiPlayerGame.getGameInstance().getCurrentState().getGameState().equals(PossibleGameStates.SETUP))
+        if (PlayingGame.getGameInstance().getCurrentState().getGameState().equals(PossibleGameStates.SETUP))
                 throw new InvalidGameStateException();
     }
 
@@ -35,7 +35,7 @@ public final class ActionValidator {
      * throw exception.
      */
     public static void senderValidation(String actionSender) throws InvalidPlayerException {
-        if(!actionSender.equals(MultiPlayerGame.getGameInstance().getCurrentPlayer().getName()))
+        if(!actionSender.equals(PlayingGame.getGameInstance().getCurrentPlayer().getName()))
             throw new InvalidPlayerException();
     }
 
@@ -44,7 +44,7 @@ public final class ActionValidator {
      * @throws GetResourceFromMarketException action isn't allowed
      */
     public static void validateGetFromMarket() throws GetResourceFromMarketException {
-        if(MultiPlayerGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPickedResources())
+        if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPickedResources())
             throw new GetResourceFromMarketException();
     }
 
@@ -58,7 +58,7 @@ public final class ActionValidator {
     public static void validateBuyCardFromMarketAction(ProductionCard boughtCard)
             throws BuyCardFromMarketException, NoMatchingRequisitesException {
 
-        if(MultiPlayerGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasBoughCard())
+        if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasBoughCard())
             throw new BuyCardFromMarketException();
 
         if(!validateProductionCardRequirements(boughtCard))
@@ -72,7 +72,7 @@ public final class ActionValidator {
      */
     private static boolean validateProductionCardRequirements(ProductionCard toValidate) {
         List<ResourceTag> requirements = toValidate.getRequirements();
-        Map<ResourceType, Integer> actualInventory = MultiPlayerGame.getGameInstance().getCurrentPlayer()
+        Map<ResourceType, Integer> actualInventory = PlayingGame.getGameInstance().getCurrentPlayer()
                 .getInventoryManager().getInventory();
 
         for (ResourceTag requirement : requirements) {
@@ -91,7 +91,7 @@ public final class ActionValidator {
     public static void validateProductionSlot(int productionSlotIndex, ProductionCard boughtCard)
             throws InvalidProductionSlotException {
 
-        if(!MultiPlayerGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard()
+        if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard()
                 .checkPutCard(productionSlotIndex, boughtCard)) {
             throw new InvalidProductionSlotException();
         }
@@ -103,11 +103,11 @@ public final class ActionValidator {
      */
     public static void leaderValidator(int index) throws LeaderCardException, NoMatchingRequisitesException {
 
-        if(!MultiPlayerGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPlaceableLeaders()
-            || index >= MultiPlayerGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getOwnedLeaderCards().size())
+        if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPlaceableLeaders()
+            || index >= PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getOwnedLeaderCards().size())
             throw new LeaderCardException("You don't own that card!");
 
-        if(!validateLeaderRequirements(MultiPlayerGame.getGameInstance()
+        if(!validateLeaderRequirements(PlayingGame.getGameInstance()
                 .getCurrentPlayer().getPlayerBoard().getOwnedLeaderCards().get(index).getRequisites()))
             throw new NoMatchingRequisitesException();
     }
@@ -117,7 +117,7 @@ public final class ActionValidator {
      */
     private static boolean validateLeaderRequirements(DevelopmentTag[] requirements) {
         for(DevelopmentTag iterator : requirements) {
-            if(MultiPlayerGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard().getInventory()
+            if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard().getInventory()
                     .get(iterator.getColor())[iterator.getLevel().ordinal()]<iterator.getQuantity())
                 return false;
         }
@@ -128,7 +128,7 @@ public final class ActionValidator {
      * Validation of ResourceTags.
      */
     private static boolean validateLeaderRequirements(ResourceTag[] requirements) {
-        Map<ResourceType, Integer> actualInventory = MultiPlayerGame.getGameInstance().getCurrentPlayer()
+        Map<ResourceType, Integer> actualInventory = PlayingGame.getGameInstance().getCurrentPlayer()
                 .getInventoryManager().getInventory();
 
         for (ResourceTag requirement : requirements) {

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.utilities;
 
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
+import it.polimi.ingsw.model.game.PlayingGame;
 
 public class MaterialResource extends Resource {
 
@@ -22,7 +22,7 @@ public class MaterialResource extends Resource {
 
     @Override
     public void deposit() {
-        MultiPlayerGame.getGameInstance()
+        PlayingGame.getGameInstance()
                 .getCurrentPlayer()
                 .getInventoryManager()
                 .deposit(this);

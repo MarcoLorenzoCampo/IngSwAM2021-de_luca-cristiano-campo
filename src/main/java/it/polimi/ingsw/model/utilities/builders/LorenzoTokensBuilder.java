@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.utilities.builders;
 
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.model.game.IGame;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.model.token.TokenDiscard;
 import it.polimi.ingsw.model.token.TokenMove;
@@ -12,7 +12,7 @@ import java.util.Collections;
 
 public final class LorenzoTokensBuilder {
 
-    private final static IGame game = MultiPlayerGame.getGameInstance();
+    private final static IGame game = PlayingGame.getGameInstance();
 
     public static ArrayList<IToken> build() {
         ArrayList<IToken> builtList = new ArrayList<>();

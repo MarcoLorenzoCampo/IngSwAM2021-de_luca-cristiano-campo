@@ -3,8 +3,9 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.player.RealPlayer;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -13,15 +14,19 @@ import java.util.List;
 /**
  * Utility class to manage the players and the sequence of turns.
  */
-public final class LobbyManager {
+public final class MultiPlayerLobbyManager implements ILobbyManager {
 
     private static final int MAX_PLAYERS = 4;
 
-    private static int numberOfTurns = 0;
-    private static final List<Player> playerList = new LinkedList<>();
+    private final IGame currentGame;
 
-    private LobbyManager() {
-        throw new UnsupportedOperationException("Utility class must not be initiated!");
+    private int numberOfTurns;
+    private final List<RealPlayer> realPlayerList;
+
+    public MultiPlayerLobbyManager(IGame currentGame) {
+        realPlayerList = new LinkedList<>();
+        numberOfTurns = 0;
+        this.currentGame = currentGame;
     }
 
     /**
@@ -30,62 +35,65 @@ public final class LobbyManager {
      * @throws NameTakenException: Name is already in use.
      * @throws NoMorePlayersException: there are 4 players already.
      */
-    public static void addNewPlayer(String nickname) throws NameTakenException, NoMorePlayersException {
-        if(playerList.size() == MAX_PLAYERS)
+    @Override
+    public void addNewPlayer(String nickname) throws NameTakenException, NoMorePlayersException {
+        if(realPlayerList.size() == MAX_PLAYERS)
             throw new NoMorePlayersException("Exceeded max number of players!");
 
-        for(Player player : playerList) {
-            if(player.getName().equals(nickname))
+        for(RealPlayer realPlayer : realPlayerList) {
+            if(realPlayer.getName().equals(nickname))
                 throw new NameTakenException(nickname);
         }
-        playerList.add(new Player(nickname));
+        realPlayerList.add(new RealPlayer(nickname));
     }
 
-    public static void setPlayingOrder() {
-        Collections.shuffle(playerList);
-        playerList.get(0).setFirstToPlay();
-        MultiPlayerGame.getGameInstance().setCurrentPlayer(playerList.get(0));
+    @Override
+    public void setPlayingOrder() {
+        Collections.shuffle(realPlayerList);
+        realPlayerList.get(0).setFirstToPlay();
+        PlayingGame.getGameInstance().setCurrentPlayer(realPlayerList.get(0));
 
         setDefaultResources();
     }
 
-    public static void setNextTurn() {
+    @Override
+    public void setNextTurn() {
         numberOfTurns++;
-        MultiPlayerGame.getGameInstance()
-                .setCurrentPlayer(playerList.get(numberOfTurns%playerList.size()));
+        PlayingGame.getGameInstance()
+                .setCurrentPlayer(realPlayerList.get(numberOfTurns% realPlayerList.size()));
     }
 
-    private static void setDefaultResources() {
-        for(int i=0; i<playerList.size(); i++) {
+    private void setDefaultResources() {
+        for(int i = 0; i< realPlayerList.size(); i++) {
 
             switch(i) {
                 case 1:
-                    MultiPlayerGame.getGameInstance()
+                    PlayingGame.getGameInstance()
                             .getCurrentState()
                             .setGameState(PossibleGameStates.WAIT_FOR_INPUT);
                     break;
                 case 2:
-                    MultiPlayerGame.getGameInstance()
+                    PlayingGame.getGameInstance()
                             .getCurrentState()
                             .setGameState(PossibleGameStates.WAIT_FOR_INPUT);
 
-                    playerList.get(i)
+                    realPlayerList.get(i)
                             .getPlayerBoard()
                             .getFaithTrack()
                             .increaseFaithMarker();
                     break;
 
                 case 3:
-                    MultiPlayerGame.getGameInstance()
+                    PlayingGame.getGameInstance()
                             .getCurrentState()
                             .setGameState(PossibleGameStates.WAIT_FOR_INPUT);
 
-                    playerList.get(i)
+                    realPlayerList.get(i)
                             .getPlayerBoard()
                             .getFaithTrack()
                             .increaseFaithMarker();
 
-                    playerList.get(i)
+                    realPlayerList.get(i)
                             .getPlayerBoard()
                             .getFaithTrack()
                             .increaseFaithMarker();

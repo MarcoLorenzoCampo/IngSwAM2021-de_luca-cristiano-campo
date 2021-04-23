@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.market.leaderCards;
 
 import it.polimi.ingsw.enumerations.EffectType;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
@@ -22,7 +22,7 @@ public class ExtraProductionLeaderCard extends LeaderCard {
     @Override
     public void setActive() {
         super.setActive();
-        MultiPlayerGame.getGameInstance()
+        PlayingGame.getGameInstance()
                 .getCurrentPlayer()
                 .getPlayerBoard()
                 .getProductionBoard()

@@ -6,7 +6,6 @@ import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.exceptions.LeaderCardException;
 import it.polimi.ingsw.exceptions.NoMatchingRequisitesException;
 import it.polimi.ingsw.model.game.IGame;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
 public class DiscardLeaderCardAction extends Action {

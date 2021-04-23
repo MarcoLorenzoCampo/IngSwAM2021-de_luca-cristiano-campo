@@ -3,8 +3,8 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.exceptions.EndGameException;
-import it.polimi.ingsw.model.game.MultiPlayerGame;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.player.RealPlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -22,16 +22,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductionCardMarketTest {
 
     private ProductionCardMarket productionCardMarket;
-    private Player testPlayer;
+    private RealPlayer testRealPlayer;
     @Mock
-    MultiPlayerGame testMultiPlayerGame;
+    PlayingGame testPlayingGame;
 
     @BeforeEach
     void setUp() {
         productionCardMarket = new ProductionCardMarket();
-        testPlayer = new Player("UnderTest");
-        testMultiPlayerGame = MultiPlayerGame.getGameInstance();
-        MultiPlayerGame.getGameInstance().setCurrentPlayer(testPlayer);
+        testRealPlayer = new RealPlayer("UnderTest");
+        testPlayingGame = PlayingGame.getGameInstance();
+        PlayingGame.getGameInstance().setCurrentPlayer(testRealPlayer);
     }
 
     /**

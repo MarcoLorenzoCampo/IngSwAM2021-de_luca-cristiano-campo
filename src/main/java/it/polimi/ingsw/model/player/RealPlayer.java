@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 
-public class Player {
+public class RealPlayer {
 
     private final String playerName;
     private int victoryPoints;
@@ -16,7 +16,7 @@ public class Player {
      * Default player constructor.
      * @param name: chosen by the player.
      */
-    public Player(String name) {
+    public RealPlayer(String name) {
 
         this.playerBoard = new RealPlayerBoard(name);
         this.playerName = name;
