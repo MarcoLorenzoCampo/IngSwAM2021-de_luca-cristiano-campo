@@ -2,7 +2,7 @@ package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
@@ -24,16 +24,19 @@ public class BuyProductionCardAction extends Action {
     private final ProductionCard boughtCard;
     private final int destinationSlot;
 
+    private final IGame game;
+
     /**
      * Public constructor for this action.
      * @param actionSender: the Name of the player who requested this action;
      * @param boughtCard: card to be purchased;
      * @param destinationSlot: destination slot in the ProductionBoard;
      */
-    public BuyProductionCardAction(String actionSender, ProductionCard boughtCard, int destinationSlot) {
+    public BuyProductionCardAction(String actionSender, ProductionCard boughtCard, int destinationSlot, IGame game) {
         this.actionSender = actionSender;
         this.boughtCard = boughtCard;
         this.destinationSlot = destinationSlot;
+        this.game = game;
     }
 
     /**
@@ -48,6 +51,7 @@ public class BuyProductionCardAction extends Action {
     @Override
     public void isValid() throws InvalidPlayerException, InvalidGameStateException, BuyCardFromMarketException,
             NoMatchingRequisitesException, EndGameException, InvalidProductionSlotException {
+
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
         ActionValidator.validateBuyCardFromMarketAction(boughtCard);
@@ -57,14 +61,15 @@ public class BuyProductionCardAction extends Action {
     }
 
     private void runAction() throws EndGameException {
-        Game.getGameInstance()
-                .getGameBoard()
+        this.game.getIGameBoard()
                 .getProductionCardMarket()
                 .buyCard(boughtCard);
 
         boughtCard.placeCard(destinationSlot, boughtCard);
 
-        ActionValidator.performedExclusiveAction();
+        this.game.getCurrentPlayer()
+                .getPlayerState()
+                .performedExclusiveAction();
     }
 
     public String getActionSender() {

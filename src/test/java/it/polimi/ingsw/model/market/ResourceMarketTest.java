@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.market;
 
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.MultiPlayerGame;
 import it.polimi.ingsw.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class ResourceMarketTest {
 
     @BeforeEach
     void setUp() {
-        Game.getGameInstance().setCurrentPlayer(new Player("TestPlayer"));
+        MultiPlayerGame.getGameInstance().setCurrentPlayer(new Player("TestPlayer"));
         resourceMarket = new ResourceMarket();
     }
 

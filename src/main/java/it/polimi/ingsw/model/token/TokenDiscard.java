@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.token;
 
 import it.polimi.ingsw.enumerations.Color;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.market.ProductionCardMarket;
 
 public class TokenDiscard implements IToken{
@@ -9,9 +9,12 @@ public class TokenDiscard implements IToken{
     private final Color color;
     private final ProductionCardMarket productionCardMarketReference;
 
-    public TokenDiscard(Color color) {
+    private final IGame game;
+
+    public TokenDiscard(Color color, IGame game) {
         this.color = color;
-        this.productionCardMarketReference = Game.getGameInstance().getGameBoard().getProductionCardMarket();
+        this.game = game;
+        this.productionCardMarketReference = game.getIGameBoard().getProductionCardMarket();
     }
 
     /**

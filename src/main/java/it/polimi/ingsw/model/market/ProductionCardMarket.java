@@ -4,10 +4,9 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.exceptions.EndGameException;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.MultiPlayerGame;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
-import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -82,7 +81,7 @@ public class ProductionCardMarket {
     public void buyCard(ProductionCard boughtCard) throws EndGameException {
         playableProductionCards.remove(boughtCard);
         replaceBoughtCard(boughtCard);
-        Game.getGameInstance()
+        MultiPlayerGame.getGameInstance()
                 .getCurrentPlayer()
                 .getPlayerBoard()
                 .increaseBoughCardsCount();

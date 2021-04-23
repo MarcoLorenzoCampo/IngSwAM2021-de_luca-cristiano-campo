@@ -4,7 +4,8 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.GetResourceFromMarketException;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.game.MultiPlayerGame;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
 public class GetResourceFromMarketAction extends Action {
@@ -13,14 +14,17 @@ public class GetResourceFromMarketAction extends Action {
     private final String actionSender;
     private final int indexToPickFrom;
 
+    private final IGame game;
+
     /**
      * Public builder for this action.
      * @param actionSender the Name of the player who requested this action
      * @param indexToPickFrom the slot in which the card should be placed
      */
-    public GetResourceFromMarketAction(String actionSender, int indexToPickFrom) {
+    public GetResourceFromMarketAction(String actionSender, int indexToPickFrom, IGame game) {
         this.actionSender = actionSender;
         this.indexToPickFrom = indexToPickFrom;
+        this.game = game;
     }
 
     /**
@@ -42,10 +46,13 @@ public class GetResourceFromMarketAction extends Action {
      * Action to perform if verified.
      */
     private void runAction() {
-        Game.getGameInstance()
-                .getGameBoard()
+        this.game.getIGameBoard()
                 .getResourceMarket()
                 .pickResources(indexToPickFrom);
+
+        this.game.getCurrentPlayer()
+                .getPlayerState()
+                .performedExclusiveAction();
     }
 
     public PossibleAction getActionTag() {

@@ -3,16 +3,13 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.exceptions.EndGameException;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.MultiPlayerGame;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.parsers.ProductionCardsParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import java.io.FileNotFoundException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -27,14 +24,14 @@ class ProductionCardMarketTest {
     private ProductionCardMarket productionCardMarket;
     private Player testPlayer;
     @Mock
-    Game testGame;
+    MultiPlayerGame testMultiPlayerGame;
 
     @BeforeEach
     void setUp() {
         productionCardMarket = new ProductionCardMarket();
         testPlayer = new Player("UnderTest");
-        testGame = Game.getGameInstance();
-        Game.getGameInstance().setCurrentPlayer(testPlayer);
+        testMultiPlayerGame = MultiPlayerGame.getGameInstance();
+        MultiPlayerGame.getGameInstance().setCurrentPlayer(testPlayer);
     }
 
     /**

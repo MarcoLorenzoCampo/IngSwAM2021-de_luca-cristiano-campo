@@ -1,8 +1,9 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.MultiPlayerGame;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.Collections;
@@ -15,8 +16,8 @@ import java.util.List;
 public final class LobbyManager {
 
     private static final int MAX_PLAYERS = 4;
-    private static int numberOfTurns = 0;
 
+    private static int numberOfTurns = 0;
     private static final List<Player> playerList = new LinkedList<>();
 
     private LobbyManager() {
@@ -41,15 +42,55 @@ public final class LobbyManager {
     }
 
     public static void setPlayingOrder() {
-
         Collections.shuffle(playerList);
         playerList.get(0).setFirstToPlay();
-        Game.getGameInstance().setCurrentPlayer(playerList.get(0));
+        MultiPlayerGame.getGameInstance().setCurrentPlayer(playerList.get(0));
+
+        setDefaultResources();
     }
 
     public static void setNextTurn() {
         numberOfTurns++;
-        Game.getGameInstance()
+        MultiPlayerGame.getGameInstance()
                 .setCurrentPlayer(playerList.get(numberOfTurns%playerList.size()));
+    }
+
+    private static void setDefaultResources() {
+        for(int i=0; i<playerList.size(); i++) {
+
+            switch(i) {
+                case 1:
+                    MultiPlayerGame.getGameInstance()
+                            .getCurrentState()
+                            .setGameState(PossibleGameStates.WAIT_FOR_INPUT);
+                    break;
+                case 2:
+                    MultiPlayerGame.getGameInstance()
+                            .getCurrentState()
+                            .setGameState(PossibleGameStates.WAIT_FOR_INPUT);
+
+                    playerList.get(i)
+                            .getPlayerBoard()
+                            .getFaithTrack()
+                            .increaseFaithMarker();
+                    break;
+
+                case 3:
+                    MultiPlayerGame.getGameInstance()
+                            .getCurrentState()
+                            .setGameState(PossibleGameStates.WAIT_FOR_INPUT);
+
+                    playerList.get(i)
+                            .getPlayerBoard()
+                            .getFaithTrack()
+                            .increaseFaithMarker();
+
+                    playerList.get(i)
+                            .getPlayerBoard()
+                            .getFaithTrack()
+                            .increaseFaithMarker();
+                    break;
+            }
+        }
     }
 }

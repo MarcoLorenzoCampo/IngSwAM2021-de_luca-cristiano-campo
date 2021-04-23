@@ -6,13 +6,16 @@ public class Player {
 
     private final String playerName;
     private int victoryPoints;
-    private final RealPlayerBoard playerBoard;
+    private RealPlayerBoard playerBoard;
     private boolean firstToPlay = false;
-    private final PlayerState playerState;
+    private PlayerState playerState;
 
+    private InventoryManager inventoryManager;
 
-    private final InventoryManager inventoryManager;
-
+    /**
+     * Default player constructor.
+     * @param name: chosen by the player.
+     */
     public Player(String name) {
 
         this.playerBoard = new RealPlayerBoard(name);
@@ -21,7 +24,6 @@ public class Player {
         this.playerState = new PlayerState();
         this.inventoryManager = new InventoryManager();
     }
-
 
     public InventoryManager getInventoryManager() {
         return inventoryManager;
@@ -43,7 +45,9 @@ public class Player {
         return victoryPoints;
     }
 
-    public RealPlayerBoard getPlayerBoard() { return playerBoard; }
+    public RealPlayerBoard getPlayerBoard() {
+        return playerBoard;
+    }
 
     public void setVictoryPoints(int victoryPoints) {
         this.victoryPoints = victoryPoints;

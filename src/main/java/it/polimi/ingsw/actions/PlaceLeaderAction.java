@@ -2,7 +2,8 @@ package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.game.MultiPlayerGame;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
 /**
@@ -18,14 +19,17 @@ public class PlaceLeaderAction extends Action {
     private final String actionSender;
     private final int leaderToActivate;
 
+    private final IGame game;
+
     /**
      * Public builder for this action.
      * @param actionSender: the Name of the player who requested this action;
      * @param leaderToActivate: Card index to activate;
      */
-    public PlaceLeaderAction(String actionSender, int leaderToActivate) {
+    public PlaceLeaderAction(String actionSender, int leaderToActivate, IGame game) {
         this.actionSender = actionSender;
         this.leaderToActivate = leaderToActivate;
+        this.game = game;
     }
 
     /**
@@ -38,6 +42,7 @@ public class PlaceLeaderAction extends Action {
     @Override
     public void isValid() throws InvalidGameStateException, InvalidPlayerException,
             LeaderCardException, NoMatchingRequisitesException {
+
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
         ActionValidator.leaderValidator(leaderToActivate);
@@ -46,8 +51,7 @@ public class PlaceLeaderAction extends Action {
     }
 
     private void runAction() {
-        Game.getGameInstance()
-                .getCurrentPlayer()
+        this.game.getCurrentPlayer()
                 .getPlayerBoard()
                 .getOwnedLeaderCards()
                 .get(leaderToActivate)

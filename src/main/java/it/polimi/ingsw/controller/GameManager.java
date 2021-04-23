@@ -1,5 +1,13 @@
 package it.polimi.ingsw.controller;
 
-public class GameManager {
+public final class GameManager {
 
+    ActionManager actionManager;
+
+    public GameManager(boolean isSinglePlayer) {
+    }
+
+    public ActionManager getActionManager() {
+        return actionManager;
+    }
 }
