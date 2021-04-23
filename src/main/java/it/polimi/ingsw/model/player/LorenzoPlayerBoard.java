@@ -1,18 +1,23 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.actions.Action;
+import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
-import it.polimi.ingsw.model.productionBoard.ProductionBoard;
 import it.polimi.ingsw.model.token.LorenzoTokenPile;
 
 import java.util.Collections;
 
-public class LorenzoPlayerBoard extends PlayerBoard {
+public class LorenzoPlayerBoard {
     private final FaithTrack lorenzoFaithTrack;
     private final LorenzoTokenPile lorenzoActions;
 
     public LorenzoPlayerBoard() {
         lorenzoActions = new LorenzoTokenPile();
         lorenzoFaithTrack = new FaithTrack();
+    }
+
+    public void getAction(LorenzoAction toPerform) {
+        toPerform.isValid();
     }
 
     public FaithTrack getLorenzoFaithTrack() {
@@ -29,14 +34,8 @@ public class LorenzoPlayerBoard extends PlayerBoard {
         }
     }
 
-    @Override
     public FaithTrack getFaithTrack() {
         return lorenzoFaithTrack;
-    }
-
-    @Override
-    public ProductionBoard getProductionBoard() {
-        return null;
     }
 
     public void shuffleTokens() {

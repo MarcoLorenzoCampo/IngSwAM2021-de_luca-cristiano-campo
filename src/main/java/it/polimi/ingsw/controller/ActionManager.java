@@ -10,9 +10,11 @@ import it.polimi.ingsw.actions.Action;
 public final class ActionManager {
 
     private final IGame currentGame;
+    private final ILobbyManager caller;
 
-    public ActionManager(IGame currentGame) {
+    public ActionManager(IGame currentGame, ILobbyManager caller) {
         this.currentGame = currentGame;
+        this.caller = caller;
     }
 
     /**
@@ -34,6 +36,8 @@ public final class ActionManager {
         } catch (BuyCardFromMarketException e) {
             //
         } catch (EndTurnException e) {
+
+            caller.setNextTurn();
 
         } catch (NoMatchingRequisitesException e) {
             //

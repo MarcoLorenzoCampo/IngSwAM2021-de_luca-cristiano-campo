@@ -12,7 +12,7 @@ public final class GameManager {
     public GameManager(boolean isSinglePlayer) {
 
         currentGame = PlayingGame.getGameInstance();
-        actionManager = new ActionManager(currentGame);
+        actionManager = new ActionManager(currentGame, this.lobbyManager);
 
         if(isSinglePlayer) {
             lobbyManager = new SinglePlayerLobbyManager(currentGame);

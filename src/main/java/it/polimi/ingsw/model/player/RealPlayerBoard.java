@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.productionBoard.ProductionBoard;
 
 import java.util.List;
 
-public class RealPlayerBoard extends PlayerBoard {
+public class RealPlayerBoard {
 
     private int boughtCardsNumber;
     private final String owner;
@@ -31,11 +31,11 @@ public class RealPlayerBoard extends PlayerBoard {
         this.ownedLeaderCards = ownedLeaderCards;
     }
 
-    @Override
     public void getAction(Action performedAction) throws InvalidPlayerException,
             InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, EndTurnException,
             NoMatchingRequisitesException, LeaderCardException, EndGameException, InvalidProductionSlotException {
-        super.getAction(performedAction);
+
+        performedAction.isValid();
     }
 
     public void increaseBoughCardsCount() throws EndGameException {

@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.token;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.market.ProductionCardMarket;
+import it.polimi.ingsw.model.player.LorenzoPlayer;
 
 public class TokenDiscard implements IToken{
 
@@ -21,8 +22,7 @@ public class TokenDiscard implements IToken{
      * Method to remove two cards of a specified color from the production
      * cards deck.
      */
-    @Override
-    public void tokenAction() {
+    public void tokenAction(LorenzoPlayer lorenzo) {
         productionCardMarketReference.lorenzoRemovesTwo(color);
     }
 }

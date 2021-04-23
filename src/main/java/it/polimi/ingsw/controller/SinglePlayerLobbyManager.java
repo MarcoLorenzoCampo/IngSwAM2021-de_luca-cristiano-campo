@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.exceptions.NameTakenException;
-import it.polimi.ingsw.exceptions.NoMorePlayersException;
+import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
 import it.polimi.ingsw.model.player.RealPlayer;
@@ -10,7 +9,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
 
     private final IGame currentGame;
     private RealPlayer player;
-    private LorenzoPlayer lorenzo;
+    private final LorenzoPlayer lorenzo;
 
     public SinglePlayerLobbyManager(IGame currentGame) {
         this.currentGame = currentGame;
@@ -18,7 +17,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
     }
 
     @Override
-    public void addNewPlayer(String nickname) throws NameTakenException, NoMorePlayersException {
+    public void addNewPlayer(String nickname) {
         player = new RealPlayer(nickname);
 
         setPlayingOrder();
@@ -32,6 +31,6 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
 
     @Override
     public void setNextTurn() {
-        currentGame.setCurrentPlayer(player);
+        lorenzo.getLorenzoPlayerBoard().getAction(new LorenzoAction(lorenzo));
     }
 }

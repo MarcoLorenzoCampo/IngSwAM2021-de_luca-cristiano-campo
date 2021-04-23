@@ -17,4 +17,12 @@ public class LorenzoPlayer {
     public String getName() {
         return name;
     }
+
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
+    }
+
+    public LorenzoPlayerBoard getLorenzoPlayerBoard() {
+        return lorenzoPlayerBoard;
+    }
 }

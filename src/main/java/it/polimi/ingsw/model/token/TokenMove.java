@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.token;
 
 import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.player.LorenzoPlayer;
 
 public class TokenMove implements IToken{
 
@@ -24,9 +25,16 @@ public class TokenMove implements IToken{
     /**
      * Method to increment Lorenzo's position on his faith track.
      */
-    @Override
-    public void tokenAction() {
+    public void tokenAction(LorenzoPlayer lorenzo) {
         //make lorenzo move "moves" times and shuffle if "shuffle" is true;
+        for(int i=0; i<moves; i++) {
+            lorenzo.getLorenzoPlayerBoard()
+                    .getLorenzoFaithTrack()
+                    .increaseFaithMarker();
+        }
 
+        if(shuffle) {
+            lorenzo.getLorenzoPlayerBoard().shuffleTokens();
+        }
     }
 }

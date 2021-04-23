@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.exceptions.NameTakenException;
-import it.polimi.ingsw.exceptions.NoMorePlayersException;
+import it.polimi.ingsw.exceptions.*;
 
 public interface ILobbyManager {
 
