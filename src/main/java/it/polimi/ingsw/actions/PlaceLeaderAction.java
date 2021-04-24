@@ -51,7 +51,6 @@ public class PlaceLeaderAction extends Action {
 
     private void runAction() {
         this.game.getCurrentPlayer()
-                .getPlayerBoard()
                 .getOwnedLeaderCards()
                 .get(leaderToActivate)
                 .setActive();

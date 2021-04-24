@@ -14,7 +14,7 @@ public class ExtraProductionLeaderCard extends LeaderCard {
     public ExtraProductionLeaderCard(int victoryPoints, EffectType effectType, DevelopmentTag[] requirements,
              ResourceTag[] inputResources, ResourceTag[] outputResources) {
 
-        super(victoryPoints, effectType, requirements);
+        super(victoryPoints, effectType, requirements, null);
         this.inputResources = inputResources;
         this.outputResources = outputResources;
     }

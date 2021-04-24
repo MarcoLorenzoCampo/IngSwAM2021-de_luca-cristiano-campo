@@ -39,11 +39,6 @@ public class WarehouseTest {
         }
         assertTrue(warehouse.isWarehouseValid());
         assertEquals(3, warehouse.getShelves().size());
-
-        for (Shelf iterator: warehouse.getShelves()) {
-            System.out.println(
-                    iterator.getType() +" "+ iterator.getQuantity() +" "+iterator.getCapacity());
-        }
     }
 
     @Test
@@ -83,11 +78,6 @@ public class WarehouseTest {
         //Assert
         assertTrue(warehouse.isWarehouseValid());
         assertEquals(3, warehouse.getShelves().size());
-
-        for (Shelf iterator: warehouse.getShelves()) {
-            System.out.println(
-                    iterator.getType() +" "+ iterator.getQuantity() +" "+iterator.getCapacity());
-        }
     }
 
     @Test
@@ -108,11 +98,6 @@ public class WarehouseTest {
         //Assert
         assertTrue(warehouse.isWarehouseValid());
         assertEquals(3, warehouse.getShelves().size());
-
-        for (Shelf iterator: warehouse.getShelves()) {
-            System.out.println(
-                    iterator.getType() +" "+ iterator.getQuantity() +" "+iterator.getCapacity());
-        }
     }
 
     @Test
@@ -130,11 +115,6 @@ public class WarehouseTest {
         Assertions.assertThrows(DiscardResourceException.class, ()->warehouse.addResource(fourthResource));
         assertTrue(warehouse.isWarehouseValid());
         assertEquals(3, warehouse.getShelves().size());
-
-        for (Shelf iterator: warehouse.getShelves()) {
-            System.out.println(
-                    iterator.getType() +" "+ iterator.getQuantity() +" "+iterator.getCapacity());
-        }
     }
 
     @Test
@@ -174,11 +154,6 @@ public class WarehouseTest {
         assertEquals(3, warehouse.getShelves().get(2).getQuantity());
         assertEquals(ResourceType.COIN, warehouse.getShelves().get(3).getType());
         assertEquals(2, warehouse.getShelves().get(3).getQuantity());
-
-        for (Shelf iterator: warehouse.getShelves()) {
-            System.out.println(
-                    iterator.getType() +" "+ iterator.getQuantity() +" "+iterator.getCapacity());
-        }
     }
 
     @Test
@@ -201,11 +176,6 @@ public class WarehouseTest {
 
         assertTrue(warehouse.isWarehouseValid());
         assertEquals(4, warehouse.getShelves().size());
-
-        for (Shelf iterator: warehouse.getShelves()) {
-            System.out.println(
-                    iterator.getType() +" "+ iterator.getQuantity() +" "+iterator.getCapacity());
-        }
     }
 
     @Test
@@ -224,11 +194,6 @@ public class WarehouseTest {
 
         assertTrue(warehouse.isWarehouseValid());
         assertEquals(3, warehouse.getShelves().size());
-
-        /*for (Shelf iterator: warehouse.getShelves()) {
-            System.out.println(
-                    iterator.getType() +" "+ iterator.getQuantity() +" "+iterator.getCapacity());
-        }*/
     }
 
 

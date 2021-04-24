@@ -15,7 +15,6 @@ public class RealPlayerBoard {
     private int boughtCardsNumber;
     private final String owner;
     private final FaithTrack faithTrack;
-    List<LeaderCard> ownedLeaderCards;
     ProductionBoard productionBoard;
     InventoryManager inventoryManager;
 
@@ -25,10 +24,6 @@ public class RealPlayerBoard {
         boughtCardsNumber = 0;
         productionBoard = new ProductionBoard();
         inventoryManager = new InventoryManager();
-    }
-
-    public void setOwnedLeaderCards(List<LeaderCard> ownedLeaderCards) {
-        this.ownedLeaderCards = ownedLeaderCards;
     }
 
     public void getAction(Action performedAction) throws InvalidPlayerException,
@@ -52,9 +47,6 @@ public class RealPlayerBoard {
     }
     public ProductionBoard getProductionBoard() {
         return productionBoard;
-    }
-    public List<LeaderCard> getOwnedLeaderCards() {
-        return ownedLeaderCards;
     }
     public InventoryManager getInventoryManager() {
         return inventoryManager;

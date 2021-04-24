@@ -21,6 +21,13 @@ public final class LeaderCardsDeckBuilder {
 
         List<LeaderCard> leaderCardsDeck = new LinkedList<>();
 
+        leaderCardsDeck.add(new ExtraInventoryLeaderCard(
+                3,
+                EffectType.EXTRA_INVENTORY,
+                new ResourceTag[] {new ResourceTag(ResourceType.COIN, 5)},
+                null,
+                ResourceType.STONE
+        ));
         leaderCardsDeck.add(new ExtraProductionLeaderCard(
                 4,
                 EffectType.EXTRA_PRODUCTION,
@@ -85,24 +92,21 @@ public final class LeaderCardsDeckBuilder {
                 3,
                 EffectType.EXTRA_INVENTORY,
                 new ResourceTag[] {new ResourceTag(ResourceType.STONE, 5)},
+                null,
                 ResourceType.SERVANT
         ));
         leaderCardsDeck.add(new ExtraInventoryLeaderCard(
                 3,
                 EffectType.EXTRA_INVENTORY,
-                new ResourceTag[] {new ResourceTag(ResourceType.COIN, 5)},
-                ResourceType.STONE
-        ));
-        leaderCardsDeck.add(new ExtraInventoryLeaderCard(
-                3,
-                EffectType.EXTRA_INVENTORY,
                 new ResourceTag[] {new ResourceTag(ResourceType.SHIELD, 5)},
+                null,
                 ResourceType.COIN
         ));
         leaderCardsDeck.add(new ExtraInventoryLeaderCard(
                 3,
                 EffectType.EXTRA_INVENTORY,
                 new ResourceTag[] {new ResourceTag(ResourceType.SERVANT, 5)},
+                null,
                 ResourceType.SHIELD
         ));
         leaderCardsDeck.add(new MarbleExchangeLeaderCard(

@@ -6,6 +6,7 @@ import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.RealPlayer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -49,6 +50,7 @@ class ProductionCardMarketTest {
     }
 
     @Test
+    @Disabled
     void showAvailableCardsTest() {
         productionCardMarket.showAvailableCards();
     }

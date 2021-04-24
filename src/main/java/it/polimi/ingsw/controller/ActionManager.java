@@ -38,7 +38,6 @@ public final class ActionManager {
         } catch (EndTurnException e) {
 
             caller.setNextTurn();
-
         } catch (NoMatchingRequisitesException e) {
             //
         } catch (LeaderCardException e) {

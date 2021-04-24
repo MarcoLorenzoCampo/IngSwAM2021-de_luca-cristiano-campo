@@ -10,7 +10,7 @@ public class MarbleExchangeLeaderCard extends LeaderCard {
     ResourceType exchangeResource;
 
     public MarbleExchangeLeaderCard(int victoryPoints, EffectType effectType, DevelopmentTag[] requirements, ResourceType exchangeResource) {
-        super(victoryPoints, effectType, requirements);
+        super(victoryPoints, effectType, requirements, null);
         this.exchangeResource = exchangeResource;
     }
 

@@ -136,10 +136,6 @@ public class FaithTrack {
         return faithTrack;
     }
 
-    public void setFaithTrack(List<Tile> faithTrack) {
-        this.faithTrack = faithTrack;
-    }
-
     public int getFaithMarker() {
         return faithMarker;
     }

@@ -11,7 +11,7 @@ public class DiscountLeaderCard extends LeaderCard {
 
     public DiscountLeaderCard(int victoryPoints, EffectType effectType,
                               DevelopmentTag[] requirements, ResourceType discountedResource) {
-        super(victoryPoints, effectType, requirements);
+        super(victoryPoints, effectType, requirements, null);
         this.discountedResource = discountedResource;
     }
 

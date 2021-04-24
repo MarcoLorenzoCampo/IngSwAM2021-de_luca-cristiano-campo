@@ -29,14 +29,13 @@ public class DiscardLeaderCardAction extends Action {
 
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
-        ActionValidator.leaderValidator(leaderToDiscard);
+        ActionValidator.discardLeaderValidator(leaderToDiscard);
 
         runAction();
     }
 
     private void runAction() {
         this.game.getCurrentPlayer()
-                .getPlayerBoard()
                 .getOwnedLeaderCards()
                 .remove(leaderToDiscard);
     }

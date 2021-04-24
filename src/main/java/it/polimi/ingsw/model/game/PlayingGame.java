@@ -9,29 +9,27 @@ import it.polimi.ingsw.model.player.RealPlayer;
  * @author Marco Lorenzo Campo
  * Singleton class, only one multiplayer game instance is available in each game.
  */
-public class PlayingGame extends Game implements IGame {
+public class PlayingGame implements IGame {
 
     private static final int MAX_CARDS_BOUGHT = 7;
 
     private IGameBoard iGameBoard;
     private static PlayingGame playingGameInstance;
     private static GameState currentState;
+    private RealPlayer currentPlayer;
 
     private PlayingGame(IGameBoard iGameBoard) {
         this.iGameBoard = iGameBoard;
     }
 
-    private PlayingGame() { }
-
     public void setCurrentPlayer(RealPlayer currentRealPlayer) {
-        super.setCurrentPlayer(currentRealPlayer);
+        this.currentPlayer = currentRealPlayer;
     }
-
     /**
      * @throws EndGameException telling the controller game is ending next turn
      */
     public void endGame() throws EndGameException {
-        super.endGame();
+        throw new EndGameException("PlayingGame ended! " + currentPlayer.getName() + " won!");
     }
 
     /**
@@ -49,7 +47,7 @@ public class PlayingGame extends Game implements IGame {
     }
 
     public RealPlayer getCurrentPlayer() {
-        return super.getCurrentPlayer();
+        return currentPlayer;
     }
 
     public int getMaxCardsBought() {
@@ -57,7 +55,7 @@ public class PlayingGame extends Game implements IGame {
     }
 
     public GameState getCurrentState() {
-        return super.getCurrentState();
+        return currentState;
     }
 
     public IGameBoard getIGameBoard() {

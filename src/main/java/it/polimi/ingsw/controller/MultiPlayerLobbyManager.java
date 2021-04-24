@@ -5,7 +5,9 @@ import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.RealPlayer;
+import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -18,15 +20,12 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
     private static final int MAX_PLAYERS = 4;
 
-    private final IGame currentGame;
-
     private int numberOfTurns;
     private final List<RealPlayer> realPlayerList;
 
     public MultiPlayerLobbyManager(IGame currentGame) {
-        realPlayerList = new LinkedList<>();
+        this.realPlayerList = new LinkedList<>();
         numberOfTurns = 0;
-        this.currentGame = currentGame;
     }
 
     /**
@@ -53,6 +52,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         realPlayerList.get(0).setFirstToPlay();
         PlayingGame.getGameInstance().setCurrentPlayer(realPlayerList.get(0));
 
+        giveLeaderCards();
         setDefaultResources();
     }
 
@@ -61,6 +61,17 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         numberOfTurns++;
         PlayingGame.getGameInstance()
                 .setCurrentPlayer(realPlayerList.get(numberOfTurns% realPlayerList.size()));
+    }
+
+    @Override
+    public void giveLeaderCards() {
+        List<LeaderCard> leaderCards = LeaderCardsDeckBuilder.deckBuilder();
+
+        for(int i=0; i<realPlayerList.size(); i++) {
+            realPlayerList
+                    .get(i)
+                    .setOwnedLeaderCards(leaderCards.subList(4*i, 4*i + 4));
+        }
     }
 
     private void setDefaultResources() {
@@ -100,5 +111,13 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
                     break;
             }
         }
+    }
+
+    public int getNumberOfTurns() {
+        return numberOfTurns;
+    }
+
+    public List<RealPlayer> getRealPlayerList() {
+        return realPlayerList;
     }
 }

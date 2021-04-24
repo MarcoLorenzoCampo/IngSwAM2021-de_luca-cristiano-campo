@@ -98,36 +98,53 @@ public final class ActionValidator {
     }
 
     /**
-     * Verifies a leader card can be discarded.
+     * Validates the ownership of a specific leader card
+     * @param index: card to verify.
+     * @throws LeaderCardException: generic exception thrown by leader actions.
+     */
+    public static void discardLeaderValidator(int index) throws LeaderCardException {
+        if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPlaceableLeaders()
+                || index >= PlayingGame.getGameInstance().getCurrentPlayer().getOwnedLeaderCards().size()) {
+            throw new LeaderCardException("You don't own that card!");
+        }
+    }
+
+    /**
+     * Verifies a leader card can be placed.
      * @throws LeaderCardException generic exception regarding leader cards.
      */
     public static void leaderValidator(int index) throws LeaderCardException, NoMatchingRequisitesException {
+        discardLeaderValidator(index);
 
-        if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPlaceableLeaders()
-            || index >= PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getOwnedLeaderCards().size())
-            throw new LeaderCardException("You don't own that card!");
+        if(PlayingGame.getGameInstance().getCurrentPlayer().getOwnedLeaderCards().get(index).getRequirementsResource() == null) {
+            if (validateLeaderDevTags(PlayingGame.getGameInstance()
+                    .getCurrentPlayer().getOwnedLeaderCards().get(index).getRequirementsDevCards()))
+                throw new NoMatchingRequisitesException();
+        }
 
-        if(!validateLeaderRequirements(PlayingGame.getGameInstance()
-                .getCurrentPlayer().getPlayerBoard().getOwnedLeaderCards().get(index).getRequisites()))
-            throw new NoMatchingRequisitesException();
+        if(PlayingGame.getGameInstance().getCurrentPlayer().getOwnedLeaderCards().get(index).getRequirementsDevCards() == null) {
+            if (!validateLeaderResourceTags(PlayingGame.getGameInstance()
+                    .getCurrentPlayer().getOwnedLeaderCards().get(index).getRequirementsResource()))
+                throw new NoMatchingRequisitesException();
+        }
     }
 
     /**
      * Validation of DevelopmentTags.
      */
-    private static boolean validateLeaderRequirements(DevelopmentTag[] requirements) {
+    private static boolean validateLeaderDevTags(DevelopmentTag[] requirements) {
         for(DevelopmentTag iterator : requirements) {
             if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard().getInventory()
                     .get(iterator.getColor())[iterator.getLevel().ordinal()]<iterator.getQuantity())
-                return false;
+                return true;
         }
-        return true;
+        return false;
     }
 
     /**
      * Validation of ResourceTags.
      */
-    private static boolean validateLeaderRequirements(ResourceTag[] requirements) {
+    private static boolean validateLeaderResourceTags(ResourceTag[] requirements) {
         Map<ResourceType, Integer> actualInventory = PlayingGame.getGameInstance().getCurrentPlayer()
                 .getInventoryManager().getInventory();
 

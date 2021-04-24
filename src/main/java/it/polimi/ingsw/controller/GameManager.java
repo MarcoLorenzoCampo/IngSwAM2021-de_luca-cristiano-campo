@@ -5,9 +5,9 @@ import it.polimi.ingsw.model.game.PlayingGame;
 
 public final class GameManager {
 
-    IGame currentGame;
-    ActionManager actionManager;
-    ILobbyManager lobbyManager;
+    private final IGame currentGame;
+    private final ActionManager actionManager;
+    private ILobbyManager lobbyManager;
 
     public GameManager(boolean isSinglePlayer) {
 
@@ -24,5 +24,13 @@ public final class GameManager {
 
     public ActionManager getActionManager() {
         return actionManager;
+    }
+
+    public IGame getCurrentGame() {
+        return currentGame;
+    }
+
+    public ILobbyManager getLobbyManager() {
+        return lobbyManager;
     }
 }

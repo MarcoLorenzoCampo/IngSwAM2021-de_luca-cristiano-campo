@@ -11,13 +11,18 @@ import java.util.Objects;
 
 public class ProductionCard extends BaseProduction {
 
-    private Level level;
-    private Color color;
-    private int victoryPoints;
-    private ArrayList<ResourceTag> requirements;
+    private final Level level;
+    private final Color color;
+    private final int victoryPoints;
+    private final ArrayList<ResourceTag> requirements;
 
-    /* no need for a public constructor */
-    private ProductionCard() { }
+    /* for testing purposes */
+    public ProductionCard(Level level, Color color, int victoryPoints, ArrayList<ResourceTag> requirements) {
+        this.level = level;
+        this.color = color;
+        this.victoryPoints = victoryPoints;
+        this.requirements = requirements;
+    }
 
     public Level getLevel() {
         return level;

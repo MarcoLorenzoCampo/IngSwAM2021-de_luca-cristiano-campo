@@ -1,6 +1,10 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class RealPlayer {
 
@@ -9,6 +13,8 @@ public class RealPlayer {
     private RealPlayerBoard playerBoard;
     private boolean firstToPlay = false;
     private PlayerState playerState;
+
+    private List<LeaderCard> ownedLeaderCards;
 
     private InventoryManager inventoryManager;
 
@@ -23,6 +29,11 @@ public class RealPlayer {
         this.victoryPoints = 0;
         this.playerState = new PlayerState();
         this.inventoryManager = new InventoryManager();
+        this.ownedLeaderCards = new LinkedList<>();
+    }
+
+    public void setOwnedLeaderCards(List<LeaderCard> ownedLeaderCards) {
+        this.ownedLeaderCards = ownedLeaderCards;
     }
 
     public InventoryManager getInventoryManager() {
@@ -55,5 +66,9 @@ public class RealPlayer {
 
     public PlayerState getPlayerState() {
         return playerState;
+    }
+
+    public List<LeaderCard> getOwnedLeaderCards() {
+        return ownedLeaderCards;
     }
 }
