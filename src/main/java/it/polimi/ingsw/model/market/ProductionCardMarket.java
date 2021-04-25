@@ -21,6 +21,10 @@ public class ProductionCardMarket {
     private final List<ProductionCard> playableProductionCards;
     private List<ProductionCard> availableCards;    /* Each RealPlayer sees the available cards only */
 
+    /**
+     * When the game stars, the market is created by the production cards (development cards)
+     * parsing from JSON, and setting the available ones, sorted by level.
+     */
     public ProductionCardMarket() {
         playableProductionCards = ProductionCardsParser.parseProductionDeck();
         Collections.shuffle(playableProductionCards);
@@ -104,7 +108,8 @@ public class ProductionCardMarket {
     }
 
     /**
-     * Method to find the lowest level card available for a specific color.
+     * Method to find the lowest level card available for a specific color. Available cards
+     * are sorted by level, so the first instance of a card is also the lowest level available.
      * @param color, specific color to look for.
      * @return the lowest level available.
      */
@@ -121,6 +126,9 @@ public class ProductionCardMarket {
         throw new NullPointerException();
     }
 
+    /**
+     * Method to sort the available cards by level when one is removed/replaced.
+     */
     private void sortAvailableCardsByLevel() {
         availableCards = availableCards
                 .stream()

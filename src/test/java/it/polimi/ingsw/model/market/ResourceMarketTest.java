@@ -9,11 +9,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * @author Marco Lorenzo Campo
- */
 class ResourceMarketTest {
-
 
     private ResourceMarket resourceMarket;
 

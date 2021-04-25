@@ -4,6 +4,9 @@ import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
+/**
+ * Every specific leader card type extends this base leader card.
+ */
 public abstract class LeaderCard {
 
     private final int victoryPoints;
@@ -12,6 +15,10 @@ public abstract class LeaderCard {
     private final DevelopmentTag[] requirementsDevCards;
     private final ResourceTag[] requirementsResource;
 
+    /**
+     * Building the cards using the attributes given by the builder class.
+     * {@link it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder}
+     */
     public LeaderCard(int victoryPoints, EffectType effectType,
                       DevelopmentTag[] requirementsDevCards, ResourceTag[] requirementsResource) {
         this.effectType = effectType;
@@ -21,6 +28,10 @@ public abstract class LeaderCard {
         this.requirementsResource = requirementsResource;
     }
 
+    /**
+     * Sets the boolean value to true and gets overridden by the subclass activating its specific
+     * effect.
+     */
     public void setActive() {
         isActive = true;
     }
