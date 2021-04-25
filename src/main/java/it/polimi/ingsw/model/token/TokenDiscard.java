@@ -23,6 +23,7 @@ public class TokenDiscard implements IToken{
      * cards deck.
      */
     public void tokenAction(LorenzoPlayer lorenzo) {
-        productionCardMarketReference.lorenzoRemovesTwo(color);
+        productionCardMarketReference.lorenzoRemoves(color);
+        productionCardMarketReference.lorenzoRemoves(color);
     }
 }

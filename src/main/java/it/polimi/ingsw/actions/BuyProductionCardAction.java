@@ -72,14 +72,6 @@ public class BuyProductionCardAction extends Action {
                 .performedExclusiveAction();
     }
 
-    public String getActionSender() {
-        return actionSender;
-    }
-
-    public ProductionCard getBoughtCard() {
-        return boughtCard;
-    }
-
     public PossibleAction getActionTag() {
         return actionTag;
     }

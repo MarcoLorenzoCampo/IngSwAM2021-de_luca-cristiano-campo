@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Utility class to manage the players and the sequence of turns.
+ * Class to manage players and turns in a multiplayer game.
  */
 public final class MultiPlayerLobbyManager implements ILobbyManager {
 

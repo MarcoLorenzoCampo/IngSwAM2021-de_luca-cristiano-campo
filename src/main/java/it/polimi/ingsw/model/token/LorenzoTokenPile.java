@@ -7,7 +7,7 @@ import java.util.List;
 
 public class LorenzoTokenPile {
 
-    private static int lastTaken;
+    private int lastTaken;
     private final List<IToken> lorenzoTokens;
 
     public LorenzoTokenPile() {
@@ -24,4 +24,7 @@ public class LorenzoTokenPile {
         return lorenzoTokens;
     }
 
+    public int getLastTaken() {
+        return lastTaken;
+    }
 }

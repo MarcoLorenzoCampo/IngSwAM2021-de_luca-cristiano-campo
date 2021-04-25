@@ -11,9 +11,12 @@ import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class to manage players and turns in a single player game.
+ */
 public class SinglePlayerLobbyManager implements ILobbyManager {
 
-    int numberOfTurns;
+    private int numberOfTurns;
     private final IGame currentGame;
     private RealPlayer player;
     private final LorenzoPlayer lorenzo;
@@ -24,9 +27,13 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
         numberOfTurns = 0;
     }
 
+    /**
+     * Checks if a player can be added.
+     * @param nickname: name to add;
+     * @throws NoMorePlayersException thrown if a "add player" command is mistakenly sent after the first one.
+     */
     @Override
     public void addNewPlayer(String nickname) throws NoMorePlayersException {
-
         if(player == null) {
             player = new RealPlayer(nickname);
         } else  {
@@ -35,6 +42,10 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
         setPlayingOrder();
     }
 
+    /**
+     * Sets the only player as the first one. This will never change during the game.
+     * Also call the method to deal LeaderCards.
+     */
     @Override
     public void setPlayingOrder() {
         player.setFirstToPlay();
@@ -43,12 +54,19 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
         giveLeaderCards();
     }
 
+    /**
+     * After each turn, a new {@link LorenzoAction} is generated and run.
+     * Lorenzo is modeled as a player but his actions are generated automatically by the controller.
+     */
     @Override
     public void setNextTurn() {
         numberOfTurns++;
         lorenzo.getLorenzoPlayerBoard().getAction(new LorenzoAction(lorenzo));
     }
 
+    /**
+     * Method to deal leader cards. The only player receives the first 4.
+     */
     @Override
     public void giveLeaderCards() {
         List<LeaderCard> leaderCards = LeaderCardsDeckBuilder.deckBuilder();

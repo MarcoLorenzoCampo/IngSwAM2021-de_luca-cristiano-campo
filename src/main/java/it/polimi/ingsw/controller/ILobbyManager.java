@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.player.RealPlayer;
 
 import java.util.List;
 
+/**
+ * Defines a generic LobbyManager's behavior.
+ */
 public interface ILobbyManager {
 
     void addNewPlayer(String nickname) throws NameTakenException, NoMorePlayersException;

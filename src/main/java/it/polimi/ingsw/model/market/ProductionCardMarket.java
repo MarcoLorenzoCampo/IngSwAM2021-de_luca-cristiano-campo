@@ -45,10 +45,7 @@ public class ProductionCardMarket {
                 .collect(Collectors.toMap(ProductionCard::key, color -> color, (f, s) -> f))
                 .values());
 
-        availableCards = availableCards
-                .stream()
-                .sorted(Comparator.comparing(ProductionCard::getLevel))
-                .collect(Collectors.toList());
+        sortAvailableCardsByLevel();
     }
 
 
@@ -85,6 +82,7 @@ public class ProductionCardMarket {
                 .getCurrentPlayer()
                 .getPlayerBoard()
                 .increaseBoughCardsCount();
+        sortAvailableCardsByLevel();
     }
 
     /**
@@ -92,16 +90,15 @@ public class ProductionCardMarket {
      * The methods removes two of a specified color, the lowest level available.
      * @param color is the specific color to be removed.
      */
-    public void lorenzoRemovesTwo(Color color) {
-        int times = 2;
-
+    public void lorenzoRemoves(Color color) {
         for(ProductionCard iterator : availableCards) {
             if(iterator.getColor().equals(color)
-                    && iterator.getLevel().equals(lowestLevelAvailable(color)) && times>0) {
+                    && iterator.getLevel().equals(lowestLevelAvailable(color))) {
 
                 playableProductionCards.remove(iterator);
                 replaceBoughtCard(iterator);
-                times--;
+                sortAvailableCardsByLevel();
+                return;
             }
         }
     }
@@ -122,5 +119,12 @@ public class ProductionCardMarket {
             }
         }
         throw new NullPointerException();
+    }
+
+    private void sortAvailableCardsByLevel() {
+        availableCards = availableCards
+                .stream()
+                .sorted(Comparator.comparing(ProductionCard::getLevel))
+                .collect(Collectors.toList());
     }
 }

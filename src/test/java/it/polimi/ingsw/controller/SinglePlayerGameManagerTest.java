@@ -34,10 +34,18 @@ class SinglePlayerGameManagerTest {
     void lorenzoTest() {
         //Arrange
         SinglePlayerLobbyManager lobbyManagerTest = (SinglePlayerLobbyManager) gameManager.getLobbyManager();
+        gameManager.getLobbyManager().setNextTurn();
+        gameManager.getLobbyManager().setNextTurn();
+        gameManager.getLobbyManager().setNextTurn();
+        gameManager.getLobbyManager().setNextTurn();
+        gameManager.getLobbyManager().setNextTurn();
+        gameManager.getLobbyManager().setNextTurn();
+        gameManager.getLobbyManager().setNextTurn();
 
         //Assert
         assertAll(
-                () -> assertNotNull(lobbyManagerTest.getLorenzo())
+                () -> assertNotNull(lobbyManagerTest.getLorenzo()),
+                () -> assertEquals(lobbyManagerTest.getLorenzo().getLorenzoPlayerBoard().getLorenzoActionToken().getLastTaken(), 7)
         );
     }
 
