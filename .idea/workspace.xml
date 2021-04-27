@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RunManager">
+    <configuration name="All in AM38" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AM38" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.All in AM38" />
+      </list>
+    </recent_temporary>
+  </component>
+</project>
