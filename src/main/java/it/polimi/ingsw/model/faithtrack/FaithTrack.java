@@ -70,11 +70,10 @@ public class FaithTrack {
     }
 
     /**
-     *         it checks the type of tile;
-     *         if the player is the first to enter in a Vatican space, the player makes it inactive
-     *         it eventually takes favor points;
-     *         it eventually activates vatican reports.
-     *
+     * it checks the type of tile;
+     * if the player is the first to enter in a Vatican space, the player makes it inactive
+     * it eventually takes favor points;
+     * it eventually activates vatican reports.
      */
     public void increaseFaithMarker(){
         this.faithMarker++;
@@ -134,10 +133,6 @@ public class FaithTrack {
 
     public List<Tile> getFaithTrack() {
         return faithTrack;
-    }
-
-    public void setFaithTrack(List<Tile> faithTrack) {
-        this.faithTrack = faithTrack;
     }
 
     public int getFaithMarker() {

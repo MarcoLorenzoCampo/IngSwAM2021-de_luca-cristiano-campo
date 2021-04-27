@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.market;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.player.RealPlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,17 +9,13 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * @author Marco Lorenzo Campo
- */
 class ResourceMarketTest {
-
 
     private ResourceMarket resourceMarket;
 
     @BeforeEach
     void setUp() {
-        Game.getGameInstance().setCurrentPlayer(new Player("TestPlayer"));
+        PlayingGame.getGameInstance().setCurrentPlayer(new RealPlayer("TestPlayer"));
         resourceMarket = new ResourceMarket();
     }
 

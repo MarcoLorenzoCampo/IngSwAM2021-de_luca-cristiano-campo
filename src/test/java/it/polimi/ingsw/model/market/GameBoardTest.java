@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.market;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.io.FileNotFoundException;
 
@@ -10,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class GameBoardTest {
 
+    @Mock
     GameBoard gameboard;
 
     @BeforeEach

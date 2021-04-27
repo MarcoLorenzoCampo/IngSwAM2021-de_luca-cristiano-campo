@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.actions.Action;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
@@ -10,12 +10,11 @@ import it.polimi.ingsw.model.productionBoard.ProductionBoard;
 
 import java.util.List;
 
-public class RealPlayerBoard extends PlayerBoard {
+public class RealPlayerBoard {
 
     private int boughtCardsNumber;
     private final String owner;
     private final FaithTrack faithTrack;
-    List<LeaderCard> ownedLeaderCards;
     ProductionBoard productionBoard;
     InventoryManager inventoryManager;
 
@@ -27,21 +26,17 @@ public class RealPlayerBoard extends PlayerBoard {
         inventoryManager = new InventoryManager();
     }
 
-    public void setOwnedLeaderCards(List<LeaderCard> ownedLeaderCards) {
-        this.ownedLeaderCards = ownedLeaderCards;
-    }
-
-    @Override
     public void getAction(Action performedAction) throws InvalidPlayerException,
             InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, EndTurnException,
-            NoMatchingRequisitesException, LeaderCardException, EndGameException {
-        super.getAction(performedAction);
+            NoMatchingRequisitesException, LeaderCardException, EndGameException, InvalidProductionSlotException {
+
+        performedAction.isValid();
     }
 
     public void increaseBoughCardsCount() throws EndGameException {
         boughtCardsNumber++;
-        if(boughtCardsNumber == Game.getGameInstance().getMaxCardsBought())
-            Game.getGameInstance().endGame();
+        if(boughtCardsNumber == PlayingGame.getGameInstance().getMaxCardsBought())
+            PlayingGame.getGameInstance().endGame();
     }
 
     public String getOwner() {
@@ -52,9 +47,6 @@ public class RealPlayerBoard extends PlayerBoard {
     }
     public ProductionBoard getProductionBoard() {
         return productionBoard;
-    }
-    public List<LeaderCard> getOwnedLeaderCards() {
-        return ownedLeaderCards;
     }
     public InventoryManager getInventoryManager() {
         return inventoryManager;

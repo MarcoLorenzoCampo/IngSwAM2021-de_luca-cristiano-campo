@@ -92,7 +92,7 @@ public class Warehouse {
      * sorts shelves based on the quantity they hold, this guarantees that the player will always
      * have the optimum arrangement of resources whenever they add a new one
      */
-    public void sortShelves(){
+    public void sortShelves() {
 
         ArrayList<Shelf> clonedShelves = new ArrayList<>(shelves.size());
         for (Shelf iterator : shelves) {

@@ -1,25 +1,40 @@
 package it.polimi.ingsw.model.token;
 
+import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.player.LorenzoPlayer;
+
 public class TokenMove implements IToken{
 
-    int moves;
-    boolean shuffle;
+    private final int moves;
+    private final boolean shuffle;
 
-    public TokenMove(int moves) {
+    private final IGame game;
+
+    public TokenMove(int moves, IGame game) {
         this.moves = moves;
         this.shuffle = false;
+        this.game = game;
     }
 
-    public TokenMove() {
+    public TokenMove(IGame game) {
         this.moves = 1;
         this.shuffle = true;
+        this.game = game;
     }
 
     /**
      * Method to increment Lorenzo's position on his faith track.
      */
-    @Override
-    public void tokenAction() {
+    public void tokenAction(LorenzoPlayer lorenzo) {
+        //make lorenzo move "moves" times and shuffle if "shuffle" is true;
+        for(int i=0; i<moves; i++) {
+            lorenzo.getLorenzoPlayerBoard()
+                    .getLorenzoFaithTrack()
+                    .increaseFaithMarker();
+        }
 
+        if(shuffle) {
+            lorenzo.getLorenzoPlayerBoard().shuffleTokens();
+        }
     }
 }

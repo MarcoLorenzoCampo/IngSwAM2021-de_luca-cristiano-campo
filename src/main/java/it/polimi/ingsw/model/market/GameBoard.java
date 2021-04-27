@@ -1,14 +1,9 @@
 package it.polimi.ingsw.model.market;
 
-
-import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
-
-import java.io.FileNotFoundException;
-import java.util.List;
-
-
-public class GameBoard {
+/**
+ * Interface injection to replace the use of a Singleton.
+ */
+public class GameBoard implements IGameBoard {
 
     private final ResourceMarket resourceMarket;
     private final ProductionCardMarket productionCardMarket;
@@ -24,7 +19,7 @@ public class GameBoard {
      * created for a match
      */
     public static GameBoard getGameBoardInstance() {
-        /* Create gameboard instance if not present; */
+        /* Create game board instance if not present; */
         if (gameBoardInstance == null) {
             gameBoardInstance = new GameBoard();
         }

@@ -3,62 +3,52 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.exceptions.EndGameException;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.parsers.ProductionCardsParser;
+import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.player.RealPlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
-import java.io.FileNotFoundException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * @author Marco Lorenzo Campo
-*/
-
 class ProductionCardMarketTest {
 
     private ProductionCardMarket productionCardMarket;
-    private Player testPlayer;
-    @Mock
-    Game testGame;
+    PlayingGame testPlayingGame;
 
     @BeforeEach
     void setUp() {
         productionCardMarket = new ProductionCardMarket();
-        testPlayer = new Player("UnderTest");
-        testGame = Game.getGameInstance();
-        Game.getGameInstance().setCurrentPlayer(testPlayer);
+        RealPlayer testRealPlayer = new RealPlayer("UnderTest");
+        testPlayingGame = PlayingGame.getGameInstance();
+        PlayingGame.getGameInstance().setCurrentPlayer(testRealPlayer);
     }
 
     /**
-     * testing the behavior when a specific Color is missing
-     *
+     * testing the behavior when a specific Color is missing. Uses the lorenzoRemoves method because it's
+     * a convenient way to remove and replace cards (and it has already been tested).
      */
     @Test
     void noMoreCardsOfSpecificColorAndLevelTest() {
 
         //Arrange
+        Color chosenColor = Color.BLUE;
 
         //Act
+        for(int i=0; i<12; i++) {
+            productionCardMarket.lorenzoRemoves(chosenColor);
+        }
 
         //Assert
-    }
-
-    @Test
-    void showAvailableCardsTest() {
-        productionCardMarket.showAvailableCards();
-    }
-
-    @Test
-    void getAvailableCardsTest() {
-        assertNotNull(productionCardMarket.getAvailableCards());
+        assertAll(
+                () -> assertEquals((int) productionCardMarket.getAvailableCards().stream()
+                                .filter(c -> c.getColor().equals(chosenColor)).count(), 0),
+                () -> assertDoesNotThrow(() -> productionCardMarket.lorenzoRemoves(chosenColor)),
+                () -> assertEquals(productionCardMarket.getAvailableCards().size(), 9)
+        );
     }
 
     /**
@@ -81,7 +71,7 @@ class ProductionCardMarketTest {
 
         //Assert
         assertAll(
-                /* checks number of available cards */
+                /* checks number of available cards (excluding the ANY level) */
                 () -> assertEquals(productionCardMarket.getAvailableCards().toArray().length,
                         (numberOfLevels-1)*numberOfColors),
                 /* checks (Level, Color) is different for every card*/

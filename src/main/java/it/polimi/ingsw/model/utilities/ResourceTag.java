@@ -17,5 +17,4 @@ public class ResourceTag extends Tag {
     public void setType(ResourceType type) {
         this.type = type;
     }
-
 }

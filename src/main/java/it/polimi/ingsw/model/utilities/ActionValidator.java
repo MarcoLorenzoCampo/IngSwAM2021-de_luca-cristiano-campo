@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.utilities;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.ProductionCard;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public final class ActionValidator {
      * @throws InvalidGameStateException if what stated above happens.
      */
     public static void gameStateValidation() throws InvalidGameStateException {
-        if (Game.getGameInstance().getCurrentState().getGameState().equals(PossibleGameStates.SETUP))
+        if (PlayingGame.getGameInstance().getCurrentState().getGameState().equals(PossibleGameStates.SETUP))
                 throw new InvalidGameStateException();
     }
 
@@ -35,7 +35,7 @@ public final class ActionValidator {
      * throw exception.
      */
     public static void senderValidation(String actionSender) throws InvalidPlayerException {
-        if(!actionSender.equals(Game.getGameInstance().getCurrentPlayer().getName()))
+        if(!actionSender.equals(PlayingGame.getGameInstance().getCurrentPlayer().getName()))
             throw new InvalidPlayerException();
     }
 
@@ -44,7 +44,7 @@ public final class ActionValidator {
      * @throws GetResourceFromMarketException action isn't allowed
      */
     public static void validateGetFromMarket() throws GetResourceFromMarketException {
-        if(Game.getGameInstance().getCurrentPlayer().getPlayerState().getHasPickedResources())
+        if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPickedResources())
             throw new GetResourceFromMarketException();
     }
 
@@ -55,8 +55,10 @@ public final class ActionValidator {
      * @throws BuyCardFromMarketException the action has already been performed
      * @throws NoMatchingRequisitesException the requisites to buy the card aren't satisfied
      */
-    public static void validateBuyCardFromMarketAction(ProductionCard boughtCard) throws BuyCardFromMarketException, NoMatchingRequisitesException {
-        if(Game.getGameInstance().getCurrentPlayer().getPlayerState().getHasBoughCard())
+    public static void validateBuyCardFromMarketAction(ProductionCard boughtCard)
+            throws BuyCardFromMarketException, NoMatchingRequisitesException {
+
+        if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasBoughCard())
             throw new BuyCardFromMarketException();
 
         if(!validateProductionCardRequirements(boughtCard))
@@ -64,14 +66,13 @@ public final class ActionValidator {
     }
 
     /**
-     *
      * @param toValidate Production Card to validate.
      * @return returns the outcome of the validation. true means the card can be purchased,
      * false means the caller will throw an exception.
      */
     private static boolean validateProductionCardRequirements(ProductionCard toValidate) {
         List<ResourceTag> requirements = toValidate.getRequirements();
-        Map<ResourceType, Integer> actualInventory = Game.getGameInstance().getCurrentPlayer()
+        Map<ResourceType, Integer> actualInventory = PlayingGame.getGameInstance().getCurrentPlayer()
                 .getInventoryManager().getInventory();
 
         for (ResourceTag requirement : requirements) {
@@ -82,32 +83,69 @@ public final class ActionValidator {
     }
 
     /**
-     * Verifies a leader card can be discarded.
+     * Validates if the {@link it.polimi.ingsw.actions.BuyProductionCardAction} provided a valid slot
+     * to place the card once other steps have been validated.
+     * @param productionSlotIndex: index in which the card should be placed.
+     * @throws InvalidProductionSlotException: notifies the controller the destination slot is invalid.
+     */
+    public static void validateProductionSlot(int productionSlotIndex, ProductionCard boughtCard)
+            throws InvalidProductionSlotException {
+
+        if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard()
+                .checkPutCard(productionSlotIndex, boughtCard)) {
+            throw new InvalidProductionSlotException();
+        }
+    }
+
+    /**
+     * Validates the ownership of a specific leader card
+     * @param index: card to verify.
+     * @throws LeaderCardException: generic exception thrown by leader actions.
+     */
+    public static void discardLeaderValidator(int index) throws LeaderCardException {
+        if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPlaceableLeaders()
+                || index >= PlayingGame.getGameInstance().getCurrentPlayer().getOwnedLeaderCards().size()) {
+            throw new LeaderCardException("You don't own that card!");
+        }
+    }
+
+    /**
+     * Verifies a leader card can be placed.
      * @throws LeaderCardException generic exception regarding leader cards.
      */
     public static void leaderValidator(int index) throws LeaderCardException, NoMatchingRequisitesException {
+        discardLeaderValidator(index);
 
-        if(!Game.getGameInstance().getCurrentPlayer().getPlayerState().getHasPlaceableLeaders()
-            || index >= Game.getGameInstance().getCurrentPlayer().getPlayerBoard().getOwnedLeaderCards().size())
-            throw new LeaderCardException("You don't own that card!");
-
-        if(!validateLeaderRequirements(Game.getGameInstance()
-                .getCurrentPlayer().getPlayerBoard().getOwnedLeaderCards().get(index).getRequisites()))
-            throw new NoMatchingRequisitesException();
-    }
-
-    private static boolean validateLeaderRequirements(DevelopmentTag[] requirements) {
-        for(DevelopmentTag iterator : requirements) {
-            if(Game.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard().getInventory()
-                    .get(iterator.getColor())[iterator.getLevel().ordinal()]<iterator.getQuantity())
-                return false;
+        if(PlayingGame.getGameInstance().getCurrentPlayer().getOwnedLeaderCards().get(index).getRequirementsResource() == null) {
+            if (validateLeaderDevTags(PlayingGame.getGameInstance()
+                    .getCurrentPlayer().getOwnedLeaderCards().get(index).getRequirementsDevCards()))
+                throw new NoMatchingRequisitesException();
         }
-        return true;
+
+        if(PlayingGame.getGameInstance().getCurrentPlayer().getOwnedLeaderCards().get(index).getRequirementsDevCards() == null) {
+            if (!validateLeaderResourceTags(PlayingGame.getGameInstance()
+                    .getCurrentPlayer().getOwnedLeaderCards().get(index).getRequirementsResource()))
+                throw new NoMatchingRequisitesException();
+        }
     }
 
+    /**
+     * Validation of DevelopmentTags.
+     */
+    private static boolean validateLeaderDevTags(DevelopmentTag[] requirements) {
+        for(DevelopmentTag iterator : requirements) {
+            if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard().getInventory()
+                    .get(iterator.getColor())[iterator.getLevel().ordinal()]<iterator.getQuantity())
+                return true;
+        }
+        return false;
+    }
 
-    private static boolean validateLeaderRequirements(ResourceTag[] requirements) {
-        Map<ResourceType, Integer> actualInventory = Game.getGameInstance().getCurrentPlayer()
+    /**
+     * Validation of ResourceTags.
+     */
+    private static boolean validateLeaderResourceTags(ResourceTag[] requirements) {
+        Map<ResourceType, Integer> actualInventory = PlayingGame.getGameInstance().getCurrentPlayer()
                 .getInventoryManager().getInventory();
 
         for (ResourceTag requirement : requirements) {
@@ -116,16 +154,4 @@ public final class ActionValidator {
         }
         return true;
     }
-
-    /**
-     * whenever one exclusive action is run, the player state will be changed, making future validations
-     * for the exclusive actions always throw exceptions.
-     */
-    public static void performedExclusiveAction() {
-        Game.getGameInstance()
-                .getCurrentPlayer()
-                .getPlayerState()
-                .performedExclusiveAction();
-    }
-
 }

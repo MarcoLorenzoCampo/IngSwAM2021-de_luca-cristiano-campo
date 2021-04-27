@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.utilities.BaseProduction;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
@@ -10,13 +11,18 @@ import java.util.Objects;
 
 public class ProductionCard extends BaseProduction {
 
-    private Level level;
-    private Color color;
-    private int victoryPoints;
-    private ArrayList<ResourceTag> requirements;
+    private final Level level;
+    private final Color color;
+    private final int victoryPoints;
+    private final ArrayList<ResourceTag> requirements;
 
-    /* no need for a public constructor */
-    private ProductionCard() { }
+    /* for testing purposes */
+    public ProductionCard(Level level, Color color, int victoryPoints, ArrayList<ResourceTag> requirements) {
+        this.level = level;
+        this.color = color;
+        this.victoryPoints = victoryPoints;
+        this.requirements = requirements;
+    }
 
     public Level getLevel() {
         return level;
@@ -33,8 +39,12 @@ public class ProductionCard extends BaseProduction {
         return requirements;
     }
 
-    public void placeCard() {
-        //Game.getGameInstance().getCurrentPlayer().getPlayerBoard()...
+    public void placeCard(int index, ProductionCard boughtCard) {
+        PlayingGame.getGameInstance()
+                .getCurrentPlayer()
+                .getPlayerBoard()
+                .getProductionBoard()
+                .placeProductionCard(index, boughtCard);
     }
 
     @Override

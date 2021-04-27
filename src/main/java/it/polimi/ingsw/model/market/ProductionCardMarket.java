@@ -4,11 +4,11 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.exceptions.EndGameException;
-import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
-import java.io.FileNotFoundException;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,8 +19,12 @@ import static it.polimi.ingsw.enumerations.Level.*;
 public class ProductionCardMarket {
 
     private final List<ProductionCard> playableProductionCards;
-    private List<ProductionCard> availableCards;    /* Each Player sees the available cards only */
+    private List<ProductionCard> availableCards;    /* Each RealPlayer sees the available cards only */
 
+    /**
+     * When the game stars, the market is created by the production cards (development cards)
+     * parsing from JSON, and setting the available ones, sorted by level.
+     */
     public ProductionCardMarket() {
         playableProductionCards = ProductionCardsParser.parseProductionDeck();
         Collections.shuffle(playableProductionCards);
@@ -36,15 +40,16 @@ public class ProductionCardMarket {
     }
 
     /**
-     * Available cards are set when creating the singleton instance of
-     * the gameBoard and when rebuilding the deck after Lorenzo discards
-     * some cards.
+     * Available cards are set and sorted by level when creating the
+     * singleton instance of the gameBoard
      */
     private void setAvailableCards() {
         availableCards = new LinkedList<> (playableProductionCards
                 .stream()
                 .collect(Collectors.toMap(ProductionCard::key, color -> color, (f, s) -> f))
                 .values());
+
+        sortAvailableCardsByLevel();
     }
 
 
@@ -54,7 +59,7 @@ public class ProductionCardMarket {
     }
 
     /**
-     * @param boughtCard -- gets replaced the availableCards deck
+     * @param boughtCard gets replaced the availableCards deck
      * Use of Optionals to add a card of the same (Level, Color) of the one
      *                   just bought if present;
      */
@@ -70,7 +75,6 @@ public class ProductionCardMarket {
                 ifPresent(availableCards::add);
     }
 
-
     /**
      * @param boughtCard: when a card is bought, it gets removed from the
      *                  base deck.
@@ -78,7 +82,11 @@ public class ProductionCardMarket {
     public void buyCard(ProductionCard boughtCard) throws EndGameException {
         playableProductionCards.remove(boughtCard);
         replaceBoughtCard(boughtCard);
-        Game.getGameInstance().getCurrentPlayer().getPlayerBoard().increaseBoughCardsCount();
+        PlayingGame.getGameInstance()
+                .getCurrentPlayer()
+                .getPlayerBoard()
+                .increaseBoughCardsCount();
+        sortAvailableCardsByLevel();
     }
 
     /**
@@ -86,22 +94,22 @@ public class ProductionCardMarket {
      * The methods removes two of a specified color, the lowest level available.
      * @param color is the specific color to be removed.
      */
-    public void lorenzoRemovesTwo(Color color) {
-        int times = 2;
-
+    public void lorenzoRemoves(Color color) {
         for(ProductionCard iterator : availableCards) {
             if(iterator.getColor().equals(color)
-                    && iterator.getLevel().equals(lowestLevelAvailable(color)) && times>0) {
+                    && iterator.getLevel().equals(lowestLevelAvailable(color))) {
 
                 playableProductionCards.remove(iterator);
                 replaceBoughtCard(iterator);
-                times--;
+                sortAvailableCardsByLevel();
+                return;
             }
         }
     }
 
     /**
-     * Method to find the lowest level card available for a specific color.
+     * Method to find the lowest level card available for a specific color. Available cards
+     * are sorted by level, so the first instance of a card is also the lowest level available.
      * @param color, specific color to look for.
      * @return the lowest level available.
      */
@@ -116,5 +124,15 @@ public class ProductionCardMarket {
             }
         }
         throw new NullPointerException();
+    }
+
+    /**
+     * Method to sort the available cards by level when one is removed/replaced.
+     */
+    private void sortAvailableCardsByLevel() {
+        availableCards = availableCards
+                .stream()
+                .sorted(Comparator.comparing(ProductionCard::getLevel))
+                .collect(Collectors.toList());
     }
 }
