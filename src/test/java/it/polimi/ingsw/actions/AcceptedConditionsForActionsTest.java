@@ -18,6 +18,9 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Testing basic actions.
+ */
 class AcceptedConditionsForActionsTest {
 
     GameManager gameManager;
