@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34ae34e9-6e07-4b4d-a151-d1147e83b169" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/actions/Action.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/actions/Action.class" afterDir="false" />
+    <list default="true" id="34ae34e9-6e07-4b4d-a151-d1147e83b169" name="Default Changelist" comment="working version of project">
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/token/LorenzoTokenPileTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/token/LorenzoTokenPileTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619533640577</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="working version of project">
+      <created>1619534871608</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1619534871609</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
