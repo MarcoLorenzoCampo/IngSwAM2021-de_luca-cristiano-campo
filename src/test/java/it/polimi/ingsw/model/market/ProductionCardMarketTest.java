@@ -28,8 +28,8 @@ class ProductionCardMarketTest {
     }
 
     /**
-     * testing the behavior when a specific Color is missing. Uses the lorenzoRemoves because it's
-     * a convenient way to remove and replace cards.
+     * testing the behavior when a specific Color is missing. Uses the lorenzoRemoves method because it's
+     * a convenient way to remove and replace cards (and it has already been tested).
      */
     @Test
     void noMoreCardsOfSpecificColorAndLevelTest() {
