@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34ae34e9-6e07-4b4d-a151-d1147e83b169" name="Default Changelist" comment="fixed previous commit">
+    <list default="true" id="34ae34e9-6e07-4b4d-a151-d1147e83b169" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/actions/AcceptedConditionsForActionsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/actions/AcceptedConditionsForActionsTest.java" afterDir="false" />
@@ -35,6 +35,8 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.0" />
@@ -86,6 +88,14 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1619531126179</updated>
+      <workItem from="1619532098642" duration="1080000" />
+    </task>
+    <task id="LOCAL-00002" summary="working version of project">
+      <created>1619532357159</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1619532357159</updated>
     </task>
     <task id="LOCAL-00002" summary="fixed previous commit">
       <created>1619533123999</created>
@@ -96,6 +106,9 @@
     </task>
     <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -111,7 +124,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fixed previous commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed previous commit" />
+    <MESSAGE value="working version of project" />
+    <option name="LAST_COMMIT_MESSAGE" value="working version of project" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
