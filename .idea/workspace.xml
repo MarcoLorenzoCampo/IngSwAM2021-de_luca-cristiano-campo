@@ -1,5 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="34ae34e9-6e07-4b4d-a151-d1147e83b169" name="Default Changelist" comment="fixed previous commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/actions/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/actions/Action.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/MultiPlayerLobbyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/MultiPlayerLobbyManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/SinglePlayerLobbyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/SinglePlayerLobbyManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/exceptions/EndGameException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/exceptions/EndGameException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/exceptions/NoMorePlayersException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/actions/AcceptedConditionsForActionsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/actions/AcceptedConditionsForActionsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/controller/MultiPlayerGameManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/controller/MultiPlayerGameManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/controller/SinglePlayerGameManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/controller/SinglePlayerGameManagerTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1rkrr3iInBExrTkNCpT1o0JAnjL" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="it.polimi.ingsw.controller" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="All in AM38" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AM38" />
@@ -14,5 +65,80 @@
         <item itemvalue="JUnit.All in AM38" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task id="LOCAL-00001" summary="fixed previous commit">
+      <created>1619530994164</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1619530994164</updated>
+    </task>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="34ae34e9-6e07-4b4d-a151-d1147e83b169" name="Default Changelist" comment="fixed previous commit" />
+      <created>1619531126179</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1619531126179</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fixed previous commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed previous commit" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="it.polimi.ingsw.actions.AcceptedConditionsForActionsTest" memberName="gameManager" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$ResourceMarketTest_pickResourcesTest.ic" NAME="ResourceMarketTest.pickResourcesTest Coverage Results" MODIFIED="1617568396218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ingsw.model.market.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$ProductionCardsParserTest.ic" NAME="ProductionCardsParserTest Coverage Results" MODIFIED="1617541472077" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ingsw.parsers.ProductionCardsParser</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$ProductionCardMarketTest.ic" NAME="ProductionCardMarketTest Coverage Results" MODIFIED="1617628518860" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ingsw.model.market.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$ResourceMarketTest.ic" NAME="ResourceMarketTest Coverage Results" MODIFIED="1617910758543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ingsw.model.market.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$GameBoardTest.ic" NAME="GameBoardTest Coverage Results" MODIFIED="1617541225996" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ingsw.model.market.GameBoard</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$it_polimi_ingsw_model_market_in_AM38.ic" NAME="it.polimi.ingsw.model.market in AM38 Coverage Results" MODIFIED="1617555286927" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ingsw.model.market.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$AcceptedConditionsForActionsTest_buyCardFromMarket.ic" NAME="AcceptedConditionsForActionsTest.buyCardFromMarket Coverage Results" MODIFIED="1619287432315" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ingsw.actions.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$it_polimi_ingsw_parsers_in_AM38.ic" NAME="it.polimi.ingsw.parsers in AM38 Coverage Results" MODIFIED="1617541524896" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ingsw.parsers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$BuildersTest.ic" NAME="BuildersTest Coverage Results" MODIFIED="1617911627840" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ingsw.model.utilities.builders.ResourceBuilder</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$PlayingGameTest.ic" NAME="PlayingGameTest Coverage Results" MODIFIED="1619209886044" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ingsw.model.game.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ingswAM2021_de_luca_cristiano_campo$All_in_AM38.ic" NAME="All in AM38 Coverage Results" MODIFIED="1619523082399" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

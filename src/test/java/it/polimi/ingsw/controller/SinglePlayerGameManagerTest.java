@@ -5,8 +5,6 @@ import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.model.player.LorenzoPlayer;
-import it.polimi.ingsw.model.player.RealPlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

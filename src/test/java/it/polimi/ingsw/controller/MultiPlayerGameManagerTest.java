@@ -5,13 +5,9 @@ import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
