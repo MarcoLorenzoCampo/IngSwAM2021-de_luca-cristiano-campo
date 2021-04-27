@@ -15,6 +15,9 @@ class FaithTrackTest {
 
     private FaithTrack faithTrack;
 
+    /**
+     * Testing basic faith track methods.
+     */
     @BeforeEach
     void init(){
         faithTrack = new FaithTrack();
