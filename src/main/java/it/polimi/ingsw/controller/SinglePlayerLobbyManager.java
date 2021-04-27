@@ -18,7 +18,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
 
     private int numberOfTurns;
     private final IGame currentGame;
-    private RealPlayer player;
+    private RealPlayer player = null;
     private final LorenzoPlayer lorenzo;
 
     public SinglePlayerLobbyManager(IGame currentGame) {
