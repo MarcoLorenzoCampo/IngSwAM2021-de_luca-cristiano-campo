@@ -10,6 +10,9 @@ import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test for game instance.
+ */
 class PlayingGameTest {
 
     @Mock
