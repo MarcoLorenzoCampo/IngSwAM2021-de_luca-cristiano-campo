@@ -39,6 +39,14 @@ public final class ActionValidator {
             throw new InvalidPlayerException();
     }
 
+    public static void canEndTurnValidator() throws MustPerformActionException {
+        if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPickedResources()
+        || !PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasBoughCard()
+        || !PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasActivatedProductions()) {
+            throw new MustPerformActionException();
+        }
+    }
+
     /**
      * Checks if player has already performed on of the exclusive actions.
      * @throws GetResourceFromMarketException action isn't allowed

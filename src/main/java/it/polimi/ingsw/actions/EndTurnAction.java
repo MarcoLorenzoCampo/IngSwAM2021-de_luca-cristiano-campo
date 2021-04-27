@@ -4,6 +4,7 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.EndTurnException;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
+import it.polimi.ingsw.exceptions.MustPerformActionException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.utilities.ActionValidator;
 
@@ -33,10 +34,11 @@ public class EndTurnAction extends Action {
      * @throws EndTurnException: notifies the controller current turn is over.
      */
     @Override
-    public void isValid() throws InvalidPlayerException, InvalidGameStateException, EndTurnException {
+    public void isValid() throws InvalidPlayerException, InvalidGameStateException, EndTurnException, MustPerformActionException {
 
         ActionValidator.gameStateValidation();
         ActionValidator.senderValidation(actionSender);
+        ActionValidator.canEndTurnValidator();
 
         this.game.getCurrentPlayer()
                 .getPlayerState()
