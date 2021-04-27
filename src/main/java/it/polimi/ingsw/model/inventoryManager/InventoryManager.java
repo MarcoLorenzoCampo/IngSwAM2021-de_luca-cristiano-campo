@@ -17,7 +17,6 @@ public class InventoryManager {
     private ArrayList<MaterialResource> buffer;
     private Warehouse warehouse;
     private Strongbox strongbox;
-    //private int penalty;
     private Map<ResourceType, Integer> inventory;
     private ArrayList<ResourceType> exchange;
     private ArrayList<ResourceType> discount;
@@ -26,7 +25,6 @@ public class InventoryManager {
         buffer = new ArrayList<>();
         warehouse = new Warehouse();
         strongbox = new Strongbox();
-        //penalty = 0;
         inventory = new HashMap<>();
         inventory.put(ResourceType.COIN, 0);
         inventory.put(ResourceType.STONE,0);
@@ -66,6 +64,31 @@ public class InventoryManager {
         return inventory;
     }
 
+    /**
+     *
+     * @return -- victory points obtained by held resources
+     */
+    public int calculateVictoryPoints(){
+        int somma = 0;
+        for (Map.Entry<ResourceType, Integer> iterator: inventory.entrySet()) {
+            somma = somma + iterator.getValue();
+        }
+        return Math.floorDiv(somma, 5);
+    }
+
+    //
+    //
+    //
+    //
+    //
+    //
+    // Va implementato il metodo che cambia la biglia bianca con una scelta, oppure la elimina
+    //
+    //
+    //
+    //
+    //
+    //
 
     /**
      *
