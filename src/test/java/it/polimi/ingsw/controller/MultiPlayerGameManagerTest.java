@@ -19,7 +19,7 @@ class MultiPlayerGameManagerTest {
     @BeforeEach
     void setUp() {
         resetSingleton();
-        gameManager = new GameManager(false);
+        gameManager = new GameManager(2);
     }
 
     @Test

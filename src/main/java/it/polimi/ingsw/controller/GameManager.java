@@ -15,17 +15,17 @@ public final class GameManager {
 
     /**
      * Constructor of the game manager.
-     * @param isSinglePlayer: decides whether the LobbyManager will be for a single player game or multiplayer.
+     * @param gameMode: decides whether the LobbyManager will be for a single player game or multiplayer.
      */
-    public GameManager(boolean isSinglePlayer) {
+    public GameManager(int gameMode) {
 
         currentGame = PlayingGame.getGameInstance();
         actionManager = new ActionManager(currentGame, this.lobbyManager);
 
-        if(isSinglePlayer) {
+        if(gameMode == 1) {
             lobbyManager = new SinglePlayerLobbyManager(currentGame);
         }
-        if(!isSinglePlayer) {
+        if(gameMode == 2) {
             lobbyManager = new MultiPlayerLobbyManager(currentGame);
         }
     }

@@ -31,7 +31,7 @@ class AcceptedConditionsForActionsTest {
     @BeforeEach
     void setUp() throws NameTakenException, NoMorePlayersException {
         resetSingleton();
-        gameManager = new GameManager(false);
+        gameManager = new GameManager(2);
         actionManager = gameManager.getActionManager();
         gameManager.getLobbyManager().addNewPlayer("testPlayer");
         gameManager.getLobbyManager().setPlayingOrder();
