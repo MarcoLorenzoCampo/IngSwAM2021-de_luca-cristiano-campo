@@ -14,12 +14,15 @@ public class PlayerState {
     private boolean hasPickedResources;
     private boolean hasBoughCard;
 
+    private boolean hasPlacedLeaders;
+
     private boolean hasPlaceableLeaders;
 
     public PlayerState() {
         hasActivatedProductions = false;
         hasPickedResources = false;
         hasBoughCard = false;
+        hasPlacedLeaders = false;
 
         hasPlaceableLeaders = true;
     }
@@ -32,6 +35,12 @@ public class PlayerState {
         hasActivatedProductions = true;
         hasPickedResources = true;
         hasBoughCard = true;
+
+        hasPlacedLeaders = false;
+    }
+
+    public void placedLeader() {
+        this.hasPlacedLeaders = true;
     }
 
     public boolean getHasPlaceableLeaders() {
@@ -46,10 +55,16 @@ public class PlayerState {
     public boolean getHasBoughCard() {
         return hasBoughCard;
     }
+    public boolean getHasPlacedLeaders() {
+        return hasPlacedLeaders;
+    }
+
+
 
     public void endTurnReset() {
         hasActivatedProductions = false;
         hasPickedResources = false;
         hasBoughCard = false;
+        hasPlacedLeaders = false;
     }
 }
