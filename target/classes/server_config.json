@@ -1,5 +1,1 @@
-{
-  "start_time": 10,
-  "move_time": 180,
-  "socket_port": 2727
-}
+[2727 , 1, 10, 180]
