@@ -28,7 +28,7 @@ public class RealPlayerBoard {
 
     public void getAction(Action performedAction) throws InvalidPlayerException,
             InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, EndTurnException,
-            NoMatchingRequisitesException, LeaderCardException, EndGameException, InvalidProductionSlotException {
+            NoMatchingRequisitesException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
 
         performedAction.isValid();
     }

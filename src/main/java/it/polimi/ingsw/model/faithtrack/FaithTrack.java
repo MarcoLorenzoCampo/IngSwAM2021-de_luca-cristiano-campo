@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.faithtrack;
 
+import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.enumerations.Constants;
+import it.polimi.ingsw.model.player.RealPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +12,8 @@ import java.util.Map;
 
 
 public class FaithTrack {
+
+    GameManager gameManager;
 
     List<Tile> faithTrack = new ArrayList<>();
     private int finalPoints;
@@ -26,6 +30,7 @@ public class FaithTrack {
         initFaithTrack();
         initCheckpoint();
         initCardVaticanSpace();
+        //this.gameManager = gameManager;
     }
 
 
@@ -81,7 +86,7 @@ public class FaithTrack {
             PopeTile currentTile = (PopeTile) this.faithTrack.get(faithMarker);
             if(currentTile.getIsActive()){
                 pickFavorPoints(currentTile);
-                sendControl(currentTile);
+                checkOtherPlayerPosition(currentTile);
                 ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
             }
         }
@@ -112,10 +117,28 @@ public class FaithTrack {
         return currentFavorPoints;
     }
 
+
+
+
+
+
+
+
     //comparison between players' faith marker
-    public void sendControl(PopeTile popeT){
-        // need other classes
+    public void checkOtherPlayerPosition(PopeTile popeT) {
+        /*List<RealPlayer> temp = gameManager.getLobbyManager().getRealPlayerList();
+
+        for(RealPlayer player : temp) {
+            player.getPlayerBoard().getFaithTrack().receiveControl(popeT);
+        }*/
     }
+
+
+
+
+
+
+
     //control that the player is in the Vatican space during Vatican report to earn points
     public void receiveControl(PopeTile popeT){
         if(this.faithTrack.get(this.faithMarker).getVaticanSpace() == popeT.getVaticanSpace()){

@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.market.ProductionCard;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Utility class to handle actions.
  */
@@ -37,6 +36,14 @@ public final class ActionValidator {
     public static void senderValidation(String actionSender) throws InvalidPlayerException {
         if(!actionSender.equals(PlayingGame.getGameInstance().getCurrentPlayer().getName()))
             throw new InvalidPlayerException();
+    }
+
+    public static void canEndTurnValidator() throws MustPerformActionException {
+        if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPickedResources()
+        || !PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasBoughCard()
+        || !PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasActivatedProductions()) {
+            throw new MustPerformActionException();
+        }
     }
 
     /**
@@ -97,12 +104,19 @@ public final class ActionValidator {
         }
     }
 
+    private static boolean hasPlacedLeaderValidation() {
+        return PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPlacedLeaders();
+    }
+
     /**
      * Validates the ownership of a specific leader card
      * @param index: card to verify.
      * @throws LeaderCardException: generic exception thrown by leader actions.
      */
     public static void discardLeaderValidator(int index) throws LeaderCardException {
+        if(hasPlacedLeaderValidation()) {
+            throw new LeaderCardException("Can't place two cards in a row!");
+        }
         if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPlaceableLeaders()
                 || index >= PlayingGame.getGameInstance().getCurrentPlayer().getOwnedLeaderCards().size()) {
             throw new LeaderCardException("You don't own that card!");
@@ -114,6 +128,9 @@ public final class ActionValidator {
      * @throws LeaderCardException generic exception regarding leader cards.
      */
     public static void leaderValidator(int index) throws LeaderCardException, NoMatchingRequisitesException {
+        if(hasPlacedLeaderValidation()) {
+            throw new LeaderCardException("Can't place two cards in a row!");
+        }
         discardLeaderValidator(index);
 
         if(PlayingGame.getGameInstance().getCurrentPlayer().getOwnedLeaderCards().get(index).getRequirementsResource() == null) {

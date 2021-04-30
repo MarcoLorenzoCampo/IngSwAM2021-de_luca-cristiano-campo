@@ -46,6 +46,8 @@ public final class ActionManager {
             e.printStackTrace();
         } catch (InvalidProductionSlotException e) {
             e.printStackTrace();
+        } catch (MustPerformActionException e) {
+            e.printStackTrace();
         }
     }
 }
