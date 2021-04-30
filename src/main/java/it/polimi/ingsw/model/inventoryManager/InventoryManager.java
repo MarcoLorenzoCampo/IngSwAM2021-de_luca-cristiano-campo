@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class InventoryManager {
     private ArrayList<MaterialResource> buffer;
@@ -76,19 +77,34 @@ public class InventoryManager {
         return Math.floorDiv(somma, 5);
     }
 
-    //
-    //
-    //
-    //
-    //
-    //
-    // Va implementato il metodo che cambia la biglia bianca con una scelta, oppure la elimina
-    //
-    //
-    //
-    //
-    //
-    //
+    /**
+     * method invoked before deciding which marble to place first, if the exchange list is empty or contains
+     * only one type then all white marbles are either deleted or changed
+     */
+    public void whiteMarblesExchange(){
+        if (exchange.isEmpty()){
+            buffer = (ArrayList<MaterialResource>) buffer.stream()
+                    .filter(materialResource -> !materialResource.getResourceType().equals(ResourceType.UNDEFINED))
+                    .collect(Collectors.toList());
+        }
+        else if (exchange.size()==1){
+            for (MaterialResource iterator : buffer) {
+                iterator.setResourceType(exchange.get(0));
+            }
+        }
+    }
+
+    /**
+     * overload of same method, this selecets one particular marble ans changes into a particular type
+     * (granted that the type is valid)
+     * @param index -- index of resource in buffer to change
+     * @param type -- type in which to change
+     */
+    public void whiteMarbleExchange(int index, ResourceType type){
+        if(exchange.contains(type)){
+            buffer.get(index).setResourceType(type);
+        }
+    }
 
     /**
      *

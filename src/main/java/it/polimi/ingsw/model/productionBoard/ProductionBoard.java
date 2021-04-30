@@ -4,6 +4,7 @@ import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.market.leaderCards.ExtraProductionLeaderCard;
 import it.polimi.ingsw.model.utilities.BaseProduction;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
@@ -13,7 +14,8 @@ import java.util.*;
 
 public class ProductionBoard {
     private final ProductionSlot[] productionSlots  ;
-    private final ArrayList<BaseProduction> leaderProductions;
+    private final ArrayList<ExtraProductionLeaderCard> leaderProductions;
+    private boolean baseProductionSelected;
     private final Map<Color, int[]> inventory;
     private int victoryPoints;
     private final BaseProduction finalProduction;
@@ -31,9 +33,10 @@ public class ProductionBoard {
         inventory.put(Color.BLUE, new int[4]);
         victoryPoints = 0;
         finalProduction = new BaseProduction();
+        baseProductionSelected = false;
     }
 
-    public ArrayList<BaseProduction> getLeaderProductions() {
+    public ArrayList<ExtraProductionLeaderCard> getLeaderProductions() {
         return leaderProductions;
     }
 
@@ -53,6 +56,19 @@ public class ProductionBoard {
         return productionSlots;
     }
 
+    public void setBaseProductionSelected(boolean baseProductionSelected) {
+        this.baseProductionSelected = baseProductionSelected;
+    }
+
+    public boolean isBaseProductionSelected() {
+        return baseProductionSelected;
+    }
+
+    /**
+     * puts the new production card in the designated slot
+     * @param index -- index of production slot
+     * @param newProductionCard -- new production card obtained
+     */
     public void placeProductionCard(int index, ProductionCard newProductionCard){
         productionSlots[index].setProductionCard(newProductionCard);
         inventory.get(newProductionCard.getColor())[newProductionCard.getLevel().ordinal()]++;
@@ -60,10 +76,22 @@ public class ProductionBoard {
         victoryPoints = victoryPoints + newProductionCard.getVictoryPoints();
     }
 
+    /**
+     * checks if the card can be placed in the designated production slot
+     * @param index -- index of production slot
+     * @param newProductionCard -- new production card obtained
+     * @return --
+     */
     public boolean checkPutCard(int index, ProductionCard newProductionCard){
         return productionSlots[index].canPlaceAnotherCard(newProductionCard);
     }
 
+    /**
+     * each resource tag can either be in the input of the final production or the output, this method
+     * updates the final production
+     * @param destination -- destination of the update, either input or output
+     * @param input -- resource tag that needs to be put in the final production
+     */
     public void updateFinalProduction(ArrayList<ResourceTag> destination, ResourceTag input){
         boolean placed = false;
         if(destination.isEmpty()){
@@ -82,29 +110,35 @@ public class ProductionBoard {
         }
     }
 
-    public void addLeaderProduction(ResourceTag[] input, ResourceTag[] output){
-        BaseProduction leaderProduction = new BaseProduction();
-        ArrayList<ResourceTag> inputAsList= new ArrayList<>();
-        ArrayList<ResourceTag> outputAsList= new ArrayList<>();
-        Collections.addAll(inputAsList, input);
-        Collections.addAll(outputAsList, output);
-        leaderProduction.setInputResources(inputAsList);
-        leaderProduction.setOutputResources(outputAsList);
-        leaderProductions.add(leaderProduction);
+    /**
+     * moves the leader production from the playerboard to the productionboard
+     * @param leaderCard -- extra production leader card activated
+     */
+    public void addLeaderProduction(ExtraProductionLeaderCard leaderCard){
+        this.leaderProductions.add(leaderCard);
     }
 
-
+    /**
+     *
+     * @param input1 -- first input resource
+     * @param input2 -- second input resource
+     * @param output -- resource in output
+     */
     public void selectBaseProduction(ResourceType input1,ResourceType input2, ResourceType output){
-        updateFinalProduction(finalProduction.getInputResources(), new ResourceTag(input1, 1));
-        updateFinalProduction(finalProduction.getInputResources(), new ResourceTag(input2, 1));
-        updateFinalProduction(finalProduction.getOutputResources(), new ResourceTag(output, 1));
+        if(!isBaseProductionSelected()) {
+            updateFinalProduction(finalProduction.getInputResources(), new ResourceTag(input1, 1));
+            updateFinalProduction(finalProduction.getInputResources(), new ResourceTag(input2, 1));
+            updateFinalProduction(finalProduction.getOutputResources(), new ResourceTag(output, 1));
+            setBaseProductionSelected(true);
+        }
     }
 
+    /**
+     *
+     * @param index -- index of production slot that holds the production card selected
+     */
     public void selectProductionSlot(int index){
-        if(productionSlots[index].isSelected()){
-            //lancia una eccezione
-        }
-        else{
+        if(!productionSlots[index].isSelected()){
             for (ResourceTag iterator : productionSlots[index].getProductionCard().getInputResources()) {
                 updateFinalProduction(finalProduction.getInputResources(), iterator);
             }
@@ -115,28 +149,47 @@ public class ProductionBoard {
         }
     }
 
+    /**
+     *
+     * @param index -- index of leader card selected
+     * @param output1 -- resource in output wanted
+     */
     public void selectLeaderProduction(int index, ResourceType output1){
-        for (ResourceTag iterator: leaderProductions.get(index).getInputResources()) {
-            updateFinalProduction(finalProduction.getInputResources(), iterator);
-        }
-        for (ResourceTag iterator : leaderProductions.get(index).getOutputResources()) {
-            if(iterator.getType().equals(ResourceType.UNDEFINED)){
-                updateFinalProduction(finalProduction.getOutputResources(), new ResourceTag(output1, 1));
+        if(!leaderProductions.get(index).getSelected()) {
+            leaderProductions.get(index).setSelected(true);
+            for (ResourceTag iterator : leaderProductions.get(index).getInputResources()) {
+                updateFinalProduction(finalProduction.getInputResources(), iterator);
             }
-            else{
-                updateFinalProduction(finalProduction.getOutputResources(), iterator);
+            for (ResourceTag iterator : leaderProductions.get(index).getOutputResources()) {
+                if (iterator.getType().equals(ResourceType.UNDEFINED)) {
+                    updateFinalProduction(finalProduction.getOutputResources(), new ResourceTag(output1, 1));
+                } else {
+                    updateFinalProduction(finalProduction.getOutputResources(), iterator);
+                }
             }
         }
     }
 
+    /**
+     * method that resets the whole selection, can be invoked when the action is finished and the resources are put in
+     * the strogbox or when the selection has ended but the player doesn't have enough resources to execute the production
+     */
     public void clearSelection(){
         for (ProductionSlot iterator : productionSlots) {
             iterator.setSelected(false);
         }
+        for (ExtraProductionLeaderCard iterator: leaderProductions) {
+            iterator.setSelected(false);
+        }
+        setBaseProductionSelected(false);
         finalProduction.getInputResources().clear();
         finalProduction.getOutputResources().clear();
     }
 
+    /**
+     *
+     * @return -- generates the list of material resources
+     */
     public LinkedList<Resource> executeProduction(){
         return ResourceBuilder.build(finalProduction.getOutputResources());
     }
