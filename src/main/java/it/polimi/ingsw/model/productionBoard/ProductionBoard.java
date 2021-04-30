@@ -172,7 +172,7 @@ public class ProductionBoard {
 
     /**
      * method that resets the whole selection, can be invoked when the action is finished and the resources are put in
-     * the strogbox or when the selection has ended but the player doesn't have enough resources to execute the production
+     * the strongbox or when the selection has ended but the player doesn't have enough resources to execute the production
      */
     public void clearSelection(){
         for (ProductionSlot iterator : productionSlots) {
