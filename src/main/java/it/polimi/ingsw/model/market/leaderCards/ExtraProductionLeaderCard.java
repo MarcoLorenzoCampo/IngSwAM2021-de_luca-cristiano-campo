@@ -13,6 +13,8 @@ public class ExtraProductionLeaderCard extends LeaderCard {
     DevelopmentTag[] requirements;
     ResourceTag[] inputResources;
     ResourceTag[] outputResources;
+    boolean selected;
+
 
     /**
      * Uses the same constructor as the super class.
@@ -25,6 +27,7 @@ public class ExtraProductionLeaderCard extends LeaderCard {
         super(victoryPoints, effectType, requirements, null);
         this.inputResources = inputResources;
         this.outputResources = outputResources;
+        this.selected = false;
     }
 
     /**
@@ -39,7 +42,14 @@ public class ExtraProductionLeaderCard extends LeaderCard {
                 .getCurrentPlayer()
                 .getPlayerBoard()
                 .getProductionBoard()
-                .addLeaderProduction(inputResources, outputResources);
+                .addLeaderProduction(this);
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+    public boolean getSelected(){
+        return this.selected;
     }
 
     public ResourceTag[] getInputResources() {
