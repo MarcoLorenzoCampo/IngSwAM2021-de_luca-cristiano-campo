@@ -7,7 +7,6 @@ import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.network.server.GameServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -16,8 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ConditionsToRefuseActionsTest {
 
-    @Mock
-    private GameServer multiEchoGameServer;
     private GameManager gameManager;
     private ActionManager actionManager;
     private String actionSender;
@@ -26,7 +23,7 @@ class ConditionsToRefuseActionsTest {
     @BeforeEach
     void setUp() throws NameTakenException, NoMorePlayersException {
         resetSingleton();
-        gameManager = new GameManager(2, multiEchoGameServer);
+        gameManager = new GameManager(2);
         actionManager = gameManager.getActionManager();
         gameManager.getLobbyManager().addNewPlayer("testPlayer");
         gameManager.getLobbyManager().setPlayingOrder();
