@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.network.MultiEchoServer;
+import it.polimi.ingsw.network.server.GameServer;
 
 /**
  * Class to manage the entire playing game. It has instances of the currentGame, LobbyManager,
@@ -10,7 +10,7 @@ import it.polimi.ingsw.network.MultiEchoServer;
  */
 public final class GameManager {
 
-    private final MultiEchoServer multiEchoServer;
+    private final GameServer multiEchoGameServer;
 
     private final IGame currentGame;
     private final ActionManager actionManager;
@@ -21,13 +21,13 @@ public final class GameManager {
      * @param gameMode : decides whether the LobbyManager will be for a single player game or multiplayer.
      *                 1 = single player game;
      *                 2 = multiplayer game;
-     * @param multiEchoServer: main multiEchoServer to handle connections.
+     * @param multiEchoGameServer : main multiEchoGameServer to handle connections.
      */
-    public GameManager(int gameMode, MultiEchoServer multiEchoServer) {
+    public GameManager(int gameMode, GameServer multiEchoGameServer) {
 
         currentGame = PlayingGame.getGameInstance();
         actionManager = new ActionManager(currentGame, this.lobbyManager);
-        this.multiEchoServer = multiEchoServer;
+        this.multiEchoGameServer = multiEchoGameServer;
 
         if(gameMode == 1) {
             lobbyManager = new SinglePlayerLobbyManager(currentGame);

@@ -12,9 +12,12 @@ public final class ActionManager {
     private final IGame currentGame;
     private final ILobbyManager caller;
 
+    private boolean actionAccepted;
+
     public ActionManager(IGame currentGame, ILobbyManager caller) {
         this.currentGame = currentGame;
         this.caller = caller;
+        this.actionAccepted = true;
     }
 
     /**
@@ -28,26 +31,30 @@ public final class ActionManager {
         try {
             currentGame.getCurrentPlayer().getPlayerBoard().getAction(receivedAction);
         } catch (InvalidPlayerException e) {
-            //sends message to the sender saying he isn't allowed to play now
+            actionAccepted = false;
         } catch (InvalidGameStateException e) {
-            //
+            actionAccepted = false;
         } catch (GetResourceFromMarketException e) {
-            //
+            actionAccepted = false;
         } catch (BuyCardFromMarketException e) {
-            //
+            actionAccepted = false;
         } catch (EndTurnException e) {
 
             caller.setNextTurn();
         } catch (NoMatchingRequisitesException e) {
-            //
+            actionAccepted = false;
         } catch (LeaderCardException e) {
-            //
+            actionAccepted = false;
         } catch (EndGameException e) {
             e.printStackTrace();
         } catch (InvalidProductionSlotException e) {
-            e.printStackTrace();
+            actionAccepted = false;
         } catch (MustPerformActionException e) {
-            e.printStackTrace();
+            actionAccepted = false;
         }
+    }
+
+    public boolean isActionAccepted() {
+        return actionAccepted;
     }
 }
