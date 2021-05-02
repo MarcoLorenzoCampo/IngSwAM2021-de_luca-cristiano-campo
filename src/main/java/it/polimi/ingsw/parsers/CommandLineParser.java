@@ -9,6 +9,9 @@ import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
 
 public final class CommandLineParser {
 
+    /**
+     * Validates if the cmd args can be used to build a ServerConfigPOJO object.
+     */
     public  static boolean CmdValidator(String[] args) {
 
         if(args.length != 3) return false;
@@ -28,30 +31,17 @@ public final class CommandLineParser {
                 || args[2].equalsIgnoreCase("-multiPlayer");
     }
 
+    /**
+     * Realizes the parsing of cmd line arguments (if they've been validated)
+     * @param args: users arguments from main.
+     * @return: ServerConfigPOJO {@link ServerConfigPOJO} containing parsed data.
+     */
     public static ServerConfigPOJO parseUserArgs(String[] args) {
 
         ServerConfigPOJO customConfig = new ServerConfigPOJO();
 
-        if(args.length != 3) return null;
-
-        if(args[0].equalsIgnoreCase("-port")) {
-
-            try {
-                customConfig.setPort(Integer.parseInt(args[1]));
-            } catch(NumberFormatException nfe) {
-                return null;
-            }
-        } else {
-            return null;
-        }
-
-        if(args[2].equalsIgnoreCase("-singlePlayer")
-                || args[2].equalsIgnoreCase("-multiPlayer")) {
-
-            customConfig.setGameMode(args[2]);
-        } else {
-            return null;
-        }
+        customConfig.setPort(Integer.parseInt(args[1]));
+        customConfig.setGameMode(args[2]);
 
         return customConfig;
     }

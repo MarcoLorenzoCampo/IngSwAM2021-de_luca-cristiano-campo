@@ -71,7 +71,7 @@ public class SocketServer implements Runnable {
      * Forwards a disconnection request to the server.
      * @param clientHandler: associated to the client.
      */
-    public void onDisconnection(ClientHandler clientHandler) {
+    public void onDisconnect(ClientHandler clientHandler) {
         server.onDisconnection(clientHandler);
     }
 }

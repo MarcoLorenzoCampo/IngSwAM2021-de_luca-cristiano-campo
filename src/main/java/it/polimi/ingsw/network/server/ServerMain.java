@@ -8,13 +8,13 @@ import it.polimi.ingsw.parsers.ServerConfigParser;
 /**
  * Accepted commands:
  *
- * user@user:$ Class.java -port <port#> -<game_mode>
+ * user @ user:$ Class.java -port <port#> -<game_mode>
  *
  *
  * Follow this format to use specific settings. Defaults can be checked @ server_config.json
  *
  * <port#> : int from 1024 to Integer.GET_MAX;
- * <game_mode> : "singlePlayer" (0) or "multiPlayer" (1) (not case sensitive)
+ * <game_mode> : "singlePlayer" (1) or "multiPlayer" (2) (not case sensitive)
  *
  */
 public class ServerMain {
@@ -30,9 +30,6 @@ public class ServerMain {
         GameManager gameManager = null;
         SocketServer socketServer;
 
-        /**
-         * Validates if the cmd args can be used to build a ServerConfigPOJO object.
-         */
         if(!CommandLineParser.CmdValidator(args)) {
             serverConfig = defaultServerConfig();
         } else {
