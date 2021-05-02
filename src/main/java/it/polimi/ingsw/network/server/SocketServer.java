@@ -23,7 +23,7 @@ public class SocketServer implements Runnable {
 
     /**
      * Overrides empty run method from Thread class. Starts a thread to keep on listening
-     * for new clients request of connection.
+     * for new connections.
      */
     @Override
     public void run() {

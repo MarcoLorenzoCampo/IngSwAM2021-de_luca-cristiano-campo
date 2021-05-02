@@ -10,13 +10,13 @@ import it.polimi.ingsw.actions.Action;
 public final class ActionManager {
 
     private final IGame currentGame;
-    private final ILobbyManager caller;
+    private final GameManager gameManager;
 
     private boolean actionAccepted;
 
-    public ActionManager(IGame currentGame, ILobbyManager caller) {
+    public ActionManager(IGame currentGame, GameManager gameManager) {
         this.currentGame = currentGame;
-        this.caller = caller;
+        this.gameManager = gameManager;
         this.actionAccepted = true;
     }
 
@@ -40,7 +40,7 @@ public final class ActionManager {
             actionAccepted = false;
         } catch (EndTurnException e) {
 
-            caller.setNextTurn();
+            gameManager.getLobbyManager().setNextTurn();
         } catch (NoMatchingRequisitesException e) {
             actionAccepted = false;
         } catch (LeaderCardException e) {

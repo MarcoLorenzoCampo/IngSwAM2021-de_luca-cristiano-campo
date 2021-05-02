@@ -14,9 +14,15 @@ import java.net.Socket;
  */
 public class ClientHandler implements Runnable, IClientHandler {
 
+    private String nickname;
+
     private final SocketServer socketServer;
     private final Socket clientSocket;
 
+    /**
+     * Boolean value to determine player status.
+     * Used for advanced functionality: resilience to disconnections.
+     */
     private boolean isConnected;
 
     private final Object inputLock;
@@ -62,9 +68,9 @@ public class ClientHandler implements Runnable, IClientHandler {
 
     /**
      * After the client is connected and associated to a handler, a specific thread is run
-     * to keep up with the messages he sends.
+     * to keep up with sent messages.
      *
-     * There may be ping messages that have to be ignored.
+     * There may be ping messages which will be ignored.
      */
     private void handleUserMessages() throws IOException {
         try {
@@ -73,10 +79,8 @@ public class ClientHandler implements Runnable, IClientHandler {
                     Message message = (Message) input.readObject();
 
                     if(message.getMessageType().equals(PossibleMessages.PING_MESSAGE)) {
-                        continue;
+                        return;
                     }
-
-
 
                     //handle messages here;
                 }
@@ -132,5 +136,13 @@ public class ClientHandler implements Runnable, IClientHandler {
             Server.LOGGER.severe(e.getMessage());
             disconnect();
         }
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }

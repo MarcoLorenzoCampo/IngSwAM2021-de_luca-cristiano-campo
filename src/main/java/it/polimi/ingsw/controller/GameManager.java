@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.network.server.Server;
 
 /**
  * Class to manage the entire playing game. It has instances of the currentGame, LobbyManager,
@@ -9,10 +10,11 @@ import it.polimi.ingsw.model.game.PlayingGame;
  */
 public final class GameManager {
 
-
+    private Server server;
     private final IGame currentGame;
     private final ActionManager actionManager;
     private ILobbyManager lobbyManager;
+    private final MessageHandler messageHandler;
 
     /**
      * Constructor of the game manager.
@@ -23,13 +25,14 @@ public final class GameManager {
     public GameManager(int gameMode) {
 
         currentGame = PlayingGame.getGameInstance();
-        actionManager = new ActionManager(currentGame, this.lobbyManager);
+        actionManager = new ActionManager(currentGame, this);
+        messageHandler = new MessageHandler();
 
         if(gameMode == 1) {
             lobbyManager = new SinglePlayerLobbyManager(currentGame);
         }
         if(gameMode == 2) {
-            lobbyManager = new MultiPlayerLobbyManager(currentGame);
+            lobbyManager = new MultiPlayerLobbyManager(currentGame, this);
         }
     }
 
@@ -43,5 +46,17 @@ public final class GameManager {
 
     public ILobbyManager getLobbyManager() {
         return lobbyManager;
+    }
+
+    public MessageHandler getMessageHandler() {
+        return messageHandler;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
+
+    public Server getServer() {
+        return server;
     }
 }

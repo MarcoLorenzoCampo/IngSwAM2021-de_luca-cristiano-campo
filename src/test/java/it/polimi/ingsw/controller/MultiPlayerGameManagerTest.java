@@ -5,14 +5,22 @@ import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.network.server.ClientHandler;
+import it.polimi.ingsw.network.server.Server;
+import it.polimi.ingsw.network.server.SocketServer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+
+import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MultiPlayerGameManagerTest {
 
+    @Mock
+    private Server server;
     @Mock
     private GameManager gameManager;
 
@@ -20,6 +28,8 @@ class MultiPlayerGameManagerTest {
     void setUp() {
         resetSingleton();
         gameManager = new GameManager(2);
+        server = new Server(gameManager);
+        gameManager.setServer(server);
     }
 
     @Test
@@ -52,6 +62,7 @@ class MultiPlayerGameManagerTest {
     }
 
     @Test
+    @Disabled
     void setNextTurnLobbyTest() throws NameTakenException, NoMorePlayersException {
         //Arrange
         String nickname1 = "testPlayer1";
