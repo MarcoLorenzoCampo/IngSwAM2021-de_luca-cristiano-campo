@@ -10,11 +10,21 @@ public abstract class Message {
 
     private PossibleMessages messageType;
 
+    private String senderUsername;
+
     public PossibleMessages getMessageType() {
         return messageType;
     }
 
     public void setMessageType(PossibleMessages messageType) {
         this.messageType = messageType;
+    }
+
+    public String getSenderUsername() {
+        return senderUsername;
+    }
+
+    public void setSenderUsername(String senderUsername) {
+        this.senderUsername = senderUsername;
     }
 }

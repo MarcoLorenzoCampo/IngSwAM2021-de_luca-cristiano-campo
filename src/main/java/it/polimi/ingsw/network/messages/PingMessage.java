@@ -8,7 +8,8 @@ import it.polimi.ingsw.enumerations.PossibleMessages;
  */
 public class PingMessage extends Message {
 
-    public PingMessage() {
+    public PingMessage(String username) {
         super.setMessageType(PossibleMessages.PING_MESSAGE);
+        super.setSenderUsername(username);
     }
 }
