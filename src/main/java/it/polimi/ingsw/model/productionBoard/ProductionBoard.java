@@ -80,7 +80,7 @@ public class ProductionBoard {
      * checks if the card can be placed in the designated production slot
      * @param index -- index of production slot
      * @param newProductionCard -- new production card obtained
-     * @return
+     * @return --
      */
     public boolean checkPutCard(int index, ProductionCard newProductionCard){
         return productionSlots[index].canPlaceAnotherCard(newProductionCard);

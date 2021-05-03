@@ -20,12 +20,14 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
     private static final int MAX_PLAYERS = 4;
 
+    private final GameManager gameManager;
     private int numberOfTurns;
     private final List<RealPlayer> realPlayerList;
 
-    public MultiPlayerLobbyManager(IGame currentGame) {
+    public MultiPlayerLobbyManager(IGame currentGame, GameManager gameManager) {
         this.realPlayerList = new LinkedList<>();
         numberOfTurns = 0;
+        this.gameManager = gameManager;
     }
 
     /**
@@ -46,6 +48,9 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         realPlayerList.add(new RealPlayer(nickname));
     }
 
+    /**
+     * Method to set the playing order once the game starts. It's invoked once per game.
+     */
     @Override
     public void setPlayingOrder() {
         Collections.shuffle(realPlayerList);
@@ -56,13 +61,29 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         setDefaultResources();
     }
 
+    /**
+     * Iterates over the handler's list in the server, looking for the next player. The iteration goes on
+     * as long as it finds a connected host to set as the next current player.
+     */
     @Override
     public void setNextTurn() {
         numberOfTurns++;
+
+        while(!gameManager.getServer().getClientHandlerMap()
+                .get(realPlayerList.get(numberOfTurns% realPlayerList.size()).getName()).isConnected()) {
+
+            numberOfTurns++;
+        }
+
         PlayingGame.getGameInstance()
                 .setCurrentPlayer(realPlayerList.get(numberOfTurns% realPlayerList.size()));
+
+        gameManager.getServer().setCurrentClient(PlayingGame.getGameInstance().getCurrentPlayer().getName());
     }
 
+    /**
+     * Method to deal 4 leader cards for each player.
+     */
     @Override
     public void giveLeaderCards() {
         List<LeaderCard> leaderCards = LeaderCardsDeckBuilder.deckBuilder();
@@ -74,6 +95,10 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         }
     }
 
+    /**
+     * When the game starts, each player is given a specific number of resources and
+     * faith track points.
+     */
     private void setDefaultResources() {
         for(int i = 0; i< realPlayerList.size(); i++) {
 

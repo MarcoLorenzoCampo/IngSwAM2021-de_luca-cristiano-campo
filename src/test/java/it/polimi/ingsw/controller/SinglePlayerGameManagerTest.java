@@ -5,7 +5,6 @@ import it.polimi.ingsw.exceptions.NameTakenException;
 import it.polimi.ingsw.exceptions.NoMorePlayersException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.network.MultiEchoServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -16,13 +15,12 @@ class SinglePlayerGameManagerTest {
 
     @Mock
     private GameManager gameManager;
-    @Mock
-    private MultiEchoServer multiEchoServer;
+
 
     @BeforeEach
     void setUp() {
         resetSingleton();
-        gameManager = new GameManager(1, multiEchoServer);
+        gameManager = new GameManager(1);
     }
 
     @Test

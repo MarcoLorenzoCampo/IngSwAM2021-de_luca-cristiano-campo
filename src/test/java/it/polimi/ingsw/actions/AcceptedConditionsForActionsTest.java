@@ -11,7 +11,6 @@ import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.player.RealPlayer;
-import it.polimi.ingsw.network.MultiEchoServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -25,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class AcceptedConditionsForActionsTest {
 
-    @Mock private MultiEchoServer multiEchoServer;
     private GameManager gameManager;
     private ActionManager actionManager;
     private String actionSender;
@@ -34,7 +32,7 @@ class AcceptedConditionsForActionsTest {
     @BeforeEach
     void setUp() throws NameTakenException, NoMorePlayersException {
         resetSingleton();
-        gameManager = new GameManager(2, multiEchoServer);
+        gameManager = new GameManager(2);
         actionManager = gameManager.getActionManager();
         gameManager.getLobbyManager().addNewPlayer("testPlayer");
         gameManager.getLobbyManager().setPlayingOrder();
