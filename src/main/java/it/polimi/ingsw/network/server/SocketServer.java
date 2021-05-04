@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.messages.Message;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.function.DoubleToIntFunction;
 
 /**
  * Class that communicates with clients. It has a reference to a server class and takes input from
@@ -12,10 +13,25 @@ import java.net.Socket;
  */
 public class SocketServer implements Runnable {
 
+    /**
+     * Reference to the server.
+     */
     private final Server server;
+
+    /**
+     * Thread listening to this port to accept connections.
+     */
     private final int port;
+
+    /**
+     * Reference to the JavaSE socket class that will be used to communicate.
+     * {@link ServerSocket}
+     */
     private ServerSocket serverSocket;
 
+    /**
+     * Default constructor.
+     */
     public SocketServer(Server server, int port) {
         this.server = server;
         this.port = port;
@@ -30,14 +46,16 @@ public class SocketServer implements Runnable {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            Server.LOGGER.severe(() -> "Input error.");
         }
 
         while(!Thread.currentThread().isInterrupted()) {
             try {
                 Socket clientSocket = serverSocket.accept();
 
-                clientSocket.setSoTimeout(5000);
+                System.out.println(clientSocket.getRemoteSocketAddress());
+
+                //clientSocket.setSoTimeout(10*1000);
 
                 ClientHandler clientHandler = new ClientHandler(this, clientSocket);
 
@@ -45,7 +63,7 @@ public class SocketServer implements Runnable {
                 clientThread.start();
 
             } catch (IOException e) {
-                e.printStackTrace();
+                Server.LOGGER.severe(() -> "Client thread error.");
             }
         }
     }
@@ -72,6 +90,6 @@ public class SocketServer implements Runnable {
      * @param clientHandler: associated to the client.
      */
     public void onDisconnect(ClientHandler clientHandler) {
-        server.onDisconnection(clientHandler);
+        server.onDisconnect(clientHandler);
     }
 }

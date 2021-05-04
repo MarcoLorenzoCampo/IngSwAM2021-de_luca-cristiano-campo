@@ -16,5 +16,5 @@ public enum PossibleMessages {
     BUY_PRODUCTION,
     SOURCE_WAREHOUSE,
     SOURCE_STRONGBOX,
-
+    SEND_NICKNAME
 }

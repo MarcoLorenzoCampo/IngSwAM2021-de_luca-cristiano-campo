@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Utility class to handle actions.
+ * Utility class to handle actions. Methods are declared static since they serve validation purposes.
+ * They don't have side effects and can be called from different parts of the code.
  */
 public final class ActionValidator {
 

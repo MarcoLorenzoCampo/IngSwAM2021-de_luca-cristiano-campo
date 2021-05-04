@@ -13,6 +13,7 @@ public class PlayerState {
     private boolean hasActivatedProductions;
     private boolean hasPickedResources;
     private boolean hasBoughCard;
+    private boolean isConnected;
 
     private boolean hasPlacedLeaders;
 
@@ -25,6 +26,18 @@ public class PlayerState {
         hasPlacedLeaders = false;
 
         hasPlaceableLeaders = true;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void connect() {
+        this.isConnected = true;
+    }
+
+    public void disconnect() {
+        this.isConnected = false;
     }
 
     public void noMoreLeaderCards() {

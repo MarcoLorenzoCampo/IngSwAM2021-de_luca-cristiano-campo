@@ -1,12 +1,14 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.PossibleMessages;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.network.messages.Message;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * Class to handle clients server-side when one connects to the server's socket.
@@ -31,6 +33,10 @@ public class ClientHandler implements Runnable, IClientHandler {
     private ObjectOutputStream output;
     private ObjectInputStream input;
 
+
+    Scanner in;
+    PrintWriter out;
+
     /**
      * Custom constructor.
      * @param socketServer: reference to the server's socket to communicate
@@ -47,21 +53,26 @@ public class ClientHandler implements Runnable, IClientHandler {
         this.isConnected = true;
 
         try {
+
             this.output = new ObjectOutputStream(clientSocket.getOutputStream());
-            this.input = new ObjectInputStream(clientSocket.getInputStream());
+            output.flush();
+            //this.input = new ObjectInputStream(clientSocket.getInputStream());
+
         } catch (IOException e) {
-            e.printStackTrace();
+            Server.LOGGER.severe(e.getMessage());
         }
     }
 
     /**
-     * Overriding default run() method.
+     * Overriding default run() method. Calling disconnect() method if an IOException
+     * is thrown.
      */
     @Override
     public void run() {
         try {
             handleUserMessages();
-        } catch (IOException e) {
+        } catch (IOException | NoSuchElementException e) {
+            Server.LOGGER.info("Client disconnected.");
             disconnect();
         }
     }
@@ -74,20 +85,31 @@ public class ClientHandler implements Runnable, IClientHandler {
      */
     private void handleUserMessages() throws IOException {
         try {
-            while (!Thread.currentThread().isInterrupted()) {
-                synchronized (inputLock) {
-                    Message message = (Message) input.readObject();
 
-                    if(message.getMessageType().equals(PossibleMessages.PING_MESSAGE)) {
-                        return;
-                    }
+            in = new Scanner(clientSocket.getInputStream());
+            out = new PrintWriter(clientSocket.getOutputStream());
+
+            while (!Thread.currentThread().isInterrupted()) {
+
+                synchronized (inputLock) {
+                    String line = in.nextLine();
+
+                    System.out.println("Client: " + clientSocket.getLocalSocketAddress() + ", message: " + line);
+                    //Message message = (Message) input.readObject();
+
+                    /*if(message.getMessageType().equals(PossibleMessages.PING_MESSAGE)) {
+                        continue;
+                    }*/
 
                     //handle messages here;
                 }
             }
-        } catch (ClassCastException | ClassNotFoundException e) {
+
+        } catch (ClassCastException e) {
+
             Server.LOGGER.severe("Invalid stream");
         }
+
         clientSocket.close();
     }
 
@@ -121,7 +143,7 @@ public class ClientHandler implements Runnable, IClientHandler {
     }
 
     /**
-     * Method to send messages to the client.
+     * Method to send messages to the client through socket.
      * @param message: data sent.
      */
     @Override

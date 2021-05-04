@@ -13,7 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Utility class to build the leader cards leaderCardsDeck.
+ * Utility class to build the leader cards leaderCardsDeck. Methods are declared static since they serve
+ * validation purposes. They don't have side effects and can be called from different parts of the code.
  */
 public final class LeaderCardsDeckBuilder {
 

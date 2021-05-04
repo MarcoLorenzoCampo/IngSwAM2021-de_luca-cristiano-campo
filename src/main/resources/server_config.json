@@ -1,4 +1,4 @@
 {
   "port" : 2200,
-  "gameMode" : "singlePlayer"
+  "gameMode" : "-multiPlayer"
 }

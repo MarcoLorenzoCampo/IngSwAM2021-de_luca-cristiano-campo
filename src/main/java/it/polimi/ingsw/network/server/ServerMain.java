@@ -44,11 +44,13 @@ public class ServerMain {
             gameManager = new GameManager(2);
         }
 
+        assert gameManager != null;
+
         server = new Server(gameManager);
         socketServer = new SocketServer(server, serverConfig.getPort());
 
-        Thread thread = new Thread(socketServer, "serverThread");
-        thread.start();
+        Thread serverSocketThread = new Thread(socketServer, "serverThread");
+        serverSocketThread.start();
     }
 
     /**

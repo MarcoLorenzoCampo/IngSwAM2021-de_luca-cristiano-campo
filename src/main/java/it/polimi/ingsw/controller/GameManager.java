@@ -32,8 +32,12 @@ public final class GameManager {
             lobbyManager = new SinglePlayerLobbyManager(currentGame);
         }
         if(gameMode == 2) {
-            lobbyManager = new MultiPlayerLobbyManager(currentGame, this);
+            lobbyManager = new MultiPlayerLobbyManager(this);
         }
+    }
+
+    public void broadCastMessage(String text) {
+
     }
 
     public ActionManager getActionManager() {
@@ -48,10 +52,6 @@ public final class GameManager {
         return lobbyManager;
     }
 
-    public MessageHandler getMessageHandler() {
-        return messageHandler;
-    }
-
     public void setServer(Server server) {
         this.server = server;
     }
@@ -59,4 +59,19 @@ public final class GameManager {
     public Server getServer() {
         return server;
     }
+
+
+    /**
+     * Method to end the game. Broadcasts the outcome of the match and
+     * @param message: end game message
+     */
+    public void endGame(String message) {
+        broadCastMessage(message);
+        //computes scores and such to show
+    }
+
+    public MessageHandler getMessageHandler() {
+        return messageHandler;
+    }
+
 }
