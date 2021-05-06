@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.player.RealPlayer;
-import it.polimi.ingsw.network.virtualView.VirtualView;
+import it.polimi.ingsw.network.views.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

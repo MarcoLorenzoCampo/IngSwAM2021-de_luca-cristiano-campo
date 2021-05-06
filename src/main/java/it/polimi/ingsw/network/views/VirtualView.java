@@ -1,6 +1,5 @@
-package it.polimi.ingsw.network.virtualView;
+package it.polimi.ingsw.network.views;
 
-import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.IClientHandler;
 

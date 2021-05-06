@@ -1,8 +1,7 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.player.RealPlayer;
-import it.polimi.ingsw.network.virtualView.VirtualView;
+import it.polimi.ingsw.network.views.VirtualView;
 
 import java.util.List;
 

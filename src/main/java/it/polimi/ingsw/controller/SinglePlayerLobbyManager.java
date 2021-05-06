@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
-import it.polimi.ingsw.network.virtualView.VirtualView;
+import it.polimi.ingsw.network.views.VirtualView;
 
 import java.util.List;
 import java.util.stream.Collectors;

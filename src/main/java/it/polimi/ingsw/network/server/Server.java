@@ -2,7 +2,7 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.virtualView.VirtualView;
+import it.polimi.ingsw.network.views.VirtualView;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public class Server {
      */
     private ClientHandler currentClient;
 
-    private final Object lock;
+    private final Object lockObject;
 
     /**
      * Default constructor. Creates empty instances of the collections needed and sets up
@@ -38,9 +38,9 @@ public class Server {
      */
     public Server(GameManager gameManager) {
         this.gameManager = gameManager;
-        gameManager.setServer(this);
+        this.gameManager.setServer(this);
         this.clientHandlerMap = Collections.synchronizedMap(new HashMap<>());
-        this.lock = new Object();
+        this.lockObject = new Object();
     }
 
     /**
@@ -52,15 +52,16 @@ public class Server {
      */
     public void addNewClient(String nickname, ClientHandler clientHandler) {
 
+        VirtualView virtualView = new VirtualView(clientHandler);
+
         if(!isKnownPlayer(nickname)) {
             clientHandlerMap.put(nickname, clientHandler);
             clientHandler.setNickname(nickname);
 
-            VirtualView virtualView = new VirtualView(clientHandler);
+
             reconnectKnownPlayer(nickname, clientHandler, virtualView);
 
         } else {
-            VirtualView virtualView = new VirtualView(clientHandler);
             gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
         }
     }
@@ -79,7 +80,7 @@ public class Server {
      */
     public void onDisconnect(ClientHandler clientHandler) {
 
-        synchronized (lock) {
+        synchronized (lockObject) {
 
             if(clientHandler.getNickname() != null) {
 
@@ -96,14 +97,18 @@ public class Server {
                 gameManager.broadCastMessage(offlineClient + " disconnected.");
                 LOGGER.info(() -> "Removed " + offlineClient + " from the client list.");
 
+                //Also add && gameState = isPlaying.
                 if (clientHandlerMap.size() == 1) {
-                    gameManager.endGame("You're the last player online. I guess you won!");
+                    gameManager.endGame("You're the last player online. You won!");
+
 
                 }
             }
 
             if(clientHandler.getNickname() == null){
                 LOGGER.info(() -> "Removed a client before the login phase.");
+
+                gameManager.broadCastMessage("A client was removed before he could log in.");
             }
         }
     }

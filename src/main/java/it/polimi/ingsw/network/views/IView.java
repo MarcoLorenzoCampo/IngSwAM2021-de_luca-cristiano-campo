@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.virtualView;
+package it.polimi.ingsw.network.views;
 
 /**
  * Interface to implement every possible action asked/performed by the player. It can be implemented

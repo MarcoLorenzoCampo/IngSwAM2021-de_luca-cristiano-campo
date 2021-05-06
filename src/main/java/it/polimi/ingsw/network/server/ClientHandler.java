@@ -16,9 +16,19 @@ import java.util.Scanner;
  */
 public class ClientHandler implements Runnable, IClientHandler {
 
+    /**
+     * Nickname associated to the client who will be managed by this handler.
+     */
     private String nickname;
 
+    /**
+     * Reference to the server's socket.
+     */
     private final SocketServer socketServer;
+
+    /**
+     * Reference to the client's socket.
+     */
     private final Socket clientSocket;
 
     /**
@@ -27,15 +37,23 @@ public class ClientHandler implements Runnable, IClientHandler {
      */
     private boolean isConnected;
 
+    /**
+     * Objects used as locks to synchronize input and output streams.
+     */
     private final Object inputLock;
     private final Object outputLock;
 
+    /**
+     * Input and output streams. Using ObjectInputStream and ObjectOutputStream to accept Message objects
+     * and refuse other kinds of communications.
+     * {@link Message}
+     */
     private ObjectOutputStream output;
     private ObjectInputStream input;
 
 
-    Scanner in;
-    PrintWriter out;
+    //Scanner in;
+    //PrintWriter out;
 
     /**
      * Custom constructor.
@@ -44,6 +62,7 @@ public class ClientHandler implements Runnable, IClientHandler {
      * @param clientSocket: reference to the client's socket to communicate via Output and Input streams.
      */
     public ClientHandler(SocketServer socketServer, Socket clientSocket) {
+
         this.clientSocket = clientSocket;
         this.socketServer = socketServer;
 
@@ -56,7 +75,7 @@ public class ClientHandler implements Runnable, IClientHandler {
 
             this.output = new ObjectOutputStream(clientSocket.getOutputStream());
             output.flush();
-            //this.input = new ObjectInputStream(clientSocket.getInputStream());
+            this.input = new ObjectInputStream(clientSocket.getInputStream());
 
         } catch (IOException e) {
             Server.LOGGER.severe(e.getMessage());
@@ -69,10 +88,14 @@ public class ClientHandler implements Runnable, IClientHandler {
      */
     @Override
     public void run() {
+
         try {
             handleUserMessages();
         } catch (IOException | NoSuchElementException e) {
-            Server.LOGGER.info("Client disconnected.");
+            Server.LOGGER.info(() -> "Client disconnected.");
+        } catch (NullPointerException e) {
+            Server.LOGGER.info(() -> "NullPointerException was caught.");
+        } finally {
             disconnect();
         }
     }
@@ -86,16 +109,17 @@ public class ClientHandler implements Runnable, IClientHandler {
     private void handleUserMessages() throws IOException {
         try {
 
-            in = new Scanner(clientSocket.getInputStream());
-            out = new PrintWriter(clientSocket.getOutputStream());
+            //in = new Scanner(clientSocket.getInputStream());
+            //out = new PrintWriter(clientSocket.getOutputStream());
 
             while (!Thread.currentThread().isInterrupted()) {
 
                 synchronized (inputLock) {
-                    String line = in.nextLine();
 
-                    System.out.println("Client: " + clientSocket.getLocalSocketAddress() + ", message: " + line);
-                    //Message message = (Message) input.readObject();
+                    //String line = in.nextLine();
+                    //System.out.println("Client: " + clientSocket.getLocalSocketAddress() + ", message: " + line);
+
+                    Message message = (Message) input.readObject();
 
                     /*if(message.getMessageType().equals(PossibleMessages.PING_MESSAGE)) {
                         continue;
@@ -105,7 +129,7 @@ public class ClientHandler implements Runnable, IClientHandler {
                 }
             }
 
-        } catch (ClassCastException e) {
+        } catch (ClassCastException | ClassNotFoundException e) {
 
             Server.LOGGER.severe("Invalid stream");
         }
@@ -160,10 +184,19 @@ public class ClientHandler implements Runnable, IClientHandler {
         }
     }
 
+    /**
+     * Sets the nickname attribute. Needs to be a setter because needs a Login message to be
+     * defined.
+     * @param nickname: name of the client.
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * Default getter.
+     * @return: string nickname.
+     */
     public String getNickname() {
         return nickname;
     }
