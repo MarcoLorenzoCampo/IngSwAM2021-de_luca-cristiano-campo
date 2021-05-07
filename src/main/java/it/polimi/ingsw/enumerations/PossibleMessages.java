@@ -1,6 +1,7 @@
 package it.polimi.ingsw.enumerations;
 
 public enum PossibleMessages {
+    SETUP_LEADERS,
     PING_MESSAGE,
     CONNECTION,
     GAME_SIZE,
