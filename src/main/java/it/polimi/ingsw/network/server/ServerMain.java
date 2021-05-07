@@ -14,7 +14,7 @@ import it.polimi.ingsw.parsers.ServerConfigParser;
  * Follow this format to use specific settings. Defaults can be checked @ server_config.json
  *
  * <port#> : int from 1024 to Integer.GET_MAX;
- * <game_mode> : "singlePlayer" (1) or "multiPlayer" (2) (not case sensitive)
+ * <game_mode> : "-singlePlayer" (1) or "-multiPlayer" (2) (not case sensitive)
  *
  */
 public class ServerMain {

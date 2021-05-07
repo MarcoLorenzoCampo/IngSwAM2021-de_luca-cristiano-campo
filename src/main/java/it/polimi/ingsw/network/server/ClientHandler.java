@@ -8,7 +8,6 @@ import it.polimi.ingsw.network.messages.Message;
 import java.io.*;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 /**
  * Class to handle clients server-side when one connects to the server's socket.

@@ -7,17 +7,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.logging.Logger;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
- * Class to
+ * Class to handle client operations.
  */
-public class Client implements Runnable {
-
-    /**
-     * Default logger.
-     */
-    public static final Logger clientLogger = Logger.getLogger(Client.class.getName());
+public class Client implements IClient {
 
     /**
      * Socket that connects and communicates with the server's socket.
@@ -32,12 +28,7 @@ public class Client implements Runnable {
     private ObjectInputStream input;
 
     /**
-     * Thread to read asynchronous messages sent by the server.
-     */
-    private Thread readerThread;
-
-    /**
-     * Client constructor.
+     * Client constructor. Connects the client to the server's socket.
      * @param port: server's socket.
      * @param IP_Address: IP address.
      */
@@ -62,45 +53,38 @@ public class Client implements Runnable {
             clientLogger.severe(() -> "Couldn't connect to the host.");
         }
 
-        readerThread = new Thread();
-        readerThread.start();
+        readMessage();
     }
 
-    /**
-     * Overriding default run() method for the thread.
-     */
     @Override
-    public void run() {
+    public void readMessage() {
+        ExecutorService listener = Executors.newSingleThreadExecutor();
 
-        while(!Thread.currentThread().isInterrupted()) {
+        listener.execute(() -> {
 
-            Message message;
-
-            try {
-                message = (Message) input.readObject();
-                clientLogger.info("Received: " + message + " from server.");
-            } catch (IOException e) {
-                clientLogger.severe(() -> "Communication error. Critical error.");
-            } catch (ClassNotFoundException e) {
-                clientLogger.severe(() -> "Got an unexpected Object from server. Critical error.");
-
-            } finally {
+            while (!Thread.currentThread().isInterrupted()) {
+                Message message;
 
                 try {
-                    clientSocket.close();
-                } catch (IOException e) {
-                    clientLogger.severe(() -> "Socket error. Critical error.");
-                }
+                    message = (Message) input.readObject();
 
-                disconnect();
+                    clientLogger.info("Received: " + message + " from server.");
+                } catch (IOException e) {
+
+                    clientLogger.severe(() -> "Communication error. Critical error.");
+                } catch (ClassNotFoundException e) {
+
+                    clientLogger.severe(() -> "Got an unexpected Object from server. Critical error.");
+
+                } finally {
+
+                    disconnect();
+                }
             }
-        }
+        });
     }
 
-    /**
-     * Method to send messages to the server's socket.
-     * @param message: message to send.
-     */
+    @Override
     public void sendMessage(Message message) {
 
         try {
@@ -112,12 +96,9 @@ public class Client implements Runnable {
             clientLogger.severe(() -> "Unable to send the message.");
             disconnect();
         }
-
     }
 
-    /**
-     * Method to disconnect the client from the server in case of errors.
-     */
+    @Override
     public void disconnect() {
 
         if(!clientSocket.isClosed()) {

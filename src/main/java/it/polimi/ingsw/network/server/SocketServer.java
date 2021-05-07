@@ -5,7 +5,6 @@ import it.polimi.ingsw.network.messages.Message;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.function.DoubleToIntFunction;
 
 /**
  * Class that communicates with clients. It has a reference to a server class and takes input from
