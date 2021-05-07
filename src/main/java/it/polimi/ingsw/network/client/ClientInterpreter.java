@@ -81,6 +81,13 @@ public class ClientInterpreter {
     }
 
     /**
+     * Message to deposit a specific resource to the warehouse.
+     */
+    public void onUpdateSourceWarehouse() {
+        iClient.sendMessage(new SourceWarehouseMessage(nickname));
+    }
+
+    /**
      * Method to send a BaseProduction request, with specific input/output resources.
      * @param i1: input resource one.
      * @param i2: input resource two.
@@ -88,6 +95,14 @@ public class ClientInterpreter {
      */
     public void onUpdateBaseActivation(ResourceType i1, ResourceType i2, ResourceType o1) {
         iClient.sendMessage(new BaseProductionMessage(nickname, i1, i2, o1));
+    }
+
+    /**
+     * Sends a message with the index of the production card to activate.
+     * @param c1: index of the card.
+     */
+    public void onUpdateActivateProductionCard(int c1) {
+        iClient.sendMessage(new OneIntMessage(nickname, PossibleMessages.ACTIVATE_PRODUCTION, c1));
     }
 
     /**
@@ -106,11 +121,17 @@ public class ClientInterpreter {
         iClient.sendMessage(new OneIntMessage(nickname, PossibleMessages.ACTIVATE_LEADER, l1));
     }
 
-
-    //-------------------------------------- ACTION REQUESTS -----------------------------------------
+    /**
+     * Sends a message to activate an extra-inventory slot.
+     * @param e1: index of the slot to activate.
+     * @param r1: preferred output resource.
+     */
+    public void onUpdateActivateExtraProduction(int e1, ResourceType r1) {
+        iClient.sendMessage(new ExtraProductionMessage(nickname, e1, r1));
+    }
 
     /**
-     * Sends a message to request an action. In this case
+     * Sends a message to get resources from a specific arrow from market.
      * @param r1: row or column chosen.
      */
     public void onUpdateGetResources(int r1) {
@@ -121,16 +142,25 @@ public class ClientInterpreter {
      * Sends a message containing the index of the Production Card to buy. The card is selected from the
      * available ones. {@link it.polimi.ingsw.model.market.ResourceMarket}
      *
-     * @param c1: Index of the card to buy.
+     * @param card: Index of the card to buy.
+     * @param slot: production slot destination.
      */
-    public void onUpdateByuCard(int c1) {
-        iClient.sendMessage(new OneIntMessage(nickname, PossibleMessages.BUY_PRODUCTION, c1));
+    public void onUpdateBuyCard(int card, int slot) {
+        iClient.sendMessage(new TwoIntMessage(nickname, PossibleMessages.BUY_PRODUCTION, card, slot));
     }
 
     /**
      * Sends a request to swap two shelves in the warehouse.
      */
-    public void onUpdateSwap() {
+    public void onUpdateSwap(int shelf1, int shelf2) {
+        iClient.sendMessage(new TwoIntMessage(nickname, PossibleMessages.SWAP ,shelf1, shelf2));
+    }
 
+    /**
+     * Sends a request to check the state of another player.
+     * @param enemyName: player to check.
+     */
+    public void onUpdatePeek(String enemyName) {
+        iClient.sendMessage(new PeekMessage(nickname, enemyName));
     }
 }

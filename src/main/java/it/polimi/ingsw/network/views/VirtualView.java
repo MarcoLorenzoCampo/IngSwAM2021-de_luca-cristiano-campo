@@ -9,7 +9,7 @@ import it.polimi.ingsw.network.server.IClientHandler;
  */
 public class VirtualView implements IView {
 
-    private IClientHandler clientHandler;
+    private final IClientHandler clientHandler;
 
     /**
      * Class constructor.

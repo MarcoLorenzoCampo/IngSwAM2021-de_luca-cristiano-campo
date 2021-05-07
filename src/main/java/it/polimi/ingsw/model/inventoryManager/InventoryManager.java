@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 
 public class InventoryManager {
     private ArrayList<MaterialResource> buffer;
-    private Warehouse warehouse;
-    private Strongbox strongbox;
-    private Map<ResourceType, Integer> inventory;
+    private final Warehouse warehouse;
+    private final Strongbox strongbox;
+    private final Map<ResourceType, Integer> inventory;
     private ArrayList<ResourceType> exchange;
     private ArrayList<ResourceType> discount;
 
@@ -87,21 +87,26 @@ public class InventoryManager {
                     .filter(materialResource -> !materialResource.getResourceType().equals(ResourceType.UNDEFINED))
                     .collect(Collectors.toList());
         }
+
         else if (exchange.size()==1){
             for (MaterialResource iterator : buffer) {
                 iterator.setResourceType(exchange.get(0));
             }
         }
+
+        if(exchange.size() == 2) {
+
+        }
     }
 
     /**
-     * overload of same method, this selecets one particular marble ans changes into a particular type
+     * overload of same method, this selects one particular marble ans changes into a particular type
      * (granted that the type is valid)
      * @param index -- index of resource in buffer to change
      * @param type -- type in which to change
      */
     public void whiteMarbleExchange(int index, ResourceType type){
-        if(exchange.contains(type)){
+        if(exchange.contains(type)) {
             buffer.get(index).setResourceType(type);
         }
     }

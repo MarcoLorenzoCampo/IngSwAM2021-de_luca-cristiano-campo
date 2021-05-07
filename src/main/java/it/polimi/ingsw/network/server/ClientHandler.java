@@ -50,10 +50,6 @@ public class ClientHandler implements Runnable, IClientHandler {
     private ObjectOutputStream output;
     private ObjectInputStream input;
 
-
-    //Scanner in;
-    //PrintWriter out;
-
     /**
      * Custom constructor.
      * @param socketServer: reference to the server's socket to communicate
@@ -107,9 +103,6 @@ public class ClientHandler implements Runnable, IClientHandler {
      */
     private void handleUserMessages() throws IOException {
         try {
-
-            //in = new Scanner(clientSocket.getInputStream());
-            //out = new PrintWriter(clientSocket.getOutputStream());
 
             while (!Thread.currentThread().isInterrupted()) {
 

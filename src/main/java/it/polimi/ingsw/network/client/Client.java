@@ -72,12 +72,10 @@ public class Client implements IClient {
                 } catch (IOException e) {
 
                     clientLogger.severe(() -> "Communication error. Critical error.");
+                    disconnect();
                 } catch (ClassNotFoundException e) {
 
                     clientLogger.severe(() -> "Got an unexpected Object from server. Critical error.");
-
-                } finally {
-
                     disconnect();
                 }
             }

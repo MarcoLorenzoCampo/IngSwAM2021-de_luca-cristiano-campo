@@ -79,6 +79,7 @@ public final class ActionValidator {
      * false means the caller will throw an exception.
      */
     private static boolean validateProductionCardRequirements(ProductionCard toValidate) {
+
         List<ResourceTag> requirements = toValidate.getRequirements();
         Map<ResourceType, Integer> actualInventory = PlayingGame.getGameInstance().getCurrentPlayer()
                 .getInventoryManager().getInventory();

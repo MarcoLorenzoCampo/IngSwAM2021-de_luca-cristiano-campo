@@ -54,7 +54,7 @@ public class SocketServer implements Runnable {
 
                 System.out.println(clientSocket.getRemoteSocketAddress());
 
-                clientSocket.setSoTimeout(5*1000);
+                //clientSocket.setSoTimeout(5*1000);
 
                 ClientHandler clientHandler = new ClientHandler(this, clientSocket);
 
