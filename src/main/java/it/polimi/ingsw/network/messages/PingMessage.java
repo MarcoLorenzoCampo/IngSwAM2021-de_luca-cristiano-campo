@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages;
 
-import it.polimi.ingsw.enumerations.PossibleMessages;
+import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
 
 /**
  * Message sent by the client to ping the client handler.
@@ -9,7 +9,7 @@ import it.polimi.ingsw.enumerations.PossibleMessages;
 public class PingMessage extends Message {
 
     public PingMessage(String username) {
-        super.setMessageType(PossibleMessages.PING_MESSAGE);
+        super.setMessageType(PossiblePlayerMessages.PING_MESSAGE);
         super.setSenderUsername(username);
     }
 }

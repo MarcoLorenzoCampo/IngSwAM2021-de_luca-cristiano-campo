@@ -43,11 +43,16 @@ public class GetResourceFromMarketAction extends Action {
 
     /**
      * Action to perform if verified.
+     * Picks resources from market, deposits them and asks for an exchange if necessary.
      */
     private void runAction() {
         this.game.getIGameBoard()
                 .getResourceMarket()
                 .pickResources(indexToPickFrom);
+
+        this.game.getCurrentPlayer()
+                .getInventoryManager()
+                .whiteMarblesExchange();
 
         this.game.getCurrentPlayer()
                 .getPlayerState()

@@ -71,4 +71,9 @@ public class VirtualView implements IView {
     public void disconnect() {
 
     }
+
+    @Override
+    public void showMatchInfo() {
+
+    }
 }

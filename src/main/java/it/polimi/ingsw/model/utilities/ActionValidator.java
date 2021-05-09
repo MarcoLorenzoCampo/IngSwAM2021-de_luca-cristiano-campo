@@ -39,6 +39,10 @@ public final class ActionValidator {
             throw new InvalidPlayerException();
     }
 
+    /**
+     * Verifies if a player has performed at least one action and can end his turn.
+     * @throws MustPerformActionException: thrown if he hasn't performed any action.
+     */
     public static void canEndTurnValidator() throws MustPerformActionException {
         if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPickedResources()
         || !PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasBoughCard()

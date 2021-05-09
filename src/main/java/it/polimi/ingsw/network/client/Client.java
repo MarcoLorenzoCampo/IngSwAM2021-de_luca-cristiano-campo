@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client;
 
+import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.concurrent.Executors;
 /**
  * Class to handle client operations.
  */
-public class Client implements IClient {
+public class Client extends Observable implements IClient {
 
     /**
      * Socket that connects and communicates with the server's socket.
@@ -40,7 +41,6 @@ public class Client implements IClient {
             this.clientSocket.connect(new InetSocketAddress(IP_Address, port));
 
         } catch (IOException e) {
-
                 clientLogger.severe(() -> "Unable to connect to the server. Connection refused.");
             }
 
@@ -49,7 +49,6 @@ public class Client implements IClient {
             input = new ObjectInputStream(clientSocket.getInputStream());
 
         } catch (IOException e) {
-
             clientLogger.severe(() -> "Couldn't connect to the host.");
         }
 
@@ -58,12 +57,12 @@ public class Client implements IClient {
 
     @Override
     public void readMessage() {
+
         ExecutorService listener = Executors.newSingleThreadExecutor();
 
         listener.execute(() -> {
-
             while (!Thread.currentThread().isInterrupted()) {
-                Message message;
+                Message message = null;
 
                 try {
                     message = (Message) input.readObject();
@@ -73,11 +72,16 @@ public class Client implements IClient {
 
                     clientLogger.severe(() -> "Communication error. Critical error.");
                     disconnect();
+                    listener.shutdown();
+
                 } catch (ClassNotFoundException e) {
 
                     clientLogger.severe(() -> "Got an unexpected Object from server. Critical error.");
                     disconnect();
+                    listener.shutdown();
                 }
+
+                notifyObserver(message);
             }
         });
     }

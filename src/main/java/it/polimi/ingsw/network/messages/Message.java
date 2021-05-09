@@ -1,22 +1,24 @@
 package it.polimi.ingsw.network.messages;
 
-import it.polimi.ingsw.enumerations.PossibleMessages;
+import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
+
+import java.io.Serializable;
 
 /**
  * Abstract concept of Objects to be exchanged between clients and server.
  * To be extended by specific messages.
  */
-public abstract class Message {
+public abstract class Message implements Serializable {
 
-    private PossibleMessages messageType;
+    private PossiblePlayerMessages messageType;
 
     private String senderUsername;
 
-    public PossibleMessages getMessageType() {
+    public PossiblePlayerMessages getMessageType() {
         return messageType;
     }
 
-    public void setMessageType(PossibleMessages messageType) {
+    public void setMessageType(PossiblePlayerMessages messageType) {
         this.messageType = messageType;
     }
 

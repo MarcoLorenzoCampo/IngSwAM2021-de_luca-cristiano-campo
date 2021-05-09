@@ -1,8 +1,5 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.enumerations.PossibleGameStates;
-import it.polimi.ingsw.enumerations.PossibleMessages;
-import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.io.*;
@@ -102,22 +99,13 @@ public class ClientHandler implements Runnable, IClientHandler {
      * There may be ping messages which will be ignored.
      */
     private void handleUserMessages() throws IOException {
-        try {
 
+        try {
             while (!Thread.currentThread().isInterrupted()) {
 
                 synchronized (inputLock) {
-
-                    //String line = in.nextLine();
-                    //System.out.println("Client: " + clientSocket.getLocalSocketAddress() + ", message: " + line);
-
                     Message message = (Message) input.readObject();
 
-                    /*if(message.getMessageType().equals(PossibleMessages.PING_MESSAGE)) {
-                        continue;
-                    }*/
-
-                    //handle messages here;
                 }
             }
 

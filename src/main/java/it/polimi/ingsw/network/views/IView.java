@@ -52,4 +52,13 @@ public interface IView {
      * Asks the player to chose resources during the game setup phase.
      */
     void askSetupResource();
+
+    /**
+     * Shows the match info if asked (eg: number and name of active players, number of turns passed...)
+     */
+    void showMatchInfo();
+
+
+
+
 }

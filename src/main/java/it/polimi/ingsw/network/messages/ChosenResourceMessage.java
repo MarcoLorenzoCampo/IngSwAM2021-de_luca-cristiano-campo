@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages;
 
-import it.polimi.ingsw.enumerations.PossibleMessages;
+import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
 
 public class ChosenResourceMessage extends Message{
@@ -8,7 +8,7 @@ public class ChosenResourceMessage extends Message{
 
     public ChosenResourceMessage(String username, ResourceType type){
         super.setSenderUsername(username);
-        super.setMessageType(PossibleMessages.RESOURCE);
+        super.setMessageType(PossiblePlayerMessages.RESOURCE);
         chosenResource = type;
     }
 }

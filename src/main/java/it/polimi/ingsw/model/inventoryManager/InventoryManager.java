@@ -94,6 +94,7 @@ public class InventoryManager {
             }
         }
 
+        //dire al controller di chiedere una risorsa
         if(exchange.size() == 2) {
 
         }

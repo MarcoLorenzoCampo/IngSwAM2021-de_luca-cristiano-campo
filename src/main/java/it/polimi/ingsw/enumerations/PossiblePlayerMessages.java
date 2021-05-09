@@ -1,9 +1,12 @@
 package it.polimi.ingsw.enumerations;
 
 /**
- * Enum to list every possible message tag
+ * Enum to list every possible message that can be sent by the player. Every message must have a message tag
+ * from this enumeration.
+ *
+ * {@link it.polimi.ingsw.network.messages.Message}
  */
-public enum PossibleMessages {
+public enum PossiblePlayerMessages {
     SETUP_LEADERS,
     PING_MESSAGE,
     GAME_SIZE,
@@ -11,7 +14,6 @@ public enum PossibleMessages {
     DISCARD_LEADER,
     ACTIVATE_LEADER,
     GET_RESOURCES,
-    DEPOSIT_RESOURCE,
     SWAP,
     PEEK_ENEMY,
     ACTIVATE_PRODUCTION,
