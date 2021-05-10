@@ -5,6 +5,7 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.network.eventHandlers.observers.Observer;
 import it.polimi.ingsw.network.eventHandlers.viewObservers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.views.IView;
 
 import java.util.concurrent.Executor;

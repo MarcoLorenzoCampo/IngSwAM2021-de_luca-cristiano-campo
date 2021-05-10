@@ -70,7 +70,4 @@ public interface IView {
      */
     void showMatchInfo();
 
-
-
-
 }

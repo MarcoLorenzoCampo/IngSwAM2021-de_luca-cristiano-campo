@@ -1,8 +1,10 @@
-package it.polimi.ingsw.network.messages;
+package it.polimi.ingsw.network.messages.playerMessages;
 
 import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
+import it.polimi.ingsw.network.messages.Message;
 
-public class OneIntMessage extends Message{
+public class OneIntMessage extends Message {
+    private static final long serialVersionUID = -3999814384830435938L;
     private int index;
 
     public OneIntMessage(String username, PossiblePlayerMessages type, int number){

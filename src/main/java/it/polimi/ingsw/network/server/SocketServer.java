@@ -44,7 +44,12 @@ public class SocketServer implements Runnable {
     public void run() {
         try {
             serverSocket = new ServerSocket(port);
+
+            Server.LOGGER.info("Server started: " + serverSocket.getLocalSocketAddress()
+                    + "\nWaiting for clients to join...");
+
         } catch (IOException e) {
+
             Server.LOGGER.severe(() -> "Input error.");
         }
 
@@ -52,11 +57,11 @@ public class SocketServer implements Runnable {
             try {
                 Socket clientSocket = serverSocket.accept();
 
-                System.out.println(clientSocket.getRemoteSocketAddress());
-
                 //clientSocket.setSoTimeout(5*1000);
 
                 ClientHandler clientHandler = new ClientHandler(this, clientSocket);
+
+                Server.LOGGER.info("\nNew client joined: " + clientSocket.getInetAddress());
 
                 Thread clientThread = new Thread(clientHandler, "clientThread");
                 clientThread.start();

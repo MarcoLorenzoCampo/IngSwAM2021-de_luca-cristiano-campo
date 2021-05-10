@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.eventHandlers.observers;
 
-import it.polimi.ingsw.network.eventHandlers.observers.Observer;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.util.ArrayList;
@@ -8,8 +7,9 @@ import java.util.ArrayList;
 /**
  * Observable class to work as "listener", registers Observers and notifies them when
  * events occur.
+ * Class that want to become observable must extend this class.
  */
-public class Observable {
+public abstract class Observable {
 
     /**
      * Collection of registered Observers {@link Observer}

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.eventHandlers.viewObservers;
 
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.network.messages.NicknameRequest;
+import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 
 /**
  * Class to observe the view. On information updates calls specific routines.

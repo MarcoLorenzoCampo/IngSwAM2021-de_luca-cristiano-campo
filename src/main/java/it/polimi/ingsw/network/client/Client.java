@@ -30,7 +30,8 @@ public class Client extends Observable implements IClient {
 
     /**
      * Client constructor. Connects the client to the server's socket.
-     * @param port: server's socket.
+     *
+     * @param port:       server's socket.
      * @param IP_Address: IP address.
      */
     public Client(int port, String IP_Address) {
@@ -41,8 +42,8 @@ public class Client extends Observable implements IClient {
             this.clientSocket.connect(new InetSocketAddress(IP_Address, port));
 
         } catch (IOException e) {
-                clientLogger.severe(() -> "Unable to connect to the server. Connection refused.");
-            }
+            clientLogger.severe(() -> "Unable to connect to the server. Connection refused.");
+        }
 
         try {
             output = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -103,7 +104,7 @@ public class Client extends Observable implements IClient {
     @Override
     public void disconnect() {
 
-        if(!clientSocket.isClosed()) {
+        if (!clientSocket.isClosed()) {
             try {
 
                 clientSocket.close();
@@ -117,5 +118,32 @@ public class Client extends Observable implements IClient {
     @Override
     public void periodicPing() {
 
+    }
+
+    //------------------------------------------ MAIN METHOD -----------------------------------------------
+
+    /**
+     * Main method of the client class, it can be launched in both cli or gui mode.
+     * The default option is cli, it can be used in gui mode by adding "-gui" when running the jar file.
+     *
+     * user @ user:$ client.jar -cli
+     */
+    public static void main(String[] args) {
+
+        boolean cli = true;
+
+        for (String arg : args) {
+            if (arg.equalsIgnoreCase("-gui")) {
+                cli = false;
+                break;
+            }
+        }
+
+        if (cli) {
+            //mock client for testing purposes
+        } else {
+            //launch gui
+
+        }
     }
 }

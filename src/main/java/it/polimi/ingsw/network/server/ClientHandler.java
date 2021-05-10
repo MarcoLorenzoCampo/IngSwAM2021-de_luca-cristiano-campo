@@ -71,7 +71,7 @@ public class ClientHandler implements Runnable, IClientHandler {
             this.input = new ObjectInputStream(clientSocket.getInputStream());
 
         } catch (IOException e) {
-            Server.LOGGER.severe(e.getMessage());
+            Server.LOGGER.severe("Client communication error.");
         }
     }
 
