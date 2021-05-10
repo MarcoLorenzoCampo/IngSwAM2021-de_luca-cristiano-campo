@@ -7,6 +7,9 @@ import it.polimi.ingsw.model.token.LorenzoTokenPile;
 
 import java.util.Collections;
 
+/**
+ * Lorenzo's playerBoard, used to perform his signature actions.
+ */
 public class LorenzoPlayerBoard {
     private final FaithTrack lorenzoFaithTrack;
     private final LorenzoTokenPile lorenzoActions;

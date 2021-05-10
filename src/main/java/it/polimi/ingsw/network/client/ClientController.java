@@ -2,19 +2,18 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.network.eventHandlers.IObserver;
-import it.polimi.ingsw.network.eventHandlers.IViewObserver;
+import it.polimi.ingsw.network.eventHandlers.observers.Observer;
+import it.polimi.ingsw.network.eventHandlers.viewObservers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.views.IView;
 
-import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
  * Class to handle messages sent by the client. Acts in between network and generic view.
  */
-public class ClientController implements IViewObserver, IObserver {
+public class ClientController implements ViewObserver, Observer {
 
     /**
      * Reference to the generic view chosen.

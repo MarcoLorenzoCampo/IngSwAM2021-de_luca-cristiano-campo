@@ -59,6 +59,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      */
     @Override
     public void addNewPlayer(String nickname, VirtualView virtualView) {
+
         if(viewsByNickname.isEmpty()) {
 
             viewsByNickname.put(nickname, virtualView);
@@ -68,16 +69,19 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
             virtualView.askPlayerNumber();
         }
 
-        if(realPlayerList.size() == MAX_PLAYERS) {
-            virtualView.showError("The lobby is full, sorry!");
-            return;
-        }
-
         for(RealPlayer realPlayer : realPlayerList) {
             if(realPlayer.getName().equals(nickname)) {
                 virtualView.showLoginOutput(true, false, false);
                 return;
             }
+        }
+
+        if(viewsByNickname.size() < lobbySize) {
+            viewsByNickname.put(nickname, virtualView);
+            realPlayerList.add(new RealPlayer(nickname));
+            virtualView.showLoginOutput(true, true, false);
+
+            broadcastToAllExceptCurrent("New player added: " + nickname, nickname);
         }
     }
 
@@ -91,11 +95,23 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         for(RealPlayer realPlayer : realPlayerList) {
             if(realPlayer.getName().equals(nickname)) {
                 realPlayer.getPlayerState().connect();
+
+                viewsByNickname
+                        .get(nickname)
+                        .showLoginOutput(true, true, true);
+
+                broadcastToAllExceptCurrent("Player reconnected: " + nickname, nickname);
             }
         }
     }
 
+    /**
+     * Method invoked when a lobby size message is sent.
+     * @param lobbySize: number of player accepted.
+     * @param virtualView: virtual view of the first player.
+     */
     public void setLobbySize(int lobbySize, VirtualView virtualView) {
+
         if(lobbySize > MAX_PLAYERS) {
             virtualView.showError("Too many players!");
             virtualView.askPlayerNumber();
@@ -114,6 +130,8 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         realPlayerList.get(0).setFirstToPlay();
         PlayingGame.getGameInstance().setCurrentPlayer(realPlayerList.get(0));
 
+
+
         giveLeaderCards();
         setDefaultResources();
     }
@@ -124,9 +142,15 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      *
      * Clients aren't removed from the player list since they might reconnect later. No progress they made
      * will be lost this way.
+     *
+     * The current player is alerted his turn is over, and so are the other players.
      */
     @Override
     public void setNextTurn() {
+
+        viewsByNickname
+                .get(realPlayerList.get(auxIndex).getName())
+                .turnEnded("Your turn has ended.");
 
         numberOfTurns++;
         auxIndex ++;
@@ -145,10 +169,17 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
         auxIndex = newCurrentIndex;
 
-        gameManager.getCurrentGame().setCurrentPlayer(realPlayerList.get(newCurrentIndex));
+        String nowPlaying = realPlayerList.get(newCurrentIndex).getName();
+
+        gameManager.getCurrentGame()
+                .setCurrentPlayer(realPlayerList.get(newCurrentIndex));
 
         gameManager.getServer()
                 .setCurrentClient(PlayingGame.getGameInstance().getCurrentPlayer().getName());
+
+        broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
+
+        viewsByNickname.get(nowPlaying).currentTurn("It's your turn now");
     }
 
     /**
@@ -221,5 +252,26 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
     public List<RealPlayer> getRealPlayerList() {
         return realPlayerList;
+    }
+
+    /**
+     * Method to send a generic message to all the clients except for the current one.
+     * @param message: String to send.
+     * @param nicknameToExclude: current player.
+     */
+    public void broadcastToAllExceptCurrent(String message, String nicknameToExclude) {
+        viewsByNickname.entrySet().stream()
+                .filter(entry -> !nicknameToExclude.equals(entry.getKey()))
+                .map(Map.Entry::getValue)
+                .forEach(vv -> vv.showGenericString(message));
+    }
+
+    /**
+     * Broadcasts a generic string to every client connected.
+     * @param message: string to show.
+     */
+    public void broadcastGenericMessage(String message) {
+        viewsByNickname.values()
+                .forEach(vv -> vv.showGenericString(message));
     }
 }

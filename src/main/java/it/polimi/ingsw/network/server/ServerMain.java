@@ -8,13 +8,12 @@ import it.polimi.ingsw.parsers.ServerConfigParser;
 /**
  * Accepted commands:
  *
- * user @ user:$ Class.java -port <port#> -<game_mode>
+ * user @ user:$ Class.java -port <port#>
  *
  *
  * Follow this format to use specific settings. Defaults can be checked @ server_config.json
  *
  * <port#> : int from 1024 to Integer.GET_MAX;
- * <game_mode> : "-singlePlayer" (1) or "-multiPlayer" (2) (not case sensitive)
  *
  */
 public class ServerMain {
@@ -27,7 +26,7 @@ public class ServerMain {
 
         ServerConfigPOJO serverConfig;
         Server server;
-        GameManager gameManager = null;
+        GameManager gameManager = new GameManager();
         SocketServer socketServer;
 
         if(!CommandLineParser.CmdValidator(args)) {
@@ -35,16 +34,6 @@ public class ServerMain {
         } else {
             serverConfig = customServerConfig(args);
         }
-
-        if(serverConfig.getGameMode().equalsIgnoreCase("-singlePlayer")) {
-            gameManager = new GameManager(1);
-        }
-        
-        if(serverConfig.getGameMode().equalsIgnoreCase("-multiPlayer")){
-            gameManager = new GameManager(2);
-        }
-
-        assert gameManager != null;
 
         server = new Server(gameManager);
         socketServer = new SocketServer(server, serverConfig.getPort());

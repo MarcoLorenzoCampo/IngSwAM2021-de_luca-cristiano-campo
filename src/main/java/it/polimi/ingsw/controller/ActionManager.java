@@ -45,6 +45,7 @@ public final class ActionManager {
         } catch (EndTurnException e) {
 
             gameManager.getLobbyManager().setNextTurn();
+
         } catch (NoMatchingRequisitesException e) {
             actionAccepted = false;
         } catch (LeaderCardException e) {

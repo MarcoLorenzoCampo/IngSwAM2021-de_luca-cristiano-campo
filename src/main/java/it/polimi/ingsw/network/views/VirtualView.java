@@ -1,5 +1,7 @@
 package it.polimi.ingsw.network.views;
 
+import it.polimi.ingsw.network.eventHandlers.observers.Observer;
+import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.IClientHandler;
 
@@ -7,7 +9,7 @@ import it.polimi.ingsw.network.server.IClientHandler;
  * Hides network classes and methods from the controller.The controller interacts woith the virtual view
  * as clients interact with a "real" view, calling methods from the IView interface {@link IView}.
  */
-public class VirtualView implements IView {
+public class VirtualView implements IView, Observer {
 
     private final IClientHandler clientHandler;
 
@@ -64,16 +66,37 @@ public class VirtualView implements IView {
     }
 
     @Override
-    public void askSetupResource() {
+    public void currentTurn(String message) {
 
     }
 
-    public void disconnect() {
+    @Override
+    public void turnEnded(String message) {
+
+    }
+
+    @Override
+    public void askSetupResource() {
 
     }
 
     @Override
     public void showMatchInfo() {
+
+    }
+
+    /**
+     * Receives an update message from the model and sends it over the network to the client.
+     * The action is performed based on the message type and depends on the view implemented by the client.
+     *
+     * @param message: update message.
+     */
+    @Override
+    public void update(Message message) {
+        clientHandler.sendMessage(message);
+    }
+
+    public void disconnect() {
 
     }
 }

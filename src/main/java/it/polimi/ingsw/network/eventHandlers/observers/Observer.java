@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.eventHandlers;
+package it.polimi.ingsw.network.eventHandlers.observers;
 
 import it.polimi.ingsw.network.messages.Message;
 
@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.messages.Message;
  * Interface to implement the generic update() method.
  * Re-defines the deprecated Observer java class.
  */
-public interface IObserver {
+public interface Observer {
 
     void update(Message message);
 }

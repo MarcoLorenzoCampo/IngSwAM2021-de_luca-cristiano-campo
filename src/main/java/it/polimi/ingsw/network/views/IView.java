@@ -49,6 +49,18 @@ public interface IView {
     void showError(String errorMessage);
 
     /**
+     * Tells the current player it's his turn now and enables inputs.
+     * @param message: generic message.
+     */
+    void currentTurn(String message);
+
+    /**
+     * Tells the player his turn has ended and disables his inputs.
+     * @param message: generic message.
+     */
+    void turnEnded(String message);
+
+    /**
      * Asks the player to chose resources during the game setup phase.
      */
     void askSetupResource();

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.io.*;
@@ -84,10 +85,12 @@ public class ClientHandler implements Runnable, IClientHandler {
         try {
             handleUserMessages();
         } catch (IOException | NoSuchElementException e) {
+
             Server.LOGGER.info(() -> "Client disconnected.");
+            disconnect();
         } catch (NullPointerException e) {
-            Server.LOGGER.info(() -> "NullPointerException was caught.");
-        } finally {
+
+            Server.LOGGER.info(() -> "Null element was caught.");
             disconnect();
         }
     }
@@ -106,6 +109,9 @@ public class ClientHandler implements Runnable, IClientHandler {
                 synchronized (inputLock) {
                     Message message = (Message) input.readObject();
 
+                    if(message != null) {
+                        socketServer.onMessage(message);
+                    }
                 }
             }
 

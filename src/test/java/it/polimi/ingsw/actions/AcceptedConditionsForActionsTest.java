@@ -30,7 +30,8 @@ class AcceptedConditionsForActionsTest {
     @BeforeEach
     void setUp() {
         resetSingleton();
-        gameManager = new GameManager(2);
+        gameManager = new GameManager();
+        gameManager.setLobbyManager(2);
         actionManager = gameManager.getActionManager();
         gameManager.getLobbyManager().addNewPlayer("testPlayer", new VirtualView(null));
         gameManager.getLobbyManager().setPlayingOrder();

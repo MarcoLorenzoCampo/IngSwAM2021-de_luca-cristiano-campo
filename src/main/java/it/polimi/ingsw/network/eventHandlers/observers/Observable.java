@@ -1,5 +1,6 @@
-package it.polimi.ingsw.network.eventHandlers;
+package it.polimi.ingsw.network.eventHandlers.observers;
 
+import it.polimi.ingsw.network.eventHandlers.observers.Observer;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.util.ArrayList;
@@ -11,15 +12,15 @@ import java.util.ArrayList;
 public class Observable {
 
     /**
-     * Collection of registered Observers {@link IObserver}
+     * Collection of registered Observers {@link Observer}
      */
-    private final ArrayList<IObserver> observers = new ArrayList<>();
+    private final ArrayList<Observer> observers = new ArrayList<>();
 
     /**
      * Method to add an observer to the registered ones.
      * @param observer: observer to be added.
      */
-    public void addObserver(IObserver observer) {
+    public void addObserver(Observer observer) {
         observers.add(observer);
     }
 
@@ -27,7 +28,7 @@ public class Observable {
      * Removes an observer from the registered ones.
      * @param observer: observer to be removed.
      */
-    public void removeObserver(IObserver observer) {
+    public void removeObserver(Observer observer) {
         observers.remove(observer);
     }
 
@@ -38,7 +39,7 @@ public class Observable {
      * @param message the message to be passed to the observers.
      */
     protected void notifyObserver(Message message) {
-        for (IObserver observer : observers) {
+        for (Observer observer : observers) {
             observer.update(message);
         }
     }

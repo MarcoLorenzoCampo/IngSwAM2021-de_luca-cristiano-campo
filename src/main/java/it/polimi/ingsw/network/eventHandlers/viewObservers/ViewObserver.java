@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.eventHandlers;
+package it.polimi.ingsw.network.eventHandlers.viewObservers;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.network.messages.NicknameRequest;
@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.messages.NicknameRequest;
 /**
  * Class to observe the view. On information updates calls specific routines.
  */
-public interface IViewObserver {
+public interface ViewObserver {
 
     /**
      * Sends a connection request to the server's IP and port.

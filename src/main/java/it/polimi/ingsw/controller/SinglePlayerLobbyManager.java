@@ -21,6 +21,8 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
     private RealPlayer player = null;
     private final LorenzoPlayer lorenzo;
 
+    private VirtualView playerVV;
+
     public SinglePlayerLobbyManager(IGame currentGame) {
         this.currentGame = currentGame;
         lorenzo = new LorenzoPlayer();
@@ -35,10 +37,15 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
     public void addNewPlayer(String nickname, VirtualView virtualView) {
         if(player == null) {
             player = new RealPlayer(nickname);
+
+            playerVV = virtualView;
+            playerVV.showLoginOutput(true, true, false);
+
+            setPlayingOrder();
         } else {
-            virtualView.showLoginOutput(false, false, false);
+
+            playerVV.showLoginOutput(false, false, false);
         }
-        setPlayingOrder();
     }
 
     /**
@@ -48,6 +55,9 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
     @Override
     public void setPlayingOrder() {
         player.setFirstToPlay();
+
+        playerVV.showGenericString("You'll move first, Lorenzo second.");
+
         currentGame.setCurrentPlayer(player);
 
         giveLeaderCards();
@@ -60,6 +70,8 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
     @Override
     public void setNextTurn() {
         numberOfTurns++;
+
+        playerVV.turnEnded("Lorenzo's turn now.");
         lorenzo.getLorenzoPlayerBoard().getAction(new LorenzoAction(lorenzo));
     }
 
