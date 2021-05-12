@@ -1,5 +1,7 @@
 package it.polimi.ingsw.network.eventHandlers;
 
+import java.util.List;
+
 /**
  * Interface to implement every possible action asked/performed by the player. It can be implemented
  * by CLI and GUI. Also implemented by {@link VirtualView} to hide server implementation from the
@@ -74,6 +76,6 @@ public interface IView {
     /**
      * Shows the match info if asked (eg: number and name of active players, number of turns passed...)
      */
-    void showMatchInfo();
+    void showMatchInfo(List<String> playingNames);
 
 }

@@ -22,7 +22,7 @@ class ConditionsToRefuseActionsTest {
     void setUp() {
         resetSingleton();
         gameManager = new GameManager();
-        gameManager.setLobbyManager(2);
+        gameManager.setLobbyManager("multiPlayer");
         actionManager = gameManager.getActionManager();
         gameManager.getLobbyManager().addNewPlayer("testPlayer", new VirtualView(null));
         gameManager.getLobbyManager().setPlayingOrder();

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.io.*;
@@ -109,7 +110,11 @@ public class ClientHandler implements Runnable, IClientHandler {
                     Message message = (Message) input.readObject();
 
                     if(message != null) {
-                        socketServer.onMessage(message);
+                        if (message.getMessageType() == PossibleMessages.SEND_NICKNAME) {
+                            socketServer.addClient(message.getSenderUsername(), this);
+                        } else {
+                            socketServer.onMessage(message);
+                        }
                     }
                 }
             }

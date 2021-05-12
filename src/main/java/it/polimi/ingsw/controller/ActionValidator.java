@@ -1,10 +1,12 @@
-package it.polimi.ingsw.model.utilities;
+package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.utilities.DevelopmentTag;
+import it.polimi.ingsw.model.utilities.ResourceTag;
 
 import java.util.List;
 import java.util.Map;

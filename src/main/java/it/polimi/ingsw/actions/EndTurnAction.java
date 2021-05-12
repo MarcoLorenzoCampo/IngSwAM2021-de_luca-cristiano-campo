@@ -6,7 +6,7 @@ import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.exceptions.MustPerformActionException;
 import it.polimi.ingsw.model.game.IGame;
-import it.polimi.ingsw.model.utilities.ActionValidator;
+import it.polimi.ingsw.controller.ActionValidator;
 
 /**
  * Action to notify a player's turn has ended and the MultiPLayerLobbyManager should get ready to

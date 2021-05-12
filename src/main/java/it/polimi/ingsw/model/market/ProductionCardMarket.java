@@ -5,18 +5,20 @@ import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.network.eventHandlers.observers.Observable;
+import it.polimi.ingsw.network.messages.serverMessages.AvailableCardsMessage;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.enumerations.Level.*;
 
 
-public class ProductionCardMarket {
+public class ProductionCardMarket extends Observable implements Serializable {
+
+    private static final long serialVersionUID = 1029202032029908073L;
 
     private final List<ProductionCard> playableProductionCards;
     private List<ProductionCard> availableCards;    /* Each RealPlayer sees the available cards only */
@@ -50,8 +52,9 @@ public class ProductionCardMarket {
                 .values());
 
         sortAvailableCardsByLevel();
-    }
 
+        notifyObserver(new AvailableCardsMessage((ArrayList<ProductionCard>) this.availableCards));
+    }
 
     /* prints the cards available */
     public void showAvailableCards() {
@@ -87,6 +90,8 @@ public class ProductionCardMarket {
                 .getPlayerBoard()
                 .increaseBoughCardsCount();
         sortAvailableCardsByLevel();
+
+        notifyObserver(new AvailableCardsMessage((ArrayList<ProductionCard>) this.availableCards));
     }
 
     /**
@@ -105,6 +110,8 @@ public class ProductionCardMarket {
                 return;
             }
         }
+
+        notifyObserver(new AvailableCardsMessage((ArrayList<ProductionCard>) this.availableCards));
     }
 
     /**

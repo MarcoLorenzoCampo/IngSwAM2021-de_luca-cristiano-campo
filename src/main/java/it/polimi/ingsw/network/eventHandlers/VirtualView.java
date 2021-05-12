@@ -5,6 +5,8 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.IClientHandler;
 
+import java.util.List;
+
 /**
  * Hides network classes and methods from the controller.The controller interacts woith the virtual view
  * as clients interact with a "real" view, calling methods from the IView interface {@link IView}.
@@ -86,7 +88,7 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void showMatchInfo() {
+    public void showMatchInfo(List<String> playingNames) {
 
     }
 

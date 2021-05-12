@@ -6,18 +6,19 @@ import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.builders.ResourceBoardBuilder;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
+import it.polimi.ingsw.network.eventHandlers.observers.Observable;
+import it.polimi.ingsw.network.messages.serverMessages.ResourceMarketMessage;
 import it.polimi.ingsw.parsers.ResourceMarketParser;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 
+public class ResourceMarket extends Observable implements Serializable {
 
-/**
- * @author Marco Lorenzo Campo
- */
-public class ResourceMarket {
+    private static final long serialVersionUID = 8240964923769288564L;
 
     private ResourceType extraMarble;
     private final ResourceType[][] resourceBoard;
@@ -114,6 +115,8 @@ public class ResourceMarket {
         placeExtraMarble(index, pickedFromMarket.getLast());
         LinkedList<Resource> obtainedResources = ResourceBuilder.build(pickedFromMarket);
         obtainedResources.forEach(Resource::deposit);
+
+        notifyObserver(new ResourceMarketMessage(this.resourceBoard));
     }
 
     public ResourceType[][] getResourceBoard() {

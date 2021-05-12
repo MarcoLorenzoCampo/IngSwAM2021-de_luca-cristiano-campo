@@ -104,6 +104,21 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
 
     }
 
+    @Override
+    public void broadcastGenericMessage(String message) {
+
+    }
+
+    @Override
+    public void broadCastWinMessage(String message) {
+
+    }
+
+    @Override
+    public void broadCastMatchInfo() {
+
+    }
+
     public LorenzoPlayer getLorenzo() {
         return lorenzo;
     }

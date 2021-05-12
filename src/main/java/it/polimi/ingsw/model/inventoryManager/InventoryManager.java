@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model.inventoryManager;
 
+import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.strongbox.Strongbox;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
@@ -96,7 +98,7 @@ public class InventoryManager {
 
         //dire al controller di chiedere una risorsa
         if(exchange.size() == 2) {
-
+            
         }
     }
 

@@ -24,7 +24,7 @@ public final class ActionManager {
      * Calls the {@link it.polimi.ingsw.model.player.RealPlayerBoard} method getAction() to
      * perform the action received (if validate).
      * Has more branches to deal with checked exceptions sent by the ActionValidator
-     * {@link it.polimi.ingsw.model.utilities.ActionValidator};
+     * {@link ActionValidator};
      * @param receivedAction: action sent by the player via network.
      */
     public void actionReceiver(Action receivedAction) {

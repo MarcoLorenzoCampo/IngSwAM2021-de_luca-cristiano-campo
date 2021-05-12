@@ -76,6 +76,7 @@ public class Server {
             reconnectKnownPlayer(nickname, clientHandler, virtualView);
 
         } else {
+
             gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
         }
     }
@@ -108,7 +109,7 @@ public class Server {
                     LOGGER.info(() -> offlineClient + " left the game, players alerted.");
                 }
 
-                gameManager.broadCastMessage(offlineClient + " disconnected.");
+                gameManager.getLobbyManager().broadcastGenericMessage(offlineClient + " disconnected.");
                 LOGGER.info(() -> "Removed " + offlineClient + " from the client list.");
 
                 //Also add && gameState = isPlaying.
@@ -122,7 +123,7 @@ public class Server {
             if(clientHandler.getNickname() == null){
                 LOGGER.info(() -> "Removed a client before the login phase.");
 
-                gameManager.broadCastMessage("A client was removed before he could log in.");
+                gameManager.getLobbyManager().broadcastGenericMessage("A client was removed before he could log in.");
             }
         }
     }

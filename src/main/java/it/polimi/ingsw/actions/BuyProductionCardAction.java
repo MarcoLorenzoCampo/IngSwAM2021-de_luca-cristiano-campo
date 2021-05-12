@@ -4,7 +4,7 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.market.ProductionCard;
-import it.polimi.ingsw.model.utilities.ActionValidator;
+import it.polimi.ingsw.controller.ActionValidator;
 
 /**
  * This action contains two "micro-actions": buy a card and place it.

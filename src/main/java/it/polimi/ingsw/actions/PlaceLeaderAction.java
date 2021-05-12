@@ -3,7 +3,7 @@ package it.polimi.ingsw.actions;
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
-import it.polimi.ingsw.model.utilities.ActionValidator;
+import it.polimi.ingsw.controller.ActionValidator;
 
 /**
  * Action to activate a LeaderCard. Verifies different steps:

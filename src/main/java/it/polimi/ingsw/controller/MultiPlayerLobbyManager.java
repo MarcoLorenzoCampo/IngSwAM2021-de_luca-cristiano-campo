@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class to manage players and turns in a multiplayer game.
@@ -114,7 +115,6 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
         if(lobbySize > MAX_PLAYERS) {
             virtualView.showError("Too many players!");
-            virtualView.askPlayerNumber();
         } else {
             this.lobbySize = lobbySize;
         }
@@ -130,7 +130,8 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         realPlayerList.get(0).setFirstToPlay();
         PlayingGame.getGameInstance().setCurrentPlayer(realPlayerList.get(0));
 
-
+        broadcastGenericMessage("Playing order has been set! Here's the current order:\n" +
+                getPlayingNames());
 
         giveLeaderCards();
         setDefaultResources();
@@ -148,8 +149,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
     @Override
     public void setNextTurn() {
 
-        viewsByNickname
-                .get(realPlayerList.get(auxIndex).getName())
+        viewsByNickname.get(realPlayerList.get(auxIndex).getName())
                 .turnEnded("Your turn has ended.");
 
         numberOfTurns++;
@@ -177,9 +177,10 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         gameManager.getServer()
                 .setCurrentClient(PlayingGame.getGameInstance().getCurrentPlayer().getName());
 
-        broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
+        gameManager.getMessageHandler().setCurrentPlayerState(realPlayerList.get(newCurrentIndex).getPlayerState());
 
         viewsByNickname.get(nowPlaying).currentTurn("It's your turn now");
+        broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
     }
 
     /**
@@ -235,15 +236,12 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
                     viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource();
                     viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource();
 
-                    realPlayerList.get(i)
-                            .getPlayerBoard()
-                            .getFaithTrack()
-                            .increaseFaithMarker();
-
-                    realPlayerList.get(i)
-                            .getPlayerBoard()
-                            .getFaithTrack()
-                            .increaseFaithMarker();
+                    for(int j=0; j<2; j++) {
+                        realPlayerList.get(i)
+                                .getPlayerBoard()
+                                .getFaithTrack()
+                                .increaseFaithMarker();
+                    }
                     break;
             }
         }
@@ -276,5 +274,30 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
     public void broadcastGenericMessage(String message) {
         viewsByNickname.values()
                 .forEach(vv -> vv.showGenericString(message));
+    }
+
+    @Override
+    public void broadCastWinMessage(String message) {
+
+    }
+
+    @Override
+    public void broadCastMatchInfo() {
+        for(String playingName : getPlayingNames()) {
+
+            viewsByNickname.get(playingName).showMatchInfo(getPlayingNames());
+        }
+    }
+
+    /**
+     * Method to return a list of all the current clients connected.
+     * @return: a list of all the connected user names.
+     */
+    public List<String> getPlayingNames() {
+
+        return realPlayerList.stream()
+                .filter(player -> player.getPlayerState().isConnected())
+                .map(RealPlayer::getName)
+                .collect(Collectors.toList());
     }
 }

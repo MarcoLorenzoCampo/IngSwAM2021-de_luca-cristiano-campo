@@ -26,9 +26,9 @@ public final class GameManager implements Observer, Serializable {
      */
     public GameManager() {
 
-        currentGame = PlayingGame.getGameInstance();
-        actionManager = new ActionManager(currentGame, this);
-        messageHandler = new MessageHandler();
+        this.currentGame = PlayingGame.getGameInstance();
+        this.actionManager = new ActionManager(currentGame, this);
+        this.messageHandler = new MessageHandler(this);
     }
 
     /**
@@ -37,17 +37,14 @@ public final class GameManager implements Observer, Serializable {
      *              1 = single player game;
      *              2 = multiplayer game;
      */
-    public void setLobbyManager(int gameMode) {
-        if(gameMode == 1) {
+    public void setLobbyManager(String gameMode) {
+
+        if(gameMode.equals("singlePlayer")) {
             lobbyManager = new SinglePlayerLobbyManager(currentGame);
         }
-        if(gameMode == 2) {
+        if(gameMode.equals("multiPlayer")) {
             lobbyManager = new MultiPlayerLobbyManager(this);
         }
-    }
-
-    public void broadCastMessage(String message) {
-
     }
 
     public ActionManager getActionManager() {
@@ -70,13 +67,12 @@ public final class GameManager implements Observer, Serializable {
         return server;
     }
 
-
     /**
      * Method to end the game. Broadcasts the outcome of the match and
      * @param message: end game message
      */
     public void endGame(String message) {
-        broadCastMessage(message);
+        lobbyManager.broadCastWinMessage(message);
         //computes scores and such to show
     }
 

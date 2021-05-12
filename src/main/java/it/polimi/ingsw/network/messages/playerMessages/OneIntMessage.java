@@ -12,4 +12,8 @@ public class OneIntMessage extends Message {
         super.setMessageType(type);
         index = number;
     }
+
+    public int getIndex() {
+        return index;
+    }
 }

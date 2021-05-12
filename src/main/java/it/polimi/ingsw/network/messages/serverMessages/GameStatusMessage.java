@@ -15,21 +15,15 @@ public class GameStatusMessage extends Message {
     private static final long serialVersionUID = 5377816352835385508L;
 
     private final List<String> activePlayers;
-    private final int numberOfTurns;
 
-    public GameStatusMessage(List<String> activePlayers, int numberOfTurns) {
+    public GameStatusMessage(List<String> activePlayers) {
 
         super.setMessageType(PossibleMessages.GAME_STATUS);
 
         this.activePlayers = activePlayers;
-        this.numberOfTurns = numberOfTurns;
     }
 
     public List<String> getActivePlayers() {
         return activePlayers;
-    }
-
-    public int getNumberOfTurns() {
-        return numberOfTurns;
     }
 }
