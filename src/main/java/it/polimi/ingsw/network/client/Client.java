@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.network.eventHandlers.observers.Observable;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.views.cli.CLI;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -140,7 +141,11 @@ public class Client extends Observable implements IClient {
         }
 
         if (cli) {
-            //mock client for testing purposes
+            CLI cliView = new CLI();
+            ClientManager clientManager = new ClientManager(cliView);
+            cliView.startCli();
+            cliView.addObserver(clientManager);
+
         } else {
             //launch gui
 

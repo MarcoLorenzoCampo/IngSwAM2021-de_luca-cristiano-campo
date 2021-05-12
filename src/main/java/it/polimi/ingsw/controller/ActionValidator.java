@@ -88,6 +88,7 @@ public final class ActionValidator {
 
         List<ResourceTag> requirements = toValidate.getRequirements();
         Map<ResourceType, Integer> actualInventory = PlayingGame.getGameInstance().getCurrentPlayer()
+                .getPlayerBoard()
                 .getInventoryManager().getInventory();
 
         for (ResourceTag requirement : requirements) {
@@ -171,6 +172,7 @@ public final class ActionValidator {
      */
     private static boolean validateLeaderResourceTags(ResourceTag[] requirements) {
         Map<ResourceType, Integer> actualInventory = PlayingGame.getGameInstance().getCurrentPlayer()
+                .getPlayerBoard()
                 .getInventoryManager().getInventory();
 
         for (ResourceTag requirement : requirements) {

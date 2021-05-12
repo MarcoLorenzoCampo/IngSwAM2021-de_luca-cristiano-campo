@@ -1,7 +1,11 @@
 package it.polimi.ingsw.network.eventHandlers;
 
+import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.network.eventHandlers.observers.Observer;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.serverMessages.GameStatusMessage;
+import it.polimi.ingsw.network.messages.serverMessages.LobbySizeReply;
+import it.polimi.ingsw.network.messages.serverMessages.LoginOutcomeMessage;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.IClientHandler;
 
@@ -34,17 +38,19 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void askNickname() {
-
+        clientHandler.sendMessage(
+                new LoginOutcomeMessage(true, false, false)
+        );
     }
 
     @Override
     public void askPlayerNumber() {
-
+        clientHandler.sendMessage(new LobbySizeReply());
     }
 
     @Override
     public void showLoginOutput(boolean connectionSuccess, boolean nicknameAccepted, boolean reconnected) {
-
+        clientHandler.sendMessage(new LoginOutcomeMessage(connectionSuccess, nicknameAccepted, reconnected));
     }
 
     @Override
@@ -58,7 +64,7 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void askReplacementResource() {
+    public void askReplacementResource(ResourceType r1, ResourceType r2) {
 
     }
 
@@ -89,6 +95,11 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void showMatchInfo(List<String> playingNames) {
+        clientHandler.sendMessage(new GameStatusMessage(playingNames));
+    }
+
+    @Override
+    public void showWinMatch(String winner) {
 
     }
 
@@ -101,9 +112,5 @@ public class VirtualView implements IView, Observer {
     @Override
     public void update(Message message) {
         clientHandler.sendMessage(message);
-    }
-
-    public void disconnect() {
-
     }
 }

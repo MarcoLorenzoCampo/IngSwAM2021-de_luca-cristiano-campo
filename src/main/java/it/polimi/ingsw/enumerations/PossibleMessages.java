@@ -35,4 +35,5 @@ public enum PossibleMessages {
     BOARD,
     LORENZO_TOKEN,
     AVAILABLE_PRODUCTION_CARDS,
+    LOGIN_OUTCOME,
 }

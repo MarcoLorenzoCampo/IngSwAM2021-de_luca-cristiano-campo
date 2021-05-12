@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Testing basic actions.
  */
+@Disabled
 class AcceptedConditionsForActionsTest {
 
     private GameManager gameManager;

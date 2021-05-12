@@ -15,13 +15,22 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.enumerations.Level.*;
 
-
+/**
+ * Class containing the production card deck and method to buy/discard cards.
+ */
 public class ProductionCardMarket extends Observable implements Serializable {
 
     private static final long serialVersionUID = 1029202032029908073L;
 
+    /**
+     * Whole production cards deck.
+     */
     private final List<ProductionCard> playableProductionCards;
-    private List<ProductionCard> availableCards;    /* Each RealPlayer sees the available cards only */
+
+    /**
+     * List of cards available. There are the only cards player can see and buy.
+     */
+    private List<ProductionCard> availableCards;
 
     /**
      * When the game stars, the market is created by the production cards (development cards)
@@ -53,12 +62,7 @@ public class ProductionCardMarket extends Observable implements Serializable {
 
         sortAvailableCardsByLevel();
 
-        notifyObserver(new AvailableCardsMessage((ArrayList<ProductionCard>) this.availableCards));
-    }
-
-    /* prints the cards available */
-    public void showAvailableCards() {
-        System.out.println(availableCards.toString());
+        notifyObserver(new AvailableCardsMessage(this.availableCards));
     }
 
     /**
@@ -91,7 +95,7 @@ public class ProductionCardMarket extends Observable implements Serializable {
                 .increaseBoughCardsCount();
         sortAvailableCardsByLevel();
 
-        notifyObserver(new AvailableCardsMessage((ArrayList<ProductionCard>) this.availableCards));
+        notifyObserver(new AvailableCardsMessage(this.availableCards));
     }
 
     /**
@@ -111,7 +115,7 @@ public class ProductionCardMarket extends Observable implements Serializable {
             }
         }
 
-        notifyObserver(new AvailableCardsMessage((ArrayList<ProductionCard>) this.availableCards));
+        notifyObserver(new AvailableCardsMessage(this.availableCards));
     }
 
     /**

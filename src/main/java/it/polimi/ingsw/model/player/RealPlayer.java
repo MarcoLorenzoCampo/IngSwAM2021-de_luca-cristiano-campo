@@ -3,20 +3,51 @@ package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RealPlayer {
+/**
+ * Player Class, ha references to a few useful classes.
+ */
+public class RealPlayer implements Serializable {
 
+    private static final long serialVersionUID = -8446287370449348970L;
+
+    /**
+     * Name of the player.
+     */
     private final String playerName;
-    private int victoryPoints;
-    private RealPlayerBoard playerBoard;
-    private boolean firstToPlay = false;
-    private PlayerState playerState;
 
+    /**
+     * Victory points acquired.
+     */
+    private int victoryPoints;
+
+    /**
+     * Reference to the player board.
+     */
+    private final RealPlayerBoard playerBoard;
+
+    /**
+     * Boolean value to know if the player is the first one to play.
+     */
+    private boolean firstToPlay = false;
+
+    /**
+     * Reference to the player state.
+     */
+    private final PlayerState playerState;
+
+    /**
+     * Reference to the owned leader cards.
+     */
     private List<LeaderCard> ownedLeaderCards;
 
-    private InventoryManager inventoryManager;
+    /**
+     * Reference to his inventory manager.
+     */
+    private final InventoryManager inventoryManager;
 
     /**
      * Default player constructor.

@@ -17,7 +17,7 @@ public class AvailableCardsMessage extends Message {
 
     private final List<ProductionCard> availableCards;
 
-    public AvailableCardsMessage(ArrayList<ProductionCard> availableCards) {
+    public AvailableCardsMessage(List<ProductionCard> availableCards) {
 
         super.setMessageType(PossibleMessages.AVAILABLE_PRODUCTION_CARDS);
 

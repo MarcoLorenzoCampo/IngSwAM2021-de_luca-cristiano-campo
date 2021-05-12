@@ -16,12 +16,27 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 
+/**
+ * Contains the market where players can acquire resources and the methods
+ * to manipulated marbles.
+ */
 public class ResourceMarket extends Observable implements Serializable {
 
     private static final long serialVersionUID = 8240964923769288564L;
 
+    /**
+     * Auxiliary marble.
+     */
     private ResourceType extraMarble;
+
+    /**
+     * Board containing all the available resources.
+     */
     private final ResourceType[][] resourceBoard;
+
+    /**
+     * Dimensions of the board.
+     */
     private final int[] dimensions;
 
     public ResourceMarket() {
@@ -33,7 +48,7 @@ public class ResourceMarket extends Observable implements Serializable {
     }
 
     /**
-     * "Places" the extra marble, shifting the content
+     * Places the extra marble, shifting the content
      * of the board
      * @param index -- selects the dimension to be shifted
      */

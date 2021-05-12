@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 /**
  * Class to be extended by the view and make it observable by class registered as observers.
  */
-public abstract class viewObservable {
+public abstract class ViewObservable {
 
     private final ArrayList<ViewObserver> observers = new ArrayList<>();
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.network.eventHandlers;
 
+import it.polimi.ingsw.enumerations.ResourceType;
+
 import java.util.List;
 
 /**
@@ -43,7 +45,7 @@ public interface IView {
      * Asks the player to replace the grey marble (UNDEFINED resource) with something if he has
      * enough active leader cards.
      */
-    void askReplacementResource();
+    void askReplacementResource(ResourceType r1, ResourceType r2);
 
     /**
      * Asks the player to store or discard a resource that has to be deposited;
@@ -78,4 +80,9 @@ public interface IView {
      */
     void showMatchInfo(List<String> playingNames);
 
+    /**
+     * Method to end the game and the clients' views.
+     * @param winner: winner of the game.
+     */
+    void showWinMatch(String winner);
 }

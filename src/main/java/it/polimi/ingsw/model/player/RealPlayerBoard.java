@@ -8,14 +8,37 @@ import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.productionBoard.ProductionBoard;
 
+import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Main board of the player. Contains all the references to play the game.
+ */
 public class RealPlayerBoard {
 
+    /**
+     * Number of cards bought.
+     */
     private int boughtCardsNumber;
+
+    /**
+     * Name of the player who owns this board.
+     */
     private final String owner;
+
+    /**
+     * Reference to the player's faith track.
+     */
     private final FaithTrack faithTrack;
+
+    /**
+     * Reference to the production cards bought.
+     */
     ProductionBoard productionBoard;
+
+    /**
+     * Reference to the inventory manager.
+     */
     InventoryManager inventoryManager;
 
     public RealPlayerBoard(String owner) {
@@ -26,11 +49,15 @@ public class RealPlayerBoard {
         inventoryManager = new InventoryManager();
     }
 
-    public void getAction(Action performedAction) throws InvalidPlayerException,
+    /**
+     * Main method called to run a specific action that has to be validated before being executed.
+     * @param actionToPerform: action to be run. {@link Action}
+     */
+    public void getAction(Action actionToPerform) throws InvalidPlayerException,
             InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, EndTurnException,
             NoMatchingRequisitesException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
 
-        performedAction.isValid();
+        actionToPerform.isValid();
     }
 
     public void increaseBoughCardsCount() throws EndGameException {

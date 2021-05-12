@@ -1,14 +1,28 @@
 package it.polimi.ingsw.model.market;
 
 /**
- * Interface injection to replace the use of a Singleton.
+ * Class to represent all the available elements of the market such as the Resource Market and
+ * the Production Cards Market.
+ * {@link ResourceMarket}
+ * {@link ProductionCardMarket}
  */
 public class GameBoard implements IGameBoard {
 
+    /**
+     * Resource Market.
+     */
     private final ResourceMarket resourceMarket;
-    private final ProductionCardMarket productionCardMarket;
-    private static GameBoard gameBoardInstance = null;
 
+    /**
+     * Production Cards Market.
+     */
+    private final ProductionCardMarket productionCardMarket;
+
+    /**
+     * Null instance for singleton use.
+     */
+    private static GameBoard gameBoardInstance = null;
+    
     private GameBoard() {
         resourceMarket = new ResourceMarket();
         productionCardMarket = new ProductionCardMarket();
