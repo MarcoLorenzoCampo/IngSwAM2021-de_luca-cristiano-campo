@@ -1,12 +1,17 @@
 package it.polimi.ingsw.enumerations;
 
+import it.polimi.ingsw.network.messages.Message;
+
 /**
  * Enum to list every possible message that can be sent by the player. Every message must have a message tag
  * from this enumeration.
  *
- * {@link it.polimi.ingsw.network.messages.Message}
+ * {@link Message}
  */
-public enum PossiblePlayerMessages {
+public enum PossibleMessages {
+
+    //Messages sent by the players to the server.
+
     SETUP_LEADERS,
     PING_MESSAGE,
     GAME_SIZE,
@@ -22,5 +27,12 @@ public enum PossiblePlayerMessages {
     BUY_PRODUCTION,
     SOURCE_WAREHOUSE,
     SOURCE_STRONGBOX,
-    SEND_NICKNAME
+    SEND_NICKNAME,
+
+    //Messages sent by the server to the players.
+
+    GAME_STATUS,
+    BOARD,
+    LORENZO_TOKEN,
+    AVAILABLE_PRODUCTION_CARDS,
 }

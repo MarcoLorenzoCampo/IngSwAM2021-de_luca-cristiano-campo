@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
-import it.polimi.ingsw.network.views.VirtualView;
+import it.polimi.ingsw.network.eventHandlers.VirtualView;
 
 import java.util.*;
 
@@ -194,6 +194,8 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
                     .get(i)
                     .setOwnedLeaderCards(leaderCards.subList(4*i, 4*i + 4));
         }
+
+        broadcastGenericMessage("Leader cards have been dealt.");
     }
 
     /**
@@ -201,6 +203,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      * faith track points.
      */
     private void setDefaultResources() {
+
         for(int i = 0; i< realPlayerList.size(); i++) {
 
             switch(i) {

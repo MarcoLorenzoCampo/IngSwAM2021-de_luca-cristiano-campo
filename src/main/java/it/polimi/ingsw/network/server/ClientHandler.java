@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.io.*;

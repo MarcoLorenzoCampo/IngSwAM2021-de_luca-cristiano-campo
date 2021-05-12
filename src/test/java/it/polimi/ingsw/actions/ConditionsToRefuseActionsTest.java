@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.network.views.VirtualView;
+import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

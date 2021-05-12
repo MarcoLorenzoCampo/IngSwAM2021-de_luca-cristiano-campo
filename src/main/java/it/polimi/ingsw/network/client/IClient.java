@@ -2,9 +2,6 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.network.messages.Message;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public interface IClient {

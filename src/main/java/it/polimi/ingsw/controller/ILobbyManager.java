@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.player.RealPlayer;
-import it.polimi.ingsw.network.views.VirtualView;
+import it.polimi.ingsw.network.eventHandlers.VirtualView;
 
 import java.util.List;
 

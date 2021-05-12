@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.server;
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
-import it.polimi.ingsw.network.views.VirtualView;
+import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.parsers.CommandLineParser;
 import it.polimi.ingsw.parsers.ServerConfigParser;
 
@@ -183,8 +183,11 @@ public class Server {
     public static void main(String[] args) {
 
         ServerConfigPOJO serverConfig;
+
         Server server;
+
         GameManager gameManager = new GameManager();
+
         SocketServer socketServer;
 
         if(!CommandLineParser.CmdValidator(args)) {

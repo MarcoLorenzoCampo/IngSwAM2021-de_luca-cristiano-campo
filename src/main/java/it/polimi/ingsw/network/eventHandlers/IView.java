@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.views;
+package it.polimi.ingsw.network.eventHandlers;
 
 /**
  * Interface to implement every possible action asked/performed by the player. It can be implemented
@@ -30,6 +30,12 @@ public interface IView {
      * @param genericMessage: generic string to show.
      */
     void showGenericString(String genericMessage);
+
+    /**
+     * Method to show the player an action performed was denied because not valid.
+     * @param errorMessage: reason behind the refusal.
+     */
+    void showInvalidAction(String errorMessage);
 
     /**
      * Asks the player to replace the grey marble (UNDEFINED resource) with something if he has

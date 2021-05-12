@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.playerMessages;
 
-import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.network.messages.Message;
 
 public class SourceWarehouseMessage extends Message {
@@ -8,6 +8,6 @@ public class SourceWarehouseMessage extends Message {
 
     public SourceWarehouseMessage(String username){
         super.setSenderUsername(username);
-        super.setMessageType(PossiblePlayerMessages.SOURCE_WAREHOUSE);
+        super.setMessageType(PossibleMessages.SOURCE_WAREHOUSE);
     }
 }

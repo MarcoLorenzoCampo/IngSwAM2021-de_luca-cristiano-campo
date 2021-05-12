@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.playerMessages;
 
-import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.network.messages.Message;
 
 /**
@@ -12,7 +12,7 @@ public class PingMessage extends Message {
     private static final long serialVersionUID = -4046380756090971644L;
 
     public PingMessage(String username) {
-        super.setMessageType(PossiblePlayerMessages.PING_MESSAGE);
+        super.setMessageType(PossibleMessages.PING_MESSAGE);
         super.setSenderUsername(username);
     }
 }

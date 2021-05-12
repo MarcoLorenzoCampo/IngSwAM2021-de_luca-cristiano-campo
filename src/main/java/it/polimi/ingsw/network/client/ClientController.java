@@ -1,12 +1,12 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.network.eventHandlers.observers.Observer;
 import it.polimi.ingsw.network.eventHandlers.viewObservers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.playerMessages.*;
-import it.polimi.ingsw.network.views.IView;
+import it.polimi.ingsw.network.eventHandlers.IView;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -64,7 +64,7 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void onUpdateNumberOfPlayers(int gameSize) {
-        client.sendMessage(new OneIntMessage(nickname, PossiblePlayerMessages.GAME_SIZE, gameSize));
+        client.sendMessage(new OneIntMessage(nickname, PossibleMessages.GAME_SIZE, gameSize));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void onUpdateSetupLeaders(int l1, int l2) {
         client.sendMessage(
-                new TwoIntMessage(nickname, PossiblePlayerMessages.SETUP_LEADERS, l1, l2)
+                new TwoIntMessage(nickname, PossibleMessages.SETUP_LEADERS, l1, l2)
         );
     }
 
@@ -96,17 +96,17 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void onUpdateActivateProductionCard(int c1) {
-        client.sendMessage(new OneIntMessage(nickname, PossiblePlayerMessages.ACTIVATE_PRODUCTION, c1));
+        client.sendMessage(new OneIntMessage(nickname, PossibleMessages.ACTIVATE_PRODUCTION, c1));
     }
 
     @Override
     public void onUpdateDiscardLeader(int l1) {
-        client.sendMessage(new OneIntMessage(nickname, PossiblePlayerMessages.DISCARD_LEADER, l1));
+        client.sendMessage(new OneIntMessage(nickname, PossibleMessages.DISCARD_LEADER, l1));
     }
 
     @Override
     public void onUpdateActivateLeader(int l1) {
-        client.sendMessage(new OneIntMessage(nickname, PossiblePlayerMessages.ACTIVATE_LEADER, l1));
+        client.sendMessage(new OneIntMessage(nickname, PossibleMessages.ACTIVATE_LEADER, l1));
     }
 
     @Override
@@ -116,17 +116,17 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void onUpdateGetResources(int r1) {
-        client.sendMessage(new OneIntMessage(nickname, PossiblePlayerMessages.GET_RESOURCES, r1));
+        client.sendMessage(new OneIntMessage(nickname, PossibleMessages.GET_RESOURCES, r1));
     }
 
     @Override
     public void onUpdateBuyCard(int card, int slot) {
-        client.sendMessage(new TwoIntMessage(nickname, PossiblePlayerMessages.BUY_PRODUCTION, card, slot));
+        client.sendMessage(new TwoIntMessage(nickname, PossibleMessages.BUY_PRODUCTION, card, slot));
     }
 
     @Override
     public void onUpdateSwap(int shelf1, int shelf2) {
-        client.sendMessage(new TwoIntMessage(nickname, PossiblePlayerMessages.SWAP ,shelf1, shelf2));
+        client.sendMessage(new TwoIntMessage(nickname, PossibleMessages.SWAP ,shelf1, shelf2));
     }
 
     @Override
@@ -138,7 +138,7 @@ public class ClientController implements ViewObserver, Observer {
      * Takes action based on the message type of the message received from the server.
      * Each server response will be displayed in the CLI/GUI.
      *
-     * See {@link it.polimi.ingsw.enumerations.PossibleServerMessages} for a full list of
+     * See {@link it.polimi.ingsw.enumerations.PossibleMessages} for a full list of
      * available server messages.
      *
      * @param message the message received from the server.

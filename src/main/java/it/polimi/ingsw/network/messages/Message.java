@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages;
 
-import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
+import it.polimi.ingsw.enumerations.PossibleMessages;
 
 import java.io.Serializable;
 
@@ -12,15 +12,15 @@ public abstract class Message implements Serializable {
 
     private static final long serialVersionUID = 4990329164082898297L;
 
-    private PossiblePlayerMessages messageType;
+    private PossibleMessages messageType;
 
     private String senderUsername;
 
-    public PossiblePlayerMessages getMessageType() {
+    public PossibleMessages getMessageType() {
         return messageType;
     }
 
-    public void setMessageType(PossiblePlayerMessages messageType) {
+    public void setMessageType(PossibleMessages messageType) {
         this.messageType = messageType;
     }
 

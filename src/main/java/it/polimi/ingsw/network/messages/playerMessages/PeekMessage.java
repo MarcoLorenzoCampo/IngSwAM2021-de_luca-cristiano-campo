@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.playerMessages;
 
-import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.network.messages.Message;
 
 public class PeekMessage extends Message {
@@ -9,7 +9,7 @@ public class PeekMessage extends Message {
     private final String enemyToPeek;
 
     public PeekMessage(String username, String enemyToPeek){
-        super.setMessageType(PossiblePlayerMessages.PEEK_ENEMY);
+        super.setMessageType(PossibleMessages.PEEK_ENEMY);
         super.setSenderUsername(username);
         this.enemyToPeek = enemyToPeek;
     }

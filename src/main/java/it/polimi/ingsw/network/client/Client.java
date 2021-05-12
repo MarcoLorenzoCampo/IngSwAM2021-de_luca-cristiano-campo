@@ -22,7 +22,7 @@ public class Client extends Observable implements IClient {
     private final Socket clientSocket;
 
     /**
-     * Streams to exchange messages {@link it.polimi.ingsw.network.messages.Message} with
+     * Streams to exchange messages {@link Message} with
      * the server's socket.
      */
     private ObjectOutputStream output;

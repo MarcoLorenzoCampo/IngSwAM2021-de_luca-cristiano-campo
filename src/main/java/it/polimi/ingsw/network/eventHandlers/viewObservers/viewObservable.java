@@ -46,11 +46,11 @@ public abstract class viewObservable {
     /**
      * Notifies all the current observers through the lambda argument.
      *
-     * @param lambda the lambda to be called on the observers.
+     * @param consumer the lambda to be called on the observers.
      */
-    protected void notifyObserver(Consumer<ViewObserver> lambda) {
+    protected void notifyObserver(Consumer<ViewObserver> consumer) {
         for (ViewObserver observer : observers) {
-            lambda.accept(observer);
+            consumer.accept(observer);
         }
     }
 }

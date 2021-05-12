@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.views;
+package it.polimi.ingsw.network.eventHandlers;
 
 import it.polimi.ingsw.network.eventHandlers.observers.Observer;
 import it.polimi.ingsw.network.messages.Message;
@@ -47,6 +47,11 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void showGenericString(String genericMessage) {
+
+    }
+
+    @Override
+    public void showInvalidAction(String errorMessage) {
 
     }
 

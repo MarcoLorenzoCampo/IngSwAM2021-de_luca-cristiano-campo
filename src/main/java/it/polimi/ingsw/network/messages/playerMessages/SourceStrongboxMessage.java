@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.playerMessages;
 
-import it.polimi.ingsw.enumerations.PossiblePlayerMessages;
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.network.messages.Message;
 
 public class SourceStrongboxMessage extends Message {
@@ -9,6 +9,6 @@ public class SourceStrongboxMessage extends Message {
 
     public SourceStrongboxMessage(String username){
         super.setSenderUsername(username);
-        super.setMessageType(PossiblePlayerMessages.SOURCE_STRONGBOX);
+        super.setMessageType(PossibleMessages.SOURCE_STRONGBOX);
     }
 }
