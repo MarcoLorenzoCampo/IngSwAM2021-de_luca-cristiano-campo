@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.eventHandlers;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.market.ProductionCard;
 
 import java.util.List;
 
@@ -85,4 +86,19 @@ public interface IView {
      * @param winner: winner of the game.
      */
     void showWinMatch(String winner);
+
+    /**
+     * Method to show the resource market.
+     *
+     * @param resourceMarket: resource market
+     * {@link it.polimi.ingsw.model.market.ResourceMarket}
+     */
+    void printResourceMarket(ResourceType[][] resourceMarket);
+
+    /**
+     * Method to show the available production cards.
+     *
+     * @param availableCards: available production cards.
+     */
+    void printAvailableCards(List<ProductionCard> availableCards);
 }

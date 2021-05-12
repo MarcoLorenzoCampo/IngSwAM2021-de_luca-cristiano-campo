@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.views.cli;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.network.eventHandlers.IView;
 import it.polimi.ingsw.network.eventHandlers.viewObservers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
@@ -265,6 +266,16 @@ public class CLI extends ViewObservable implements IView {
         out.println(winner + " won! Congratulations :)");
 
         System.exit(0);
+    }
+
+    @Override
+    public void printResourceMarket(ResourceType[][] resourceMarket) {
+
+    }
+
+    @Override
+    public void printAvailableCards(List<ProductionCard> availableCards) {
+
     }
 
     /**

@@ -1,11 +1,10 @@
 package it.polimi.ingsw.network.eventHandlers;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.network.eventHandlers.observers.Observer;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.serverMessages.GameStatusMessage;
-import it.polimi.ingsw.network.messages.serverMessages.LobbySizeReply;
-import it.polimi.ingsw.network.messages.serverMessages.LoginOutcomeMessage;
+import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.IClientHandler;
 
@@ -101,6 +100,16 @@ public class VirtualView implements IView, Observer {
     @Override
     public void showWinMatch(String winner) {
 
+    }
+
+    @Override
+    public void printResourceMarket(ResourceType[][] resourceMarket) {
+        clientHandler.sendMessage(new ResourceMarketMessage(resourceMarket));
+    }
+
+    @Override
+    public void printAvailableCards(List<ProductionCard> availableCards) {
+        clientHandler.sendMessage(new AvailableCardsMessage(availableCards));
     }
 
     /**
