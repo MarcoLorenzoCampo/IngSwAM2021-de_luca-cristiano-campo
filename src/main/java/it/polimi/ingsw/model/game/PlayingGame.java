@@ -65,7 +65,7 @@ public class PlayingGame implements IGame {
 
     @Override
     public void setCurrentState(PossibleGameStates setupSize) {
-        PlayingGame.currentState = currentState;
+        PlayingGame.currentState =   currentState;
     }
 
 }
