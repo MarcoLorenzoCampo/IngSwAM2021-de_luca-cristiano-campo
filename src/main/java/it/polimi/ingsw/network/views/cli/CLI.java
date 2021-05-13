@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.views.cli;
 import it.polimi.ingsw.enumerations.ColorCLI;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.market.ResourceMarket;
 import it.polimi.ingsw.network.eventHandlers.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
@@ -214,9 +215,21 @@ public class CLI extends ViewObservable implements IView {
                 "It appears you have a choice though." +
                 "\nWhat resource would you like to get for this white marble?");
 
-        out.println(r1 + ", " + r2 + " are available.");
+        ResourceType picked = null;
 
+        do {
+            out.println("Specify a valid resource: " + r1 + ", " + r2 + " are available.");
 
+            try {
+                picked = ResourceType.valueOf(readLine());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+        } while (picked == null || (!picked.equals(r1) && !picked.equals(r2)));
+
+        ResourceType finalPicked = picked;
+        notifyObserver(o -> o.onUpdateExchangeResource(finalPicked));
     }
 
     @Override
@@ -278,7 +291,7 @@ public class CLI extends ViewObservable implements IView {
     public void askSetupResource() throws ExecutionException {
         out.println("\nYou have a resource to pick, chose wisely!");
 
-        out.println("AVAILABLE RESOURCES: SHIELD, STONE, SERVANT, COIN");
+        out.println("Available Resources: [SHIELD], [STONE], [SERVANT], [COIN]");
 
         ResourceType picked;
 

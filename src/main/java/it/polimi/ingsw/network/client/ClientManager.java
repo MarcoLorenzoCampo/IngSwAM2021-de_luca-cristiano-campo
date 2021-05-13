@@ -48,6 +48,32 @@ public class ClientManager implements ViewObserver, Observer {
         viewUpdater = Executors.newSingleThreadExecutor();
     }
 
+    /**
+     * Takes action based on the message type of the message received from the server.
+     * Each server response will be displayed in the CLI/GUI.
+     *
+     * See {@link it.polimi.ingsw.enumerations.PossibleMessages} for a full list of
+     * available server messages.
+     *
+     * @param message the message received from the server.
+     */
+    @Override
+    public void update(Message message) {
+
+        switch (message.getMessageType()) {
+            case LOBBY_SIZE_REQUEST:
+                viewUpdater.execute(view::askPlayerNumber);
+                break;
+
+            case LOGIN_OUTCOME:
+                LoginOutcomeMessage m = (LoginOutcomeMessage) message;
+                viewUpdater.execute(() ->
+                        view.showLoginOutput(m.isConnectionOutcome(), m.isNicknameAccepted(), m.isReconnected()));
+
+            default: break;
+        }
+    }
+
     @Override
     public void onServerInfoUpdate(int port, String ipAddress) {
 
@@ -57,9 +83,7 @@ public class ClientManager implements ViewObserver, Observer {
             client.readMessage();
             viewUpdater.execute(view::askNickname);
         } catch (IOException e) {
-            viewUpdater.execute(() -> {
-                view.showLoginOutput(false, false, false);
-            });
+            viewUpdater.execute(() -> view.showLoginOutput(false, false, false));
         }
 
     }
@@ -142,28 +166,8 @@ public class ClientManager implements ViewObserver, Observer {
         client.sendMessage(new PeekMessage(nickname, enemyName));
     }
 
-    /**
-     * Takes action based on the message type of the message received from the server.
-     * Each server response will be displayed in the CLI/GUI.
-     *
-     * See {@link it.polimi.ingsw.enumerations.PossibleMessages} for a full list of
-     * available server messages.
-     *
-     * @param message the message received from the server.
-     */
     @Override
-    public void update(Message message) {
-
-        switch (message.getMessageType()) {
-            case LOBBY_SIZE_REQUEST:
-                viewUpdater.execute(view::askPlayerNumber);
-                break;
-
-            case LOGIN_OUTCOME:
-                LoginOutcomeMessage m = (LoginOutcomeMessage) message;
-                viewUpdater.execute(() -> view.showLoginOutput(m.isConnectionOutcome(), m.isNicknameAccepted(), m.isReconnected()));
-
-            default: break;
-        }
+    public void onUpdateExchangeResource(ResourceType r1) {
+        client.sendMessage(new ExchangeResourceMessage(nickname, r1));
     }
 }

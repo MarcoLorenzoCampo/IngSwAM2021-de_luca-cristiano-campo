@@ -6,6 +6,9 @@ import it.polimi.ingsw.network.messages.Message;
  * Enum to list every possible message that can be sent by the player. Every message must have a message tag
  * from this enumeration.
  *
+ * Checks are made in the model to assure no server messages can be sent by the player and
+ * vice-versa.
+ *
  * {@link Message}
  */
 public enum PossibleMessages {
@@ -28,6 +31,7 @@ public enum PossibleMessages {
     SOURCE_WAREHOUSE,
     SOURCE_STRONGBOX,
     SEND_NICKNAME,
+    EXCHANGE_RESOURCE,
 
     //Messages sent by the server to the players.
 

@@ -112,4 +112,10 @@ public interface ViewObserver {
      * @param enemyName: player to check.
      */
     void onUpdatePeek(String enemyName);
+
+    /**
+     * Sends a message containing the resource to get in exchange for a white marble.
+     * @param r1: resource to exchange.
+     */
+    void onUpdateExchangeResource(ResourceType r1);
 }
