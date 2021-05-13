@@ -95,7 +95,7 @@ public class CLI extends ViewObservable implements IView {
         out.println(Logo.getLogo());
         out.println("\nWelcome to Masters Of Renaissance!\nThis Version was implemented by:" +
                 "\nMarco Lorenzo Campo, Alessandro De Luca, Mario Cristiano" +
-                "\nHope you enjoy :)");
+                "\nHope you enjoy :) ");
     }
 
     @Override
