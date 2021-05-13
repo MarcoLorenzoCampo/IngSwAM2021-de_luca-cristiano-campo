@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.network.eventHandlers.observers.Observer;
+import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.server.Server;
 

@@ -1,14 +1,17 @@
 package it.polimi.ingsw.network.views.cli;
 
+import it.polimi.ingsw.enumerations.ColorCLI;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.network.eventHandlers.IView;
-import it.polimi.ingsw.network.eventHandlers.viewObservers.ViewObservable;
+import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 
 import java.io.PrintStream;
+import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 /**
  * This class offers a visual Interface via terminal. It is an implementation of the IView interface.
@@ -16,29 +19,57 @@ import java.util.Scanner;
  */
 public class CLI extends ViewObservable implements IView {
 
+    private String nickname;
     private final PrintStream out;
-    private Scanner in;
 
     public CLI() {
-        this.in = new Scanner(System.in);
         this.out = new PrintStream(System.out, true);
+    }
+
+    /**
+     * Reads a line from stdin.
+     *
+     * @return the string read from the input.
+     * @throws ExecutionException if the input stream thread is interrupted.
+     */
+    public String readLine() throws ExecutionException {
+
+        FutureTask<String> futureTask = new FutureTask<>(new InputReadingChore());
+        Thread inputThread = new Thread(futureTask);
+        inputThread.start();
+
+        String input = null;
+
+        try {
+            input = futureTask.get();
+        } catch (InterruptedException e) {
+            futureTask.cancel(true);
+            Thread.currentThread().interrupt();
+        }
+        return input;
     }
 
     public void startCli() {
         printLogo();
-        askLocal();
+        try {
+            askLocal();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Asks the player if the game will be performed in local or online.
      */
-    private void askLocal() {
+    private void askLocal() throws ExecutionException {
         String choice;
+        boolean isValid = false;
 
         out.println("\nWant to play an online game or a local single player game? \n[OFF = offline, ON = online]");
+        out.print(">>> ");
 
         while(true) {
-            choice = in.nextLine();
+            choice = readLine();
 
             if(choice.equalsIgnoreCase("off")) {
 
@@ -48,8 +79,10 @@ public class CLI extends ViewObservable implements IView {
 
                 askServerInformation();
                 break;
+
             } else {
-                out.println("\nInvalid input!! [OFF = offline, ON = online]");
+                out.println("\nInvalid input! [OFF = offline, ON = online]");
+                out.print(">>> ");
             }
         }
     }
@@ -57,31 +90,37 @@ public class CLI extends ViewObservable implements IView {
     /**
      * Asks the player to specify a port and Ip address to connect to. They will be then validated and used.
      */
-    private void askServerInformation() {
-        out.println("\nOkay now we will need a few parameters. ");
+    private void askServerInformation() throws ExecutionException {
+        out.println("\nYou've selected: online game." +
+                "\nWe will now need a few parameters to set up the socket connection. ");
 
-        String IPAddress = "";
+        String IPAddress = null;
         int port = -1;
 
         do {
-            out.println("\nSpecify a valid port: ");
+
+            out.println("\nSpecify a valid socket port: " + "\nDefault one is 2200");
+            out.print(">>> ");
 
             try {
-                port = in.nextInt();
-            } catch (NumberFormatException e) {
+                port = Integer.parseInt(readLine());
+            } catch (NumberFormatException | InputMismatchException e) {
                 out.println("This in not number!");
                 clearCLI();
             }
+
         } while(!NetworkInfoValidator.isPortValid(port));
 
         do {
-            out.println("\nSpecify a valid IP address: ");
 
+            out.println("\nSpecify a valid IPAddress: " + "\nDefault is 0.0.0.0");
+            out.print(">>> ");
+            
             try {
-                IPAddress = in.nextLine();
-            } catch (ClassFormatError e) {
-                out.println("This in not String!");
-                clearCLI();
+                IPAddress = readLine();
+
+            } catch (InputMismatchException e) {
+                out.println("Invalid format!");
             }
         } while(!NetworkInfoValidator.isIPAddressValid(IPAddress));
 
@@ -92,31 +131,37 @@ public class CLI extends ViewObservable implements IView {
     }
 
     private void printLogo() {
-        out.println(Logo.getLogo());
-        out.println("\nWelcome to Masters Of Renaissance!\nThis Version was implemented by:" +
-                "\nMarco Lorenzo Campo, Alessandro De Luca, Mario Cristiano" +
-                "\nHope you enjoy :)");
+        out.println(Logo.getLogo() + Logo.getGreetings());
     }
 
     @Override
     public void askNickname() {
 
-        out.println("What nickname would you like to use? ");
-        boolean isANickname = false;
+        out.println("\nWhat nickname would you like to use? ");
+        out.print(">>> ");
 
-        String nickname = in.nextLine();
-        notifyObserver(o -> o.onUpdateNickname(nickname));
+        try {
+            String nickname = readLine();
+            this.nickname = nickname;
+            notifyObserver(o -> o.onUpdateNickname(nickname));
+        } catch(ExecutionException e) {
+            out.println("Execution error!");
+        }
     }
 
     @Override
     public void askPlayerNumber() {
-        out.println("\n\nHow many people are going to play? " +
-                "[1 = Online Single Player Match\n4 = Max Players Allowed");
+        out.println("\n\nHow many people are going to play? \n[1 = Online Single Player Match, 4 = Max Players Allowed]");
+        out.print(">>> ");
 
-        int lobbySize;
+        int lobbySize = 0;
 
         while(true) {
-            lobbySize = in.nextInt();
+            try {
+                lobbySize = Integer.parseInt(readLine());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
 
             if(lobbySize < 1 || lobbySize > 4) {
                 out.println("\nInvalid number of player!");
@@ -136,13 +181,18 @@ public class CLI extends ViewObservable implements IView {
 
         if(connectionSuccess && nicknameAccepted && !reconnected) {
             out.println("Connection successful! You're now logged in.");
+
         } else if(connectionSuccess && !nicknameAccepted && !reconnected) {
-            out.println("The connection was successful, however your nickname was rejected.\nChose a new one.");
+            out.println("\nThe connection was successful, however your nickname was rejected.\nChose a new one.");
             askNickname();
+
         } else if(reconnected) {
-            out.println("You've been recognized and reconnected to the game.");
+            out.println("\nYou've been recognized and reconnected to the game.");
+
         } else {
-            out.println("We had trouble connecting to the server.");
+
+            out.println("\nWe had trouble contacting the server. Game can't be played.");
+            out.println(Logo.getDisgracefulEnding());
 
             System.exit(1);
         }
@@ -170,7 +220,7 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void askToDiscard() {
+    public void askToDiscard() throws ExecutionException {
 
         out.println("You have 4 leader cards, you need to discard one of them" +
                 "\nSpecify the two indexes of the cards you want to discard. Chose wisely!" +
@@ -178,11 +228,11 @@ public class CLI extends ViewObservable implements IView {
 
         int d1 = -1;
 
-        while(in.hasNext()) {
+        while(true) {
 
-            out.println("\n\nFirst Card: ");
+            out.println("\nFirst Card: ");
             try {
-                d1 = in.nextInt();
+                d1 = Integer.parseInt(readLine());
             } catch (NumberFormatException e) {
                 out.println("This is not a number!");
             }
@@ -210,7 +260,7 @@ public class CLI extends ViewObservable implements IView {
     public void currentTurn(String message) {
         showGenericString(message);
 
-        in = new Scanner(System.in);
+        //enable player input
     }
 
     /**
@@ -221,20 +271,20 @@ public class CLI extends ViewObservable implements IView {
     public void turnEnded(String message) {
         showGenericString(message);
 
-        in.close();
+        //disable player input
     }
 
     @Override
-    public void askSetupResource() {
+    public void askSetupResource() throws ExecutionException {
         out.println("\nYou have a resource to pick, chose wisely!");
 
         out.println("AVAILABLE RESOURCES: SHIELD, STONE, SERVANT, COIN");
 
-        ResourceType picked = null;
+        ResourceType picked;
 
-        while(in.hasNext()) {
+        while(true) {
 
-            picked = ResourceType.valueOf(in.nextLine());
+            picked = ResourceType.valueOf(readLine());
 
             if(picked.equals(ResourceType.SERVANT) || picked.equals(ResourceType.COIN)
             || picked.equals(ResourceType.STONE) || picked.equals(ResourceType.SHIELD)) {

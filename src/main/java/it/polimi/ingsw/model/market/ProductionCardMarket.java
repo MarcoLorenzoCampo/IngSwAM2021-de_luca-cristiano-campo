@@ -5,7 +5,7 @@ import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.network.eventHandlers.observers.Observable;
+import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.AvailableCardsMessage;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 

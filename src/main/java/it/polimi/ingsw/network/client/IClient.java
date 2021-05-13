@@ -26,9 +26,4 @@ public interface IClient {
      * Removes a client from the server's socket.
      */
     void disconnect();
-
-    /**
-     * Method to ping the server periodically.
-     */
-    void periodicPing();
 }

@@ -14,10 +14,12 @@ public class LoginOutcomeMessage extends Message implements Serializable {
 
     private final boolean connectionOutcome;
     private final boolean nicknameAccepted;
+
     private final boolean reconnected;
 
     public LoginOutcomeMessage(boolean connectionOutcome, boolean nicknameAccepted, boolean reconnected) {
         super.setMessageType(PossibleMessages.LOGIN_OUTCOME);
+        super.setSenderUsername("SERVER_MESSAGE");
 
         this.connectionOutcome = connectionOutcome;
         this.nicknameAccepted = nicknameAccepted;

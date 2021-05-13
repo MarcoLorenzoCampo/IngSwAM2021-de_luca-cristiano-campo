@@ -36,4 +36,5 @@ public enum PossibleMessages {
     LORENZO_TOKEN,
     AVAILABLE_PRODUCTION_CARDS,
     LOGIN_OUTCOME,
+    LOBBY_SIZE_REQUEST
 }

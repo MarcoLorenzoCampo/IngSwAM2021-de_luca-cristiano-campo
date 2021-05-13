@@ -36,7 +36,7 @@ public final class NetworkInfoValidator {
 
         try {
             return Arrays.stream(ipMembers)
-                    .filter(s -> s.length() > 1 && s.startsWith("0"))
+                    .filter(s -> s.length() >= 1)
                     .map(Integer::parseInt)
                     .filter(i -> (i >= 0 && i <= 255))
                     .count() == 4;

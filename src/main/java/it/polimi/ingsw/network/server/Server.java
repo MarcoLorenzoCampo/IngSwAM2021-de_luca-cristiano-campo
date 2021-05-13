@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.parsers.CommandLineParser;
 import it.polimi.ingsw.parsers.ServerConfigParser;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,9 +24,10 @@ import java.util.logging.Logger;
  * <port#> : int from 1024 to Integer.GET_MAX;
  *
  */
-public class Server {
+public class Server implements Serializable {
 
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
+    private static final long serialVersionUID = -6336401959495770721L;
 
     /**
      * Reference to the controller.
@@ -68,16 +70,26 @@ public class Server {
 
         VirtualView virtualView = new VirtualView(clientHandler);
 
-        if(!isKnownPlayer(nickname)) {
+        //first player logged in
+        if(clientHandlerMap.size() == 0) {
+
+            clientHandlerMap.put(nickname, clientHandler);
+
+            virtualView.showLoginOutput(true, true, false);
+            virtualView.askPlayerNumber();
+        }
+
+        if(!isKnownPlayer(nickname) && clientHandlerMap.size() != 0) {
+            gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
+        }
+
+        //If it's a known player
+        if(isKnownPlayer(nickname)) {
+
             clientHandlerMap.put(nickname, clientHandler);
             clientHandler.setNickname(nickname);
 
-
             reconnectKnownPlayer(nickname, clientHandler, virtualView);
-
-        } else {
-
-            gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
         }
     }
 
@@ -122,8 +134,6 @@ public class Server {
 
             if(clientHandler.getNickname() == null){
                 LOGGER.info(() -> "Removed a client before the login phase.");
-
-                gameManager.getLobbyManager().broadcastGenericMessage("A client was removed before he could log in.");
             }
         }
     }

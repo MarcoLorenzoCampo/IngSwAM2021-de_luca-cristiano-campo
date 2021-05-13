@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.eventHandlers.viewObservers;
+package it.polimi.ingsw.network.eventHandlers;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
