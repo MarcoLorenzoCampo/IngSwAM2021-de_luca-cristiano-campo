@@ -2,12 +2,15 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.network.eventHandlers.observers.Observer;
-import it.polimi.ingsw.network.eventHandlers.viewObservers.ViewObserver;
+import it.polimi.ingsw.network.eventHandlers.Observer;
+import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.eventHandlers.IView;
+import it.polimi.ingsw.network.messages.serverMessages.LoginOutcomeMessage;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -48,18 +51,23 @@ public class ClientManager implements ViewObserver, Observer {
     @Override
     public void onServerInfoUpdate(int port, String ipAddress) {
 
+        try {
             client = new Client(port, ipAddress);
             client.addObserver(this);
-
-            //Sets an asynchronous thread to read messages from server.
             client.readMessage();
             viewUpdater.execute(view::askNickname);
+        } catch (IOException e) {
+            viewUpdater.execute(() -> {
+                view.showLoginOutput(false, false, false);
+            });
+        }
+
     }
 
     @Override
     public void onUpdateNickname(String nickname) {
         this.nickname = nickname;
-        client.sendMessage(new NicknameRequest(nickname));
+        client.sendMessage(new NicknameRequest(this.nickname));
     }
 
     @Override
@@ -147,7 +155,13 @@ public class ClientManager implements ViewObserver, Observer {
     public void update(Message message) {
 
         switch (message.getMessageType()) {
+            case LOBBY_SIZE_REQUEST:
+                viewUpdater.execute(view::askPlayerNumber);
+                break;
 
+            case LOGIN_OUTCOME:
+                LoginOutcomeMessage m = (LoginOutcomeMessage) message;
+                viewUpdater.execute(() -> view.showLoginOutput(m.isConnectionOutcome(), m.isNicknameAccepted(), m.isReconnected()));
 
             default: break;
         }
