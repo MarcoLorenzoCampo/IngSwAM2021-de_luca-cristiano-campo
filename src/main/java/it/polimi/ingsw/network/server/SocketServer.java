@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -75,10 +76,10 @@ public class SocketServer implements Runnable {
 
     /**
      * adds a client to the server map.
-     * @param nickname: name of the client.
+     * @param nickname: message with name of the client.
      * @param clientHandler: handler associated to the client.
      */
-    public void addClient(String nickname, ClientHandler clientHandler) {
+    public void addClient(NicknameRequest nickname, ClientHandler clientHandler) {
         server.addNewClient(nickname, clientHandler);
     }
 

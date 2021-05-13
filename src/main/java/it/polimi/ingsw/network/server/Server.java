@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.parsers.CommandLineParser;
@@ -61,23 +62,27 @@ public class Server {
      * Adding a new player to the game. Checks if the player is a known one, else
      * creates a new instance of the player.
      *
-     * @param nickname: name to be added
+     * @param message: message with name to be added
      * @param clientHandler: handler related to this client.
      */
-    public void addNewClient(String nickname, ClientHandler clientHandler) {
+    public void addNewClient(NicknameRequest message, ClientHandler clientHandler) {
+        String nickname = message.getSenderUsername();
 
         VirtualView virtualView = new VirtualView(clientHandler);
+        if(clientHandlerMap.size() == 0){
+            gameManager.getMessageHandler().setCurrentVirtualView(virtualView);
+            onMessage(message);
+        }
 
-        if(!isKnownPlayer(nickname)) {
+        if(!isKnownPlayer(nickname) && clientHandlerMap.size()!=0){
+            gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
+            onMessage(message);
+        }
+
+        if(isKnownPlayer(nickname)){
             clientHandlerMap.put(nickname, clientHandler);
             clientHandler.setNickname(nickname);
-
-
             reconnectKnownPlayer(nickname, clientHandler, virtualView);
-
-        } else {
-
-            gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
         }
     }
 
