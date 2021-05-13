@@ -2,12 +2,12 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.parsers.CommandLineParser;
 import it.polimi.ingsw.parsers.ServerConfigParser;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +24,10 @@ import java.util.logging.Logger;
  * <port#> : int from 1024 to Integer.GET_MAX;
  *
  */
-public class Server {
+public class Server implements Serializable {
 
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
+    private static final long serialVersionUID = -6336401959495770721L;
 
     /**
      * Reference to the controller.
@@ -62,26 +63,32 @@ public class Server {
      * Adding a new player to the game. Checks if the player is a known one, else
      * creates a new instance of the player.
      *
-     * @param message: message with name to be added
+     * @param nickname: name to be added
      * @param clientHandler: handler related to this client.
      */
-    public void addNewClient(NicknameRequest message, ClientHandler clientHandler) {
-        String nickname = message.getSenderUsername();
+    public void addNewClient(String nickname, ClientHandler clientHandler) {
 
         VirtualView virtualView = new VirtualView(clientHandler);
-        if(clientHandlerMap.size() == 0){
-            gameManager.getMessageHandler().setCurrentVirtualView(virtualView);
-            onMessage(message);
+
+        //first player logged in
+        if(clientHandlerMap.size() == 0) {
+
+            clientHandlerMap.put(nickname, clientHandler);
+
+            virtualView.showLoginOutput(true, true, false);
+            virtualView.askPlayerNumber();
         }
 
-        if(!isKnownPlayer(nickname) && clientHandlerMap.size()!=0){
+        if(!isKnownPlayer(nickname) && clientHandlerMap.size() != 0) {
             gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
-            onMessage(message);
         }
 
-        if(isKnownPlayer(nickname)){
+        //If it's a known player
+        if(isKnownPlayer(nickname)) {
+
             clientHandlerMap.put(nickname, clientHandler);
             clientHandler.setNickname(nickname);
+
             reconnectKnownPlayer(nickname, clientHandler, virtualView);
         }
     }
@@ -127,8 +134,6 @@ public class Server {
 
             if(clientHandler.getNickname() == null){
                 LOGGER.info(() -> "Removed a client before the login phase.");
-
-                gameManager.getLobbyManager().broadcastGenericMessage("A client was removed before he could log in.");
             }
         }
     }

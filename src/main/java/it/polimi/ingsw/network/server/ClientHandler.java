@@ -85,13 +85,9 @@ public class ClientHandler implements Runnable, IClientHandler {
 
         try {
             handleUserMessages();
-        } catch (IOException | NoSuchElementException e) {
+        } catch (IOException e) {
 
             Server.LOGGER.info(() -> "Client disconnected.");
-            disconnect();
-        } catch (NullPointerException e) {
-
-            Server.LOGGER.info(() -> "Null element was caught.");
             disconnect();
         }
     }
@@ -122,7 +118,6 @@ public class ClientHandler implements Runnable, IClientHandler {
             }
 
         } catch (ClassCastException | ClassNotFoundException e) {
-
             Server.LOGGER.severe("Invalid stream");
         }
 

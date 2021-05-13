@@ -2,7 +2,6 @@ package it.polimi.ingsw.network.eventHandlers;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.ProductionCard;
-import it.polimi.ingsw.network.eventHandlers.observers.Observer;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.server.ClientHandler;
@@ -44,7 +43,7 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void askPlayerNumber() {
-        clientHandler.sendMessage(new LobbySizeReply());
+        clientHandler.sendMessage(new LobbySizeRequest());
     }
 
     @Override

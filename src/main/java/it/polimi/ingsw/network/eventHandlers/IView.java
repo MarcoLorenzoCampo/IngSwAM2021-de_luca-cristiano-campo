@@ -4,6 +4,7 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.ProductionCard;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Interface to implement every possible action asked/performed by the player. It can be implemented
@@ -51,7 +52,7 @@ public interface IView {
     /**
      * Asks the player to store or discard a resource that has to be deposited;
      */
-    void askToDiscard();
+    void askToDiscard() throws ExecutionException;
 
     /**
      * Tells the player some action/message sent wasn't validated.
@@ -74,7 +75,7 @@ public interface IView {
     /**
      * Asks the player to chose resources during the game setup phase.
      */
-    void askSetupResource();
+    void askSetupResource() throws ExecutionException;
 
     /**
      * Shows the match info if asked (eg: number and name of active players, number of turns passed...)

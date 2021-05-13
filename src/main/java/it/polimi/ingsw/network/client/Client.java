@@ -1,9 +1,10 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.network.eventHandlers.observers.Observable;
+import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.views.cli.CLI;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -30,60 +31,66 @@ public class Client extends Observable implements IClient {
     private ObjectInputStream input;
 
     /**
+     * Thread to enable reading from server.
+     */
+    private final ExecutorService serverListener;
+
+    /**
      * Client constructor. Connects the client to the server's socket.
      *
      * @param port:       server's socket.
      * @param IP_Address: IP address.
      */
-    public Client(int port, String IP_Address) {
+    public Client(int port, String IP_Address) throws IOException {
 
         this.clientSocket = new Socket();
 
-        try {
-            this.clientSocket.connect(new InetSocketAddress(IP_Address, port));
+        this.clientSocket.connect(new InetSocketAddress(IP_Address, port));
 
-        } catch (IOException e) {
-            clientLogger.severe(() -> "Unable to connect to the server. Connection refused.");
-        }
+        this.serverListener = Executors.newSingleThreadExecutor();
 
         try {
+
             output = new ObjectOutputStream(clientSocket.getOutputStream());
             input = new ObjectInputStream(clientSocket.getInputStream());
+
+            clientLogger.info(() -> "Connection successful.");
 
         } catch (IOException e) {
             clientLogger.severe(() -> "Couldn't connect to the host.");
         }
-
-        readMessage();
     }
 
+    /**
+     * Method to run an asynchronous thread to work as input listener, waiting for messages
+     * sent by the server.
+     */
     @Override
     public void readMessage() {
 
-        ExecutorService listener = Executors.newSingleThreadExecutor();
+        serverListener.execute(() -> {
+            while (!serverListener.isShutdown()) {
 
-        listener.execute(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
                 Message message = null;
 
                 try {
                     message = (Message) input.readObject();
-
                     clientLogger.info("Received: " + message + " from server.");
                 } catch (IOException e) {
+                    e.printStackTrace();
 
                     clientLogger.severe(() -> "Communication error. Critical error.");
                     disconnect();
-                    listener.shutdown();
+                    serverListener.shutdown();
 
                 } catch (ClassNotFoundException e) {
 
                     clientLogger.severe(() -> "Got an unexpected Object from server. Critical error.");
                     disconnect();
-                    listener.shutdown();
+                    serverListener.shutdown();
                 }
 
-                notifyObserver(message);
+                if(message != null) notifyObserver(message);
             }
         });
     }
@@ -116,11 +123,6 @@ public class Client extends Observable implements IClient {
         }
     }
 
-    @Override
-    public void periodicPing() {
-
-    }
-
     //------------------------------------------ MAIN METHOD -----------------------------------------------
 
     /**
@@ -131,22 +133,24 @@ public class Client extends Observable implements IClient {
      */
     public static void main(String[] args) {
 
-        boolean cli = true;
+        String viewType = "-cli";
 
         for (String arg : args) {
             if (arg.equalsIgnoreCase("-gui")) {
-                cli = false;
+                viewType = "-gui";
                 break;
             }
         }
 
-        if (cli) {
+        if (viewType.equalsIgnoreCase("-cli")) {
+
             CLI cliView = new CLI();
             ClientManager clientManager = new ClientManager(cliView);
-            cliView.startCli();
             cliView.addObserver(clientManager);
+            cliView.startCli();
 
         } else {
+
             //launch gui
 
         }

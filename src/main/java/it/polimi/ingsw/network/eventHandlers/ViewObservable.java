@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.eventHandlers.viewObservers;
+package it.polimi.ingsw.network.eventHandlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  */
 public abstract class ViewObservable {
 
-    private final ArrayList<ViewObserver> observers = new ArrayList<>();
+    protected final ArrayList<ViewObserver> observers = new ArrayList<>();
 
     /**
      * Adds an observer.
