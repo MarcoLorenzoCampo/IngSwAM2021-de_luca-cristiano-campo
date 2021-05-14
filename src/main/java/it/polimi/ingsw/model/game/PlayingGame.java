@@ -14,7 +14,7 @@ public class PlayingGame implements IGame {
 
     private static final int MAX_CARDS_BOUGHT = 7;
 
-    private IGameBoard iGameBoard;
+    private final IGameBoard iGameBoard;
     private static PlayingGame playingGameInstance;
     private static GameState currentState;
     private RealPlayer currentPlayer;

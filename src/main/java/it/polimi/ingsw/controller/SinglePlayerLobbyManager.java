@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.player.LorenzoPlayer;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
+import it.polimi.ingsw.network.messages.Message;
 
 import java.util.List;
 import java.util.stream.Collectors;

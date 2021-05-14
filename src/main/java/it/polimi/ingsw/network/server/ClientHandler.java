@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 
 import java.io.*;
 import java.net.Socket;
@@ -107,7 +108,7 @@ public class ClientHandler implements Runnable, IClientHandler {
 
                     if(message != null) {
                         if (message.getMessageType() == PossibleMessages.SEND_NICKNAME) {
-                            socketServer.addClient(message.getSenderUsername(), this);
+                            socketServer.addClient((NicknameRequest) message, this);
 
                         } else if(message.getMessageType() == PossibleMessages.PING_MESSAGE) {
                             Server.LOGGER.info("Ping from " + message.getSenderUsername());

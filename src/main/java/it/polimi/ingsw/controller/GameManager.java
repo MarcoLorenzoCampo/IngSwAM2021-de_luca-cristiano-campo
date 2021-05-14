@@ -93,16 +93,9 @@ public final class GameManager implements Observer, Serializable {
         //computes scores and such to show
     }
 
-
-    public void onMessage(Message input){
-
-    }
-
-
-
-    @Override
-    public void update(Message message) {
+    public void onMessage(Message message){
         switch (currentGame.getCurrentState().getGameState()){
+
             case SETUP:
                 if(firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)){
                     currentGame.setCurrentState(PossibleGameStates.SETUP_SIZE);
@@ -118,8 +111,8 @@ public final class GameManager implements Observer, Serializable {
                 break;
             case SETUP_SIZE:
                 if(message.getMessageType().equals(PossibleMessages.GAME_SIZE) && firstTurn){
-                    message = (OneIntMessage) message;
-                    if(((OneIntMessage) message).getIndex()==1){
+                    OneIntMessage oneIntMessage = (OneIntMessage) message;
+                    if(oneIntMessage.getIndex()==1){
                         setLobbyManager("singlePlayer");
                         lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
                         lobbyManager.setPlayingOrder();
@@ -135,5 +128,10 @@ public final class GameManager implements Observer, Serializable {
                 }
 
         }
+    }
+
+    @Override
+    public void update(Message message) {
+
     }
 }

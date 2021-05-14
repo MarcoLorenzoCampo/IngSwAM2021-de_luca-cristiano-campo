@@ -23,9 +23,7 @@ public class CLI extends ViewObservable implements IView {
      * Clears the terminal.
      */
     public void clearCLI() {
-        /*for(int i=0; i<7; i++) {
-            out.println();
-        }*/
+        out.print(ColorCLI.CLEAR);
         out.flush();
     }
 
@@ -34,29 +32,6 @@ public class CLI extends ViewObservable implements IView {
 
     public CLI() {
         this.out = new PrintStream(System.out, true);
-    }
-
-    /**
-     * Reads a line from standard input.
-     *
-     * @return the string read from the input.
-     * @throws ExecutionException if the input stream thread is interrupted.
-     */
-    public String readLine() throws ExecutionException {
-
-        FutureTask<String> futureTask = new FutureTask<>(new InputReadingChore());
-        Thread inputThread = new Thread(futureTask);
-        inputThread.start();
-
-        String input = null;
-
-        try {
-            input = futureTask.get();
-        } catch (InterruptedException e) {
-            futureTask.cancel(true);
-            Thread.currentThread().interrupt();
-        }
-        return input;
     }
 
     public void startCli() {
@@ -387,5 +362,28 @@ public class CLI extends ViewObservable implements IView {
      */
     private void printPossibleActions() {
 
+    }
+
+    /**
+     * Reads a line from standard input.
+     *
+     * @return the string read from the input.
+     * @throws ExecutionException if the input stream thread is interrupted.
+     */
+    public String readLine() throws ExecutionException {
+
+        FutureTask<String> futureTask = new FutureTask<>(new InputReadingChore());
+        Thread inputThread = new Thread(futureTask);
+        inputThread.start();
+
+        String input = null;
+
+        try {
+            input = futureTask.get();
+        } catch (InterruptedException e) {
+            futureTask.cancel(true);
+            Thread.currentThread().interrupt();
+        }
+        return input;
     }
 }
