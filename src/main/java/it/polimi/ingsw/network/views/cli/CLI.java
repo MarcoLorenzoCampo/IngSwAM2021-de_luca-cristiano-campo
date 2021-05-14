@@ -1,12 +1,11 @@
 package it.polimi.ingsw.network.views.cli;
 
-import it.polimi.ingsw.enumerations.ColorCLI;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.ProductionCard;
-import it.polimi.ingsw.model.market.ResourceMarket;
 import it.polimi.ingsw.network.eventHandlers.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
+import it.polimi.ingsw.network.utilities.CommandParser;
 
 import java.io.PrintStream;
 import java.util.InputMismatchException;
@@ -20,6 +19,16 @@ import java.util.concurrent.FutureTask;
  */
 public class CLI extends ViewObservable implements IView {
 
+    /**
+     * Clears the terminal.
+     */
+    public void clearCLI() {
+        /*for(int i=0; i<7; i++) {
+            out.println();
+        }*/
+        out.flush();
+    }
+
     private String nickname;
     private final PrintStream out;
 
@@ -28,7 +37,7 @@ public class CLI extends ViewObservable implements IView {
     }
 
     /**
-     * Reads a line from stdin.
+     * Reads a line from standard input.
      *
      * @return the string read from the input.
      * @throws ExecutionException if the input stream thread is interrupted.
@@ -64,7 +73,6 @@ public class CLI extends ViewObservable implements IView {
      */
     private void askLocal() throws ExecutionException {
         String choice;
-        boolean isValid = false;
 
         out.println("\nWant to play an online game or a local single player game? \n[OFF = offline, ON = online]");
         out.print(">>> ");
@@ -142,23 +150,23 @@ public class CLI extends ViewObservable implements IView {
         out.print(">>> ");
 
         try {
-            String nickname = readLine();
-            this.nickname = nickname;
-            notifyObserver(o -> o.onUpdateNickname(nickname));
-        } catch(ExecutionException e) {
-            out.println("Execution error!");
+            this.nickname = readLine();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
+        notifyObserver(o -> o.onUpdateNickname(nickname));
     }
 
     @Override
     public void askPlayerNumber() {
-        out.println("\n\nHow many people are going to play? \n[1 = Online Single Player Match, 4 = Max Players Allowed]");
-        out.print(">>> ");
+        out.println("\n\nHow many people are going to play?" +
+                "\n[1 = Online Single Player Match, 4 = Max Players Allowed]");
 
         int lobbySize = 0;
 
         while(true) {
             try {
+                out.print(">>> ");
                 lobbySize = Integer.parseInt(readLine());
             } catch (ExecutionException e) {
                 e.printStackTrace();
@@ -219,6 +227,7 @@ public class CLI extends ViewObservable implements IView {
 
         do {
             out.println("Specify a valid resource: " + r1 + ", " + r2 + " are available.");
+            out.print(">>> ");
 
             try {
                 picked = ResourceType.valueOf(readLine());
@@ -244,6 +253,8 @@ public class CLI extends ViewObservable implements IView {
         while(true) {
 
             out.println("\nFirst Card: ");
+            out.print(">>> ");
+
             try {
                 d1 = Integer.parseInt(readLine());
             } catch (NumberFormatException e) {
@@ -267,13 +278,42 @@ public class CLI extends ViewObservable implements IView {
 
     /**
      * When the current player's turn is on, he's able to communicate once again.
-     * @param message: generic message.
+     * @param message: generic message to alert the player his turn has started.
      */
     @Override
     public void currentTurn(String message) {
         showGenericString(message);
 
+        boolean yourTurn = true;
+        String cmd = "";
+
         //enable player input
+        out.println("\nIt's your turn now. Chose an action to perform!" +
+                "\n[type -help for a list the complete list of actions]");
+
+        while(yourTurn) {
+
+            out.print(">>> ");
+
+            try {
+                cmd = readLine();
+            } catch (ExecutionException e) {
+                out.println("\nCouldn't get this input.");
+            }
+
+            String[] cmdMembers = cmd.split(" ");
+
+            switch(CommandParser.parseCmd(cmdMembers)) {
+
+                case ("HELP"):
+                    printPossibleActions();
+                    break;
+
+                case ("DISCARD_LEADER") :
+                    notifyObserver(o -> o.onUpdateDiscardLeader(Integer.parseInt(cmdMembers[1])));
+                    break;
+            }
+        }
     }
 
     /**
@@ -285,6 +325,7 @@ public class CLI extends ViewObservable implements IView {
         showGenericString(message);
 
         //disable player input
+
     }
 
     @Override
@@ -342,10 +383,9 @@ public class CLI extends ViewObservable implements IView {
     }
 
     /**
-     * Clears the CLI terminal.
+     * Print every possible action allowed during the playing phase.
      */
-    public void clearCLI() {
-        out.print(ColorCLI.CLEAR);
-        out.flush();
+    private void printPossibleActions() {
+
     }
 }

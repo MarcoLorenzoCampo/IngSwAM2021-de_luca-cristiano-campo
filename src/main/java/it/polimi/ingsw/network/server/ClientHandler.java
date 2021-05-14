@@ -108,6 +108,10 @@ public class ClientHandler implements Runnable, IClientHandler {
                     if(message != null) {
                         if (message.getMessageType() == PossibleMessages.SEND_NICKNAME) {
                             socketServer.addClient(message.getSenderUsername(), this);
+
+                        } else if(message.getMessageType() == PossibleMessages.PING_MESSAGE) {
+                            Server.LOGGER.info("Ping from " + message.getSenderUsername());
+
                         } else {
                             socketServer.onMessage(message);
                         }

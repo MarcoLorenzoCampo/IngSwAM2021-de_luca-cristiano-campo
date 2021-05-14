@@ -5,11 +5,7 @@ import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.actions.Action;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
-import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.productionBoard.ProductionBoard;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * Main board of the player. Contains all the references to play the game.

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.enumerations;
+package it.polimi.ingsw.network.views.cli;
 
 /**
  * Enum with the Codes of the colors used to fill the cli.

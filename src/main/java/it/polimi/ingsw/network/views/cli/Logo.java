@@ -18,6 +18,7 @@ public class Logo {
                  "\n.  ..__. __..___..___.__  __.        .__..___        .__ .___.  ..__.._. __. __..__..  . __ .___\n" +
                          "|\\/|[__](__   |  [__ [__)(__         |  |[__         [__)[__ |\\ |[__] | (__ (__ [__]|\\ |/  `[__ \n" +
                          "|  ||  |.__)  |  [___|  \\.__)        |__||           |  \\[___| \\||  |_|_.__).__)|  || \\|\\__.[___";
+
     private static final String greetings =
             "\n\nWelcome to Masters Of Renaissance! This Version was implemented by:" +
                     "\nMarco Lorenzo Campo, Alessandro De Luca, Mario Cristiano" +
