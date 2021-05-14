@@ -53,9 +53,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         viewsByNickname= new HashMap<>();
     }
 
-    public int getLobbySize() {
-        return lobbySize;
-    }
+
 
     /**
      * Adds a new player if the validation steps are verified.
@@ -182,9 +180,6 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         gameManager.getServer()
                 .setCurrentClient(PlayingGame.getGameInstance().getCurrentPlayer().getName());
 
-        gameManager.getMessageHandler().setCurrentPlayerState(realPlayerList.get(newCurrentIndex).getPlayerState());
-        gameManager.getMessageHandler().setCurrentVirtualView(viewsByNickname.get(nowPlaying));
-
         viewsByNickname.get(nowPlaying).currentTurn("It's your turn now");
         broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
     }
@@ -246,6 +241,11 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
     public int getNumberOfTurns() {
         return numberOfTurns;
+    }
+
+    @Override
+    public int getLobbySize() {
+        return lobbySize;
     }
 
     public List<RealPlayer> getRealPlayerList() {

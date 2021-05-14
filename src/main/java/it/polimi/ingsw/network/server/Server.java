@@ -77,12 +77,14 @@ public class Server implements Serializable {
 
             clientHandlerMap.put(nickname, clientHandler);
             onMessage(message);
+            gameManager.addVirtualView(nickname, virtualView);
             virtualView.showLoginOutput(true, true, false);
             virtualView.askPlayerNumber();
         }
 
         if(!isKnownPlayer(nickname) && clientHandlerMap.size() != 0) {
             onMessage(message);
+            gameManager.addVirtualView(nickname, virtualView);
             gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
         }
 
@@ -101,7 +103,7 @@ public class Server implements Serializable {
      * @param message: message to be verified and executed.
      */
     public void onMessage(Message message) {
-        gameManager.getMessageHandler().onMessage(message);
+        gameManager.onMessage(message);
     }
 
     /**
