@@ -93,42 +93,58 @@ public final class GameManager implements Observer, Serializable {
         //computes scores and such to show
     }
 
+    /**
+     * Method that moves the turn forward, acts as an FSM that decides what actions can be taken
+     * @param message: message to be processed, validated by the state of the game and the sender username
+     */
     public void onMessage(Message message){
-        switch (currentGame.getCurrentState().getGameState()){
-
+        switch (currentGame.getCurrentState().getGameState()) {
             case SETUP:
-                if(firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)){
+
+                //it's the first turn and a nickname request is sent by the client.
+                if (firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)) {
+
+                    //The client isn't logged in yet. He needs to send a lobby size message.
                     currentGame.setCurrentState(PossibleGameStates.SETUP_SIZE);
-                }
-                else if (!firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)){
+
+                    // the first turn has passed, adding all new players
+                } else if (!firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)) {
                     lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
-                    if(lobbyManager.getRealPlayerList().size() == lobbyManager.getLobbySize()){
+
+                    //if the last player is logged, the game can finally start its setup phase
+                    if (lobbyManager.getRealPlayerList().size() == lobbyManager.getLobbySize()) {
                         lobbyManager.setPlayingOrder();
                         currentPlayer = lobbyManager.getRealPlayerList().get(0).getName();
                         currentGame.setCurrentState(PossibleGameStates.SETUP_RESOURCES);
                     }
                 }
                 break;
+
+
             case SETUP_SIZE:
-                if(message.getMessageType().equals(PossibleMessages.GAME_SIZE) && firstTurn){
+                if (message.getMessageType().equals(PossibleMessages.GAME_SIZE) && firstTurn) {
                     OneIntMessage oneIntMessage = (OneIntMessage) message;
-                    if(oneIntMessage.getIndex()==1){
+                    if (oneIntMessage.getIndex() == 1) {
+
+                        //creates a new single player lobby
                         setLobbyManager("singlePlayer");
                         lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
                         lobbyManager.setPlayingOrder();
                         currentGame.setCurrentState(PossibleGameStates.SETUP_LEADER);
-                    }
-                    else{
+                    } else {
+
+                        //creates a new multi player lobby manager.
                         setLobbyManager("multiPlayer");
                         lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
                         currentGame.setCurrentState(PossibleGameStates.SETUP);
                     }
                     firstTurn = false;
-                    currentGame.setCurrentState(PossibleGameStates.SETUP);
+                    server.sizeHasBeenSet();
                 }
-
+            }
         }
-    }
+
+
 
     @Override
     public void update(Message message) {

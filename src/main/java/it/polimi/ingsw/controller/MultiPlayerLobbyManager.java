@@ -73,17 +73,13 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
             realPlayerList.add(new RealPlayer(nickname));
             virtualView.showLoginOutput(true, true, false);
 
-            virtualView.askPlayerNumber();
+            virtualView.showGenericString("\nYou're connected, waiting for the lobby to fill." +
+                    "[ "+ (lobbySize-realPlayerList.size()) + " players left]");
         }
 
-        for(RealPlayer realPlayer : realPlayerList) {
-            if(realPlayer.getName().equals(nickname)) {
-                virtualView.showLoginOutput(true, false, false);
-                return;
-            }
-        }
+        //from the second player on, he gets registered in this branch.
+        else if(viewsByNickname.size() < lobbySize) {
 
-        if(viewsByNickname.size() < lobbySize && viewsByNickname.size()!=0) {
             viewsByNickname.put(nickname, virtualView);
             realPlayerList.add(new RealPlayer(nickname));
             virtualView.showLoginOutput(true, true, false);
@@ -115,17 +111,9 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
     /**
      * Method invoked when a lobby size message is sent.
      * @param lobbySize: number of player accepted.
-     * @param virtualView: virtual view of the first player.
      */
-    public boolean setLobbySize(int lobbySize, VirtualView virtualView) {
-
-        if(lobbySize > MAX_PLAYERS) {
-            virtualView.showError("Too many players!");
-            return false;
-        } else {
-            this.lobbySize = lobbySize;
-            return true;
-        }
+    public void setLobbySize(int lobbySize) {
+        this.lobbySize = lobbySize;
     }
 
     /**

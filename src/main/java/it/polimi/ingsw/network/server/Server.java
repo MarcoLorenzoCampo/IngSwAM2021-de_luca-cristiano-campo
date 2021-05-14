@@ -49,6 +49,12 @@ public class Server implements Serializable {
     private final Object lock;
 
     /**
+     * Auxiliary boolean to know when lobby size is set
+     */
+    private boolean isSizeSet;
+
+
+    /**
      * Default constructor. Creates empty instances of the collections needed and sets up
      * the controller.
      * @param gameManager: class given by the user input.
@@ -58,6 +64,14 @@ public class Server implements Serializable {
         this.gameManager.setServer(this);
         this.clientHandlerMap = Collections.synchronizedMap(new HashMap<>());
         this.lock = new Object();
+        this.isSizeSet = false;
+    }
+
+    /**
+     * method to call when lobbyManager is available
+     */
+    public void sizeHasBeenSet() {
+        isSizeSet = true;
     }
 
     /**
@@ -82,19 +96,25 @@ public class Server implements Serializable {
             virtualView.askPlayerNumber();
         }
 
-        if(!isKnownPlayer(nickname) && clientHandlerMap.size() != 0) {
-            onMessage(message);
-            gameManager.addVirtualView(nickname, virtualView);
-            gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
+        else if(isSizeSet) {
+            if (!isKnownPlayer(nickname) && clientHandlerMap.size() != 0) {
+                gameManager.addVirtualView(nickname, virtualView);
+                onMessage(message);
+                gameManager.addVirtualView(nickname, virtualView);
+                gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
+            }
+
+            //If it's a known player
+            else if (isKnownPlayer(nickname)) {
+
+                clientHandlerMap.put(nickname, clientHandler);
+                clientHandler.setNickname(nickname);
+
+                reconnectKnownPlayer(nickname, clientHandler, virtualView);
+            }
         }
-
-        //If it's a known player
-        if(isKnownPlayer(nickname)) {
-
-            clientHandlerMap.put(nickname, clientHandler);
-            clientHandler.setNickname(nickname);
-
-            reconnectKnownPlayer(nickname, clientHandler, virtualView);
+        else{
+            //wait a while, we are setting the game for you :)
         }
     }
 
