@@ -280,7 +280,7 @@ public class CLI extends ViewObservable implements IView {
 
             switch(CommandParser.parseCmd(cmdMembers)) {
 
-                case ("HELP"):
+                case ("HELP") :
                     printPossibleActions();
                     break;
 
