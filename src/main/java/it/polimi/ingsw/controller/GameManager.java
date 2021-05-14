@@ -1,12 +1,19 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.enumerations.PossibleGameStates;
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.network.eventHandlers.Observer;
+import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
+import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
 import it.polimi.ingsw.network.server.Server;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class to manage the entire playing game. It has instances of the currentGame, LobbyManager,
@@ -19,7 +26,11 @@ public final class GameManager implements Observer, Serializable {
     private final IGame currentGame;
     private final ActionManager actionManager;
     private ILobbyManager lobbyManager;
-    private final MessageHandler messageHandler;
+
+
+    private boolean firstTurn;
+    private Map<String , VirtualView> virtualViewLog;
+    private String currentPlayer;
 
     /**
      * Constructor of the game manager.
@@ -28,7 +39,9 @@ public final class GameManager implements Observer, Serializable {
 
         this.currentGame = PlayingGame.getGameInstance();
         this.actionManager = new ActionManager(currentGame, this);
-        this.messageHandler = new MessageHandler(this);
+
+        this.firstTurn = true;
+        this.virtualViewLog = new HashMap<>();
     }
 
     /**
@@ -67,6 +80,10 @@ public final class GameManager implements Observer, Serializable {
         return server;
     }
 
+    public void addVirtualView(String player, VirtualView virtualView){
+        virtualViewLog.put(player, virtualView);
+    }
+
     /**
      * Method to end the game. Broadcasts the outcome of the match and
      * @param message: end game message
@@ -76,13 +93,47 @@ public final class GameManager implements Observer, Serializable {
         //computes scores and such to show
     }
 
-    public MessageHandler getMessageHandler() {
-        return messageHandler;
+
+    public void onMessage(Message input){
+
     }
+
 
 
     @Override
     public void update(Message message) {
+        switch (currentGame.getCurrentState().getGameState()){
+            case SETUP:
+                if(firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)){
+                    currentGame.setCurrentState(PossibleGameStates.SETUP_SIZE);
+                }
+                else if (!firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)){
+                    lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
+                    if(lobbyManager.getRealPlayerList().size() == lobbyManager.getLobbySize()){
+                        lobbyManager.setPlayingOrder();
+                        currentPlayer = lobbyManager.getRealPlayerList().get(0).getName();
+                        currentGame.setCurrentState(PossibleGameStates.SETUP_RESOURCES);
+                    }
+                }
+                break;
+            case SETUP_SIZE:
+                if(message.getMessageType().equals(PossibleMessages.GAME_SIZE) && firstTurn){
+                    message = (OneIntMessage) message;
+                    if(((OneIntMessage) message).getIndex()==1){
+                        setLobbyManager("singlePlayer");
+                        lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
+                        lobbyManager.setPlayingOrder();
+                        currentGame.setCurrentState(PossibleGameStates.SETUP_LEADER);
+                    }
+                    else{
+                        setLobbyManager("multiPlayer");
+                        lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
+                        currentGame.setCurrentState(PossibleGameStates.SETUP);
+                    }
+                    firstTurn = false;
+                    currentGame.setCurrentState(PossibleGameStates.SETUP);
+                }
 
+        }
     }
 }

@@ -102,13 +102,8 @@ public class InventoryManager {
         }
     }
 
-    /**
-     * overload of same method, this selects one particular marble ans changes into a particular type
-     * (granted that the type is valid)
-     * @param index -- index of resource in buffer to change
-     * @param type -- type in which to change
-     */
-    public void whiteMarbleExchange(int index, ResourceType type){
+
+    public void customExchange(int index, ResourceType type){
         if(exchange.contains(type)) {
             buffer.get(index).setResourceType(type);
         }

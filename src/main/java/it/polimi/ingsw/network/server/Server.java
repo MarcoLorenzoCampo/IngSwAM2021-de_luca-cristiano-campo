@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.parsers.CommandLineParser;
@@ -63,23 +64,27 @@ public class Server implements Serializable {
      * Adding a new player to the game. Checks if the player is a known one, else
      * creates a new instance of the player.
      *
-     * @param nickname: name to be added
+     * @param message: message with name to be added
      * @param clientHandler: handler related to this client.
      */
-    public void addNewClient(String nickname, ClientHandler clientHandler) {
+    public void addNewClient(NicknameRequest message, ClientHandler clientHandler) {
 
         VirtualView virtualView = new VirtualView(clientHandler);
+        String nickname = message.getSenderUsername();
 
         //first player logged in
         if(clientHandlerMap.size() == 0) {
 
             clientHandlerMap.put(nickname, clientHandler);
-
+            onMessage(message);
+            gameManager.addVirtualView(nickname, virtualView);
             virtualView.showLoginOutput(true, true, false);
             virtualView.askPlayerNumber();
         }
 
         if(!isKnownPlayer(nickname) && clientHandlerMap.size() != 0) {
+            onMessage(message);
+            gameManager.addVirtualView(nickname, virtualView);
             gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
         }
 
@@ -98,7 +103,7 @@ public class Server implements Serializable {
      * @param message: message to be verified and executed.
      */
     public void onMessage(Message message) {
-        gameManager.getMessageHandler().onMessage(message);
+        gameManager.onMessage(message);
     }
 
     /**

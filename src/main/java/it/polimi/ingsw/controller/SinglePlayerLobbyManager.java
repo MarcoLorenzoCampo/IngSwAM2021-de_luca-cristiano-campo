@@ -100,6 +100,11 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
     }
 
     @Override
+    public int getLobbySize() {
+        return 1;
+    }
+
+    @Override
     public void reconnectPlayer(String nickname) {
 
     }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.RealPlayer;
@@ -54,6 +53,8 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         viewsByNickname= new HashMap<>();
     }
 
+
+
     /**
      * Adds a new player if the validation steps are verified.
      * @param nickname: The name chosen by the player.
@@ -77,7 +78,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
             }
         }
 
-        if(viewsByNickname.size() < lobbySize) {
+        if(viewsByNickname.size() < lobbySize && viewsByNickname.size()!=0) {
             viewsByNickname.put(nickname, virtualView);
             realPlayerList.add(new RealPlayer(nickname));
             virtualView.showLoginOutput(true, true, false);
@@ -111,12 +112,14 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      * @param lobbySize: number of player accepted.
      * @param virtualView: virtual view of the first player.
      */
-    public void setLobbySize(int lobbySize, VirtualView virtualView) {
+    public boolean setLobbySize(int lobbySize, VirtualView virtualView) {
 
         if(lobbySize > MAX_PLAYERS) {
             virtualView.showError("Too many players!");
+            return false;
         } else {
             this.lobbySize = lobbySize;
+            return true;
         }
     }
 
@@ -177,8 +180,6 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         gameManager.getServer()
                 .setCurrentClient(PlayingGame.getGameInstance().getCurrentPlayer().getName());
 
-        gameManager.getMessageHandler().setCurrentPlayerState(realPlayerList.get(newCurrentIndex).getPlayerState());
-
         viewsByNickname.get(nowPlaying).currentTurn("It's your turn now");
         broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
     }
@@ -203,22 +204,16 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      * When the game starts, each player is given a specific number of resources and
      * faith track points.
      */
-    private void setDefaultResources() {
+    public void setDefaultResources() {
 
         for(int i = 0; i< realPlayerList.size(); i++) {
 
             switch(i) {
                 case 1:
-                    PlayingGame.getGameInstance()
-                            .getCurrentState()
-                            .setGameState(PossibleGameStates.WAIT_FOR_INPUT);
 
                     viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource();
                     break;
                 case 2:
-                    PlayingGame.getGameInstance()
-                            .getCurrentState()
-                            .setGameState(PossibleGameStates.WAIT_FOR_INPUT);
 
                     viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource();
 
@@ -229,9 +224,6 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
                     break;
 
                 case 3:
-                    PlayingGame.getGameInstance()
-                            .getCurrentState()
-                            .setGameState(PossibleGameStates.WAIT_FOR_INPUT);
 
                     viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource();
                     viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource();
@@ -249,6 +241,11 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
     public int getNumberOfTurns() {
         return numberOfTurns;
+    }
+
+    @Override
+    public int getLobbySize() {
+        return lobbySize;
     }
 
     public List<RealPlayer> getRealPlayerList() {
