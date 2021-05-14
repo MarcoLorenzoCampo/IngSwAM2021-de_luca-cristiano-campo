@@ -58,8 +58,6 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         viewsByNickname= new HashMap<>();
     }
 
-
-
     /**
      * Adds a new player if the validation steps are verified.
      * @param nickname: The name chosen by the player.
@@ -129,8 +127,11 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         broadcastGenericMessage("Playing order has been set! Here's the current order:\n" +
                 getPlayingNames());
 
+        viewsByNickname.get(realPlayerList.get(0).getName()).showGenericString("\nYou're the first player!");
+
         giveLeaderCards();
-        setDefaultResources();
+
+        //setDefaultResources();
     }
 
     /**
