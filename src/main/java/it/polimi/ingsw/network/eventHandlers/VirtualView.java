@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.eventHandlers;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.server.ClientHandler;
@@ -111,6 +112,11 @@ public class VirtualView implements IView, Observer {
     @Override
     public void printAvailableCards(List<ProductionCard> availableCards) {
         clientHandler.sendMessage(new AvailableCardsMessage(availableCards));
+    }
+
+    @Override
+    public void printLorenzoToken(IToken lorenzoAction) {
+        clientHandler.sendMessage(new LorenzoTokenMessage(lorenzoAction));
     }
 
     /**

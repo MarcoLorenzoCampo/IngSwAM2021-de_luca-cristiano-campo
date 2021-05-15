@@ -6,10 +6,8 @@ import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.playerMessages.*;
-import it.polimi.ingsw.network.messages.serverMessages.FaithTrackMessage;
+import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
-import it.polimi.ingsw.network.messages.serverMessages.GenericMessageFromServer;
-import it.polimi.ingsw.network.messages.serverMessages.LoginOutcomeMessage;
 
 import java.io.IOException;
 import java.util.concurrent.Executor;
@@ -80,6 +78,16 @@ public class ClientManager implements ViewObserver, Observer {
             case FAITH_TRACK_MESSAGE:
                 FaithTrackMessage f = (FaithTrackMessage) message;
                 viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
+                break;
+
+            case BOARD:
+                ResourceMarketMessage r = (ResourceMarketMessage) message;
+                viewUpdater.execute(() -> view.printResourceMarket(r.getResourceBoard(), r.getExtraMarble()));
+                break;
+
+            case LORENZO_TOKEN:
+                LorenzoTokenMessage l = (LorenzoTokenMessage) message;
+                viewUpdater.execute(() -> view.printLorenzoToken(l.getLorenzoToken()));
                 break;
 
             default: break;

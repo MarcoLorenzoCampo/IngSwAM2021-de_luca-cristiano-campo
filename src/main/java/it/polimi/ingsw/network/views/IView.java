@@ -1,8 +1,10 @@
 package it.polimi.ingsw.network.views;
 
+import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 
 import java.util.List;
@@ -110,4 +112,10 @@ public interface IView {
      * @param faithTrack: faith track of the player.
      */
     void printFaithTrack(FaithTrack faithTrack);
+
+    /**
+     * Prints the action token lorenzo has just played.
+     * @param lorenzoAction: played token.
+     */
+    void printLorenzoToken(IToken lorenzoAction);
 }

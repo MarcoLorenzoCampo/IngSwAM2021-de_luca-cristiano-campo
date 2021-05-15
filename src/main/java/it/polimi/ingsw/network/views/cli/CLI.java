@@ -1,8 +1,10 @@
 package it.polimi.ingsw.network.views.cli;
 
+import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
@@ -379,6 +381,11 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
+
+    }
+
+    @Override
+    public void printLorenzoToken(IToken lorenzoAction) {
 
     }
 
