@@ -1,7 +1,9 @@
-package it.polimi.ingsw.network.eventHandlers;
+package it.polimi.ingsw.network.views;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.network.eventHandlers.VirtualView;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -94,7 +96,7 @@ public interface IView {
      * @param resourceMarket: resource market
      * {@link it.polimi.ingsw.model.market.ResourceMarket}
      */
-    void printResourceMarket(ResourceType[][] resourceMarket);
+    void printResourceMarket(ResourceType[][] resourceMarket, ResourceType extraMarble);
 
     /**
      * Method to show the available production cards.
@@ -102,4 +104,10 @@ public interface IView {
      * @param availableCards: available production cards.
      */
     void printAvailableCards(List<ProductionCard> availableCards);
+
+    /**
+     * Prints a faith track regarding the player.
+     * @param faithTrack: faith track of the player.
+     */
+    void printFaithTrack(FaithTrack faithTrack);
 }

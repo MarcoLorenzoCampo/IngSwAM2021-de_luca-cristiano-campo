@@ -6,11 +6,12 @@ import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.playerMessages.*;
-import it.polimi.ingsw.network.eventHandlers.IView;
+import it.polimi.ingsw.network.messages.serverMessages.FaithTrackMessage;
+import it.polimi.ingsw.network.views.IView;
+import it.polimi.ingsw.network.messages.serverMessages.GenericMessageFromServer;
 import it.polimi.ingsw.network.messages.serverMessages.LoginOutcomeMessage;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -69,6 +70,17 @@ public class ClientManager implements ViewObserver, Observer {
                 LoginOutcomeMessage m = (LoginOutcomeMessage) message;
                 viewUpdater.execute(() ->
                         view.showLoginOutput(m.isConnectionOutcome(), m.isNicknameAccepted(), m.isReconnected()));
+                break;
+
+            case GENERIC_SERVER_MESSAGE:
+                GenericMessageFromServer g = (GenericMessageFromServer) message;
+                viewUpdater.execute(() -> view.showGenericString(g.getServerString()));
+                break;
+
+            case FAITH_TRACK_MESSAGE:
+                FaithTrackMessage f = (FaithTrackMessage) message;
+                viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
+                break;
 
             default: break;
         }

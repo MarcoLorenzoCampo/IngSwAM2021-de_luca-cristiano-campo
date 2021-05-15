@@ -130,7 +130,7 @@ public class ResourceMarket extends Observable implements Serializable {
         LinkedList<Resource> obtainedResources = ResourceBuilder.build(pickedFromMarket);
         obtainedResources.forEach(Resource::deposit);
 
-        notifyObserver(new ResourceMarketMessage(this.resourceBoard));
+        notifyObserver(new ResourceMarketMessage(this.resourceBoard, this.extraMarble));
     }
 
     public ResourceType[][] getResourceBoard() {

@@ -1,11 +1,13 @@
 package it.polimi.ingsw.network.eventHandlers;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.IClientHandler;
+import it.polimi.ingsw.network.views.IView;
 
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void showGenericString(String genericMessage) {
-
+        clientHandler.sendMessage(new GenericMessageFromServer(genericMessage));
     }
 
     @Override
@@ -102,8 +104,8 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void printResourceMarket(ResourceType[][] resourceMarket) {
-        clientHandler.sendMessage(new ResourceMarketMessage(resourceMarket));
+    public void printResourceMarket(ResourceType[][] resourceMarket, ResourceType extraMarble) {
+        clientHandler.sendMessage(new ResourceMarketMessage(resourceMarket, extraMarble));
     }
 
     @Override
@@ -120,5 +122,10 @@ public class VirtualView implements IView, Observer {
     @Override
     public void update(Message message) {
         clientHandler.sendMessage(message);
+    }
+
+    @Override
+    public void printFaithTrack(FaithTrack faithTrack) {
+        clientHandler.sendMessage(new FaithTrackMessage(faithTrack));
     }
 }

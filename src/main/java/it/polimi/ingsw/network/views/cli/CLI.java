@@ -1,8 +1,9 @@
 package it.polimi.ingsw.network.views.cli;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
-import it.polimi.ingsw.network.eventHandlers.IView;
+import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
@@ -15,7 +16,7 @@ import java.util.concurrent.FutureTask;
 
 /**
  * This class offers a visual Interface via terminal. It is an implementation of the IView interface.
- * {@link it.polimi.ingsw.network.eventHandlers.IView}.
+ * {@link IView}.
  */
 public class CLI extends ViewObservable implements IView {
 
@@ -367,7 +368,7 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printResourceMarket(ResourceType[][] resourceMarket) {
+    public void printResourceMarket(ResourceType[][] resourceMarket, ResourceType extraMarble) {
 
     }
 
@@ -376,11 +377,28 @@ public class CLI extends ViewObservable implements IView {
 
     }
 
+    @Override
+    public void printFaithTrack(FaithTrack faithTrack) {
+
+    }
+
     /**
      * Print every possible action allowed during the playing phase.
      */
     private void printPossibleActions() {
 
+        out.println(
+            "-------------------------------------------------------------------------------------------------------------" +
+            "\nHere's a complete list of the accepted commands:" +
+                "\n - 'DISCARD_LEADER': Discards one of your leader cards (Requires a valid card index);" +
+                "\n - 'ACTIVATE_LEADER': Places one of your leader cards (Requires a valid card index);" +
+                "\n - 'GET_RESOURCES': Gets resources from the market (Requires and index form 0 to 6);" +
+                "\n - 'BUY_CARD': Buys an available card (Requires a valid card index and a valid production slot index);" +
+                "\n - 'BASE_PRODUCTION':Activates the base production (asks you 2 input resources and 1 output resource);" +
+                "\n - 'CARD_PRODUCTION': " +
+                "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
+                "-------------------------------------------------------------------------------------------------------------"
+        );
     }
 
     /**
