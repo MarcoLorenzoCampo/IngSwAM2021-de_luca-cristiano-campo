@@ -87,8 +87,8 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void askSetupResource() {
-
+    public void askSetupResource(int numberOfResources) {
+        clientHandler.sendMessage(new SetupResourcesRequest(numberOfResources));
     }
 
     @Override

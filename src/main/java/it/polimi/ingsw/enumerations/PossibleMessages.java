@@ -16,6 +16,7 @@ public enum PossibleMessages {
     //Messages sent by the players to the server.
 
     SETUP_LEADERS,
+    SETUP_RESOURCES,
     PING_MESSAGE,
     GAME_SIZE,
     RESOURCE,

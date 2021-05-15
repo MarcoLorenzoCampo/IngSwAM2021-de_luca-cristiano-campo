@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -323,29 +324,32 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void askSetupResource() throws ExecutionException {
-        out.println("\nYou have a resource to pick, chose wisely!");
+    public void askSetupResource(int number) throws ExecutionException {
 
-        out.println("Available Resources: [SHIELD], [STONE], [SERVANT], [COIN]");
-
+        List< ResourceType> finalPicked = new ArrayList<>();
         ResourceType picked;
+        if(number == 0){
+            out.println("\nYou have 0 resources to pick, chose wisely!");
 
-        while(true) {
+        }else {
+            out.println("\nYou have " + number + " resource to pick, chose wisely!");
+        }
 
+        while(number > 0) {
+            out.println("Available Resources: [SHIELD], [STONE], [SERVANT], [COIN]");
             picked = ResourceType.valueOf(readLine());
 
             if(picked.equals(ResourceType.SERVANT) || picked.equals(ResourceType.COIN)
             || picked.equals(ResourceType.STONE) || picked.equals(ResourceType.SHIELD)) {
 
+                finalPicked.add(picked);
                 out.println("Resource accepted! Added to your inventory.");
-                break;
             } else {
                 out.println("Invalid resource!");
                 out.println("AVAILABLE RESOURCES: SHIELD, STONE, SERVANT, COIN");
             }
+            number--;
         }
-
-        ResourceType finalPicked = picked;
         notifyObserver(o -> o.onUpdateSetupResource(finalPicked));
     }
 

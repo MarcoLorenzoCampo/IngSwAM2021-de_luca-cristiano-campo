@@ -101,7 +101,6 @@ public class Server implements Serializable {
                 gameManager.addVirtualView(nickname, virtualView);
                 onMessage(message);
                 gameManager.addVirtualView(nickname, virtualView);
-                gameManager.getLobbyManager().addNewPlayer(nickname, virtualView);
             }
 
             //If it's a known player

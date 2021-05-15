@@ -2,17 +2,24 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.PossibleMessages;
+import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.utilities.MaterialResource;
+import it.polimi.ingsw.model.utilities.Resource;
+import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
+import it.polimi.ingsw.network.messages.playerMessages.SetupResourceAnswer;
 import it.polimi.ingsw.network.server.Server;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,8 +36,14 @@ public final class GameManager implements Observer, Serializable {
 
 
     private boolean firstTurn;
-    private Map<String , VirtualView> virtualViewLog;
+    private Map<String, VirtualView> virtualViewLog;
     private String currentPlayer;
+    private VirtualView currentView;
+
+    public void setCurrentPlayer(String player) {
+        this.currentPlayer = player;
+        this.currentView = virtualViewLog.get(player);
+    }
 
     /**
      * Constructor of the game manager.
@@ -46,16 +59,17 @@ public final class GameManager implements Observer, Serializable {
 
     /**
      * Lobby manager is set later in the game when a lobby size message is sent.
+     *
      * @param gameMode : decides whether the LobbyManager will be for a single player game or multiplayer.
-     *              1 = single player game;
-     *              2 = multiplayer game;
+     *                 1 = single player game;
+     *                 2 = multiplayer game;
      */
     public void setLobbyManager(String gameMode) {
 
-        if(gameMode.equals("singlePlayer")) {
+        if (gameMode.equals("singlePlayer")) {
             lobbyManager = new SinglePlayerLobbyManager(currentGame);
         }
-        if(gameMode.equals("multiPlayer")) {
+        if (gameMode.equals("multiPlayer")) {
             lobbyManager = new MultiPlayerLobbyManager(this);
         }
     }
@@ -80,12 +94,13 @@ public final class GameManager implements Observer, Serializable {
         return server;
     }
 
-    public void addVirtualView(String player, VirtualView virtualView){
+    public void addVirtualView(String player, VirtualView virtualView) {
         virtualViewLog.put(player, virtualView);
     }
 
     /**
      * Method to end the game. Broadcasts the outcome of the match and
+     *
      * @param message: end game message
      */
     public void endGame(String message) {
@@ -95,9 +110,10 @@ public final class GameManager implements Observer, Serializable {
 
     /**
      * Method that moves the turn forward, acts as an FSM that decides what actions can be taken
+     *
      * @param message: message to be processed, validated by the state of the game and the sender username
      */
-    public void onMessage(Message message){
+    public void onMessage(Message message) {
         switch (currentGame.getCurrentState().getGameState()) {
             case SETUP:
 
@@ -113,9 +129,9 @@ public final class GameManager implements Observer, Serializable {
 
                     //if the last player is logged, the game can finally start its setup phase
                     if (lobbyManager.getRealPlayerList().size() == lobbyManager.getLobbySize()) {
-                        lobbyManager.setPlayingOrder();
-                        currentPlayer = lobbyManager.getRealPlayerList().get(0).getName();
                         currentGame.setCurrentState(PossibleGameStates.SETUP_RESOURCES);
+                        lobbyManager.setPlayingOrder();
+
                     }
                 }
                 break;
@@ -135,19 +151,58 @@ public final class GameManager implements Observer, Serializable {
 
                         //creates a new multi player lobby manager.
                         setLobbyManager("multiPlayer");
+                        MultiPlayerLobbyManager currentLobby = (MultiPlayerLobbyManager) lobbyManager;
+                        currentLobby.setLobbySize(oneIntMessage.getIndex());
                         lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
                         currentGame.setCurrentState(PossibleGameStates.SETUP);
                     }
                     firstTurn = false;
                     server.sizeHasBeenSet();
                 }
-            }
+                break;
+
+            case SETUP_RESOURCES:
+                if (message.getMessageType().equals(PossibleMessages.RESOURCE) && message.getSenderUsername().equals(currentPlayer)) {
+                    SetupResourceAnswer setupResourceAnswer = (SetupResourceAnswer) message;
+                    int listSize = setupResourceAnswer.getResourcesToSet();
+                    if (listSize > 0) {
+                        List<Resource> obtained = ResourceBuilder.build((LinkedList<ResourceType>) setupResourceAnswer.getResourceTypes());
+                        for (Resource iterator : obtained) {
+                            try {
+                                currentGame.getCurrentPlayer().getInventoryManager().getWarehouse().addResource((MaterialResource) iterator);
+                            } catch (DiscardResourceException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    if (lobbyManager.getRealPlayerList().indexOf(currentPlayer) == lobbyManager.getLobbySize()) {
+                        currentGame.setCurrentState(PossibleGameStates.SETUP_LEADER);
+                    }
+                    lobbyManager.setNextTurn();
+                }
+                break;
         }
+    }
 
+    public void onStartTurn(){
+        switch (currentGame.getCurrentState().getGameState()) {
+            case SETUP_LEADER:
+                currentView.askToDiscard();
+                break;
 
+            case SETUP_RESOURCES:
+                MultiPlayerLobbyManager lobby = (MultiPlayerLobbyManager) lobbyManager;
+                lobby.setDefaultResources(currentPlayer);
+                break;
+
+            case PLAYING:
+                currentView.currentTurn("\n Choose an action to perform.");
+                break;
+        }
+    }
 
     @Override
-    public void update(Message message) {
+    public void update (Message message){
 
     }
 }
