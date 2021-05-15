@@ -69,7 +69,6 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
             viewsByNickname.put(nickname, virtualView);
             realPlayerList.add(new RealPlayer(nickname));
-            virtualView.showLoginOutput(true, true, false);
 
             virtualView.showGenericString("\nYou're connected, waiting for the lobby to fill." +
                     "[ "+ (lobbySize-realPlayerList.size()) + " players left]");
@@ -80,7 +79,6 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
             viewsByNickname.put(nickname, virtualView);
             realPlayerList.add(new RealPlayer(nickname));
-            virtualView.showLoginOutput(true, true, false);
 
             broadcastToAllExceptCurrent("New player added: " + nickname, nickname);
         }
@@ -127,10 +125,11 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         broadcastGenericMessage("Playing order has been set! Here's the current order:\n" +
                 getPlayingNames());
 
+        gameManager.setCurrentPlayer(realPlayerList.get(0).getName());
         viewsByNickname.get(realPlayerList.get(0).getName()).showGenericString("\nYou're the first player!");
 
         giveLeaderCards();
-
+        gameManager.onStartTurn();
         //setDefaultResources();
     }
 
@@ -174,8 +173,10 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         gameManager.getServer()
                 .setCurrentClient(PlayingGame.getGameInstance().getCurrentPlayer().getName());
 
+        gameManager.setCurrentPlayer(nowPlaying);
         viewsByNickname.get(nowPlaying).currentTurn("It's your turn now");
         broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
+        gameManager.onStartTurn();
     }
 
     /**
@@ -198,18 +199,26 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      * When the game starts, each player is given a specific number of resources and
      * faith track points.
      */
-    public void setDefaultResources() {
+    public void setDefaultResources(String current) {
 
-        for(int i = 0; i< realPlayerList.size(); i++) {
+            int i = 0;
+            while (!realPlayerList.get(i).getName().equals(current)){
+                i++;
+            }
 
             switch(i) {
+                case 0:
+                    viewsByNickname.get(current).askSetupResource(0);
+
+                    break;
+
                 case 1:
 
-                    viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource();
+                    viewsByNickname.get(current).askSetupResource(1);
                     break;
                 case 2:
 
-                    viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource();
+                    viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource(1);
 
                     realPlayerList.get(i)
                             .getPlayerBoard()
@@ -219,8 +228,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
                 case 3:
 
-                    viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource();
-                    viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource();
+                    viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource(2);
 
                     for(int j=0; j<2; j++) {
                         realPlayerList.get(i)
@@ -230,8 +238,8 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
                     }
                     break;
             }
-        }
     }
+
 
     public int getNumberOfTurns() {
         return numberOfTurns;

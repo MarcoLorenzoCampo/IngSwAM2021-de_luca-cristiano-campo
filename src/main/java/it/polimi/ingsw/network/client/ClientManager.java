@@ -6,10 +6,13 @@ import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.playerMessages.*;
+
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -70,14 +73,10 @@ public class ClientManager implements ViewObserver, Observer {
                         view.showLoginOutput(m.isConnectionOutcome(), m.isNicknameAccepted(), m.isReconnected()));
                 break;
 
+
             case GENERIC_SERVER_MESSAGE:
                 GenericMessageFromServer g = (GenericMessageFromServer) message;
                 viewUpdater.execute(() -> view.showGenericString(g.getServerString()));
-                break;
-
-            case FAITH_TRACK_MESSAGE:
-                FaithTrackMessage f = (FaithTrackMessage) message;
-                viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
                 break;
 
             case BOARD:
@@ -90,6 +89,23 @@ public class ClientManager implements ViewObserver, Observer {
                 viewUpdater.execute(() -> view.printLorenzoToken(l.getLorenzoToken()));
                 break;
 
+            case FAITH_TRACK_MESSAGE:
+                FaithTrackMessage f = (FaithTrackMessage) message;
+                viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
+                break;
+
+
+            case SETUP_RESOURCES:
+                SetupResourcesRequest resourcesRequest = (SetupResourcesRequest) message;
+                viewUpdater.execute(() ->
+                {
+                    try {
+                        view.askSetupResource(resourcesRequest.getNumberOfResources());
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                });
+                break;
             default: break;
         }
     }
@@ -121,9 +137,10 @@ public class ClientManager implements ViewObserver, Observer {
     }
 
     @Override
-    public void onUpdateSetupResource(ResourceType r1) {
-        client.sendMessage(new ChosenResourceMessage(nickname, r1));
+    public void onUpdateSetupResource(List<ResourceType> r1) {
+        client.sendMessage(new SetupResourceAnswer(nickname, r1.size(), r1));
     }
+
 
     @Override
     public void onUpdateSetupLeaders(int l1, int l2) {
