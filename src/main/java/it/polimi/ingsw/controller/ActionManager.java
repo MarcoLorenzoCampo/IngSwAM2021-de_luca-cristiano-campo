@@ -27,7 +27,7 @@ public final class ActionManager {
      * {@link ActionValidator};
      * @param receivedAction: action sent by the player via network.
      */
-    public void actionReceiver(Action receivedAction) {
+    public void onReceiveAction(Action receivedAction) {
 
         try {
             currentGame.getCurrentPlayer()

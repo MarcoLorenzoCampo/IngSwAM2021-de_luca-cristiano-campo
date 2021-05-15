@@ -106,6 +106,24 @@ public class ClientManager implements ViewObserver, Observer {
                     }
                 });
                 break;
+
+            case AVAILABLE_LEADERS:
+                LeaderCardMessage leaderCardMessage = (LeaderCardMessage) message;
+                viewUpdater.execute(() ->
+                        view.showLeaderCards(leaderCardMessage.getAvailable()));
+                break;
+
+            case SETUP_LEADERS:
+                SetupLeaderRequest setupLeaderRequest = (SetupLeaderRequest) message;
+                viewUpdater.execute(() ->
+                {
+                   try{
+                       view.askToDiscard();
+                   } catch (ExecutionException e) {
+                       e.printStackTrace();
+                   }
+                });
+
             default: break;
         }
     }

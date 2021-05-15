@@ -4,6 +4,7 @@ import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
@@ -267,6 +268,11 @@ public class CLI extends ViewObservable implements IView {
         int finalD1 = d1;
         int finalD2 = d2;
         notifyObserver(o -> o.onUpdateSetupLeaders(finalD1, finalD2));
+    }
+
+    @Override
+    public void showLeaderCards(ArrayList<LeaderCard> cards) {
+        out.println("\nTHIS METHOD DOESN'T EXIST YET!\nTRY AGAIN WHEN ALESSANDRO RESOLVES THE ISSUE :P");
     }
 
     @Override

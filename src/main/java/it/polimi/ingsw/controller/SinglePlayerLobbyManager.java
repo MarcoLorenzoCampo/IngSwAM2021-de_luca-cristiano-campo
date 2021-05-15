@@ -125,6 +125,11 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
 
     }
 
+    @Override
+    public int turnOfPlayer(String current) {
+        return 0;
+    }
+
     public LorenzoPlayer getLorenzo() {
         return lorenzo;
     }

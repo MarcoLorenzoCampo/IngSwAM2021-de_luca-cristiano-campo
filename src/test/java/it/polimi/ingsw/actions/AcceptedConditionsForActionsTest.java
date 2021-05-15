@@ -59,12 +59,12 @@ class AcceptedConditionsForActionsTest {
         //Assert
         assertAll(
                 () -> assertDoesNotThrow(
-                        () -> actionManager.actionReceiver(testDiscardAction)),
+                        () -> actionManager.onReceiveAction(testDiscardAction)),
                 () -> assertDoesNotThrow(
-                        () -> actionManager.actionReceiver(testGetAction)),
+                        () -> actionManager.onReceiveAction(testGetAction)),
                 /* card shouldn't be places because it does not satisfy the requirements */
                 () -> assertDoesNotThrow(
-                        () -> actionManager.actionReceiver(testPlaceLeader)),
+                        () -> actionManager.onReceiveAction(testPlaceLeader)),
                 () -> assertEquals(initialCards-1,
                         currentGame.getCurrentPlayer().getOwnedLeaderCards().size())
         );
@@ -84,7 +84,7 @@ class AcceptedConditionsForActionsTest {
                 new BuyProductionCardAction("customScenarioPlayer", toAdd, 0, currentGame);
 
         //Assert
-        assertDoesNotThrow(() -> actionManager.actionReceiver(testBuyCard));
+        assertDoesNotThrow(() -> actionManager.onReceiveAction(testBuyCard));
     }
 
     void resetSingleton() {

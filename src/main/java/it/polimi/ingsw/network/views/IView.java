@@ -4,9 +4,11 @@ import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -57,6 +59,13 @@ public interface IView {
      * Asks the player to store or discard a resource that has to be deposited;
      */
     void askToDiscard() throws ExecutionException;
+
+
+    /**
+     *
+     * @param cards: available leader cards
+     */
+    void showLeaderCards(ArrayList<LeaderCard> cards);
 
     /**
      * Tells the player some action/message sent wasn't validated.

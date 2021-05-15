@@ -1,26 +1,26 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.actions.DiscardLeaderCardAction;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.playerMessages.DiscardTwoLeaders;
 import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
 import it.polimi.ingsw.network.messages.playerMessages.SetupResourceAnswer;
 import it.polimi.ingsw.network.server.Server;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Class to manage the entire playing game. It has instances of the currentGame, LobbyManager,
@@ -176,18 +176,58 @@ public final class GameManager implements Observer, Serializable {
                             }
                         }
                     }
-                    if (lobbyManager.getRealPlayerList().indexOf(currentPlayer) == lobbyManager.getLobbySize()) {
+                    if ((lobbyManager.turnOfPlayer(currentPlayer)+1) == lobbyManager.getLobbySize()) {
                         currentGame.setCurrentState(PossibleGameStates.SETUP_LEADER);
                     }
                     lobbyManager.setNextTurn();
                 }
                 break;
+            case SETUP_LEADER:
+
+                if(message.getMessageType().equals(PossibleMessages.SETUP_LEADERS)) {
+
+                    DiscardTwoLeaders d = (DiscardTwoLeaders) message;
+
+                    int l1 = d.getL1();
+                    int l2 = d.getL2();
+
+                    if(l1 > l2){
+
+                        actionManager
+                                .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
+                        actionManager
+                                .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+                    } else {
+
+                        actionManager
+                                .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+                        actionManager
+                                .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
+                    }
+
+                    if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)){
+                        currentGame.setCurrentState(PossibleGameStates.SETUP_RESOURCES);
+
+                    }
+
+                    lobbyManager.setNextTurn();
+                    //get leader card to discard index -> discard 2 index (greater first)
+
+
+
+                    //if current player is the last in the ordered list
+
+                }
+
+
         }
+
     }
 
     public void onStartTurn(){
         switch (currentGame.getCurrentState().getGameState()) {
             case SETUP_LEADER:
+                currentView.showLeaderCards((ArrayList<LeaderCard>) currentGame.getCurrentPlayer().getOwnedLeaderCards());
                 currentView.askToDiscard();
                 break;
 

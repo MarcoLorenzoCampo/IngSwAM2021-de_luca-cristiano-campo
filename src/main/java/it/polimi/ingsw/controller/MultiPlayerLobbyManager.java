@@ -201,10 +201,8 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      */
     public void setDefaultResources(String current) {
 
-            int i = 0;
-            while (!realPlayerList.get(i).getName().equals(current)){
-                i++;
-            }
+            int i = turnOfPlayer(current);
+
 
             switch(i) {
                 case 0:
@@ -286,6 +284,15 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
             viewsByNickname.get(playingName).showMatchInfo(getPlayingNames());
         }
+    }
+
+    @Override
+    public int turnOfPlayer(String current) {
+        int i = 0;
+        while (!realPlayerList.get(i).getName().equals(current)){
+            i++;
+        }
+        return i;
     }
 
     /**

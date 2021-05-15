@@ -42,7 +42,7 @@ class ConditionsToRefuseActionsTest {
         currentGame.getCurrentPlayer().getPlayerState().performedExclusiveAction();
 
         testGetAction = new GetResourceFromMarketAction(actionSender, 0, currentGame);
-        actionManager.actionReceiver(testGetAction);
+        actionManager.onReceiveAction(testGetAction);
 
         //Assert
         assertAll(

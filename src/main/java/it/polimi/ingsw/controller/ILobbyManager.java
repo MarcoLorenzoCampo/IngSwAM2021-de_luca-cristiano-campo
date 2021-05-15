@@ -22,4 +22,5 @@ public interface ILobbyManager {
     void broadcastGenericMessage(String message);
     void broadCastWinMessage(String message);
     void broadCastMatchInfo();
+    int turnOfPlayer(String current);
 }

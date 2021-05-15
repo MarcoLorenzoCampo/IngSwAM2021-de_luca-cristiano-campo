@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.eventHandlers;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.*;
@@ -10,7 +11,9 @@ import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.IClientHandler;
 import it.polimi.ingsw.network.views.IView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Hides network classes and methods from the controller.The controller interacts woith the virtual view
@@ -69,9 +72,15 @@ public class VirtualView implements IView, Observer {
 
     }
 
+
     @Override
     public void askToDiscard() {
+        clientHandler.sendMessage(new SetupLeaderRequest());
+    }
 
+    @Override
+    public void showLeaderCards(ArrayList<LeaderCard> cards) {
+        clientHandler.sendMessage(new LeaderCardMessage(cards));
     }
 
     @Override

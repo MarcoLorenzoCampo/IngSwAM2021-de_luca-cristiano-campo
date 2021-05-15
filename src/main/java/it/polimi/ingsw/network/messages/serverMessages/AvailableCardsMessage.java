@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.messages.serverMessages;
 
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.util.ArrayList;
@@ -22,9 +23,5 @@ public class AvailableCardsMessage extends Message {
         super.setMessageType(PossibleMessages.AVAILABLE_PRODUCTION_CARDS);
 
         this.availableCards = availableCards;
-    }
-
-    public List<ProductionCard> getAvailableCards() {
-        return availableCards;
     }
 }
