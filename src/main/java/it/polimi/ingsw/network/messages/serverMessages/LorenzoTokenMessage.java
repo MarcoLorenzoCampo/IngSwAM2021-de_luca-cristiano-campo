@@ -17,6 +17,7 @@ public class LorenzoTokenMessage extends Message {
     public LorenzoTokenMessage(IToken lorenzoToken) {
 
         super.setMessageType(PossibleMessages.LORENZO_TOKEN);
+        super.setSenderUsername("SERVER_MESSAGE");
         this.lorenzoToken = lorenzoToken;
     }
 

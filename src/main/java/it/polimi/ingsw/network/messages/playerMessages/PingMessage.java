@@ -13,6 +13,5 @@ public class PingMessage extends Message {
 
     public PingMessage() {
         super.setMessageType(PossibleMessages.PING_MESSAGE);
-        super.setSenderUsername("PING_MESSAGE");
     }
 }
