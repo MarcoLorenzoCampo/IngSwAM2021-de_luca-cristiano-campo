@@ -26,4 +26,10 @@ public interface IClient {
      * Removes a client from the server's socket.
      */
     void disconnect();
+
+    /**
+     * Enable periodic ping function.
+     * @param enable: enabled/disabled.
+     */
+    void startPing(boolean enable);
 }

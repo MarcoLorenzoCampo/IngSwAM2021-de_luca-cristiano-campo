@@ -11,8 +11,8 @@ public class PingMessage extends Message {
 
     private static final long serialVersionUID = -4046380756090971644L;
 
-    public PingMessage(String username) {
+    public PingMessage() {
         super.setMessageType(PossibleMessages.PING_MESSAGE);
-        super.setSenderUsername(username);
+        super.setSenderUsername("PING_MESSAGE");
     }
 }
