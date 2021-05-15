@@ -80,6 +80,7 @@ public class ClientManager implements ViewObserver, Observer {
         try {
             client = new Client(port, ipAddress);
             client.addObserver(this);
+            //client.startPing(true);
             client.readMessage();
             viewUpdater.execute(view::askNickname);
         } catch (IOException e) {

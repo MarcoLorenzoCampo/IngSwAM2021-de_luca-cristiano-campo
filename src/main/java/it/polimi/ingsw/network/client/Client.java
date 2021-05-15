@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.playerMessages.PingMessage;
 import it.polimi.ingsw.network.views.cli.CLI;
 
 import java.io.EOFException;
@@ -12,6 +13,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class to handle client operations.
@@ -36,6 +39,11 @@ public class Client extends Observable implements IClient {
     private final ExecutorService serverListener;
 
     /**
+     * Pinger thread.
+     */
+    private ScheduledExecutorService pinger;
+
+    /**
      * Client constructor. Connects the client to the server's socket.
      *
      * @param port:       server's socket.
@@ -49,11 +57,12 @@ public class Client extends Observable implements IClient {
 
         this.serverListener = Executors.newSingleThreadExecutor();
 
+        //this.pinger = Executors.newSingleThreadScheduledExecutor();
+
         try {
 
             output = new ObjectOutputStream(clientSocket.getOutputStream());
             input = new ObjectInputStream(clientSocket.getInputStream());
-
             clientLogger.info(() -> "Connection successful.");
 
         } catch (IOException e) {
@@ -120,6 +129,20 @@ public class Client extends Observable implements IClient {
 
                 clientLogger.severe(() -> "Could not disconnect. Critical error.");
             }
+        }
+    }
+
+    /**
+     * Enable a periodic ping message from the client to the server to keep the connection alive
+     * and detectable to the server.
+     * @param enabled: true if enabled, false if disabled.
+     */
+    public void startPing(boolean enabled) {
+        if (enabled) {
+            pinger.scheduleAtFixedRate(
+                    () -> sendMessage(new PingMessage()), 0, 1000, TimeUnit.MILLISECONDS);
+        } else {
+            pinger.shutdownNow();
         }
     }
 
