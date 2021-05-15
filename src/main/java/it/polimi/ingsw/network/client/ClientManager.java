@@ -62,6 +62,8 @@ public class ClientManager implements ViewObserver, Observer {
     @Override
     public void update(Message message) {
 
+        if(message != null)
+
         switch (message.getMessageType()) {
             case LOBBY_SIZE_REQUEST:
                 viewUpdater.execute(view::askPlayerNumber);

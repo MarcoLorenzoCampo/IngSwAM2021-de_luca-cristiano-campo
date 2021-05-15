@@ -176,7 +176,9 @@ public final class GameManager implements Observer, Serializable {
                             }
                         }
                     }
-                    if (lobbyManager.getRealPlayerList().indexOf(currentPlayer) == lobbyManager.getLobbySize()) {
+
+                    //verify it's the last player
+                    if (lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)) {
                         currentGame.setCurrentState(PossibleGameStates.SETUP_LEADER);
                     }
                     lobbyManager.setNextTurn();
