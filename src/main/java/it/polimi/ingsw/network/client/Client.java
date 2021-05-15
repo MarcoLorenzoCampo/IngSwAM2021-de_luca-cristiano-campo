@@ -76,33 +76,19 @@ public class Client extends Observable implements IClient {
      */
     @Override
     public void readMessage() {
-
         serverListener.execute(() -> {
+
             while (!serverListener.isShutdown()) {
-
                 Message message = null;
-
                 try {
                     message = (Message) input.readObject();
-                    clientLogger.info("Received: " + message + " from server.");
-                } catch (EOFException e) {
-                    e.printStackTrace();
-
-                }catch  (IOException e) {
-                    e.printStackTrace();
-
-                    clientLogger.severe(() -> "Communication error. Critical error.");
+                    Client.clientLogger.info("Received: " + message);
+                } catch (IOException | ClassNotFoundException e) {
+                    Client.clientLogger.info("Connection lost with the server.");
                     disconnect();
-                    serverListener.shutdown();
-
-                } catch (ClassNotFoundException e) {
-
-                    clientLogger.severe(() -> "Got an unexpected Object from server. Critical error.");
-                    disconnect();
-                    serverListener.shutdown();
+                    serverListener.shutdownNow();
                 }
-
-                if(message != null) notifyObserver(message);
+                notifyObserver(message);
             }
         });
     }

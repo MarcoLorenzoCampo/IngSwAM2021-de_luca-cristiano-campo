@@ -330,7 +330,9 @@ public class CLI extends ViewObservable implements IView {
     public void askSetupResource(int number) throws ExecutionException {
 
         List< ResourceType> finalPicked = new ArrayList<>();
-        ResourceType picked;
+
+        ResourceType picked = null;
+
         if(number == 0){
             out.println("\nYou have 0 resources to pick!");
 
@@ -339,19 +341,24 @@ public class CLI extends ViewObservable implements IView {
         }
 
         while(number > 0) {
-            out.println("Available Resources: [SHIELD], [STONE], [SERVANT], [COIN]");
-            picked = ResourceType.valueOf(readLine());
+            out.println("Available Resources: [SHIELD], [STONE], [SERVANT], [COIN] (All caps required)");
+            out.print(">>> ");
 
-            if(picked.equals(ResourceType.SERVANT) || picked.equals(ResourceType.COIN)
-            || picked.equals(ResourceType.STONE) || picked.equals(ResourceType.SHIELD)) {
+            try {
+                picked = ResourceType.valueOf(readLine());
+            } catch (IllegalArgumentException e) {
+                out.println("\nInvalid resource!");
+            }
+
+            if(picked != null && (picked.equals(ResourceType.SERVANT) || picked.equals(ResourceType.COIN)
+            || picked.equals(ResourceType.STONE) || picked.equals(ResourceType.SHIELD))) {
 
                 finalPicked.add(picked);
                 out.println("Resource accepted! Added to your inventory.");
-            } else {
-                out.println("Invalid resource!");
-                out.println("AVAILABLE RESOURCES: SHIELD, STONE, SERVANT, COIN");
+
+                number--;
+
             }
-            number--;
         }
         notifyObserver(o -> o.onUpdateSetupResource(finalPicked));
     }
