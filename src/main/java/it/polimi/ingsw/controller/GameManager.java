@@ -162,9 +162,10 @@ public final class GameManager implements Observer, Serializable {
                 break;
 
             case SETUP_RESOURCES:
-                if (message.getMessageType().equals(PossibleMessages.RESOURCE) && message.getSenderUsername().equals(currentPlayer)) {
+                if (message.getMessageType().equals(PossibleMessages.SETUP_RESOURCES) && message.getSenderUsername().equals(currentPlayer)) {
                     SetupResourceAnswer setupResourceAnswer = (SetupResourceAnswer) message;
                     int listSize = setupResourceAnswer.getResourcesToSet();
+
                     if (listSize > 0) {
                         List<Resource> obtained = ResourceBuilder.build((LinkedList<ResourceType>) setupResourceAnswer.getResourceTypes());
                         for (Resource iterator : obtained) {

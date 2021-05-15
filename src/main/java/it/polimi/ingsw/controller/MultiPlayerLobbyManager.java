@@ -202,9 +202,10 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
     public void setDefaultResources(String current) {
 
             int i = 0;
-            while (realPlayerList.get(i).getName().equals(current)){
+            while (!realPlayerList.get(i).getName().equals(current)){
                 i++;
             }
+
             switch(i) {
                 case 0:
                     viewsByNickname.get(current).askSetupResource(0);

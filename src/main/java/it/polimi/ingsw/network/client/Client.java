@@ -85,7 +85,10 @@ public class Client extends Observable implements IClient {
                 try {
                     message = (Message) input.readObject();
                     clientLogger.info("Received: " + message + " from server.");
-                } catch (IOException e) {
+                } catch (EOFException e) {
+                    e.printStackTrace();
+
+                }catch  (IOException e) {
                     e.printStackTrace();
 
                     clientLogger.severe(() -> "Communication error. Critical error.");

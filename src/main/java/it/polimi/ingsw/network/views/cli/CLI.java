@@ -332,7 +332,7 @@ public class CLI extends ViewObservable implements IView {
         List< ResourceType> finalPicked = new ArrayList<>();
         ResourceType picked;
         if(number == 0){
-            out.println("\nYou have 0 resources to pick, chose wisely!");
+            out.println("\nYou have 0 resources to pick!");
 
         }else {
             out.println("\nYou have " + number + " resource to pick, chose wisely!");

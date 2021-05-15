@@ -19,7 +19,9 @@ public enum PossibleMessages {
     SETUP_RESOURCES,
     PING_MESSAGE,
     GAME_SIZE,
+
     RESOURCE,
+
     DISCARD_LEADER,
     ACTIVATE_LEADER,
     GET_RESOURCES,
