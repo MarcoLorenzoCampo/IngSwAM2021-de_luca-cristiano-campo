@@ -81,6 +81,9 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
             realPlayerList.add(new RealPlayer(nickname));
 
             broadcastToAllExceptCurrent("New player added: " + nickname, nickname);
+            broadcastGenericMessage("\nYou're connected, waiting for the lobby to fill." +
+                    "[ "+ (lobbySize-realPlayerList.size()) + " players left]");
+
         }
     }
 
@@ -123,14 +126,13 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         PlayingGame.getGameInstance().setCurrentPlayer(realPlayerList.get(0));
 
         broadcastGenericMessage("Playing order has been set! Here's the current order:\n" +
-                getPlayingNames());
+                getPlayingNames().toString());
 
         gameManager.setCurrentPlayer(realPlayerList.get(0).getName());
         viewsByNickname.get(realPlayerList.get(0).getName()).showGenericString("\nYou're the first player!");
 
         giveLeaderCards();
         gameManager.onStartTurn();
-        //setDefaultResources();
     }
 
     /**

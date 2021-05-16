@@ -111,9 +111,10 @@ public class ClientManager implements ViewObserver, Observer {
                 break;
 
             case AVAILABLE_LEADERS:
-                LeaderCardMessage leaderCardMessage = (LeaderCardMessage) message;
-                viewUpdater.execute(() ->
-                        view.showLeaderCards(leaderCardMessage.getAvailable()));
+                view.showGenericString("MESSAGGIO INVIATO CORRETTAMENTE");
+            //    LeaderCardMessage leaderCardMessage = (LeaderCardMessage) message;
+            //    viewUpdater.execute(() ->
+            //            view.showLeaderCards();
                 break;
 
             case SETUP_LEADERS:

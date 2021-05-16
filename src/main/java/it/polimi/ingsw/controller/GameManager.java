@@ -211,7 +211,7 @@ public final class GameManager implements Observer, Serializable {
                     }
 
                     if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)){
-                        currentGame.setCurrentState(PossibleGameStates.SETUP_RESOURCES);
+                        currentGame.setCurrentState(PossibleGameStates.PLAYING);
 
                     }
 
