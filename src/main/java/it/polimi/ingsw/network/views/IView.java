@@ -65,7 +65,7 @@ public interface IView {
      *
      * @param cards: available leader cards
      */
-    void showLeaderCards(ArrayList<LeaderCard> cards);
+    void showLeaderCards(List<LeaderCard> cards);
 
     /**
      * Tells the player some action/message sent wasn't validated.

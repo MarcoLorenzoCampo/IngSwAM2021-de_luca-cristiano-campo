@@ -189,7 +189,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         for(int i=0; i<realPlayerList.size(); i++) {
             realPlayerList
                     .get(i)
-                    .setOwnedLeaderCards(leaderCards.subList(4*i, 4*i + 4));
+                    .setOwnedLeaderCards(new ArrayList<>(leaderCards.subList(4 * i, 4 * i + 4)));
         }
 
         broadcastGenericMessage("Leader cards have been dealt.");

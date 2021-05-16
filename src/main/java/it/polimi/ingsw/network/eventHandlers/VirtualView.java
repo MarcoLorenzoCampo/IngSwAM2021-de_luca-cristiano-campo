@@ -79,8 +79,8 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void showLeaderCards(ArrayList<LeaderCard> cards) {
-        clientHandler.sendMessage(new LeaderCardMessage(cards));
+    public void showLeaderCards(List<LeaderCard> cards) {
+        clientHandler.sendMessage(new LeaderCardMessage( cards));
     }
 
     @Override

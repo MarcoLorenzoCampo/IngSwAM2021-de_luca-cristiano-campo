@@ -14,6 +14,7 @@ import it.polimi.ingsw.network.utilities.CommandParser;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -271,7 +272,7 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void showLeaderCards(ArrayList<LeaderCard> cards) {
+    public void showLeaderCards(List<LeaderCard> cards) {
         out.println("\nTHIS METHOD DOESN'T EXIST YET!\nTRY AGAIN WHEN ALESSANDRO RESOLVES THE ISSUE :P");
     }
 
@@ -335,7 +336,7 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void askSetupResource(int number) throws ExecutionException {
 
-        List< ResourceType> finalPicked = new ArrayList<>();
+        LinkedList<ResourceType> finalPicked = new LinkedList<>();
 
         ResourceType picked = null;
 

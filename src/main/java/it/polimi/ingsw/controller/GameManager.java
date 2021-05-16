@@ -167,7 +167,11 @@ public final class GameManager implements Observer, Serializable {
                     int listSize = setupResourceAnswer.getResourcesToSet();
 
                     if (listSize > 0) {
-                        List<Resource> obtained = ResourceBuilder.build((LinkedList<ResourceType>) setupResourceAnswer.getResourceTypes());
+
+                        //da problemi
+                        LinkedList<Resource> obtained = ResourceBuilder.build((LinkedList<ResourceType>) setupResourceAnswer.getResourceTypes());
+
+
                         for (Resource iterator : obtained) {
                             try {
                                 currentGame.getCurrentPlayer().getInventoryManager().getWarehouse().addResource((MaterialResource) iterator);
@@ -182,6 +186,7 @@ public final class GameManager implements Observer, Serializable {
                     lobbyManager.setNextTurn();
                 }
                 break;
+
             case SETUP_LEADER:
 
                 if(message.getMessageType().equals(PossibleMessages.SETUP_LEADERS)) {
@@ -227,7 +232,8 @@ public final class GameManager implements Observer, Serializable {
     public void onStartTurn(){
         switch (currentGame.getCurrentState().getGameState()) {
             case SETUP_LEADER:
-                currentView.showLeaderCards((ArrayList<LeaderCard>) currentGame.getCurrentPlayer().getOwnedLeaderCards());
+                List<LeaderCard> having = currentGame.getCurrentPlayer().getOwnedLeaderCards();
+//                currentView.showLeaderCards(having);
                 currentView.askToDiscard();
                 break;
 

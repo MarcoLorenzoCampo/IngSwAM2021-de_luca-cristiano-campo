@@ -11,6 +11,7 @@ import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -157,7 +158,7 @@ public class ClientManager implements ViewObserver, Observer {
     }
 
     @Override
-    public void onUpdateSetupResource(List<ResourceType> r1) {
+    public void onUpdateSetupResource(LinkedList<ResourceType> r1) {
         client.sendMessage(new SetupResourceAnswer(nickname, r1.size(), r1));
     }
 
@@ -165,7 +166,7 @@ public class ClientManager implements ViewObserver, Observer {
     @Override
     public void onUpdateSetupLeaders(int l1, int l2) {
         client.sendMessage(
-                new TwoIntMessage(nickname, PossibleMessages.SETUP_LEADERS, l1, l2)
+                new DiscardTwoLeaders(nickname, l1, l2)
         );
     }
 

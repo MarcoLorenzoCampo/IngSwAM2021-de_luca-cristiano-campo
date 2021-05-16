@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.eventHandlers;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public interface ViewObserver {
      *
      * @param r1: Resource chosen.
      */
-    void onUpdateSetupResource(List<ResourceType> r1);
+    void onUpdateSetupResource(LinkedList<ResourceType> r1);
 
     /**
      * Method to provide the server the index of the 2 leader cards the client would like to discard.
