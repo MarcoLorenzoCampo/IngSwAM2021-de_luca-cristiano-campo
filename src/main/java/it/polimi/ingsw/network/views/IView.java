@@ -128,4 +128,10 @@ public interface IView {
      * @param lorenzoAction: played token.
      */
     void printLorenzoToken(IToken lorenzoAction);
+
+    /**
+     * Prints a list of all the available leaders, both place and available ones.
+     * @param leaderCards: a list of owned leader cards.
+     */
+    void printLeaders(List<LeaderCard> leaderCards);
 }

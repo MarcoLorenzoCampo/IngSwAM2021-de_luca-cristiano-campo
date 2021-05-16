@@ -388,6 +388,11 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
+    public void printLeaders(List<LeaderCard> leaderCards) {
+
+    }
+
+    @Override
     public void printResourceMarket(ResourceType[][] resourceMarket, ResourceType extraMarble) {
 
     }
