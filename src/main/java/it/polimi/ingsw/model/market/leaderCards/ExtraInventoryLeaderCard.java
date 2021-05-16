@@ -11,7 +11,6 @@ import it.polimi.ingsw.model.utilities.ResourceTag;
  */
 public class ExtraInventoryLeaderCard extends LeaderCard {
 
-    ResourceType extraInventoryType;
 
     /**
      * Uses the same constructor as the super class.
@@ -19,8 +18,7 @@ public class ExtraInventoryLeaderCard extends LeaderCard {
      */
     public ExtraInventoryLeaderCard(int victoryPoints, EffectType effectType, ResourceTag[] requirements,
                                     DevelopmentTag[] requirementsDev, ResourceType extraInventoryType) {
-        super(victoryPoints, effectType, requirementsDev, requirements);
-        this.extraInventoryType = extraInventoryType;
+        super(victoryPoints, effectType, extraInventoryType, requirementsDev, requirements);
     }
 
     /**
@@ -34,10 +32,7 @@ public class ExtraInventoryLeaderCard extends LeaderCard {
                 .getCurrentPlayer()
                 .getInventoryManager()
                 .getWarehouse()
-                .addExtraInventory(extraInventoryType);
+                .addExtraInventory(getResource());
     }
 
-    public ResourceType getExtraInventoryType() {
-        return extraInventoryType;
-    }
 }

@@ -80,7 +80,7 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
-        clientHandler.sendMessage(new LeaderCardMessage( cards));
+        clientHandler.sendMessage(new LeaderCardMessage(cards));
     }
 
     @Override
@@ -126,6 +126,11 @@ public class VirtualView implements IView, Observer {
     @Override
     public void printLorenzoToken(IToken lorenzoAction) {
         clientHandler.sendMessage(new LorenzoTokenMessage(lorenzoAction));
+    }
+
+    @Override
+    public void printLeaders(List<LeaderCard> leaderCards) {
+
     }
 
     /**

@@ -232,8 +232,7 @@ public final class GameManager implements Observer, Serializable {
     public void onStartTurn(){
         switch (currentGame.getCurrentState().getGameState()) {
             case SETUP_LEADER:
-                List<LeaderCard> having = currentGame.getCurrentPlayer().getOwnedLeaderCards();
-//                currentView.showLeaderCards(having);
+                currentView.showLeaderCards(currentGame.getCurrentPlayer().getOwnedLeaderCards());
                 currentView.askToDiscard();
                 break;
 

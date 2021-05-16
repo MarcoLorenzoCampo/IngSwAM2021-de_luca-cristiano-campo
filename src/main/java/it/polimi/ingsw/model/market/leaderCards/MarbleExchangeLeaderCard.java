@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.utilities.DevelopmentTag;
  */
 public class MarbleExchangeLeaderCard extends LeaderCard {
 
-    ResourceType exchangeResource;
+
 
     /**
      * Uses the same constructor as the super class.
@@ -18,8 +18,7 @@ public class MarbleExchangeLeaderCard extends LeaderCard {
      */
     public MarbleExchangeLeaderCard(int victoryPoints, EffectType effectType,
                                     DevelopmentTag[] requirements, ResourceType exchangeResource) {
-        super(victoryPoints, effectType, requirements, null);
-        this.exchangeResource = exchangeResource;
+        super(victoryPoints, effectType, exchangeResource, requirements, null);
     }
 
     /**
@@ -32,10 +31,7 @@ public class MarbleExchangeLeaderCard extends LeaderCard {
         PlayingGame.getGameInstance()
                 .getCurrentPlayer()
                 .getInventoryManager()
-                .addExchangeLeader(exchangeResource);
+                .addExchangeLeader(getResource());
     }
 
-    public ResourceType getExchangeResource() {
-        return exchangeResource;
-    }
 }
