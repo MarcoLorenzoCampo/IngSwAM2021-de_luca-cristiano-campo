@@ -4,6 +4,7 @@ import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
@@ -378,6 +379,11 @@ public class CLI extends ViewObservable implements IView {
         out.println(winner + " won! Congratulations :)");
 
         System.exit(0);
+    }
+
+    @Override
+    public void printLeaders(List<LeaderCard> leaderCards) {
+
     }
 
     @Override

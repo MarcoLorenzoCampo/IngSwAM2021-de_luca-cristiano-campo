@@ -4,6 +4,7 @@ import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 
@@ -119,4 +120,10 @@ public interface IView {
      * @param lorenzoAction: played token.
      */
     void printLorenzoToken(IToken lorenzoAction);
+
+    /**
+     * Prints a list of all the available leaders, both place and available ones.
+     * @param leaderCards: a list of owned leader cards.
+     */
+    void printLeaders(List<LeaderCard> leaderCards);
 }
