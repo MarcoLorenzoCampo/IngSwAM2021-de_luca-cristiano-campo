@@ -182,7 +182,6 @@ public final class GameManager implements Observer, Serializable {
 
                     if (listSize > 0) {
 
-                        //da problemi
                         LinkedList<Resource> obtained = ResourceBuilder.build((LinkedList<ResourceType>) setupResourceAnswer.getResourceTypes());
 
 
@@ -230,15 +229,50 @@ public final class GameManager implements Observer, Serializable {
                     }
 
                     lobbyManager.setNextTurn();
-                    //get leader card to discard index -> discard 2 index (greater first)
-
-
-
-                    //if current player is the last in the ordered list
-
                 }
+                break;
+            case PLAYING:
+                if(message.getSenderUsername().equals(currentPlayer)){
+                    if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
+                        currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
+                        //se lo stato lo permette, esgui l'azione e cambia lo stato
+                    }
 
+                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_PRODUCTION)
+                    || message.getMessageType().equals(PossibleMessages.ACTIVATE_PRODUCTION)
+                    || message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
+                        currentGame.setCurrentState(PossibleGameStates.ACTIVATE_PRODUCTION);
+                    }
 
+                    if(message.getMessageType().equals(PossibleMessages.GET_RESOURCES)){
+                        if (currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getExchange().size()==2){
+                            currentGame.setCurrentState(PossibleGameStates.CHANGE_COLOR);
+                        }
+                        else{
+                            currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
+                        }
+                    }
+                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)){
+                        //SE LA LISTA è VUOTA SALTA
+                        currentView.showLeaderCards(currentGame.getCurrentPlayer().getOwnedLeaderCards());
+                        currentGame.setCurrentState(PossibleGameStates.LEADER_ACTION);
+                    }
+
+                    if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)){
+                        //SE LA LISTA è VUOTA SALTA
+                        currentView.showLeaderCards(currentGame.getCurrentPlayer().getOwnedLeaderCards());
+                        currentGame.setCurrentState(PossibleGameStates.LEADER_ACTION);
+                    }
+                }
+                break;
+
+            case BUY_CARD:
+                if(message.getSenderUsername().equals(currentPlayer)){
+                    if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
+                        //genero l'azione
+                        //la eseguo
+                    }
+                }
         }
 
     }
@@ -258,6 +292,10 @@ public final class GameManager implements Observer, Serializable {
             case PLAYING:
                 currentView.currentTurn("\n Choose an action to perform.");
                 break;
+
+            case BUY_CARD:
+                //stampa a video le carte disponibili
+                //di al giocatore "compra una carta"
         }
     }
 

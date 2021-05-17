@@ -15,30 +15,21 @@ import java.util.List;
 public class LeaderCardMessage extends Message {
 
     private static final long serialVersionUID = -5649155565123346151L;
-    private final List<LeaderCard> leaderCards;
 
-    public LeaderCardMessage(List<LeaderCard> leaderCards){
-        super.setMessageType(PossibleMessages.AVAILABLE_LEADERS);
-        super.setSenderUsername("SERVER_MESSAGE");
-        this.leaderCards = leaderCards;
-    }
 
-    public List<LeaderCard> getLeaderCards() {
-        return leaderCards;
-    }
-
-    /*
+    private final int size;
     private final ArrayList<EffectType> effects;
     private final ArrayList<ResourceType> resources;
     private final ArrayList<Integer> victoryPoints;
     private final HashMap<Integer, ResourceType> storage;
     private final HashMap<Integer, Integer[]> others;
 
-    /*public LeaderCardMessage (List<LeaderCard> inModel){
+    public LeaderCardMessage (List<LeaderCard> inModel){
 
         super.setMessageType(PossibleMessages.AVAILABLE_LEADERS);
         super.setSenderUsername("SERVER_MESSAGE");
 
+        this.size = inModel.size();
         this.storage = new HashMap<>();
         this.others = new HashMap<>();
         this.effects = new ArrayList<>();
@@ -65,9 +56,9 @@ public class LeaderCardMessage extends Message {
             }
         }
     }
-    */
 
-    /*
+    public int getSize() { return size; }
+
     public ArrayList<EffectType> getEffects() {
         return effects;
     }
@@ -87,5 +78,5 @@ public class LeaderCardMessage extends Message {
     public HashMap<Integer, Integer[]> getOthers() {
         return others;
     }
-    */
+
 }

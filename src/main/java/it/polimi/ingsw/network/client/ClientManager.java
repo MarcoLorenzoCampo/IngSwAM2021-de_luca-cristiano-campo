@@ -1,7 +1,9 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.enumerations.PossibleMessages;
-import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.enumerations.*;
+import it.polimi.ingsw.model.market.leaderCards.DiscountLeaderCard;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
@@ -11,6 +13,7 @@ import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -112,9 +115,10 @@ public class ClientManager implements ViewObserver, Observer {
 
             case AVAILABLE_LEADERS:
                 view.showGenericString("MESSAGGIO INVIATO CORRETTAMENTE");
-            //    LeaderCardMessage leaderCardMessage = (LeaderCardMessage) message;
-            //    viewUpdater.execute(() ->
-            //            view.showLeaderCards();
+                LeaderCardMessage leaderCardMessage = (LeaderCardMessage) message;
+                List<LeaderCard> built = deserializeLeaderCards(leaderCardMessage);
+                viewUpdater.execute(() ->
+                        view.showLeaderCards(built));
                 break;
 
             case SETUP_LEADERS:
@@ -131,6 +135,37 @@ public class ClientManager implements ViewObserver, Observer {
             default: break;
         }
     }
+
+    /**
+     * Method to deserialize leader cards
+     * @param message: message with infomation
+     */
+    public List<LeaderCard> deserializeLeaderCards(LeaderCardMessage message){
+        List<LeaderCard> deserialized = new ArrayList<>();
+        if(message.getSize()!=0){
+            for (int i = 0; i < message.getSize(); i++) {
+                switch (message.getEffects().get(i)){
+                    case DISCOUNT:
+                        deserialized.add(new DiscountLeaderCard(
+                                2,
+                                EffectType.DISCOUNT,
+                                new DevelopmentTag[]
+                                        {new DevelopmentTag(1, Color.values()[], Level.ANY)},
+                                message.getResources().get(i)));
+
+
+                        break;
+                    case EXTRA_INVENTORY:
+                        break;
+                    case MARBLE_EXCHANGE:
+                        break;
+                    case EXTRA_PRODUCTION:
+                        break;
+                }
+            }
+        }
+    }
+
 
     @Override
     public void onServerInfoUpdate(int port, String ipAddress) {
