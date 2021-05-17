@@ -227,10 +227,9 @@ public class CLI extends ViewObservable implements IView {
 
         out.println("You have 4 leader cards, you need to discard one of them" +
                 "\nSpecify the two indexes of the cards you want to discard. Chose wisely!" +
-                "(cards go from 0 to 3)");
+                " (cards go from 0 to 3)");
 
-        int d1 = -1;
-        int d2 = -1;
+        int d1 = -1, d2 = -1;
 
         while(true) {
             out.println("\nFirst Card: ");
@@ -239,12 +238,14 @@ public class CLI extends ViewObservable implements IView {
             try {
                 d1 = Integer.parseInt(readLine());
             } catch (NumberFormatException | ExecutionException e) {
-                out.println("This is not a number!");
+                out.println("This is not a number!\n");
             }
 
             if(d1 <= 3 && d1 >= 0) {
-                out.println("First leader card has been discarded!");
+                out.println("First leader card has been discarded!\n");
                 break;
+            } else {
+                out.println("This is not a valid number!\n");
             }
         }
 
@@ -258,16 +259,20 @@ public class CLI extends ViewObservable implements IView {
                 out.println("This is not a number!");
             }
 
+
             if(d1 != d2) {
                 if (d2 <= 3 && d2 >= 0) {
                     out.println("Second leader card has been discarded!");
                     break;
+                }else {
+                    out.println("This is not a valid number!");
                 }
+            } else {
+                out.println("You already discarded this card!");
             }
         }
 
-        int finalD1 = d1;
-        int finalD2 = d2;
+        int finalD1 = d1, finalD2 = d2;
         notifyObserver(o -> o.onUpdateSetupLeaders(finalD1, finalD2));
     }
 
@@ -340,10 +345,9 @@ public class CLI extends ViewObservable implements IView {
 
         ResourceType picked = null;
 
-        if(number == 0){
-            out.println("\nYou have 0 resources to pick!");
-
-        }else {
+        if(number == 0) {
+            out.println("\nThe first player doesn't get to pick any resource!");
+        } else {
             out.println("\nYou have " + number + " resource to pick, chose wisely!");
         }
 
@@ -364,7 +368,6 @@ public class CLI extends ViewObservable implements IView {
                 out.println("Resource accepted! Added to your inventory.");
 
                 number--;
-
             }
         }
         notifyObserver(o -> o.onUpdateSetupResource(finalPicked));

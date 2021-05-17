@@ -34,7 +34,7 @@ public final class GameManager implements Observer, Serializable {
     private final ActionManager actionManager;
     private ILobbyManager lobbyManager;
 
-
+    private boolean gameStarted = false;
     private boolean firstTurn;
     private Map<String, VirtualView> virtualViewLog;
     private String currentPlayer;
@@ -106,6 +106,20 @@ public final class GameManager implements Observer, Serializable {
     public void endGame(String message) {
         lobbyManager.broadCastWinMessage(message);
         //computes scores and such to show
+    }
+
+    /**
+     * Sets the boolean value gameStarted to true.
+     */
+    public void setGameStarted() {
+        gameStarted = true;
+    }
+
+    /**
+     * Returns the boolean value of gameStarted
+     */
+    public boolean isGameStarted() {
+        return gameStarted;
     }
 
     /**

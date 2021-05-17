@@ -128,6 +128,11 @@ public class VirtualView implements IView, Observer {
         clientHandler.sendMessage(new LorenzoTokenMessage(lorenzoAction));
     }
 
+    @Override
+    public void printLeaders(List<LeaderCard> leaderCards) {
+
+    }
+
     /**
      * Receives an update message from the model and sends it over the network to the client.
      * The action is performed based on the message type and depends on the view implemented by the client.
