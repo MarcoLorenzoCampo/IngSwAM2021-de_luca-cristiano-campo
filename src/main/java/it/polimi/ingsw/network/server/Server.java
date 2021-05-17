@@ -100,7 +100,6 @@ public class Server implements Serializable {
             if (!isKnownPlayer(nickname) && clientHandlerMap.size() != 0) {
                 gameManager.addVirtualView(nickname, virtualView);
                 onMessage(message);
-                gameManager.addVirtualView(nickname, virtualView);
             }
 
             //If it's a known player
