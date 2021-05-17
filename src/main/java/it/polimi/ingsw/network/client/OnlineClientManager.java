@@ -1,9 +1,9 @@
 package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.enumerations.*;
-import it.polimi.ingsw.model.market.leaderCards.DiscountLeaderCard;
-import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.market.leaderCards.*;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
+import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
@@ -114,7 +114,6 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 break;
 
             case AVAILABLE_LEADERS:
-                view.showGenericString("MESSAGGIO INVIATO CORRETTAMENTE");
                 LeaderCardMessage leaderCardMessage = (LeaderCardMessage) message;
                 List<LeaderCard> built = deserializeLeaderCards(leaderCardMessage);
                 viewUpdater.execute(() ->
@@ -142,28 +141,68 @@ public class OnlineClientManager implements ViewObserver, Observer {
      */
     public List<LeaderCard> deserializeLeaderCards(LeaderCardMessage message){
         List<LeaderCard> deserialized = new ArrayList<>();
+
         if(message.getSize()!=0){
+
             for (int i = 0; i < message.getSize(); i++) {
+
                 switch (message.getEffects().get(i)){
+
                     case DISCOUNT:
-                        deserialized.add(new DiscountLeaderCard(
-                                2,
+                        DevelopmentTag[] discount = new DevelopmentTag[message.getOthers().get(i).size()];
+                        for (int j = 0; j < message.getOthers().get(i).size(); j++) {
+                            discount[j] = new DevelopmentTag(1,message.getOthers().get(i).get(j), Level.ANY);
+                        }
+                        deserialized.add(new DiscountLeaderCard
+                                (2,
                                 EffectType.DISCOUNT,
-                                new DevelopmentTag[]
-                                        {new DevelopmentTag(1, Color.values()[], Level.ANY)},
+                                discount,
                                 message.getResources().get(i)));
-
-
                         break;
-                    case EXTRA_INVENTORY:
+
+                        case EXTRA_INVENTORY:
+                            ResourceTag[] inventory = new ResourceTag[] {new ResourceTag(message.getStorage().get(i), 5)};
+                            deserialized.add(new ExtraInventoryLeaderCard
+                                    (3,
+                                    EffectType.EXTRA_INVENTORY,
+                                    inventory,
+                                    null,
+                                    message.getResources().get(i)));
                         break;
+
                     case MARBLE_EXCHANGE:
+                        DevelopmentTag[] exchange = new DevelopmentTag[message.getOthers().get(i).size()];
+                        for (int j = 0; j < message.getOthers().get(i).size(); j++) {
+                            if(j==0)
+                                exchange[j] = new DevelopmentTag(2,message.getOthers().get(i).get(j), Level.ANY);
+                            else
+                                exchange[j] = new DevelopmentTag(1,message.getOthers().get(i).get(j), Level.ANY);
+                        }
+                        deserialized.add(new MarbleExchangeLeaderCard
+                                    (5,
+                                    EffectType.MARBLE_EXCHANGE,
+                                    exchange,
+                                    message.getResources().get(i)));
                         break;
+
                     case EXTRA_PRODUCTION:
+                        DevelopmentTag[] production = new DevelopmentTag[message.getOthers().get(i).size()];
+                        for (int j = 0; j < message.getOthers().get(i).size(); j++) {
+                                production[j] = new DevelopmentTag(1,message.getOthers().get(i).get(j), Level.TWO);
+                        }
+                        deserialized.add(new ExtraProductionLeaderCard
+                                    (message.getResources().get(i),
+                                            4,
+                                            EffectType.EXTRA_PRODUCTION,
+                                            production,
+                                            new ResourceTag[] {new ResourceTag(message.getResources().get(i), 1)},
+                                            new ResourceTag[] {new ResourceTag(ResourceType.UNDEFINED, 1),
+                                                    new ResourceTag(ResourceType.FAITH, 1)}));
                         break;
                 }
             }
         }
+        return deserialized;
     }
 
 

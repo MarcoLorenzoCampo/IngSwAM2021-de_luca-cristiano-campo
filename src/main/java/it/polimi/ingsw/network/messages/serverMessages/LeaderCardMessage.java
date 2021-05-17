@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.messages.serverMessages;
 
 
+import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
@@ -22,7 +23,7 @@ public class LeaderCardMessage extends Message {
     private final ArrayList<ResourceType> resources;
     private final ArrayList<Integer> victoryPoints;
     private final HashMap<Integer, ResourceType> storage;
-    private final HashMap<Integer, Integer[]> others;
+    private final HashMap<Integer, ArrayList<Color>> others;
 
     public LeaderCardMessage (List<LeaderCard> inModel){
 
@@ -44,15 +45,15 @@ public class LeaderCardMessage extends Message {
             if(iterator.getEffectType().equals(EffectType.EXTRA_INVENTORY)){
                 storage.put(inModel.indexOf(iterator), iterator.getRequirementsResource()[0].getType());
             } else {
-                Integer[] values = new Integer[4];
+                ArrayList<Color> colors = new ArrayList<>();
                 if(iterator.getRequirementsDevCards().length == 1){
-                    values[iterator.getRequirementsDevCards()[0].getColor().ordinal()] = 1;
+                    colors.add(iterator.getRequirementsDevCards()[0].getColor());
                 } else {
                     for (DevelopmentTag innerIterator  : iterator.getRequirementsDevCards()) {
-                        values[innerIterator.getColor().ordinal()] = innerIterator.getQuantity();
+                       colors.add(innerIterator.getColor());
                     }
                 }
-                others.put(inModel.indexOf(iterator), values);
+                others.put(inModel.indexOf(iterator), colors);
             }
         }
     }
@@ -75,7 +76,7 @@ public class LeaderCardMessage extends Message {
         return storage;
     }
 
-    public HashMap<Integer, Integer[]> getOthers() {
+    public HashMap<Integer, ArrayList<Color>> getOthers() {
         return others;
     }
 
