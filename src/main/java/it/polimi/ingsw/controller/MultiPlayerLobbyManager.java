@@ -71,7 +71,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
             realPlayerList.add(new RealPlayer(nickname));
 
             virtualView.showGenericString("\nYou're connected, waiting for the lobby to fill." +
-                    "[ "+ (lobbySize-realPlayerList.size()) + " players left]");
+                    " ["+ (lobbySize-realPlayerList.size()) + " players left]");
         }
 
         //from the second player on, he gets registered in this branch.
@@ -85,6 +85,12 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
                     "[ "+ (lobbySize-realPlayerList.size()) + " players left]");
 
         }
+
+        //sets the new logged player as connected.
+        realPlayerList
+                .stream()
+                .filter(p -> p.getName().equals(nickname))
+                .forEach(p -> p.getPlayerState().connect());
     }
 
     /**
@@ -146,7 +152,6 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      */
     @Override
     public void setNextTurn() {
-
         viewsByNickname.get(realPlayerList.get(auxIndex).getName())
                 .turnEnded("Your turn has ended.");
 
@@ -155,10 +160,8 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
         int newCurrentIndex = auxIndex % realPlayerList.size();
 
-        if (realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
-
+        if (!realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
             while (realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
-
                 if (newCurrentIndex == realPlayerList.size() - 1) {
                     newCurrentIndex = 0;
                 }
@@ -168,15 +171,16 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         auxIndex = newCurrentIndex;
 
         String nowPlaying = realPlayerList.get(newCurrentIndex).getName();
-
         gameManager.getCurrentGame()
+
                 .setCurrentPlayer(realPlayerList.get(newCurrentIndex));
-
         gameManager.getServer()
-                .setCurrentClient(PlayingGame.getGameInstance().getCurrentPlayer().getName());
 
+                .setCurrentClient(PlayingGame.getGameInstance().getCurrentPlayer().getName());
         gameManager.setCurrentPlayer(nowPlaying);
+
         viewsByNickname.get(nowPlaying).currentTurn("It's your turn now");
+
         broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
         gameManager.onStartTurn();
     }

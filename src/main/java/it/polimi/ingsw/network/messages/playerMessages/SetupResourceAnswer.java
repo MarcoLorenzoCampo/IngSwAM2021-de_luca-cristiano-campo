@@ -9,8 +9,8 @@ import java.util.List;
 
 public class SetupResourceAnswer extends Message {
     private static final long serialVersionUID = 6270608376298079943L;
-    private int resourcesToSet;
-    private LinkedList<ResourceType> resourceTypes;
+    private final int resourcesToSet;
+    private final LinkedList<ResourceType> resourceTypes;
 
     public  SetupResourceAnswer (String nickname, int number, LinkedList<ResourceType> chosen){
         super.setSenderUsername(nickname);

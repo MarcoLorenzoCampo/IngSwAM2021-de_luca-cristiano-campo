@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameManager;
+import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
@@ -94,25 +96,55 @@ public class Server implements Serializable {
             gameManager.addVirtualView(nickname, virtualView);
             virtualView.showLoginOutput(true, true, false);
             virtualView.askPlayerNumber();
+
         }
 
-        else if(isSizeSet) {
-            if (!isKnownPlayer(nickname) && clientHandlerMap.size() != 0) {
-                gameManager.addVirtualView(nickname, virtualView);
-                onMessage(message);
+        //first player already connected.
+        else if (isSizeSet) {
+
+            //First: check if it's a known name.
+            if(findMatch(nickname) != null) {
+
+                //Second: check if the player is disconnected.
+                if(!Objects.requireNonNull(findMatch(nickname)).getPlayerState().isConnected()) {
+
+                    //The player matched is currently offline, he can reconnect.
+                    clientHandlerMap.put(nickname, clientHandler);
+                    reconnectKnownPlayer(nickname, clientHandler, virtualView);
+
+                } else {
+
+                    //The player who has the same name is currently connected. Nickname rejected.
+                    virtualView.showLoginOutput(true, false, false);
+                    clientHandler.disconnect();
+                }
+
+            } else {
+
+                //The nickname is not known. If the game hasn't started yet he can connect.
+                if(!gameManager.isGameStarted()) {
+
+                    clientHandlerMap.put(nickname, clientHandler);
+                    gameManager.addVirtualView(nickname, virtualView);
+                    onMessage(message);
+                    clientHandler.setNickname(nickname);
+                    virtualView.showLoginOutput(true, true, false);
+
+                } else {
+
+                    //Nickname not known but game started, connection can't happen.
+                    virtualView.showGenericString("The game is started, you can't connect now!");
+                    clientHandler.disconnect();
+
+                }
             }
 
-            //If it's a known player
-            else if (isKnownPlayer(nickname)) {
+        } else {
 
-                clientHandlerMap.put(nickname, clientHandler);
-                clientHandler.setNickname(nickname);
-
-                reconnectKnownPlayer(nickname, clientHandler, virtualView);
-            }
-        }
-        else{
-            //wait a while, we are setting the game for you :)
+            //Joining when the game is being set is forbidden.
+            virtualView.showGenericString("Please rejoin later, the lobby is being set!" +
+                    " You've been disconnected from the game.");
+            clientHandler.disconnect();
         }
     }
 
@@ -125,14 +157,30 @@ public class Server implements Serializable {
     }
 
     /**
+     * finds the player whose name is matching.
+     * @param nickname: nickname to match
+     * @return: player reference.
+     */
+    private RealPlayer findMatch(String nickname) {
+
+        for(RealPlayer realPlayer : gameManager.getLobbyManager().getRealPlayerList()) {
+            if (realPlayer.getName().equals(nickname)) {
+                return realPlayer;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Actions to perform when a player is disconnected from the game.
      * @param clientHandler: handler of the player who got disconnected.
      */
     public void onDisconnect(ClientHandler clientHandler) {
 
         synchronized (lock) {
+            String nickname = clientHandler.getNickname();
 
-            if(clientHandler.getNickname() != null) {
+            if(nickname != null) {
 
                 String offlineClient = clientHandler.getNickname();
                 clientHandlerMap.remove(offlineClient);
@@ -162,25 +210,11 @@ public class Server implements Serializable {
     }
 
     /**
-     * Checks if the player who is trying to connect has already been registered in the controller.
-     * @param nickname: potential known player's name.
-     * @return: boolean value of the outcome.
-     */
-    private boolean isKnownPlayer(String nickname) {
-        return gameManager.getLobbyManager()
-                .getRealPlayerList()
-                .stream()
-                .anyMatch(p -> p.getName().equals(nickname));
-    }
-
-    /**
      * Method to reconnect the player if necessary.
      * @param nickname: name of the player.
      * @param clientHandler: handler of the player.
      */
     private void reconnectKnownPlayer(String nickname, ClientHandler clientHandler, VirtualView vv) {
-
-        clientHandlerMap.put(nickname, clientHandler);
 
         gameManager.getLobbyManager().reconnectPlayer(nickname);
     }
@@ -235,7 +269,6 @@ public class Server implements Serializable {
 
         Thread serverSocketThread = new Thread(socketServer, "serverThread");
         serverSocketThread.start();
-
     }
 
     /**
