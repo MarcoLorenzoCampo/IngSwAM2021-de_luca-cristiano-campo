@@ -5,11 +5,14 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
+import java.io.Serializable;
+
 /**
  * Every specific leader card type extends this base leader card.
  */
-public abstract class LeaderCard {
+public abstract class LeaderCard implements Serializable {
 
+    private static final long serialVersionUID = 533073245136029843L;
     private final int victoryPoints;
     private final EffectType effectType;
     private boolean isActive;

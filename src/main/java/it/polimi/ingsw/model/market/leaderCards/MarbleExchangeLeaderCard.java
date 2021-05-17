@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.utilities.DevelopmentTag;
 public class MarbleExchangeLeaderCard extends LeaderCard {
 
 
+    private static final long serialVersionUID = 3469354013689989829L;
 
     /**
      * Uses the same constructor as the super class.

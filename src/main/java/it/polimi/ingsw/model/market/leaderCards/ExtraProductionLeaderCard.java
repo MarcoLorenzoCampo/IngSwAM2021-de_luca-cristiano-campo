@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.utilities.ResourceTag;
  */
 public class ExtraProductionLeaderCard extends LeaderCard {
 
+    private static final long serialVersionUID = 2612245851320474554L;
     DevelopmentTag[] requirements;
     ResourceTag[] inputResources;
     ResourceTag[] outputResources;

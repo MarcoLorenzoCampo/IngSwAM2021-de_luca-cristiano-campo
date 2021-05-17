@@ -12,6 +12,8 @@ import it.polimi.ingsw.model.utilities.ResourceTag;
 public class ExtraInventoryLeaderCard extends LeaderCard {
 
 
+    private static final long serialVersionUID = -9057658749798477175L;
+
     /**
      * Uses the same constructor as the super class.
      * @param extraInventoryType: used as an extra storage unit of a specific type.

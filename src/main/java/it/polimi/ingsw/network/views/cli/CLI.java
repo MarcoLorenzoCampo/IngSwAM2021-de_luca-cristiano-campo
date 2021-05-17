@@ -276,7 +276,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
-        out.println("\nTHIS METHOD DOESN'T EXIST YET!\nTRY AGAIN WHEN ALESSANDRO RESOLVES THE ISSUE :P");
+       printLeaders(cards);
     }
 
     @Override

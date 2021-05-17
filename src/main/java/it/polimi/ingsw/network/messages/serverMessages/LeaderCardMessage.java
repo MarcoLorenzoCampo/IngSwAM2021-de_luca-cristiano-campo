@@ -15,21 +15,27 @@ import java.util.List;
 public class LeaderCardMessage extends Message {
 
     private static final long serialVersionUID = -5649155565123346151L;
+    private final List<LeaderCard> leaderCards;
+
+    public LeaderCardMessage(List<LeaderCard> leaderCards){
+        super.setMessageType(PossibleMessages.AVAILABLE_LEADERS);
+        super.setSenderUsername("SERVER_MESSAGE");
+        this.leaderCards = leaderCards;
+    }
+
+    public List<LeaderCard> getLeaderCards() {
+        return leaderCards;
+    }
+
+    /*
     private final ArrayList<EffectType> effects;
     private final ArrayList<ResourceType> resources;
     private final ArrayList<Integer> victoryPoints;
     private final HashMap<Integer, ResourceType> storage;
     private final HashMap<Integer, Integer[]> others;
 
-    /**
-     * Message that holds the information of each leader, each list is read in vertical to build back the original leader
-     * for the requirements, if the leader is of type EXTRA_INVENTORY then one has to check the storage map, the resource
-     * type stated in the map has value five. For the other cards an array of length 4 holds the number of each card needed
-     * the color can be gathered from the index of the array in which the number is stated. For the EXTRA_PRODUCTION leaders
-     * the level is TWO whereas for the others is always ANY
-     * @param inModel: list of held leader cards
-     */
-    public LeaderCardMessage (List<LeaderCard> inModel){
+    /*public LeaderCardMessage (List<LeaderCard> inModel){
+
         super.setMessageType(PossibleMessages.AVAILABLE_LEADERS);
         super.setSenderUsername("SERVER_MESSAGE");
 
@@ -59,7 +65,9 @@ public class LeaderCardMessage extends Message {
             }
         }
     }
+    */
 
+    /*
     public ArrayList<EffectType> getEffects() {
         return effects;
     }
@@ -79,4 +87,5 @@ public class LeaderCardMessage extends Message {
     public HashMap<Integer, Integer[]> getOthers() {
         return others;
     }
+    */
 }
