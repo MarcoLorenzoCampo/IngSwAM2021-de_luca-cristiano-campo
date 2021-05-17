@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.client;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.PingMessage;
+import it.polimi.ingsw.network.views.cli.MiniCli;
 import it.polimi.ingsw.network.views.cli.CLI;
 
 import java.io.EOFException;
@@ -153,6 +154,7 @@ public class Client extends Observable implements IClient {
      */
     public static void main(String[] args) {
 
+        //Used only while making the cli.
         String viewType = "-cli";
 
         for (String arg : args) {
@@ -164,9 +166,22 @@ public class Client extends Observable implements IClient {
 
         if (viewType.equalsIgnoreCase("-cli")) {
 
-            CLI cliView = new CLI();
-            ClientManager clientManager = new ClientManager(cliView);
-            cliView.addObserver(clientManager);
+            MiniCli minicli = new MiniCli();
+            boolean isLocal = minicli.askLocal();
+
+            CLI cliView = new CLI(isLocal);
+
+            if(!isLocal) {
+
+                OnlineClientManager OnlineClientManager = new OnlineClientManager(cliView);
+                cliView.addObserver(OnlineClientManager);
+
+            } else {
+
+                OfflineClientManager OfflineClientManager = new OfflineClientManager(cliView);
+                cliView.addObserver(OfflineClientManager);
+            }
+
             cliView.startCli();
 
         } else {

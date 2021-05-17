@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
+import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
@@ -26,6 +27,11 @@ import java.util.concurrent.FutureTask;
 public class CLI extends ViewObservable implements IView {
 
     /**
+     * True if it's an offline game, False if it's an online game.
+     */
+    private final boolean isOffline;
+
+    /**
      * Clears the terminal.
      */
     public void clearCLI() {
@@ -36,44 +42,21 @@ public class CLI extends ViewObservable implements IView {
     private String nickname;
     private final PrintStream out;
 
-    public CLI() {
+    public CLI(boolean isOffline) {
         this.out = new PrintStream(System.out, true);
+        this.isOffline = isOffline;
     }
 
     public void startCli() {
-        printLogo();
+
         try {
-            askLocal();
+            if(isOffline) {
+                askNickname();
+            } else {
+                askServerInformation();
+            }
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * Asks the player if the game will be performed in local or online.
-     */
-    private void askLocal() throws ExecutionException {
-        String choice;
-
-        out.println("\nWant to play an online game or a local single player game? \n[OFF = offline, ON = online]");
-        out.print(">>> ");
-
-        while(true) {
-            choice = readLine();
-
-            if(choice.equalsIgnoreCase("off")) {
-
-                //methods to play offline
-                break;
-            } else if(choice.equalsIgnoreCase("on")) {
-
-                askServerInformation();
-                break;
-
-            } else {
-                out.println("\nInvalid input! [OFF = offline, ON = online]");
-                out.print(">>> ");
-            }
         }
     }
 
@@ -120,10 +103,6 @@ public class CLI extends ViewObservable implements IView {
         notifyObserver(o -> o.onServerInfoUpdate(finalPort, finalIPAddress));
     }
 
-    private void printLogo() {
-        out.println(Logo.getLogo() + Logo.getGreetings());
-    }
-
     @Override
     public void askNickname() {
 
@@ -140,28 +119,35 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void askPlayerNumber() {
-        out.println("\n\nHow many people are going to play?" +
-                "\n[1 = Online Single Player Match, 4 = Max Players Allowed]");
 
-        int lobbySize = 0;
+        if(isOffline) {
+            notifyObserver(o -> o.onUpdateNumberOfPlayers(1));
 
-        while(true) {
-            try {
-                out.print(">>> ");
-                lobbySize = Integer.parseInt(readLine());
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+        } else {
+
+            out.println("\n\nHow many people are going to play?" +
+                    "\n[1 = Online Single Player Match, 4 = Max Players Allowed]");
+
+            int lobbySize = 0;
+
+            while (true) {
+                try {
+                    out.print(">>> ");
+                    lobbySize = Integer.parseInt(readLine());
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                if (lobbySize < 1 || lobbySize > 4) {
+                    out.println("\nInvalid number of player!");
+                } else {
+                    break;
+                }
             }
 
-            if(lobbySize < 1 || lobbySize > 4) {
-                out.println("\nInvalid number of player!");
-            } else {
-                break;
-            }
+            int finalLobbySize = lobbySize;
+            notifyObserver(o -> o.onUpdateNumberOfPlayers(finalLobbySize));
         }
-
-        int finalLobbySize = lobbySize;
-        notifyObserver(o -> o.onUpdateNumberOfPlayers(finalLobbySize));
     }
 
     @Override
@@ -170,10 +156,10 @@ public class CLI extends ViewObservable implements IView {
         clearCLI();
 
         if(connectionSuccess && nicknameAccepted && !reconnected) {
-            out.println("Connection successful! You're now logged in.");
+            out.println("Operation successful! You're now logged in.");
 
         } else if(connectionSuccess && !nicknameAccepted && !reconnected) {
-            out.println("\nThe connection was successful, however your nickname was rejected.\nChose a new one.");
+            out.println("\nYour nickname was rejected.\nChose a new one.");
             askNickname();
 
         } else if(reconnected) {

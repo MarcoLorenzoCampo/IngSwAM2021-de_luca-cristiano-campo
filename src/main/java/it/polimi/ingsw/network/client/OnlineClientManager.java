@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 /**
  * Class to handle messages sent by the client. Acts in between network and generic view.
  */
-public class ClientManager implements ViewObserver, Observer {
+public class OnlineClientManager implements ViewObserver, Observer {
 
     /**
      * Reference to the generic view chosen.
@@ -46,7 +46,7 @@ public class ClientManager implements ViewObserver, Observer {
      * Constructor of the client controller.
      * @param view: cli or gui.
      */
-    public ClientManager(IView view) {
+    public OnlineClientManager(IView view) {
         this.view = view;
         viewUpdater = Executors.newSingleThreadExecutor();
     }
@@ -143,7 +143,6 @@ public class ClientManager implements ViewObserver, Observer {
         } catch (IOException e) {
             viewUpdater.execute(() -> view.showLoginOutput(false, false, false));
         }
-
     }
 
     @Override
