@@ -51,6 +51,7 @@ public class GetResourceFromMarketAction extends Action {
                 .pickResources(indexToPickFrom);
 
         this.game.getCurrentPlayer()
+                .getPlayerBoard()
                 .getInventoryManager()
                 .whiteMarblesExchange();
 

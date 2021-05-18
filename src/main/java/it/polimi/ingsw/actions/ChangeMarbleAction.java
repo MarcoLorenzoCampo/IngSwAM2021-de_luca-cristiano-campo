@@ -35,10 +35,12 @@ public class ChangeMarbleAction extends Action{
 
     private void runAction() throws EndGameException {
         this.game.getCurrentPlayer()
+                .getPlayerBoard()
                 .getInventoryManager()
                 .customExchange(index, color);
 
         if(!game.getCurrentPlayer()
+                .getPlayerBoard()
                 .getInventoryManager()
                 .getBuffer()
                 .stream()

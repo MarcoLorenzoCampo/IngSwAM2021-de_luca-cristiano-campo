@@ -194,7 +194,7 @@ public final class GameManager implements Observer, Serializable {
 
                         for (Resource iterator : obtained) {
                             try {
-                                currentGame.getCurrentPlayer().getInventoryManager().getWarehouse().addResource((MaterialResource) iterator);
+                                currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getWarehouse().addResource((MaterialResource) iterator);
                             } catch (DiscardResourceException e) {
                                 e.printStackTrace();
                             }
@@ -268,7 +268,7 @@ public final class GameManager implements Observer, Serializable {
                                 currentGame.setCurrentState(PossibleGameStates.CHANGE_COLOR);
                             }
                             else{
-                                currentGame.getCurrentPlayer().getInventoryManager().whiteMarblesExchange();
+                                currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().whiteMarblesExchange();
                                 currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
                             }
                             onStartTurn();
@@ -326,7 +326,8 @@ public final class GameManager implements Observer, Serializable {
 
                         actionManager
                                 .onReceiveAction(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
-                        if(currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().size()==0){
+
+                        if(currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().isEmpty()){
                             currentGame.setCurrentState(PossibleGameStates.PLAYING);
                             lobbyManager.setNextTurn();
                         }
@@ -361,7 +362,7 @@ public final class GameManager implements Observer, Serializable {
             case CHANGE_COLOR:
                 break;
             case DEPOSIT:
-                ArrayList<MaterialResource> buffer = currentGame.getCurrentPlayer().getInventoryManager().getBuffer();
+                ArrayList<MaterialResource> buffer = currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer();
                 for (MaterialResource iterator: buffer) {
                     currentView.showGenericString(iterator.getResourceType().toString());
                 }

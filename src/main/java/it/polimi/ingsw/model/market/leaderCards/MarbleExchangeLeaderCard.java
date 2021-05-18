@@ -31,6 +31,7 @@ public class MarbleExchangeLeaderCard extends LeaderCard {
         super.setActive();
         PlayingGame.getGameInstance()
                 .getCurrentPlayer()
+                .getPlayerBoard()
                 .getInventoryManager()
                 .addExchangeLeader(getResource());
     }

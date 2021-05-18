@@ -25,7 +25,7 @@ class RealPlayerTest {
         //Assert
         assertAll(
                 () -> assertEquals(testRealPlayer.getVictoryPoints(), victoryPoints),
-                () -> assertNotNull(testRealPlayer.getInventoryManager()),
+                () -> assertNotNull(testRealPlayer.getPlayerBoard().getInventoryManager()),
                 () -> assertNotNull(testRealPlayer.getPlayerState()),
                 () -> assertNotNull(testRealPlayer.getPlayerBoard()),
                 () -> assertNotNull(testRealPlayer.getName())

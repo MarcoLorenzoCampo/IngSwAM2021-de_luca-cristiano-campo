@@ -47,7 +47,7 @@ public class RealPlayer implements Serializable {
     /**
      * Reference to his inventory manager.
      */
-    private final InventoryManager inventoryManager;
+    //private final InventoryManager inventoryManager;
 
     /**
      * Default player constructor.
@@ -59,7 +59,7 @@ public class RealPlayer implements Serializable {
         this.playerName = name;
         this.victoryPoints = 0;
         this.playerState = new PlayerState();
-        this.inventoryManager = new InventoryManager();
+        //this.inventoryManager = new InventoryManager();
         this.ownedLeaderCards = new LinkedList<>();
     }
 
@@ -67,9 +67,9 @@ public class RealPlayer implements Serializable {
         this.ownedLeaderCards = ownedLeaderCards;
     }
 
-    public InventoryManager getInventoryManager() {
-        return inventoryManager;
-    }
+   // public InventoryManager getInventoryManager() {
+   //     return inventoryManager;
+   // }
 
     public void setFirstToPlay() {
         this.firstToPlay = true;
