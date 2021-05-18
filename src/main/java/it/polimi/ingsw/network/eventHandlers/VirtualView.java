@@ -80,7 +80,7 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
-        clientHandler.sendMessage(new LeaderCardMessage( cards));
+        clientHandler.sendMessage(new LeaderCardMessage(cards));
     }
 
     @Override

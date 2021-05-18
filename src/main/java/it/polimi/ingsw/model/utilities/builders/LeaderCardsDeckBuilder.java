@@ -30,14 +30,16 @@ public final class LeaderCardsDeckBuilder {
                 ResourceType.STONE
         ));
         leaderCardsDeck.add(new ExtraProductionLeaderCard(
+                ResourceType.COIN,
                 4,
                 EffectType.EXTRA_PRODUCTION,
                 new DevelopmentTag[] {new DevelopmentTag(1, Color.GREEN, Level.TWO)},
                 new ResourceTag[] {new ResourceTag(ResourceType.COIN, 1)},
                 new ResourceTag[] {new ResourceTag(ResourceType.UNDEFINED, 1),
-                        new ResourceTag(ResourceType.FAITH, 1)}
+                        new ResourceTag(ResourceType.FAITH, 1),}
         ));
         leaderCardsDeck.add(new ExtraProductionLeaderCard(
+                ResourceType.STONE,
                 4,
                 EffectType.EXTRA_PRODUCTION,
                 new DevelopmentTag[] {new DevelopmentTag(1, Color.PURPLE, Level.TWO)},
@@ -46,6 +48,7 @@ public final class LeaderCardsDeckBuilder {
                         new ResourceTag(ResourceType.FAITH, 1)}
         ));
         leaderCardsDeck.add(new ExtraProductionLeaderCard(
+                ResourceType.SERVANT,
                 4,
                 EffectType.EXTRA_PRODUCTION,
                 new DevelopmentTag[] {new DevelopmentTag(1, Color.BLUE, Level.TWO)},
@@ -54,6 +57,7 @@ public final class LeaderCardsDeckBuilder {
                         new ResourceTag(ResourceType.FAITH, 1)}
         ));
         leaderCardsDeck.add(new ExtraProductionLeaderCard(
+                ResourceType.SHIELD,
                 4,
                 EffectType.EXTRA_PRODUCTION,
                 new DevelopmentTag[] {new DevelopmentTag(1, Color.YELLOW, Level.TWO)},

@@ -1,11 +1,14 @@
 package it.polimi.ingsw.network.views.cli;
 
 import it.polimi.ingsw.actions.LorenzoAction;
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
+import it.polimi.ingsw.model.utilities.DevelopmentTag;
+import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
@@ -13,10 +16,7 @@ import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -211,7 +211,7 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void askToDiscard() {
 
-        out.println("You have 4 leader cards, you need to discard one of them" +
+        out.println("\nYou have 4 leader cards, you need to discard one of them" +
                 "\nSpecify the two indexes of the cards you want to discard. Chose wisely!" +
                 " (cards go from 0 to 3)");
 
@@ -264,7 +264,36 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
-        out.println("\nTHIS METHOD DOESN'T EXIST YET!\nTRY AGAIN WHEN ALESSANDRO RESOLVES THE ISSUE :P");
+        for (LeaderCard iterator: cards) {
+
+            switch (iterator.getEffectType()){
+                case DISCOUNT:
+                    out.println("\n\nDISCOUNT: -1 of "+ iterator.getResource() + "\nNeeded: ");
+                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
+                        out.print("1 " + innerIterator.getColor() +"\n");
+                    }
+                    break;
+
+                case EXTRA_INVENTORY:
+                    out.println("\n\nEXTRA INVENTORY: + 2 spaces of "+ iterator.getResource() + "\nNeeded: ");
+                    out.print("5 " + iterator.getRequirementsResource()[0].getType() +"\n");
+                    break;
+
+                case MARBLE_EXCHANGE:
+                    out.println("\n\nMARBLE EXCHANGE: change white into "+ iterator.getResource() + "\nNeeded: ");
+                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
+                        out.print(innerIterator.getQuantity() + " " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
+                    }
+                    break;
+                case EXTRA_PRODUCTION:
+                    out.println("\n\nEXTRA PRODUCTION:  "+ iterator.getResource() +" --> FAITH + UNDEFINED");
+                    out.println("Needed: ");
+                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
+                        out.print("1 " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
+                    }
+                    break;
+            }
+        }
     }
 
     @Override

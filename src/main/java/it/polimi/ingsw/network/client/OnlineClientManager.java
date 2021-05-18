@@ -1,7 +1,9 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.enumerations.PossibleMessages;
-import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.enumerations.*;
+import it.polimi.ingsw.model.market.leaderCards.*;
+import it.polimi.ingsw.model.utilities.DevelopmentTag;
+import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
@@ -11,6 +13,7 @@ import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -111,8 +114,9 @@ public class OnlineClientManager implements ViewObserver, Observer {
 
             case AVAILABLE_LEADERS:
                 LeaderCardMessage leaderCardMessage = (LeaderCardMessage) message;
+                List<LeaderCard> built = deserializeLeaderCards(leaderCardMessage);
                 viewUpdater.execute(() ->
-                        view.showLeaderCards(leaderCardMessage.getAvailable()));
+                        view.showLeaderCards(built));
                 break;
 
             case SETUP_LEADERS:
@@ -134,6 +138,77 @@ public class OnlineClientManager implements ViewObserver, Observer {
             default: break;
         }
     }
+
+    /**
+     * Method to deserialize leader cards
+     * @param message: message with infomation
+     */
+    public List<LeaderCard> deserializeLeaderCards(LeaderCardMessage message){
+        List<LeaderCard> deserialized = new ArrayList<>();
+
+        if(message.getSize()!=0){
+
+            for (int i = 0; i < message.getSize(); i++) {
+
+                switch (message.getEffects().get(i)){
+
+                    case DISCOUNT:
+                        DevelopmentTag[] discount = new DevelopmentTag[message.getOthers().get(i).size()];
+                        for (int j = 0; j < message.getOthers().get(i).size(); j++) {
+                            discount[j] = new DevelopmentTag(1,message.getOthers().get(i).get(j), Level.ANY);
+                        }
+                        deserialized.add(new DiscountLeaderCard
+                                (2,
+                                EffectType.DISCOUNT,
+                                discount,
+                                message.getResources().get(i)));
+                        break;
+
+                        case EXTRA_INVENTORY:
+                            ResourceTag[] inventory = new ResourceTag[] {new ResourceTag(message.getStorage().get(i), 5)};
+                            deserialized.add(new ExtraInventoryLeaderCard
+                                    (3,
+                                    EffectType.EXTRA_INVENTORY,
+                                    inventory,
+                                    null,
+                                    message.getResources().get(i)));
+                        break;
+
+                    case MARBLE_EXCHANGE:
+                        DevelopmentTag[] exchange = new DevelopmentTag[message.getOthers().get(i).size()];
+                        for (int j = 0; j < message.getOthers().get(i).size(); j++) {
+                            if(j==0)
+                                exchange[j] = new DevelopmentTag(2,message.getOthers().get(i).get(j), Level.ANY);
+                            else
+                                exchange[j] = new DevelopmentTag(1,message.getOthers().get(i).get(j), Level.ANY);
+                        }
+                        deserialized.add(new MarbleExchangeLeaderCard
+                                    (5,
+                                    EffectType.MARBLE_EXCHANGE,
+                                    exchange,
+                                    message.getResources().get(i)));
+                        break;
+
+                    case EXTRA_PRODUCTION:
+                        DevelopmentTag[] production = new DevelopmentTag[message.getOthers().get(i).size()];
+                        for (int j = 0; j < message.getOthers().get(i).size(); j++) {
+                                production[j] = new DevelopmentTag(1,message.getOthers().get(i).get(j), Level.TWO);
+                        }
+                        deserialized.add(new ExtraProductionLeaderCard
+                                    (message.getResources().get(i),
+                                            4,
+                                            EffectType.EXTRA_PRODUCTION,
+                                            production,
+                                            new ResourceTag[] {new ResourceTag(message.getResources().get(i), 1)},
+                                            new ResourceTag[] {new ResourceTag(ResourceType.UNDEFINED, 1),
+                                                    new ResourceTag(ResourceType.FAITH, 1)}));
+                        break;
+                }
+            }
+        }
+        return deserialized;
+    }
+
 
     @Override
     public void onServerInfoUpdate(int port, String ipAddress) {

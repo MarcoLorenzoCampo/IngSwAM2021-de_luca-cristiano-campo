@@ -10,7 +10,8 @@ import it.polimi.ingsw.model.utilities.DevelopmentTag;
  */
 public class DiscountLeaderCard extends LeaderCard {
 
-    ResourceType discountedResource;
+
+    private static final long serialVersionUID = -8365324304831942993L;
 
     /**
      * Uses the same constructor as the super class.
@@ -18,8 +19,7 @@ public class DiscountLeaderCard extends LeaderCard {
      */
     public DiscountLeaderCard(int victoryPoints, EffectType effectType,
                               DevelopmentTag[] requirements, ResourceType discountedResource) {
-        super(victoryPoints, effectType, requirements, null);
-        this.discountedResource = discountedResource;
+        super(victoryPoints, effectType, discountedResource, requirements, null);
     }
 
     /**
@@ -32,10 +32,6 @@ public class DiscountLeaderCard extends LeaderCard {
         PlayingGame.getGameInstance()
                 .getCurrentPlayer()
                 .getInventoryManager()
-                .addDiscountLeader(discountedResource);
-    }
-
-    public ResourceType getDiscountedResource() {
-        return discountedResource;
+                .addDiscountLeader(getResource());
     }
 }
