@@ -28,7 +28,7 @@ class InventoryManagerTest {
     void setUp() {
         testRealPlayer = new RealPlayer("testRealPlayer");
         PlayingGame.getGameInstance().setCurrentPlayer(testRealPlayer);
-        inventoryManager = testRealPlayer.getInventoryManager();
+        inventoryManager = testRealPlayer.getPlayerBoard().getInventoryManager();
     }
 
     @Test

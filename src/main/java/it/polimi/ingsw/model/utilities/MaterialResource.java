@@ -24,6 +24,7 @@ public class MaterialResource extends Resource {
     public void deposit() {
         PlayingGame.getGameInstance()
                 .getCurrentPlayer()
+                .getPlayerBoard()
                 .getInventoryManager()
                 .deposit(this);
     }

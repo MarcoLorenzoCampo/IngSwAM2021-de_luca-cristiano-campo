@@ -183,19 +183,19 @@ public final class ActionValidator {
     }
 
     public static void validateColorExchange(ResourceType resource) throws NoMatchingRequisitesException {
-        if(!PlayingGame.getGameInstance().getCurrentPlayer().getInventoryManager().getExchange().contains(resource))
+        if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getInventoryManager().getExchange().contains(resource))
             throw new NoMatchingRequisitesException();
     }
 
     public static void validateIndex(int index) throws NoMatchingRequisitesException {
-        if(!PlayingGame.getGameInstance().getCurrentPlayer().getInventoryManager().getBuffer().get(index).getResourceType().equals(ResourceType.UNDEFINED)){
+        if(!PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().get(index).getResourceType().equals(ResourceType.UNDEFINED)){
             throw new NoMatchingRequisitesException();
         }
     }
 
 
     public static void validateOutOfBounds(int index) {
-        if(PlayingGame.getGameInstance().getCurrentPlayer().getInventoryManager().getBuffer().size() < index){
+        if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().size() < index){
             throw new ArrayIndexOutOfBoundsException();
         }
     }

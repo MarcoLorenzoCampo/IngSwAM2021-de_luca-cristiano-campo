@@ -32,6 +32,7 @@ public class ExtraInventoryLeaderCard extends LeaderCard {
         super.setActive();
         PlayingGame.getGameInstance()
                 .getCurrentPlayer()
+                .getPlayerBoard()
                 .getInventoryManager()
                 .getWarehouse()
                 .addExtraInventory(getResource());

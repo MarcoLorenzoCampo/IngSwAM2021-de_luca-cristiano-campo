@@ -31,10 +31,12 @@ public class DepositAction extends Action{
     private void runAction(){
         try {
             this.game.getCurrentPlayer()
+                    .getPlayerBoard()
                     .getInventoryManager()
                     .addResourceToWarehouse(index);
         } catch (DiscardResourceException exception) {
             this.game.getCurrentPlayer()
+                    .getPlayerBoard()
                     .getInventoryManager()
                     .removeFromBuffer(index);
             //and tell everyone to move forward one faith point

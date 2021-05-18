@@ -31,6 +31,7 @@ public class DiscountLeaderCard extends LeaderCard {
         super.setActive();
         PlayingGame.getGameInstance()
                 .getCurrentPlayer()
+                .getPlayerBoard()
                 .getInventoryManager()
                 .addDiscountLeader(getResource());
     }
