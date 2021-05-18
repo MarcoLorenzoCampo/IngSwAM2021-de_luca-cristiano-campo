@@ -40,7 +40,7 @@ public class PlayerState {
         this.canDeposit = canDeposit;
     }
 
-    public boolean isCanDeposit() {
+    public boolean CanDeposit() {
         return canDeposit;
     }
 
@@ -66,6 +66,10 @@ public class PlayerState {
         hasBoughCard = true;
 
         hasPlacedLeaders = false;
+    }
+
+    public boolean hasPerformedExclusiveAction(){
+        return (hasActivatedProductions || hasPickedResources || hasBoughCard);
     }
 
     public void placedLeader() {

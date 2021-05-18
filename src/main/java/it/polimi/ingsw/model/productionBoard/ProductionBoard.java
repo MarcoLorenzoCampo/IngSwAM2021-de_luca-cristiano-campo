@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.productionBoard;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.ExtraProductionLeaderCard;
 import it.polimi.ingsw.model.utilities.BaseProduction;
@@ -16,7 +17,7 @@ public class ProductionBoard {
     private final ProductionSlot[] productionSlots  ;
     private final ArrayList<ExtraProductionLeaderCard> leaderProductions;
     private boolean baseProductionSelected;
-    private final Map<Color, int[]> inventory;
+    private final Map<Color, int[]> cardsInventory;
     private int victoryPoints;
     private final BaseProduction finalProduction;
 
@@ -26,11 +27,11 @@ public class ProductionBoard {
         productionSlots[1] = new ProductionSlot();
         productionSlots[2] = new ProductionSlot();
         leaderProductions = new ArrayList<>();
-        inventory = new HashMap<>();
-        inventory.put(Color.PURPLE, new int[4]);
-        inventory.put(Color.GREEN, new int[4]);
-        inventory.put(Color.YELLOW, new int[4]);
-        inventory.put(Color.BLUE, new int[4]);
+        cardsInventory = new HashMap<>();
+        cardsInventory.put(Color.PURPLE, new int[4]);
+        cardsInventory.put(Color.GREEN, new int[4]);
+        cardsInventory.put(Color.YELLOW, new int[4]);
+        cardsInventory.put(Color.BLUE, new int[4]);
         victoryPoints = 0;
         finalProduction = new BaseProduction();
         baseProductionSelected = false;
@@ -48,8 +49,8 @@ public class ProductionBoard {
         return victoryPoints;
     }
 
-    public Map<Color, int[]> getInventory() {
-        return inventory;
+    public Map<Color, int[]> getCardsInventory() {
+        return cardsInventory;
     }
 
     public ProductionSlot[] getProductionSlots() {
@@ -71,8 +72,8 @@ public class ProductionBoard {
      */
     public void placeProductionCard(int index, ProductionCard newProductionCard){
         productionSlots[index].setProductionCard(newProductionCard);
-        inventory.get(newProductionCard.getColor())[newProductionCard.getLevel().ordinal()]++;
-        inventory.get(newProductionCard.getColor())[Level.ANY.ordinal()]++;
+        cardsInventory.get(newProductionCard.getColor())[newProductionCard.getLevel().ordinal()]++;
+        cardsInventory.get(newProductionCard.getColor())[Level.ANY.ordinal()]++;
         victoryPoints = victoryPoints + newProductionCard.getVictoryPoints();
     }
 
@@ -190,7 +191,18 @@ public class ProductionBoard {
      *
      * @return -- generates the list of material resources
      */
-    public LinkedList<Resource> executeProduction(){
-        return ResourceBuilder.build(finalProduction.getOutputResources());
+    public void executeProduction(){
+        LinkedList<Resource> obtained = ResourceBuilder.build(finalProduction.getOutputResources());
+        for (Resource iterator:obtained) {
+            iterator.deposit();
+        }
+    }
+
+    public boolean validateFinalProduction(InventoryManager inventory){
+        for (ResourceTag iterator: finalProduction.getInputResources()) {
+            if(iterator.getQuantity() > inventory.getInventory().get(iterator.getType()))
+                return false;
+        }
+        return true;
     }
 }

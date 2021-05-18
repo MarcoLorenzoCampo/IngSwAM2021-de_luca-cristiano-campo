@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -59,8 +58,8 @@ public class ProductionboardTest {
         Assertions.assertAll(
                 ()->Assertions.assertTrue(canPutCard),
                 ()->Assertions.assertEquals(Level.ONE, productionBoard.getProductionSlots()[indexOfChosenSlot].getLevel()),
-                ()->Assertions.assertEquals(1, productionBoard.getInventory().get(chosen.getColor())[Level.ONE.ordinal()]),
-                ()->Assertions.assertEquals(1, productionBoard.getInventory().get(chosen.getColor())[Level.ANY.ordinal()])
+                ()->Assertions.assertEquals(1, productionBoard.getCardsInventory().get(chosen.getColor())[Level.ONE.ordinal()]),
+                ()->Assertions.assertEquals(1, productionBoard.getCardsInventory().get(chosen.getColor())[Level.ANY.ordinal()])
         );
     }
 }

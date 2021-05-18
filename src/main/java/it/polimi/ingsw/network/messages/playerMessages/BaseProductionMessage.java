@@ -17,4 +17,16 @@ public class BaseProductionMessage extends Message {
         input2 = two;
         output = out;
     }
+
+    public ResourceType getInput1() {
+        return input1;
+    }
+
+    public ResourceType getInput2() {
+        return input2;
+    }
+
+    public ResourceType getOutput() {
+        return output;
+    }
 }

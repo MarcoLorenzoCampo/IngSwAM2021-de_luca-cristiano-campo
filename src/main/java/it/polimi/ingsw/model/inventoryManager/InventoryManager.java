@@ -148,11 +148,14 @@ public class InventoryManager {
 
     /**
      *
-     * @param input -- resource to be added to the strongbox
+     *
      */
-    public void addResourceToStrongbox(ResourceType input){
-        strongbox.addResource(input);
-        inventory.put(input, inventory.get(input)+1);
+    public void addResourceToStrongbox(){
+        for (MaterialResource iterator: buffer) {
+            strongbox.addResource(iterator.getResourceType());
+            inventory.put(iterator.getResourceType(), inventory.get(iterator.getResourceType())+1);
+        }
+        buffer.clear();
     }
 
 
@@ -206,6 +209,8 @@ public class InventoryManager {
     public void removeFromStrongbox(ResourceTag priceOneResource) throws CannotRemoveResourceException{
         strongbox.removeResource(priceOneResource);
     }
+
+
 
     public void deposit(MaterialResource materialResource) {
         buffer.add(materialResource);

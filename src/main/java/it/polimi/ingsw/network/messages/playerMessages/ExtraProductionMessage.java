@@ -15,4 +15,12 @@ public class ExtraProductionMessage extends Message {
         index= number;
         output = out;
     }
+
+    public ResourceType getOutput() {
+        return output;
+    }
+
+    public int getIndex() {
+        return index;
+    }
 }

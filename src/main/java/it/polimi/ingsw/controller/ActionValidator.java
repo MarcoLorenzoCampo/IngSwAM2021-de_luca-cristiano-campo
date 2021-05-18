@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.actions.ActivateBaseProductionAction;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.*;
@@ -160,7 +161,7 @@ public final class ActionValidator {
      */
     private static boolean validateLeaderDevTags(DevelopmentTag[] requirements) {
         for(DevelopmentTag iterator : requirements) {
-            if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard().getInventory()
+            if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard().getCardsInventory()
                     .get(iterator.getColor())[iterator.getLevel().ordinal()]<iterator.getQuantity())
                 return true;
         }
@@ -198,5 +199,54 @@ public final class ActionValidator {
         if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().size() < index){
             throw new ArrayIndexOutOfBoundsException();
         }
+    }
+
+    public static void validateBaseProduction(ActivateBaseProductionAction action) throws InvalidProductionSlotException {
+        if(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getProductionBoard().isBaseProductionSelected()){
+            throw new InvalidProductionSlotException();
+        }
+    }
+
+    public static void validateProductionSlot(int slot) throws InvalidProductionSlotException {
+        if(PlayingGame
+                .getGameInstance()
+                .getCurrentPlayer()
+                .getPlayerBoard()
+                .getProductionBoard()
+                .getProductionSlots()[slot].isSelected())
+            throw new InvalidProductionSlotException();
+    }
+
+    public static void validateResourceProduction(ResourceType resource) {
+        if(resource.equals(ResourceType.UNDEFINED) || resource.equals(ResourceType.FAITH)) throw new IllegalArgumentException();
+    }
+
+    public static void validateExtraProductionSlot(int slot) throws InvalidProductionSlotException {
+
+        if(PlayingGame
+                .getGameInstance()
+                .getCurrentPlayer()
+                .getPlayerBoard()
+                .getProductionBoard()
+                .getLeaderProductions()
+                .size() < slot) throw new InvalidProductionSlotException();
+
+        if(PlayingGame
+                .getGameInstance()
+                .getCurrentPlayer()
+                .getPlayerBoard()
+                .getProductionBoard()
+                .getLeaderProductions()
+                .get(slot)
+                .getSelected())    throw new InvalidProductionSlotException();
+    }
+
+    public static void validateFinalProduction() throws InvalidProductionSlotException {
+        if(!PlayingGame.getGameInstance()
+        .getCurrentPlayer()
+        .getPlayerBoard()
+        .getProductionBoard()
+        .validateFinalProduction(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getInventoryManager()))
+            throw new InvalidProductionSlotException();
     }
 }

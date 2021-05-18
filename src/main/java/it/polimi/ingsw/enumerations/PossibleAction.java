@@ -14,5 +14,6 @@ public enum PossibleAction {
     REARRANGE_INVENTORY,
     END_TURN,
     LORENZO_ACTION,
-    CHANGE_COLOR
+    CHANGE_COLOR,
+    EXECUTE_PRODUCTION;
 }
