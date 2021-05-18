@@ -100,6 +100,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
                 break;
 
+
             case SETUP_RESOURCES:
                 SetupResourcesRequest resourcesRequest = (SetupResourcesRequest) message;
                 viewUpdater.execute(() ->
@@ -120,6 +121,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 break;
 
             case SETUP_LEADERS:
+                SetupLeaderRequest setupLeaderRequest = (SetupLeaderRequest) message;
                 viewUpdater.execute(() ->
                 {
                    try{
@@ -135,6 +137,9 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 viewUpdater.execute(() -> view.showWinMatch(winMessage.getMessage()));
                 break;
 
+            case YOUR_TURN:
+                viewUpdater.execute(() -> view.currentTurn("it's your turn"));
+                break;
             default: break;
         }
     }
@@ -305,6 +310,11 @@ public class OnlineClientManager implements ViewObserver, Observer {
 
     @Override
     public void onUpdateExchangeResource(ResourceType r1) {
-        client.sendMessage(new ExchangeResourceMessage(nickname, r1));
+        client.sendMessage(new ExchangeResourceMessage(nickname, r1, 1));
+    }
+
+    @Override
+    public void onUpdateDeposit(int index) {
+        client.sendMessage(new OneIntMessage(nickname,PossibleMessages.DEPOSIT, index));
     }
 }

@@ -336,6 +336,14 @@ public class CLI extends ViewObservable implements IView {
                 case ("DISCARD_LEADER") :
                     notifyObserver(o -> o.onUpdateDiscardLeader(Integer.parseInt(cmdMembers[1])));
                     break;
+
+                case("GET_RESOURCES") :
+                    notifyObserver(o -> o.onUpdateGetResources(Integer.parseInt(cmdMembers[1])));
+                    break;
+
+                case("DEPOSIT_RESOURCE") :
+                    notifyObserver(o -> o.onUpdateDeposit(Integer.parseInt(cmdMembers[1])));
+                    break;
             }
         }
     }

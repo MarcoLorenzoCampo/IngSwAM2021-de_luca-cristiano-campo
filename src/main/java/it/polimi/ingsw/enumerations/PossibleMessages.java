@@ -19,9 +19,10 @@ public enum PossibleMessages {
     SETUP_RESOURCES,
     PING_MESSAGE,
     GAME_SIZE,
+    DEPOSIT,
 
     RESOURCE,
-
+    END_TURN,
     DISCARD_LEADER,
     ACTIVATE_LEADER,
     GET_RESOURCES,
@@ -47,5 +48,6 @@ public enum PossibleMessages {
     GENERIC_SERVER_MESSAGE,
     FAITH_TRACK_MESSAGE,
     AVAILABLE_LEADERS,
-    WIN_MESSAGE
+    WIN_MESSAGE,
+    YOUR_TURN
 }

@@ -15,16 +15,18 @@ public class ExchangeResourceMessage extends Message {
 
     private static final long serialVersionUID = -1626244678088647633L;
 
+    private final int index;
     private final ResourceType exchangeWithThis;
 
-    public ExchangeResourceMessage(String nickname, ResourceType exchangeWithThis) {
+    public ExchangeResourceMessage(String nickname, ResourceType exchangeWithThis, int number) {
         super.setMessageType(PossibleMessages.EXCHANGE_RESOURCE);
         super.setSenderUsername(nickname);
-
+        this.index = number;
         this.exchangeWithThis = exchangeWithThis;
     }
 
     public ResourceType getExchangeWithThis() {
         return this.exchangeWithThis;
     }
+    public int getIndex(){return index;}
 }

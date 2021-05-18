@@ -14,4 +14,12 @@ public class TwoIntMessage extends Message {
         firstNumber = first;
         secondNumber = second;
     }
+
+    public int getFirstNumber() {
+        return firstNumber;
+    }
+
+    public int getSecondNumber() {
+        return secondNumber;
+    }
 }

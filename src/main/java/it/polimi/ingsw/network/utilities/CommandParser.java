@@ -62,6 +62,7 @@ public final class CommandParser {
                             return "\nPick a valid resource to deposit.";
                         }
                         return "DEPOSIT_RESOURCE";
+                        //return "DEPOSIT";
 
                     case("ACTIVATE_PRODUCTION") :
                         try {

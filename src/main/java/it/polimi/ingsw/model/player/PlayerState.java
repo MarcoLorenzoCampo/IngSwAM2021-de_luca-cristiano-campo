@@ -19,6 +19,10 @@ public class PlayerState {
 
     private boolean hasPlaceableLeaders;
 
+    private boolean hasTwoExchange;
+
+    private boolean canDeposit;
+
     public PlayerState() {
         hasActivatedProductions = false;
         hasPickedResources = false;
@@ -26,6 +30,18 @@ public class PlayerState {
         hasPlacedLeaders = false;
 
         hasPlaceableLeaders = true;
+
+        hasTwoExchange = false;
+
+        canDeposit = false;
+    }
+
+    public void setCanDeposit(boolean canDeposit) {
+        this.canDeposit = canDeposit;
+    }
+
+    public boolean isCanDeposit() {
+        return canDeposit;
     }
 
     public boolean isConnected() {
@@ -56,6 +72,8 @@ public class PlayerState {
         this.hasPlacedLeaders = true;
     }
 
+    public void setHasTwoExchange(boolean twoExchange){ this.hasTwoExchange = twoExchange;}
+
     public boolean getHasPlaceableLeaders() {
         return hasPlaceableLeaders;
     }
@@ -71,13 +89,13 @@ public class PlayerState {
     public boolean getHasPlacedLeaders() {
         return hasPlacedLeaders;
     }
-
-
+    public boolean isHasTwoExchange() { return hasTwoExchange; }
 
     public void endTurnReset() {
         hasActivatedProductions = false;
         hasPickedResources = false;
         hasBoughCard = false;
         hasPlacedLeaders = false;
+        canDeposit = false;
     }
 }
