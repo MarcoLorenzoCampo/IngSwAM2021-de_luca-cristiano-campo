@@ -97,7 +97,6 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
                 break;
 
-
             case SETUP_RESOURCES:
                 SetupResourcesRequest resourcesRequest = (SetupResourcesRequest) message;
                 viewUpdater.execute(() ->
@@ -117,7 +116,6 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 break;
 
             case SETUP_LEADERS:
-                SetupLeaderRequest setupLeaderRequest = (SetupLeaderRequest) message;
                 viewUpdater.execute(() ->
                 {
                    try{
@@ -126,6 +124,12 @@ public class OnlineClientManager implements ViewObserver, Observer {
                        e.printStackTrace();
                    }
                 });
+                break;
+
+            case WIN_MESSAGE:
+                WinMessage winMessage = (WinMessage) message;
+                viewUpdater.execute(() -> view.showWinMatch(winMessage.getMessage()));
+                break;
 
             default: break;
         }

@@ -14,6 +14,8 @@ import it.polimi.ingsw.network.views.cli.ColorCLI;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.network.server.Server.LOGGER;
+
 /**
  * Class to manage players and turns in a multiplayer game.
  */
@@ -81,6 +83,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
             realPlayerList.add(new RealPlayer(nickname));
 
             broadcastToAllExceptCurrent("New player added: " + nickname, nickname);
+            broadcastGenericMessage(" ["+ (lobbySize-realPlayerList.size()) + " players left]");
         }
 
         //sets the new logged player as connected.
@@ -169,12 +172,10 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         auxIndex = newCurrentIndex;
 
         String nowPlaying = realPlayerList.get(newCurrentIndex).getName();
+
         gameManager.getCurrentGame()
-
                 .setCurrentPlayer(realPlayerList.get(newCurrentIndex));
-        gameManager.getServer()
 
-                .setCurrentClient(PlayingGame.getGameInstance().getCurrentPlayer().getName());
         gameManager.setCurrentPlayer(nowPlaying);
 
         viewsByNickname.get(nowPlaying).currentTurn("It's your turn now");
@@ -278,8 +279,11 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
     }
 
     @Override
-    public void broadCastWinMessage(String message) {
+    public void broadCastWinMessage(String winner) {
+        viewsByNickname.values()
+                .forEach(vv -> vv.showWinMatch(winner));
 
+        gameManager.resetFSM();
     }
 
     @Override
@@ -309,5 +313,56 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
                 .filter(player -> player.getPlayerState().isConnected())
                 .map(RealPlayer::getName)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void disconnectPlayer(String nicknameToDisconnect) {
+
+        boolean gameStarted = gameManager.isGameStarted();
+
+        //If the nickname is null, that means the player's setup wasn't done.
+        if(nicknameToDisconnect != null) {
+
+            //If the game is started, then he needs to be set as "disconnected".
+            if (gameStarted) {
+
+                realPlayerList
+                        .stream()
+                        .filter(p -> p.getName().equals(nicknameToDisconnect))
+                        .forEach(p -> p.getPlayerState().disconnect());
+
+                //If he was playing when he got disconnected, then his turn needs to be skipped.
+                if(nicknameToDisconnect.equals(gameManager.getCurrentGame().getCurrentPlayer().getName())) {
+                    setNextTurn();
+                    LOGGER.info("Removed " + nicknameToDisconnect + " from the game.");
+
+                    gameManager.getLobbyManager().broadcastGenericMessage(nicknameToDisconnect
+                            + " was removed from the game.");
+                }
+
+                if(realPlayerList.stream().filter(p -> p.getPlayerState().isConnected()).count() == 1) {
+
+                    String lastOnline = realPlayerList
+                            .stream()
+                            .filter(p -> p.getPlayerState().isConnected())
+                            .collect(Collectors.toList()).get(0).getName();
+
+                    broadCastWinMessage(lastOnline);
+                }
+            }
+
+            //If the game wasn't started yet, then he will be removed completely from the game.
+            if (!gameStarted) {
+
+                realPlayerList.removeIf(realPlayer -> realPlayer.getName().equals(nicknameToDisconnect));
+                viewsByNickname.remove(nicknameToDisconnect);
+                broadcastGenericMessage(nicknameToDisconnect + " was removed from the game.");
+                LOGGER.info("Removed " + nicknameToDisconnect + " from setup phase.");
+                broadcastGenericMessage("["+ (lobbySize-realPlayerList.size()) + " players left]");
+            }
+
+        } else {
+            LOGGER.info(() -> "Removed a client before the login phase.");
+        }
     }
 }

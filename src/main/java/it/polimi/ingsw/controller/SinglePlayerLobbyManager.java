@@ -134,4 +134,8 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
         return lorenzo;
     }
 
+    @Override
+    public void disconnectPlayer(String nicknameToDisconnect) {
+
+    }
 }

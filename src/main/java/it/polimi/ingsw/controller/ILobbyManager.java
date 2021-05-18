@@ -23,4 +23,5 @@ public interface ILobbyManager {
     void broadCastWinMessage(String message);
     void broadCastMatchInfo();
     int turnOfPlayer(String current);
+    void disconnectPlayer(String nicknameToDisconnect);
 }

@@ -110,7 +110,7 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void showWinMatch(String winner) {
-
+        clientHandler.sendMessage(new WinMessage(winner));
     }
 
     @Override

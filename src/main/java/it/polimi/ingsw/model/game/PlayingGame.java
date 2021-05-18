@@ -47,6 +47,13 @@ public class PlayingGame implements IGame {
         return playingGameInstance;
     }
 
+    /**
+     * Method to reset the controller references when a game is ended.
+     */
+    public static void terminate() {
+        playingGameInstance = null;
+    }
+
     public RealPlayer getCurrentPlayer() {
         return currentPlayer;
     }
