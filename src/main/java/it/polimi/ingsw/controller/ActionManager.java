@@ -41,10 +41,11 @@ public final class ActionManager {
         } catch (GetResourceFromMarketException e) {
             actionAccepted = false;
         } catch (BuyCardFromMarketException e) {
+            gameManager.getCurrentView().showGenericString(" ");
             actionAccepted = false;
         } catch (EndTurnException e) {
 
-            gameManager.getLobbyManager().setNextTurn();
+            //gameManager.getLobbyManager().setNextTurn();
 
         } catch (NoMatchingRequisitesException e) {
             actionAccepted = false;

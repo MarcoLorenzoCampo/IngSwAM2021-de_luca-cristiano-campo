@@ -130,6 +130,10 @@ public class OnlineClientManager implements ViewObserver, Observer {
                        e.printStackTrace();
                    }
                 });
+                break;
+
+            case YOUR_TURN:
+                viewUpdater.execute(() -> view.currentTurn("it's your turn"));
 
             default: break;
         }
@@ -301,6 +305,11 @@ public class OnlineClientManager implements ViewObserver, Observer {
 
     @Override
     public void onUpdateExchangeResource(ResourceType r1) {
-        client.sendMessage(new ExchangeResourceMessage(nickname, r1));
+        client.sendMessage(new ExchangeResourceMessage(nickname, r1, 1));
+    }
+
+    @Override
+    public void onUpdateDeposit(int index) {
+        client.sendMessage(new OneIntMessage(nickname,PossibleMessages.DEPOSIT, index));
     }
 }

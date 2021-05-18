@@ -179,7 +179,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
                 .setCurrentClient(PlayingGame.getGameInstance().getCurrentPlayer().getName());
         gameManager.setCurrentPlayer(nowPlaying);
 
-        viewsByNickname.get(nowPlaying).currentTurn("It's your turn now");
+        //viewsByNickname.get(nowPlaying).currentTurn("It's your turn now");
 
         broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
         gameManager.onStartTurn();

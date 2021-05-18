@@ -224,4 +224,9 @@ public class OfflineClientManager implements ViewObserver, Observer {
     public void onUpdateExchangeResource(ResourceType r1) {
 
     }
+
+    @Override
+    public void onUpdateDeposit(int index) {
+
+    }
 }

@@ -121,4 +121,6 @@ public interface ViewObserver {
      * @param r1: resource to exchange.
      */
     void onUpdateExchangeResource(ResourceType r1);
+
+    void onUpdateDeposit(int index);
 }

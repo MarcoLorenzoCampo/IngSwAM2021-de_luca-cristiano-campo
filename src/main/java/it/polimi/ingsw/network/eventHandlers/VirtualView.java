@@ -90,7 +90,7 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void currentTurn(String message) {
-
+        clientHandler.sendMessage(new YourTurnMessage(message));
     }
 
     @Override

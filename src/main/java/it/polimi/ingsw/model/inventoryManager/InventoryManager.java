@@ -95,11 +95,6 @@ public class InventoryManager {
                 iterator.setResourceType(exchange.get(0));
             }
         }
-
-        //dire al controller di chiedere una risorsa
-        if(exchange.size() == 2) {
-            
-        }
     }
 
 
@@ -147,6 +142,7 @@ public class InventoryManager {
         ResourceType key = buffer.get(index).getResourceType();
         warehouse.addResource(buffer.get(index));
         inventory.put(key, inventory.get(key) + 1);
+        removeFromBuffer(index);
     }
 
 

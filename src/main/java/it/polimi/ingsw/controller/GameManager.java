@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.actions.DiscardLeaderCardAction;
+import it.polimi.ingsw.actions.*;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
@@ -8,15 +8,15 @@ import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.player.PlayerState;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.playerMessages.DiscardTwoLeaders;
-import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
-import it.polimi.ingsw.network.messages.playerMessages.SetupResourceAnswer;
+import it.polimi.ingsw.network.messages.playerMessages.*;
+import it.polimi.ingsw.network.messages.serverMessages.ResourceMarketMessage;
 import it.polimi.ingsw.network.server.Server;
 
 import java.io.Serializable;
@@ -37,12 +37,19 @@ public final class GameManager implements Observer, Serializable {
     private boolean gameStarted = false;
     private boolean firstTurn;
     private Map<String, VirtualView> virtualViewLog;
+
     private String currentPlayer;
     private VirtualView currentView;
+    private PlayerState currentPlayerState;
 
     public void setCurrentPlayer(String player) {
         this.currentPlayer = player;
         this.currentView = virtualViewLog.get(player);
+        this.currentPlayerState = currentGame.getCurrentPlayer().getPlayerState();
+    }
+
+    public VirtualView getCurrentView() {
+        return currentView;
     }
 
     /**
@@ -231,46 +238,100 @@ public final class GameManager implements Observer, Serializable {
                     lobbyManager.setNextTurn();
                 }
                 break;
-            case PLAYING:
-                if(message.getSenderUsername().equals(currentPlayer)){
-                    if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
-                        currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
-                        //se lo stato lo permette, esgui l'azione e cambia lo stato
-                    }
 
-                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_PRODUCTION)
-                    || message.getMessageType().equals(PossibleMessages.ACTIVATE_PRODUCTION)
-                    || message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
-                        currentGame.setCurrentState(PossibleGameStates.ACTIVATE_PRODUCTION);
+            case PLAYING:
+                if(message.getSenderUsername().equals(currentPlayer)) {
+
+                    if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
+                        TwoIntMessage buy = (TwoIntMessage) message;
+                        actionManager
+                                .onReceiveAction(new BuyProductionCardAction(buy.getSenderUsername(),
+                                        currentGame.getIGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
+                                        buy.getSecondNumber(), currentGame));
+                        if(currentPlayerState.getHasBoughCard()){
+                            currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+                            //cambiamento production board
+                            //cambiamento production cards
+                            onStartTurn();
+                        }
+                        else{
+                            currentView.showGenericString("\nAction could not be performed");
+                        }
                     }
 
                     if(message.getMessageType().equals(PossibleMessages.GET_RESOURCES)){
-                        if (currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getExchange().size()==2){
-                            currentGame.setCurrentState(PossibleGameStates.CHANGE_COLOR);
+                        OneIntMessage get_resources = (OneIntMessage) message;
+                        actionManager
+                                .onReceiveAction(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame));
+                        if(currentPlayerState.getHasPickedResources()){
+                            if(currentPlayerState.isHasTwoExchange()){
+                                currentGame.setCurrentState(PossibleGameStates.CHANGE_COLOR);
+                            }
+                            else{
+                                currentGame.getCurrentPlayer().getInventoryManager().whiteMarblesExchange();
+                                currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
+                            }
+                            onStartTurn();
                         }
                         else{
-                            currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
+                            currentGame.setCurrentState(PossibleGameStates.PLAYING);
                         }
                     }
-                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)){
-                        //SE LA LISTA è VUOTA SALTA
-                        currentView.showLeaderCards(currentGame.getCurrentPlayer().getOwnedLeaderCards());
-                        currentGame.setCurrentState(PossibleGameStates.LEADER_ACTION);
-                    }
 
-                    if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)){
-                        //SE LA LISTA è VUOTA SALTA
-                        currentView.showLeaderCards(currentGame.getCurrentPlayer().getOwnedLeaderCards());
-                        currentGame.setCurrentState(PossibleGameStates.LEADER_ACTION);
+                }
+                break;
+
+
+            case BUY_CARD:
+                if(message.getSenderUsername().equals(currentPlayer)) {
+                    if(message.getMessageType().equals(PossibleMessages.END_TURN)){
+                        lobbyManager.setNextTurn();
+                    }
+                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
+                            && currentPlayerState.getHasPlaceableLeaders()){
+                        OneIntMessage activate = (OneIntMessage) message;
+                        actionManager
+                                .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(),activate.getIndex(),currentGame));
+
+                    }
+                    if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
+                            && currentPlayerState.getHasPlaceableLeaders()){
+                        OneIntMessage discard = (OneIntMessage) message;
+                        actionManager
+                                .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(),discard.getIndex(),currentGame));
                     }
                 }
                 break;
 
-            case BUY_CARD:
+
+            case CHANGE_COLOR:
                 if(message.getSenderUsername().equals(currentPlayer)){
-                    if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
-                        //genero l'azione
-                        //la eseguo
+                    if(message.getMessageType().equals(PossibleMessages.RESOURCE)){
+                        ExchangeResourceMessage colorchange = (ExchangeResourceMessage) message;
+                        actionManager
+                                .onReceiveAction(new ChangeMarbleAction(colorchange.getSenderUsername(),
+                                        colorchange.getExchangeWithThis(), colorchange.getIndex(),currentGame));
+                    }
+                    if(currentPlayerState.isCanDeposit()){
+                        currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
+                    }
+                    onStartTurn();
+                }
+                break;
+
+            case DEPOSIT:
+                if(message.getSenderUsername().equals(currentPlayer)){
+                    if(message.getMessageType().equals(PossibleMessages.DEPOSIT)){
+                        OneIntMessage deposit = (OneIntMessage) message;
+
+                        actionManager
+                                .onReceiveAction(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
+                        if(currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().size()==0){
+                            currentGame.setCurrentState(PossibleGameStates.PLAYING);
+                            lobbyManager.setNextTurn();
+                        }
+
+
                     }
                 }
         }
@@ -291,11 +352,20 @@ public final class GameManager implements Observer, Serializable {
 
             case PLAYING:
                 currentView.currentTurn("\n Choose an action to perform.");
+                currentView.showGenericString("\nchoose an action to perform");
                 break;
 
             case BUY_CARD:
-                //stampa a video le carte disponibili
-                //di al giocatore "compra una carta"
+
+                break;
+            case CHANGE_COLOR:
+                break;
+            case DEPOSIT:
+                ArrayList<MaterialResource> buffer = currentGame.getCurrentPlayer().getInventoryManager().getBuffer();
+                for (MaterialResource iterator: buffer) {
+                    currentView.showGenericString(iterator.getResourceType().toString());
+                }
+
         }
     }
 
