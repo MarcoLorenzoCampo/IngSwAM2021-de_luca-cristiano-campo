@@ -34,9 +34,9 @@ public class CLI extends ViewObservable implements IView {
     /**
      * Clears the terminal.
      */
-    public void clearCLI() {
-        out.print(ColorCLI.CLEAR);
-        out.flush();
+    public static void clearCLI() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     private String nickname;
@@ -349,7 +349,6 @@ public class CLI extends ViewObservable implements IView {
         showGenericString(message);
 
         //disable player input
-
     }
 
     @Override
@@ -444,7 +443,7 @@ public class CLI extends ViewObservable implements IView {
                 "\n - 'BASE_PRODUCTION':Activates the base production (asks you 2 input resources and 1 output resource);" +
                 "\n - 'CARD_PRODUCTION': " +
                 "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
-                "-------------------------------------------------------------------------------------------------------------"
+                "--------------------------------------------------------------------------------------------------------------"
         );
     }
 
