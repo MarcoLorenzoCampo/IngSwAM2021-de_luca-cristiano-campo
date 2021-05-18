@@ -309,14 +309,13 @@ public class CLI extends ViewObservable implements IView {
     public void currentTurn(String message) {
         showGenericString(message);
 
-        boolean yourTurn = true;
         String cmd = "";
 
         //enable player input
         out.println("\nIt's your turn now. Chose an action to perform!" +
                 "\n[type -help for a list the complete list of actions]");
 
-        while(yourTurn) {
+        while(true) {
 
             out.print(">>> ");
 
@@ -408,7 +407,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showWinMatch(String winner) {
-        out.println(winner + " won! Congratulations :)");
+        out.println(winner + " won!");
 
         System.exit(0);
     }

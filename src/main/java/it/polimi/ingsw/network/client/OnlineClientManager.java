@@ -132,9 +132,14 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 });
                 break;
 
+            case WIN_MESSAGE:
+                WinMessage winMessage = (WinMessage) message;
+                viewUpdater.execute(() -> view.showWinMatch(winMessage.getMessage()));
+                break;
+
             case YOUR_TURN:
                 viewUpdater.execute(() -> view.currentTurn("it's your turn"));
-
+                break;
             default: break;
         }
     }

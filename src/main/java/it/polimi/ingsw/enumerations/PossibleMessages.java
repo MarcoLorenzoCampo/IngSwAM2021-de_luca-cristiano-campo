@@ -48,5 +48,6 @@ public enum PossibleMessages {
     GENERIC_SERVER_MESSAGE,
     FAITH_TRACK_MESSAGE,
     AVAILABLE_LEADERS,
+    WIN_MESSAGE,
     YOUR_TURN
 }

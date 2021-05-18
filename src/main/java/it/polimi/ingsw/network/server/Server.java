@@ -2,19 +2,18 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.model.player.RealPlayer;
+import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
+import it.polimi.ingsw.network.messages.serverMessages.WinMessage;
 import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
-import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.parsers.CommandLineParser;
 import it.polimi.ingsw.parsers.ServerConfigParser;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Accepted commands:
@@ -41,12 +40,6 @@ public class Server implements Serializable {
      * A Map of the clients are currently playing. Set using the pair <Nickname, ClientHandler>
      */
     private final Map<String, ClientHandler> clientHandlerMap;
-
-    /**
-     * Reference to the current player (handler in this case) given by the
-     * controller when the next turn is set.
-     */
-    private ClientHandler currentClient;
 
     private final Object lock;
 
@@ -93,6 +86,7 @@ public class Server implements Serializable {
 
             clientHandlerMap.put(nickname, clientHandler);
             onMessage(message);
+            clientHandler.setNickname(nickname);
             gameManager.addVirtualView(nickname, virtualView);
             virtualView.showLoginOutput(true, true, false);
             virtualView.askPlayerNumber();
@@ -135,7 +129,6 @@ public class Server implements Serializable {
                     //Nickname not known but game started, connection can't happen.
                     virtualView.showGenericString("The game is started, you can't connect now!");
                     clientHandler.disconnect();
-
                 }
             }
 
@@ -177,33 +170,30 @@ public class Server implements Serializable {
      */
     public void onDisconnect(ClientHandler clientHandler) {
 
+        String nicknameToRemove = clientHandler.getNickname();
+
         synchronized (lock) {
-            String nickname = clientHandler.getNickname();
 
-            if(nickname != null) {
+            //If the nickname is null, that means the player's setup wasn't done.
+            if(nicknameToRemove != null) {
+                gameManager.getLobbyManager().disconnectPlayer(nicknameToRemove);
+                clientHandlerMap.remove(nicknameToRemove);
 
-                String offlineClient = clientHandler.getNickname();
-                clientHandlerMap.remove(offlineClient);
+                //Last player online wins (when the game has started).
+                if(clientHandlerMap.size() == 1) {
 
-                if (offlineClient.equals(currentClient.getNickname())) {
+                    if(gameManager.isGameStarted()) {
+                        gameManager.endGame(nicknameToRemove);
+                        clientHandlerMap.clear();
+                    }
 
-                    gameManager.getLobbyManager().setNextTurn();
+                    //gets removed before dealing resources and leader cards.
+                    if(!gameManager.isGameStarted()) {
 
-                    LOGGER.info(() -> offlineClient + " left the game, players alerted.");
+                    }
                 }
 
-                gameManager.getLobbyManager().broadcastGenericMessage(offlineClient + " disconnected.");
-                LOGGER.info(() -> "Removed " + offlineClient + " from the client list.");
-
-                //Also add && gameState = isPlaying.
-                if (clientHandlerMap.size() == 1) {
-                    gameManager.endGame("You're the last player online. You won!");
-
-
-                }
-            }
-
-            if(clientHandler.getNickname() == null){
+            } else {
                 LOGGER.info(() -> "Removed a client before the login phase.");
             }
         }
@@ -217,22 +207,6 @@ public class Server implements Serializable {
     private void reconnectKnownPlayer(String nickname, ClientHandler clientHandler, VirtualView vv) {
 
         gameManager.getLobbyManager().reconnectPlayer(nickname);
-    }
-
-    /**
-     * Set a reference for the current player in the server.
-     * @param nickname: current player.
-     */
-    public void setCurrentClient(String nickname) {
-        currentClient = clientHandlerMap.get(nickname);
-    }
-
-    /**
-     * Get current client.
-     * @return: current client.
-     */
-    public ClientHandler getCurrentClient() {
-        return currentClient;
     }
 
     /**

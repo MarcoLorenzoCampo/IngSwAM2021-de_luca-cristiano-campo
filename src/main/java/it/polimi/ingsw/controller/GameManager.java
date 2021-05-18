@@ -150,6 +150,7 @@ public final class GameManager implements Observer, Serializable {
 
                     //if the last player is logged, the game can finally start its setup phase
                     if (lobbyManager.getRealPlayerList().size() == lobbyManager.getLobbySize()) {
+                        setGameStarted();
                         currentGame.setCurrentState(PossibleGameStates.SETUP_RESOURCES);
                         lobbyManager.setPlayingOrder();
 
@@ -190,7 +191,6 @@ public final class GameManager implements Observer, Serializable {
                     if (listSize > 0) {
 
                         LinkedList<Resource> obtained = ResourceBuilder.build((LinkedList<ResourceType>) setupResourceAnswer.getResourceTypes());
-
 
                         for (Resource iterator : obtained) {
                             try {
@@ -372,5 +372,12 @@ public final class GameManager implements Observer, Serializable {
     @Override
     public void update (Message message){
 
+    }
+
+    /**
+     * Resets the variable of the controller and game instance.
+     */
+    public void resetFSM() {
+        PlayingGame.terminate();
     }
 }
