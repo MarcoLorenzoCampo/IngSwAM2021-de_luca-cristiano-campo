@@ -65,6 +65,7 @@ public class BuyProductionCardAction extends Action {
                 .getProductionCardMarket()
                 .buyCard(boughtCard);
 
+        game.getCurrentPlayer().getPlayerState().setToBeRemoved(boughtCard.getRequirements());
         boughtCard.placeCard(destinationSlot, boughtCard);
 
         this.game.getCurrentPlayer()
