@@ -108,14 +108,14 @@ public interface IView {
      * @param resourceMarket: resource market
      * {@link it.polimi.ingsw.model.market.ResourceMarket}
      */
-    void printResourceMarket(ResourceType[][] resourceMarket, ResourceType extraMarble);
+    void printResourceMarket(String reducedResourceMarket);
 
     /**
      * Method to show the available production cards.
      *
      * @param availableCards: available production cards.
      */
-    void printAvailableCards(List<ProductionCard> availableCards);
+    void printAvailableCards(String reducedAvailableCards);
 
     /**
      * Prints a faith track regarding the player.

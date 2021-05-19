@@ -34,7 +34,7 @@ public final class GameManager implements Observer, Serializable {
 
     private boolean gameStarted = false;
     private boolean firstTurn;
-    private Map<String, VirtualView> virtualViewLog;
+    private final Map<String, VirtualView> virtualViewLog;
 
     private String currentPlayer;
     private VirtualView currentView;
@@ -66,8 +66,6 @@ public final class GameManager implements Observer, Serializable {
      * Lobby manager is set later in the game when a lobby size message is sent.
      *
      * @param gameMode : decides whether the LobbyManager will be for a single player game or multiplayer.
-     *                 1 = single player game;
-     *                 2 = multiplayer game;
      */
     public void setLobbyManager(String gameMode) {
 
@@ -99,6 +97,12 @@ public final class GameManager implements Observer, Serializable {
         return server;
     }
 
+    /**
+     * Each time a client is connected, his virtual view is set as an Observer {@link Observer},
+     * so that he can be notified when changes occur.
+     * @param player: Name of the player associated to the virtual view.
+     * @param virtualView: virtual view, observer.
+     */
     public void addVirtualView(String player, VirtualView virtualView) {
         virtualViewLog.put(player, virtualView);
     }
@@ -111,6 +115,7 @@ public final class GameManager implements Observer, Serializable {
     public void endGame(String message) {
         lobbyManager.broadCastWinMessage(message);
         //computes scores and such to show
+        resetFSM();
     }
 
     /**
@@ -128,7 +133,7 @@ public final class GameManager implements Observer, Serializable {
     }
 
     /**
-     * Method that moves the turn forward, acts as an FSM that decides what actions can be taken
+     * Method that moves the turn forward, acts as an FSM that decides what actions can be taken.
      *
      * @param message: message to be processed, validated by the state of the game and the sender username
      */
@@ -245,7 +250,7 @@ public final class GameManager implements Observer, Serializable {
                         TwoIntMessage buy = (TwoIntMessage) message;
                         actionManager
                                 .onReceiveAction(new BuyProductionCardAction(buy.getSenderUsername(),
-                                        currentGame.getIGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
+                                        currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
                                         buy.getSecondNumber(), currentGame));
                         if(currentPlayerState.getHasBoughCard()){
                             currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
@@ -260,17 +265,20 @@ public final class GameManager implements Observer, Serializable {
                         OneIntMessage get_resources = (OneIntMessage) message;
                         actionManager
                                 .onReceiveAction(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame));
-                        if(currentPlayerState.getHasPickedResources()){
-                            if(currentPlayerState.isHasTwoExchange()){
+
+                        if(currentPlayerState.getHasPickedResources()) {
+
+                            if(currentPlayerState.isHasTwoExchange()) {
                                 currentGame.setCurrentState(PossibleGameStates.CHANGE_COLOR);
                             }
-                            else{
+
+                            else {
                                 currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().whiteMarblesExchange();
                                 currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
                             }
-                            onStartTurn();
                         }
-                        else{
+
+                        else {
                             currentGame.setCurrentState(PossibleGameStates.PLAYING);
                         }
                     }
@@ -308,7 +316,7 @@ public final class GameManager implements Observer, Serializable {
                     if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
                         TwoIntMessage buy_card = (TwoIntMessage) message;
                         actionManager
-                                .onReceiveAction(new BuyProductionCardAction(buy_card.getSenderUsername(), currentGame.getIGameBoard().getProductionCardMarket().getAvailableCards().get(buy_card.getFirstNumber()),
+                                .onReceiveAction(new BuyProductionCardAction(buy_card.getSenderUsername(), currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy_card.getFirstNumber()),
                                         buy_card.getSecondNumber(), currentGame));
                     }
 
@@ -329,6 +337,9 @@ public final class GameManager implements Observer, Serializable {
                     }
                 }
                 //currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
+                onStartTurn();
+
                 break;
 
 
@@ -471,6 +482,10 @@ public final class GameManager implements Observer, Serializable {
         }
     }
 
+    /**
+     * This method associates each game state with an action to perform on the player's view. Sets the beginning
+     * phase of the game and iterates over a main "currentTurn" method during the game phase.
+     */
     public void onStartTurn(){
         switch (currentGame.getCurrentState().getGameState()) {
             case SETUP_LEADER:
@@ -487,9 +502,22 @@ public final class GameManager implements Observer, Serializable {
                 currentView.currentTurn("\n Choose an action to perform.");
                 break;
 
+            case MAIN_ACTION_DONE:
+                currentView.currentTurn("\n Main action performed you can place/discard leaders or peek on other players.");
+                break;
+
+            case DEPOSIT:
+                currentView.currentTurn("\n Main action performed you can place/discard leaders or peek on other players.");
+                break;
+
+            default: break;
         }
     }
 
+    /**
+     * Sends specific update messages depending on what part of the model has been updated.
+     * @param message: model update message.
+     */
     @Override
     public void update (Message message){
 
@@ -500,5 +528,6 @@ public final class GameManager implements Observer, Serializable {
      */
     public void resetFSM() {
         PlayingGame.terminate();
+
     }
 }

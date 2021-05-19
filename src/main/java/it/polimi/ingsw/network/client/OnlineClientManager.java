@@ -79,7 +79,6 @@ public class OnlineClientManager implements ViewObserver, Observer {
                         view.showLoginOutput(m.isConnectionOutcome(), m.isNicknameAccepted(), m.isReconnected()));
                 break;
 
-
             case GENERIC_SERVER_MESSAGE:
                 GenericMessageFromServer g = (GenericMessageFromServer) message;
                 viewUpdater.execute(() -> view.showGenericString(g.getServerString()));
@@ -87,7 +86,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
 
             case BOARD:
                 ResourceMarketMessage r = (ResourceMarketMessage) message;
-                viewUpdater.execute(() -> view.printResourceMarket(r.getResourceBoard(), r.getExtraMarble()));
+                viewUpdater.execute(() -> view.printResourceMarket(r.getResourceBoard()));
                 break;
 
             case LORENZO_TOKEN:
@@ -100,7 +99,6 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
                 break;
 
-
             case SETUP_RESOURCES:
                 SetupResourcesRequest resourcesRequest = (SetupResourcesRequest) message;
                 viewUpdater.execute(() ->
@@ -111,6 +109,11 @@ public class OnlineClientManager implements ViewObserver, Observer {
                         e.printStackTrace();
                     }
                 });
+                break;
+
+            case AVAILABLE_PRODUCTION_CARDS:
+                AvailableCardsMessage a = (AvailableCardsMessage) message;
+                viewUpdater.execute(() -> view.printAvailableCards(a.getReducedAvailableCards()));
                 break;
 
             case AVAILABLE_LEADERS:
@@ -138,15 +141,16 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 break;
 
             case YOUR_TURN:
-                viewUpdater.execute(() -> view.currentTurn("it's your turn"));
+                viewUpdater.execute(() -> view.currentTurn("It's your turn!"));
                 break;
+
             default: break;
         }
     }
 
     /**
-     * Method to deserialize leader cards
-     * @param message: message with infomation
+     * Method to deserialize leader cards.
+     * @param message: message with information
      */
     public List<LeaderCard> deserializeLeaderCards(LeaderCardMessage message){
         List<LeaderCard> deserialized = new ArrayList<>();

@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.utilities.FaithResource;
 import it.polimi.ingsw.model.utilities.MaterialResource;
+import it.polimi.ingsw.model.utilities.Reducible;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.builders.ResourceBoardBuilder;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
@@ -19,9 +20,7 @@ import java.util.LinkedList;
  * Contains the market where players can acquire resources and the methods
  * to manipulated marbles.
  */
-public class ResourceMarket extends Observable implements Serializable {
-
-    private static final long serialVersionUID = 8240964923769288564L;
+public class ResourceMarket extends Observable implements Reducible {
 
     /**
      * Auxiliary marble.
@@ -130,10 +129,26 @@ public class ResourceMarket extends Observable implements Serializable {
         LinkedList<Resource> obtainedResources = ResourceBuilder.build(pickedFromMarket);
         obtainedResources.forEach(Resource::deposit);
 
-        notifyObserver(new ResourceMarketMessage(this.resourceBoard, this.extraMarble));
+        notifyObserver(new ResourceMarketMessage(reduce()));
     }
 
     public ResourceType[][] getResourceBoard() {
         return resourceBoard;
+    }
+
+    @Override
+    public String reduce() {
+
+        String extraMarbleString = extraMarble.toString();
+        StringBuilder reducedResourceBoard = new StringBuilder();
+
+        for(int i=0; i<dimensions[0]; i++) {
+            for(int j=0; j<dimensions[1]; j++) {
+                reducedResourceBoard.append(resourceBoard[i][j].toString()).append("       ");
+            }
+            reducedResourceBoard.append("\n");
+        }
+
+        return reducedResourceBoard + "\n" + "Extra marble: " + extraMarbleString;
     }
 }

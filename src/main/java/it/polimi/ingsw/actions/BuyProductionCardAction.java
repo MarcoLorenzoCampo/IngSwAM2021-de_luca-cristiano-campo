@@ -61,7 +61,7 @@ public class BuyProductionCardAction extends Action {
     }
 
     private void runAction() throws EndGameException {
-        this.game.getIGameBoard()
+        this.game.getGameBoard()
                 .getProductionCardMarket()
                 .buyCard(boughtCard);
 

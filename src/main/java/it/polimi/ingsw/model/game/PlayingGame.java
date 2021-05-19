@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.game;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.market.GameBoard;
-import it.polimi.ingsw.model.market.IGameBoard;
 import it.polimi.ingsw.model.player.RealPlayer;
 
 /**
@@ -14,13 +13,13 @@ public class PlayingGame implements IGame {
 
     private static final int MAX_CARDS_BOUGHT = 7;
 
-    private final IGameBoard iGameBoard;
+    private final GameBoard gameBoard;
     private static PlayingGame playingGameInstance;
     private static GameState currentState;
     private RealPlayer currentPlayer;
 
-    private PlayingGame(IGameBoard iGameBoard) {
-        this.iGameBoard = iGameBoard;
+    private PlayingGame(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
     }
 
     public void setCurrentPlayer(RealPlayer currentRealPlayer) {
@@ -66,8 +65,8 @@ public class PlayingGame implements IGame {
         return currentState;
     }
 
-    public IGameBoard getIGameBoard() {
-        return iGameBoard;
+    public GameBoard getGameBoard() {
+        return gameBoard;
     }
 
     @Override

@@ -114,13 +114,13 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void printResourceMarket(ResourceType[][] resourceMarket, ResourceType extraMarble) {
-        clientHandler.sendMessage(new ResourceMarketMessage(resourceMarket, extraMarble));
+    public void printResourceMarket(String reducedResourceMarket) {
+        clientHandler.sendMessage(new ResourceMarketMessage(reducedResourceMarket));
     }
 
     @Override
-    public void printAvailableCards(List<ProductionCard> availableCards) {
-        clientHandler.sendMessage(new AvailableCardsMessage(availableCards));
+    public void printAvailableCards(String reducedAvailableCards) {
+        clientHandler.sendMessage(new AvailableCardsMessage(reducedAvailableCards));
     }
 
     @Override

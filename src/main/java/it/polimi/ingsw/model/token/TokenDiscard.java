@@ -15,7 +15,7 @@ public class TokenDiscard implements IToken{
     public TokenDiscard(Color color, IGame game) {
         this.color = color;
         this.game = game;
-        this.productionCardMarketReference = game.getIGameBoard().getProductionCardMarket();
+        this.productionCardMarketReference = game.getGameBoard().getProductionCardMarket();
     }
 
     /**

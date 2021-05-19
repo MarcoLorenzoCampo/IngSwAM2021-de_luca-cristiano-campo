@@ -40,6 +40,11 @@ public class DiscardLeaderCardAction extends Action {
                 .remove(leaderToDiscard);
 
         this.game.getCurrentPlayer()
+                .getPlayerBoard()
+                .getFaithTrack()
+                .increaseFaithMarker();
+
+        this.game.getCurrentPlayer()
                 .getPlayerState()
                 .placedLeader();
     }

@@ -57,7 +57,8 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
     /**
      * Adds a new player if the validation steps are verified.
-     * @param nickname: The name chosen by the player.
+     * @param nickname: The name chosen by the player
+     * @param virtualView: virtual view associated with the player.
      */
     @Override
     public void addNewPlayer(String nickname, VirtualView virtualView) {
@@ -81,11 +82,8 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
             broadcastGenericMessage(" ["+ (lobbySize-realPlayerList.size()) + " players left]");
         }
 
-        //sets the new logged player as connected.
-        realPlayerList
-                .stream()
-                .filter(p -> p.getName().equals(nickname))
-                .forEach(p -> p.getPlayerState().connect());
+        connectPlayer(nickname);
+        setObserver(virtualView);
     }
 
     /**
@@ -357,5 +355,32 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         } else {
             LOGGER.info(() -> "Removed a client before the login phase.");
         }
+    }
+
+    /**
+     * Auxiliary method to set a specific player as "connected".
+     */
+    private void connectPlayer(String nickname) {
+
+        //sets the new logged player as connected.
+        realPlayerList
+                .stream()
+                .filter(p -> p.getName().equals(nickname))
+                .forEach(p -> p.getPlayerState().connect());
+    }
+
+    /**
+     * Auxiliary method to add observers to the model.
+     * @param virtualView: new observer.
+     */
+    private void setObserver(VirtualView virtualView) {
+        //Adding an observer to the ResourceMarket.
+        gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
+        //Adding an observer to the ProductionCardMarket.
+        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
+
+        //Adding observers to the players.
+
+
     }
 }

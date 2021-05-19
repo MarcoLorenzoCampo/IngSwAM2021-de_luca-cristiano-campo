@@ -82,8 +82,8 @@ class PlayingGameTest {
 
         //Assert
         assertAll(
-                () -> assertNotNull(currentGame.getIGameBoard()),
-                () -> assertTrue(currentGame.getIGameBoard() instanceof GameBoard)
+                () -> assertNotNull(currentGame.getGameBoard()),
+                () -> assertTrue(currentGame.getGameBoard() instanceof GameBoard)
         );
     }
 
