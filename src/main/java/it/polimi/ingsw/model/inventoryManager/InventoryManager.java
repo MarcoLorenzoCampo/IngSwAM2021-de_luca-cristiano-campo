@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.strongbox.Strongbox;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
+import it.polimi.ingsw.model.warehouse.Shelf;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 
 import java.util.ArrayList;
@@ -197,6 +198,22 @@ public class InventoryManager {
      */
     public void removeFromWarehouse(ResourceTag priceOneResource) throws CannotRemoveResourceException {
         warehouse.removeResources(priceOneResource);
+        updateInventory();
+    }
+
+    private void updateInventory() {
+        Map<ResourceType, Integer> temp = new HashMap<>();
+        for (ResourceType iterator:strongbox.getInventory().keySet()) {
+            temp.put(iterator, strongbox.getInventory().get(iterator));
+        }
+
+        for (Shelf iterator: warehouse.getShelves()) {
+            temp.put(iterator.getType(), temp.get(iterator.getType()) + iterator.getQuantity());
+        }
+
+        for (ResourceType iterator : temp.keySet()){
+            inventory.put(iterator, temp.get(iterator));
+        }
     }
 
 
@@ -208,6 +225,7 @@ public class InventoryManager {
      */
     public void removeFromStrongbox(ResourceTag priceOneResource) throws CannotRemoveResourceException{
         strongbox.removeResource(priceOneResource);
+        updateInventory();
     }
 
 

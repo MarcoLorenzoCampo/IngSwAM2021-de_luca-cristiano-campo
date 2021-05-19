@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.model.utilities.ResourceTag;
+
+import java.util.ArrayList;
+
 /**
  * Contains information about what action has be performed by the
  * player.
@@ -22,6 +26,8 @@ public class PlayerState {
     private boolean hasTwoExchange;
 
     private boolean canDeposit;
+
+    private ArrayList<ResourceTag> toBeRemoved;
 
     public PlayerState() {
         hasActivatedProductions = false;
@@ -102,5 +108,13 @@ public class PlayerState {
         hasBoughCard = false;
         hasPlacedLeaders = false;
         canDeposit = false;
+    }
+
+    public ArrayList<ResourceTag> getToBeRemoved() {
+        return toBeRemoved;
+    }
+
+    public void setToBeRemoved(ArrayList<ResourceTag> toBeRemoved) {
+        this.toBeRemoved = toBeRemoved;
     }
 }

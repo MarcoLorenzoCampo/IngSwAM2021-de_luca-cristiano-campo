@@ -1,6 +1,7 @@
 package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
+import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.exceptions.LeaderCardException;
@@ -39,14 +40,14 @@ public class DiscardLeaderCardAction extends Action {
                 .getOwnedLeaderCards()
                 .remove(leaderToDiscard);
 
+        if(!game.getCurrentState().getGameState().equals(PossibleGameStates.SETUP_LEADER))
+            this.game.getCurrentPlayer();
+
         this.game.getCurrentPlayer()
                 .getPlayerBoard()
                 .getFaithTrack()
                 .increaseFaithMarker();
 
-        this.game.getCurrentPlayer()
-                .getPlayerState()
-                .placedLeader();
     }
 
     public PossibleAction getActionTag() {

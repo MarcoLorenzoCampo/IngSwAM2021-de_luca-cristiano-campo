@@ -4,12 +4,11 @@ import it.polimi.ingsw.actions.*;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.PlayerState;
-import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Resource;
+import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
@@ -34,7 +33,7 @@ public final class GameManager implements Observer, Serializable {
 
     private boolean gameStarted = false;
     private boolean firstTurn;
-    private final Map<String, VirtualView> virtualViewLog;
+    private Map<String, VirtualView> virtualViewLog;
 
     private String currentPlayer;
     private VirtualView currentView;
@@ -197,11 +196,9 @@ public final class GameManager implements Observer, Serializable {
                         LinkedList<Resource> obtained = ResourceBuilder.build((LinkedList<ResourceType>) setupResourceAnswer.getResourceTypes());
 
                         for (Resource iterator : obtained) {
-                            try {
-                                currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getWarehouse().addResource((MaterialResource) iterator);
-                            } catch (DiscardResourceException e) {
-                                e.printStackTrace();
-                            }
+                                iterator.deposit();
+                                actionManager
+                                        .onReceiveAction( new DepositAction(0, message.getSenderUsername(), currentGame) );
                         }
                     }
                     if ((lobbyManager.turnOfPlayer(currentPlayer)+1) == lobbyManager.getLobbySize()) {
@@ -230,6 +227,7 @@ public final class GameManager implements Observer, Serializable {
 
                         actionManager
                                 .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+
                         actionManager
                                 .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
                     }
@@ -318,6 +316,8 @@ public final class GameManager implements Observer, Serializable {
                         actionManager
                                 .onReceiveAction(new BuyProductionCardAction(buy_card.getSenderUsername(), currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy_card.getFirstNumber()),
                                         buy_card.getSecondNumber(), currentGame));
+                        if(currentPlayerState.hasPerformedExclusiveAction())
+                            currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
                     }
 
                     if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
@@ -346,24 +346,25 @@ public final class GameManager implements Observer, Serializable {
             case BUY_CARD:
                 if(message.getSenderUsername().equals(currentPlayer)) {
 
-                    if(message.getMessageType().equals(PossibleMessages.END_TURN)){
-                        lobbyManager.setNextTurn();
-                    }
+                    ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved();
 
-                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
-                            && currentPlayerState.getHasPlaceableLeaders()){
-                        OneIntMessage activate = (OneIntMessage) message;
+                    if(toBeRemoved.isEmpty())
+                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
+                    if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
+                        SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
                         actionManager
-                                .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(),activate.getIndex(),currentGame));
-
+                                .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
+                        toBeRemoved.remove(toBeRemoved.get(0));
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
-                            && currentPlayerState.getHasPlaceableLeaders()){
-                        OneIntMessage discard = (OneIntMessage) message;
+                    else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
+                        SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
                         actionManager
-                                .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(),discard.getIndex(),currentGame));
+                                .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
+                        toBeRemoved.remove(toBeRemoved.get(0));
                     }
+
                 }
                 break;
 
@@ -438,19 +439,26 @@ public final class GameManager implements Observer, Serializable {
 
             case REMOVE:
                 if(message.getSenderUsername().equals(currentPlayer)){
+
+                    ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources();
+
+                    if(toBeRemoved.isEmpty())
+                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
                     if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                         SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
                         actionManager
-                                .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", currentGame));
+                                .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
+                        currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
+                    else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
                         SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
                         actionManager
-                                .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , currentGame));
+                                .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
+                        currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
                     }
-                    if(currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().isEmpty())
-                    currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
                 }
                 break;
 

@@ -24,12 +24,11 @@ public class CLI extends ViewObservable implements IView {
 
     /**
      * True if it's an offline game, False if it's an online game.
-     * Also boolean value to keep track of your turns.
      */
     private final boolean isOffline;
 
     /**
-     * Light and read only copy of the updated model.
+     * Light and read only copy of the udated model.
      */
     private final LightweightModel lightweightModel;
 
@@ -386,9 +385,19 @@ public class CLI extends ViewObservable implements IView {
                 notifyObserver(o -> o.onUpdateEndTurn());
                 break;
 
+            case("WAREHOUSE") :
+                notifyObserver(o -> o.onUpdateSourceWarehouse());
+                break;
+
+            case("STRONGBOX") :
+                notifyObserver(o -> o.onUpdateSourceStrongBox());
+                break;
+
             case("UNKNOWN_COMMAND"): break;
-        }
+            }
+
     }
+
 
     /**
      * When the current player's turn is over, his input stream is shut down.
