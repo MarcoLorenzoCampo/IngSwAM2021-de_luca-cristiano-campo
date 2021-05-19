@@ -14,6 +14,7 @@ import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
+import it.polimi.ingsw.network.views.cli.graphical.GraphicalProductionCard;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -446,7 +447,10 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void printAvailableCards(List<ProductionCard> availableCards) {
-
+        for(int i = 0; i < availableCards.size(); i++) {
+            GraphicalProductionCard graphicalProductionCardMarket = new GraphicalProductionCard(availableCards.get(i));
+            graphicalProductionCardMarket.draw();
+        }
     }
 
     @Override
