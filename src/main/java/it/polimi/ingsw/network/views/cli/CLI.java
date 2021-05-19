@@ -313,7 +313,7 @@ public class CLI extends ViewObservable implements IView {
 
         //enable player input
         out.println("\nIt's your turn now. Chose an action to perform!" +
-                "\n[type -help for a list the complete list of actions]");
+                "\n[type -help for a complete list of actions]");
 
         while(true) {
 
