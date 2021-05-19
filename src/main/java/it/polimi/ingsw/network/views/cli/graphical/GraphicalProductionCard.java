@@ -302,6 +302,7 @@ public class GraphicalProductionCard {
         cardRequirementsType.put(ResourceType.COIN, GraphicalResourceConstants.coin);
         cardRequirementsType.put(ResourceType.SHIELD, GraphicalResourceConstants.shield);
         cardRequirementsType.put(ResourceType.STONE, GraphicalResourceConstants.stone);
+        cardRequirementsType.put(ResourceType.FAITH, GraphicalResourceConstants.faith);
     }
 
     public void draw() {
