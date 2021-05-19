@@ -334,8 +334,11 @@ public class CLI extends ViewObservable implements IView {
             output = CommandParser.parseCmd(cmdMembers);
 
             if(output.equals("HELP")) printPossibleActions();
+            if(output.equals("CHECK_MARKET")) out.println(lightweightModel.getReducedResourceMarket());
+            if(output.equals("CHECK_CARDS")) out.println(lightweightModel.getReducedAvailableCards());
 
-        } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP"));
+        } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP")
+                || output.equals("CHECK_MARKET") || output.equals("CHECK_CARDS"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
@@ -502,7 +505,7 @@ public class CLI extends ViewObservable implements IView {
                     "\n     Activates the base production (asks you 2 input resources and 1 output resource);" +
                 "\n - 'CARD_PRODUCTION': " +
                 "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
-                "\n--------------------------------------------------------------------------------------------------------------"
+                "\n-------------------------------------------------------------------------------------------------------------"
         );
     }
 

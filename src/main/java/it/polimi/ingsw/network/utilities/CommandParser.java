@@ -18,6 +18,10 @@ public final class CommandParser {
                         return "HELP";
                     case ("END_TURN"):
                         return "END_TURN";
+                    case ("CHECK_CARDS"):
+                        return "CHECK_CARDS";
+                    case ("CHECK_MARKET"):
+                        return "CHECK_MARKET";
 
                     default : return "\nInvalid single word command.";
                 }
