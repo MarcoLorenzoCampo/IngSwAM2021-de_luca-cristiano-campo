@@ -129,6 +129,10 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         viewsByNickname.get(realPlayerList.get(0).getName()).showGenericString("\nYou're the first player!");
 
         giveLeaderCards();
+
+        //Showing the players the starting game condition.
+        showStartingUpdates();
+
         gameManager.onStartTurn();
         //setDefaultResources();
     }
@@ -380,7 +384,15 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
 
         //Adding observers to the players.
+    }
 
-
+    /**
+     * Method to send updates to the player when the game starts.
+     */
+    private void showStartingUpdates() {
+        for (Map.Entry<String, VirtualView> entry : viewsByNickname.entrySet()) {
+            entry.getValue().printResourceMarket(PlayingGame.getGameInstance().getGameBoard().getResourceMarket().reduce());
+            entry.getValue().printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().reduce());
+        }
     }
 }

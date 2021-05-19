@@ -24,7 +24,7 @@ public final class CommandParser {
                         return "CHECK_MARKET";
 
 
-                    default : return "\nInvalid single word command.";
+                    default : return "UNKNOWN_COMMAND";
                 }
 
             case (2) :
@@ -83,9 +83,7 @@ public final class CommandParser {
                     case("SOURCE"):
                         return cmdMembers[1];
 
-
-
-                    default : return "\nInvalid two words command.";
+                    default : return "UNKNOWN_COMMAND";
                 }
 
             case (3) :
@@ -126,7 +124,7 @@ public final class CommandParser {
                         }
                         return "ACTIVATE_EXTRA_PRODUCTION";
 
-                    default : return "\nInvalid three words command.";
+                    default : return "UNKNOWN_COMMAND";
                 }
 
             case (4) :
