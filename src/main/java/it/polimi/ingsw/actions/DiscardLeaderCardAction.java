@@ -1,6 +1,7 @@
 package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
+import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.exceptions.LeaderCardException;
@@ -38,8 +39,8 @@ public class DiscardLeaderCardAction extends Action {
         this.game.getCurrentPlayer()
                 .getOwnedLeaderCards()
                 .remove(leaderToDiscard);
-
-        this.game.getCurrentPlayer()
+        if(!game.getCurrentState().getGameState().equals(PossibleGameStates.SETUP_LEADER))
+            this.game.getCurrentPlayer()
                 .getPlayerState()
                 .placedLeader();
     }

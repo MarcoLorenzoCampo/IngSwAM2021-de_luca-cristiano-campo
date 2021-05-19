@@ -251,7 +251,7 @@
 		"color": "YELLOW",
 		"requirements": [
 			{
-				"type": "STONES",
+				"type": "STONE",
 				"quantity": 3
 			}
 		],

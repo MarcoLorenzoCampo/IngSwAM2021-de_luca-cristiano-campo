@@ -222,6 +222,7 @@ public final class GameManager implements Observer, Serializable {
 
                         actionManager
                                 .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+
                         actionManager
                                 .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
                     }

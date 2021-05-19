@@ -367,6 +367,15 @@ public class CLI extends ViewObservable implements IView {
 
                 case("END_TURN") :
                     notifyObserver(o -> o.onUpdateEndTurn());
+                    break;
+
+                case("WAREHOUSE") :
+                    notifyObserver(o -> o.onUpdateSourceWarehouse());
+                    break;
+
+                case("STRONGBOX") :
+                    notifyObserver(o -> o.onUpdateSourceStrongBox());
+                    break;
             }
         }
     }

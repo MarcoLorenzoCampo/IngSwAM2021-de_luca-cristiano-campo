@@ -125,4 +125,5 @@ public interface ViewObserver {
     void onUpdateDeposit(int index);
 
     void onUpdateEndTurn();
+
 }

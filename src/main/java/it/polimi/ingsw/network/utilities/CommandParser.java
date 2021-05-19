@@ -19,6 +19,7 @@ public final class CommandParser {
                     case ("END_TURN"):
                         return "END_TURN";
 
+
                     default : return "\nInvalid single word command.";
                 }
 
@@ -74,6 +75,11 @@ public final class CommandParser {
                             return "\nPick a valid production index.";
                         }
                         return "ACTIVATE_PRODUCTION";
+
+                    case("SOURCE"):
+                        return cmdMembers[1];
+
+
 
                     default : return "\nInvalid two words command.";
                 }
