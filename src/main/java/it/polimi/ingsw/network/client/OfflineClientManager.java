@@ -229,4 +229,9 @@ public class OfflineClientManager implements ViewObserver, Observer {
     public void onUpdateDeposit(int index) {
 
     }
+
+    @Override
+    public void onUpdateEndTurn() {
+
+    }
 }

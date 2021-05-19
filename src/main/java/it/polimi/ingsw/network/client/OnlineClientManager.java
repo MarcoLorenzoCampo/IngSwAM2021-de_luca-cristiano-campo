@@ -317,4 +317,9 @@ public class OnlineClientManager implements ViewObserver, Observer {
     public void onUpdateDeposit(int index) {
         client.sendMessage(new OneIntMessage(nickname,PossibleMessages.DEPOSIT, index));
     }
+
+    @Override
+    public void onUpdateEndTurn() {
+        client.sendMessage(new EndTurnMessage(nickname));
+    }
 }

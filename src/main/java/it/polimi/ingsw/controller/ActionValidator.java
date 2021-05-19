@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -249,4 +250,5 @@ public final class ActionValidator {
         .validateFinalProduction(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getInventoryManager()))
             throw new InvalidProductionSlotException();
     }
+
 }

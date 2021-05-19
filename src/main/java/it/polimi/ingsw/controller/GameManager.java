@@ -304,15 +304,41 @@ public final class GameManager implements Observer, Serializable {
 
                         currentGame.setCurrentState(PossibleGameStates.ACTIVATE_PRODUCTION);
                     }
+
+                    if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
+                        TwoIntMessage buy_card = (TwoIntMessage) message;
+                        actionManager
+                                .onReceiveAction(new BuyProductionCardAction(buy_card.getSenderUsername(), currentGame.getIGameBoard().getProductionCardMarket().getAvailableCards().get(buy_card.getFirstNumber()),
+                                        buy_card.getSecondNumber(), currentGame));
+                    }
+
+                    if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
+                        && currentPlayerState.getHasPlaceableLeaders()
+                        && !currentPlayerState.getHasPlacedLeaders()){
+                        OneIntMessage discard = (OneIntMessage) message;
+                        actionManager
+                                .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
+                    }
+
+                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
+                        && currentPlayerState.getHasPlaceableLeaders()
+                        && !currentPlayerState.getHasPlacedLeaders()){
+                        OneIntMessage activate = (OneIntMessage) message;
+                        actionManager
+                                .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
+                    }
                 }
+                //currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
                 break;
 
 
             case BUY_CARD:
                 if(message.getSenderUsername().equals(currentPlayer)) {
+
                     if(message.getMessageType().equals(PossibleMessages.END_TURN)){
                         lobbyManager.setNextTurn();
                     }
+
                     if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
                             && currentPlayerState.getHasPlaceableLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
@@ -320,6 +346,7 @@ public final class GameManager implements Observer, Serializable {
                                 .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(),activate.getIndex(),currentGame));
 
                     }
+
                     if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                             && currentPlayerState.getHasPlaceableLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
@@ -332,12 +359,14 @@ public final class GameManager implements Observer, Serializable {
 
             case CHANGE_COLOR:
                 if(message.getSenderUsername().equals(currentPlayer)){
+
                     if(message.getMessageType().equals(PossibleMessages.RESOURCE)){
                         ExchangeResourceMessage colorChange = (ExchangeResourceMessage) message;
                         actionManager
                                 .onReceiveAction(new ChangeMarbleAction(colorChange.getSenderUsername(),
                                         colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
                     }
+
                     if(currentPlayerState.CanDeposit()){
                         currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
                     }
@@ -358,6 +387,7 @@ public final class GameManager implements Observer, Serializable {
                         onStartTurn();
                     }
                 }
+                break;
 
             case ACTIVATE_PRODUCTION:
                 if(message.getSenderUsername().equals(currentPlayer)) {
@@ -397,12 +427,18 @@ public final class GameManager implements Observer, Serializable {
 
             case REMOVE:
                 if(message.getSenderUsername().equals(currentPlayer)){
-                    if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX))
+                    if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
+                        SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
+                        actionManager
+                                .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", currentGame));
+                    }
 
-                    if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE))
-                    //source message has to have both source and the correspondent resource type
-                    //when the phase starts the list of the needed requirements is given
-                    //the player has to answer with SOURCE and RESOURCE
+                    if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
+                        SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
+                        actionManager
+                                .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , currentGame));
+                    }
+                    if(currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().isEmpty())
                     currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
                 }
                 break;
@@ -410,22 +446,29 @@ public final class GameManager implements Observer, Serializable {
             case MAIN_ACTION_DONE:
                 if(message.getSenderUsername().equals(currentPlayer)){
                     if(message.getMessageType().equals(PossibleMessages.END_TURN)){
+                        currentPlayerState.endTurnReset();
                         currentGame.setCurrentState(PossibleGameStates.PLAYING);
                         lobbyManager.setNextTurn();
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER) || message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)){
-                        if(currentPlayerState.getHasPlaceableLeaders()){
-                            //SOLVE LEADER ACTIONS
-                        }
-                        currentGame.setCurrentState(PossibleGameStates.PLAYING);
-                        lobbyManager.setNextTurn();
+                    if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
+                            && currentPlayerState.getHasPlaceableLeaders()
+                            && !currentPlayerState.getHasPlacedLeaders()){
+                        OneIntMessage discard = (OneIntMessage) message;
+                        actionManager
+                                .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
+                    }
+
+                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
+                            && currentPlayerState.getHasPlaceableLeaders()
+                            && !currentPlayerState.getHasPlacedLeaders()){
+                        OneIntMessage activate = (OneIntMessage) message;
+                        actionManager
+                                .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                     }
                 }
-
-
+                break;
         }
-
     }
 
     public void onStartTurn(){
@@ -444,12 +487,6 @@ public final class GameManager implements Observer, Serializable {
                 currentView.currentTurn("\n Choose an action to perform.");
                 break;
 
-            case REMOVE:
-
-            case CHANGE_COLOR:
-                break;
-            case DEPOSIT:
-                break;
         }
     }
 

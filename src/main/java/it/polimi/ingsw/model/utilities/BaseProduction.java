@@ -7,6 +7,11 @@ public class BaseProduction {
     private ArrayList<ResourceTag> inputResources;
     private ArrayList<ResourceTag> outputResources;
 
+    public BaseProduction (){
+        this.inputResources = new ArrayList<>();
+        this.outputResources = new ArrayList<>();
+    }
+
     public ArrayList<ResourceTag> getInputResources() {
         return inputResources;
     }

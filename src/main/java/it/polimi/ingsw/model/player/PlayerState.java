@@ -78,6 +78,7 @@ public class PlayerState {
 
     public void setHasTwoExchange(boolean twoExchange){ this.hasTwoExchange = twoExchange;}
 
+
     public boolean getHasPlaceableLeaders() {
         return hasPlaceableLeaders;
     }

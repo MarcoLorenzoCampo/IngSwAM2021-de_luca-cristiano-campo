@@ -111,7 +111,7 @@ public final class CommandParser {
                         } catch (IllegalArgumentException e) {
                             return "\nInvalid output resource.";
                         }
-                        if(o1.equals(ResourceType.FAITH)) {
+                        if(o1.equals(ResourceType.FAITH) || o1.equals(ResourceType.UNDEFINED)) {
                             return "\nFaith can't be obtained this way.";
                         }
                         return "ACTIVATE_EXTRA_PRODUCTION";

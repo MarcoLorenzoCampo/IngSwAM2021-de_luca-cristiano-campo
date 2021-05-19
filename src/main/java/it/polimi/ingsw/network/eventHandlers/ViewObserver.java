@@ -123,4 +123,6 @@ public interface ViewObserver {
     void onUpdateExchangeResource(ResourceType r1);
 
     void onUpdateDeposit(int index);
+
+    void onUpdateEndTurn();
 }

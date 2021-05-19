@@ -337,6 +337,10 @@ public class CLI extends ViewObservable implements IView {
                     notifyObserver(o -> o.onUpdateDiscardLeader(Integer.parseInt(cmdMembers[1])));
                     break;
 
+                case ("ACTIVATE_LEADER") :
+                    notifyObserver(o -> o.onUpdateActivateLeader(Integer.parseInt(cmdMembers[1])));
+                    break;
+
                 case("GET_RESOURCES") :
                     notifyObserver(o -> o.onUpdateGetResources(Integer.parseInt(cmdMembers[1])));
                     break;
@@ -344,6 +348,25 @@ public class CLI extends ViewObservable implements IView {
                 case("DEPOSIT_RESOURCE") :
                     notifyObserver(o -> o.onUpdateDeposit(Integer.parseInt(cmdMembers[1])));
                     break;
+
+                case("ACTIVATE_PRODUCTION") :
+                    notifyObserver(o -> o.onUpdateActivateProductionCard(Integer.parseInt(cmdMembers[1])));
+                    break;
+
+                case("BUY_CARD") :
+                    notifyObserver(o -> o.onUpdateBuyCard(Integer.parseInt(cmdMembers[1]), Integer.parseInt(cmdMembers[2])));
+                    break;
+
+                case("ACTIVATE_EXTRA_PRODUCTION") :
+                    notifyObserver(o -> o.onUpdateActivateExtraProduction(Integer.parseInt(cmdMembers[1]),ResourceType.valueOf(cmdMembers[2])));
+                    break;
+
+                case("ACTIVATE_BASE_PRODUCTION") :
+                    notifyObserver(o -> o.onUpdateBaseActivation(ResourceType.valueOf(cmdMembers[1]), ResourceType.valueOf(cmdMembers[2]), ResourceType.valueOf(cmdMembers[3])));
+                    break;
+
+                case("END_TURN") :
+                    notifyObserver(o -> o.onUpdateEndTurn());
             }
         }
     }

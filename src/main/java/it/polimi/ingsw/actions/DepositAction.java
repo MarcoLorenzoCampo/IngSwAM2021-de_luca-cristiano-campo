@@ -1,10 +1,12 @@
 package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.controller.ActionValidator;
+import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
 
 public class DepositAction extends Action{
+    private final PossibleAction actionTag = PossibleAction.DEPOSIT;
     private final int index;
     private final String actionSender;
 
