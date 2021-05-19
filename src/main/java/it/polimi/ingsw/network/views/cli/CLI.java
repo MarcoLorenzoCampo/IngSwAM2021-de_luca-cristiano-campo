@@ -1,15 +1,11 @@
 package it.polimi.ingsw.network.views.cli;
 
-import it.polimi.ingsw.actions.LorenzoAction;
-import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
-import it.polimi.ingsw.model.utilities.ResourceTag;
-import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
@@ -45,6 +41,7 @@ public class CLI extends ViewObservable implements IView {
     public CLI(boolean isOffline) {
         this.out = new PrintStream(System.out, true);
         this.isOffline = isOffline;
+        this.lightweightModel = new LightweightModel();
     }
 
     public void startCli() {
@@ -307,16 +304,17 @@ public class CLI extends ViewObservable implements IView {
      */
     @Override
     public void currentTurn(String message) {
-        showGenericString(message);
+        out.println(message);
 
         String cmd = "";
+        String[] cmdMembers;
+        String output;
 
         //enable player input
         out.println("\nIt's your turn now. Chose an action to perform!" +
                 "\n[type -help for a complete list of actions]");
 
-        while(true) {
-
+        do {
             out.print(">>> ");
 
             try {
@@ -325,45 +323,55 @@ public class CLI extends ViewObservable implements IView {
                 out.println("\nCouldn't get this input.");
             }
 
-            String[] cmdMembers = cmd.split(" ");
+            cmdMembers = cmd.split(" ");
 
-            switch(CommandParser.parseCmd(cmdMembers)) {
+            output = CommandParser.parseCmd(cmdMembers);
 
-                case ("HELP") :
-                    printPossibleActions();
-                    break;
+            if(output.equals("HELP")) printPossibleActions();
 
-                case ("DISCARD_LEADER") :
-                    notifyObserver(o -> o.onUpdateDiscardLeader(Integer.parseInt(cmdMembers[1])));
-                    break;
+        } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP"));
 
-                case ("ACTIVATE_LEADER") :
-                    notifyObserver(o -> o.onUpdateActivateLeader(Integer.parseInt(cmdMembers[1])));
-                    break;
+        switch(CommandParser.parseCmd(cmdMembers)) {
 
-                case("GET_RESOURCES") :
-                    notifyObserver(o -> o.onUpdateGetResources(Integer.parseInt(cmdMembers[1])));
-                    break;
+            case ("DISCARD_LEADER") :
+                String[] finalCmdMembers = cmdMembers;
+                notifyObserver(o -> o.onUpdateDiscardLeader(Integer.parseInt(finalCmdMembers[1])));
+                break;
 
-                case("DEPOSIT_RESOURCE") :
-                    notifyObserver(o -> o.onUpdateDeposit(Integer.parseInt(cmdMembers[1])));
-                    break;
+            case ("ACTIVATE_LEADER") :
+                String[] finalCmdMembers1 = cmdMembers;
+                notifyObserver(o -> o.onUpdateActivateLeader(Integer.parseInt(finalCmdMembers1[1])));
+                break;
 
-                case("ACTIVATE_PRODUCTION") :
-                    notifyObserver(o -> o.onUpdateActivateProductionCard(Integer.parseInt(cmdMembers[1])));
-                    break;
+            case("GET_RESOURCES") :
+                String[] finalCmdMembers2 = cmdMembers;
+                notifyObserver(o -> o.onUpdateGetResources(Integer.parseInt(finalCmdMembers2[1])));
+                break;
 
-                case("BUY_CARD") :
-                    notifyObserver(o -> o.onUpdateBuyCard(Integer.parseInt(cmdMembers[1]), Integer.parseInt(cmdMembers[2])));
-                    break;
+            case("DEPOSIT_RESOURCE") :
+                String[] finalCmdMembers3 = cmdMembers;
+                notifyObserver(o -> o.onUpdateDeposit(Integer.parseInt(finalCmdMembers3[1])));
+                break;
 
-                case("ACTIVATE_EXTRA_PRODUCTION") :
-                    notifyObserver(o -> o.onUpdateActivateExtraProduction(Integer.parseInt(cmdMembers[1]),ResourceType.valueOf(cmdMembers[2])));
-                    break;
+            case("ACTIVATE_PRODUCTION") :
+                String[] finalCmdMembers4 = cmdMembers;
+                notifyObserver(o -> o.onUpdateActivateProductionCard(Integer.parseInt(finalCmdMembers4[1])));
+                break;
 
-                case("ACTIVATE_BASE_PRODUCTION") :
-                    notifyObserver(o -> o.onUpdateBaseActivation(ResourceType.valueOf(cmdMembers[1]), ResourceType.valueOf(cmdMembers[2]), ResourceType.valueOf(cmdMembers[3])));
-                    break;
+            case("BUY_CARD") :
+                String[] finalCmdMembers5 = cmdMembers;
+                notifyObserver(o -> o.onUpdateBuyCard(Integer.parseInt(finalCmdMembers5[1]), Integer.parseInt(finalCmdMembers5[2])));
+                break;
+
+            case("ACTIVATE_EXTRA_PRODUCTION") :
+                String[] finalCmdMembers6 = cmdMembers;
+                notifyObserver(o -> o.onUpdateActivateExtraProduction(Integer.parseInt(finalCmdMembers6[1]),ResourceType.valueOf(finalCmdMembers6[2])));
+                break;
+
+            case("ACTIVATE_BASE_PRODUCTION") :
+                String[] finalCmdMembers7 = cmdMembers;
+                notifyObserver(o -> o.onUpdateBaseActivation(ResourceType.valueOf(finalCmdMembers7[1]), ResourceType.valueOf(finalCmdMembers7[2]), ResourceType.valueOf(finalCmdMembers7[3])));
+                break;
 
                 case("END_TURN") :
                     notifyObserver(o -> o.onUpdateEndTurn());
@@ -377,6 +385,11 @@ public class CLI extends ViewObservable implements IView {
                     notifyObserver(o -> o.onUpdateSourceStrongBox());
                     break;
             }
+            case("END_TURN") :
+                notifyObserver(o -> o.onUpdateEndTurn());
+                break;
+
+            case("UNKNOWN_COMMAND"): break;
         }
     }
 
@@ -446,16 +459,27 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printLeaders(List<LeaderCard> leaderCards) {
 
+        //
+
+        currentTurn("What's your action now?");
     }
 
     @Override
-    public void printResourceMarket(ResourceType[][] resourceMarket, ResourceType extraMarble) {
+    public void printResourceMarket(String reducedResourceMarket) {
 
+        out.println("\nThe ResourceMarket has been modified, here's an updated version: ");
+
+        lightweightModel.setReducedResourceMarket(reducedResourceMarket);
+        out.println(reducedResourceMarket);
     }
 
     @Override
-    public void printAvailableCards(List<ProductionCard> availableCards) {
+    public void printAvailableCards(String reducedAvailableCards) {
 
+        out.println("\nThe ProductionCardsMarket has been modified, here's an updated version: ");
+
+        lightweightModel.setReducedAvailableCards(reducedAvailableCards);
+        out.println(reducedAvailableCards);
     }
 
     @Override
@@ -476,14 +500,15 @@ public class CLI extends ViewObservable implements IView {
         out.println(
             "-------------------------------------------------------------------------------------------------------------" +
             "\nHere's a complete list of the accepted commands:" +
-                "\n - 'DISCARD_LEADER': Discards one of your leader cards (Requires a valid card index);" +
-                "\n - 'ACTIVATE_LEADER': Places one of your leader cards (Requires a valid card index);" +
-                "\n - 'GET_RESOURCES': Gets resources from the market (Requires and index form 0 to 6);" +
-                "\n - 'BUY_CARD': Buys an available card (Requires a valid card index and a valid production slot index);" +
-                "\n - 'BASE_PRODUCTION':Activates the base production (asks you 2 input resources and 1 output resource);" +
+                "\n - 'DISCARD_LEADER <int>': Discards one of your leader cards (Requires a valid card index);" +
+                "\n - 'ACTIVATE_LEADER <int>': Places one of your leader cards (Requires a valid card index);" +
+                "\n - 'GET_RESOURCES <int>': Gets resources from the market (Requires and index form 0 to 6);" +
+                "\n - 'BUY_CARD <int>': Buys an available card (Requires a valid card index and a valid production slot index);" +
+                "\n - 'BASE_PRODUCTION <ResourceType> <ResourceType> <ResourceType>': " +
+                    "\n     Activates the base production (asks you 2 input resources and 1 output resource);" +
                 "\n - 'CARD_PRODUCTION': " +
                 "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
-                "--------------------------------------------------------------------------------------------------------------"
+                "\n--------------------------------------------------------------------------------------------------------------"
         );
     }
 

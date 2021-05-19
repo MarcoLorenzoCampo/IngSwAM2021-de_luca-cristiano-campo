@@ -16,12 +16,16 @@ public class AvailableCardsMessage extends Message {
 
     private static final long serialVersionUID = -3293539323683782350L;
 
-    private final List<ProductionCard> availableCards;
+    private final String reducedAvailableCards;
 
-    public AvailableCardsMessage(List<ProductionCard> availableCards) {
+    public AvailableCardsMessage(String reducedAvailableCards) {
 
         super.setMessageType(PossibleMessages.AVAILABLE_PRODUCTION_CARDS);
 
-        this.availableCards = availableCards;
+        this.reducedAvailableCards = reducedAvailableCards;
+    }
+
+    public String getReducedAvailableCards() {
+        return reducedAvailableCards;
     }
 }

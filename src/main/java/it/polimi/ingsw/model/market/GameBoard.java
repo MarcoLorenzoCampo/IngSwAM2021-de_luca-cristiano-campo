@@ -6,7 +6,7 @@ package it.polimi.ingsw.model.market;
  * {@link ResourceMarket}
  * {@link ProductionCardMarket}
  */
-public class GameBoard implements IGameBoard {
+public class GameBoard {
 
     /**
      * Resource Market.

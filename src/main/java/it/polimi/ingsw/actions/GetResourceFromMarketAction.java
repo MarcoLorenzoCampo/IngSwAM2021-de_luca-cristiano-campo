@@ -46,7 +46,7 @@ public class GetResourceFromMarketAction extends Action {
      * Picks resources from market, deposits them and asks for an exchange if necessary.
      */
     private void runAction() {
-        this.game.getIGameBoard()
+        this.game.getGameBoard()
                 .getResourceMarket()
                 .pickResources(indexToPickFrom);
 

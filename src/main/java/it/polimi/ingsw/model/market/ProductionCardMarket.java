@@ -18,9 +18,7 @@ import static it.polimi.ingsw.enumerations.Level.*;
 /**
  * Class containing the production card deck and method to buy/discard cards.
  */
-public class ProductionCardMarket extends Observable implements Serializable {
-
-    private static final long serialVersionUID = 1029202032029908073L;
+public class ProductionCardMarket extends Observable {
 
     /**
      * Whole production cards deck.
@@ -62,7 +60,7 @@ public class ProductionCardMarket extends Observable implements Serializable {
 
         sortAvailableCardsByLevel();
 
-        notifyObserver(new AvailableCardsMessage(this.availableCards));
+        reduceAndNotify();
     }
 
     /**
@@ -93,9 +91,10 @@ public class ProductionCardMarket extends Observable implements Serializable {
                 .getCurrentPlayer()
                 .getPlayerBoard()
                 .increaseBoughCardsCount();
+
         sortAvailableCardsByLevel();
 
-        notifyObserver(new AvailableCardsMessage(this.availableCards));
+        reduceAndNotify();
     }
 
     /**
@@ -115,7 +114,7 @@ public class ProductionCardMarket extends Observable implements Serializable {
             }
         }
 
-        notifyObserver(new AvailableCardsMessage(this.availableCards));
+        reduceAndNotify();
     }
 
     /**
@@ -145,5 +144,20 @@ public class ProductionCardMarket extends Observable implements Serializable {
                 .stream()
                 .sorted(Comparator.comparing(ProductionCard::getLevel))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Auxiliary method to reduce available Cards with the appropriate method and send
+     * the reduced list to an observer.
+     */
+    private void reduceAndNotify() {
+
+        String reducedAvailableCards = "";
+
+        for (int i = 0; i < availableCards.size(); i++) {
+            reducedAvailableCards = reducedAvailableCards.concat(availableCards.get(i).reduce() + "\n");
+        }
+
+        notifyObserver(new AvailableCardsMessage(reducedAvailableCards));
     }
 }

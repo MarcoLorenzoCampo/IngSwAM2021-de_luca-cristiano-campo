@@ -141,8 +141,8 @@ public final class CommandParser {
                 } else {
                     return "\nInvalid four words command.";
                 }
-        }
 
-        return "\nToo many arguments!";
+            default: return "UNKNOWN_COMMAND";
+        }
     }
 }
