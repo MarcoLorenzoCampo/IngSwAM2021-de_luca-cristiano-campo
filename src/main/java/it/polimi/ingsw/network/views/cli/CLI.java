@@ -28,6 +28,11 @@ public class CLI extends ViewObservable implements IView {
     private final boolean isOffline;
 
     /**
+     * Light and read only copy of the udated model.
+     */
+    private final LightweightModel lightweightModel;
+
+    /**
      * Clears the terminal.
      */
     public static void clearCLI() {
@@ -373,25 +378,23 @@ public class CLI extends ViewObservable implements IView {
                 notifyObserver(o -> o.onUpdateBaseActivation(ResourceType.valueOf(finalCmdMembers7[1]), ResourceType.valueOf(finalCmdMembers7[2]), ResourceType.valueOf(finalCmdMembers7[3])));
                 break;
 
-                case("END_TURN") :
-                    notifyObserver(o -> o.onUpdateEndTurn());
-                    break;
-
-                case("WAREHOUSE") :
-                    notifyObserver(o -> o.onUpdateSourceWarehouse());
-                    break;
-
-                case("STRONGBOX") :
-                    notifyObserver(o -> o.onUpdateSourceStrongBox());
-                    break;
-            }
             case("END_TURN") :
                 notifyObserver(o -> o.onUpdateEndTurn());
                 break;
 
+            case("WAREHOUSE") :
+                notifyObserver(o -> o.onUpdateSourceWarehouse());
+                break;
+
+            case("STRONGBOX") :
+                notifyObserver(o -> o.onUpdateSourceStrongBox());
+                break;
+
             case("UNKNOWN_COMMAND"): break;
-        }
+            }
+
     }
+
 
     /**
      * When the current player's turn is over, his input stream is shut down.
