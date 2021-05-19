@@ -22,11 +22,6 @@ import static it.polimi.ingsw.network.server.Server.LOGGER;
 public final class MultiPlayerLobbyManager implements ILobbyManager {
 
     /**
-     * Hardcoded. Default value and can't be changed.
-     */
-    private static final int MAX_PLAYERS = 4;
-
-    /**
      * Lobby dimension set by the first client to connect.
      */
     private int lobbySize;
@@ -98,17 +93,15 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      * @param nickname: name associated to the player;
      */
     @Override
-    public void reconnectPlayer(String nickname) {
+    public void reconnectPlayer(String nickname, VirtualView vv) {
 
         for(RealPlayer realPlayer : realPlayerList) {
             if(realPlayer.getName().equals(nickname)) {
                 realPlayer.getPlayerState().connect();
 
-                viewsByNickname
-                        .get(nickname)
-                        .showLoginOutput(true, true, true);
+                vv.showLoginOutput(true, true, true);
 
-                broadcastToAllExceptCurrent("Player reconnected: " + nickname, nickname);
+                broadcastGenericMessage("Player reconnected: " + nickname);
             }
         }
     }
@@ -208,7 +201,6 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
 
             int i = turnOfPlayer(current);
 
-
             switch(i) {
                 case 0:
                     viewsByNickname.get(current).askSetupResource(0);
@@ -263,6 +255,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      * @param nicknameToExclude: current player.
      */
     public void broadcastToAllExceptCurrent(String message, String nicknameToExclude) {
+
         viewsByNickname.entrySet().stream()
                 .filter(entry -> !nicknameToExclude.equals(entry.getKey()))
                 .map(Map.Entry::getValue)

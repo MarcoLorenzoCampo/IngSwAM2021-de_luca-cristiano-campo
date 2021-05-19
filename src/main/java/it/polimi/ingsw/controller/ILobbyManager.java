@@ -18,7 +18,7 @@ public interface ILobbyManager {
     List<RealPlayer> getRealPlayerList();
     int getNumberOfTurns();
     int getLobbySize();
-    void reconnectPlayer(String nickname);
+    void reconnectPlayer(String nickname, VirtualView vv);
     void broadcastGenericMessage(String message);
     void broadCastWinMessage(String message);
     void broadCastMatchInfo();

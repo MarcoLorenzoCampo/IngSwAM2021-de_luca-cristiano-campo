@@ -26,10 +26,9 @@ import java.util.stream.Collectors;
  * <port#> : int from 1024 to Integer.GET_MAX;
  *
  */
-public class Server implements Serializable {
+public class Server {
 
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
-    private static final long serialVersionUID = -6336401959495770721L;
 
     /**
      * Reference to the controller.
@@ -104,7 +103,7 @@ public class Server implements Serializable {
 
                     //The player matched is currently offline, he can reconnect.
                     clientHandlerMap.put(nickname, clientHandler);
-                    reconnectKnownPlayer(nickname, clientHandler, virtualView);
+                    reconnectKnownPlayer(nickname, virtualView);
 
                 } else {
 
@@ -202,11 +201,9 @@ public class Server implements Serializable {
     /**
      * Method to reconnect the player if necessary.
      * @param nickname: name of the player.
-     * @param clientHandler: handler of the player.
      */
-    private void reconnectKnownPlayer(String nickname, ClientHandler clientHandler, VirtualView vv) {
-
-        gameManager.getLobbyManager().reconnectPlayer(nickname);
+    private void reconnectKnownPlayer(String nickname, VirtualView vv) {
+        gameManager.getLobbyManager().reconnectPlayer(nickname, vv);
     }
 
     /**

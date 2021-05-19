@@ -106,7 +106,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
     }
 
     @Override
-    public void reconnectPlayer(String nickname) {
+    public void reconnectPlayer(String nickname, VirtualView vv) {
 
     }
 
