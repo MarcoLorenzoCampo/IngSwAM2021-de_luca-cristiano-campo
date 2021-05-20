@@ -59,6 +59,8 @@ public final class ActionManager {
             actionAccepted = false;
         } catch (MustPerformActionException e) {
             actionAccepted = false;
+        } catch (IndexOutOfBoundsException e) {
+            actionAccepted = false;
         }
     }
 

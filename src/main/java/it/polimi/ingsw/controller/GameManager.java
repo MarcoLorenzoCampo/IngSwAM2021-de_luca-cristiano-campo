@@ -393,9 +393,10 @@ public final class GameManager implements Observer, Serializable {
                         if(currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().isEmpty()){
                             currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
                         }
-                        onStartTurn();
+
                     }
                 }
+                onStartTurn();
                 break;
 
             case ACTIVATE_PRODUCTION:
@@ -431,6 +432,7 @@ public final class GameManager implements Observer, Serializable {
                             //reset all productions
                             currentGame.setCurrentState(PossibleGameStates.PLAYING);
                         }
+                        onStartTurn();
                 }
                 break;
 
@@ -457,6 +459,7 @@ public final class GameManager implements Observer, Serializable {
                     }
 
                 }
+                onStartTurn();
                 break;
 
             case MAIN_ACTION_DONE:
@@ -467,22 +470,23 @@ public final class GameManager implements Observer, Serializable {
                         lobbyManager.setNextTurn();
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
+                    else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                             && currentPlayerState.getHasPlaceableLeaders()
                             && !currentPlayerState.getHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
                         actionManager
                                 .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
+                        onStartTurn();
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
+                    else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
                             && currentPlayerState.getHasPlaceableLeaders()
                             && !currentPlayerState.getHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
                         actionManager
                                 .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
+                        onStartTurn();
                     }
-                    onStartTurn();
                 }
                 break;
         }
