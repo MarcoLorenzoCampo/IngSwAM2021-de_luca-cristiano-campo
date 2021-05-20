@@ -51,12 +51,14 @@ public enum PossibleMessages {
     WIN_MESSAGE,
     YOUR_TURN,
     EXECUTE_PRODUCTION,
-
-    //Notification message sent by the model to the controller
-    VATICAN_REPORT_NOTIFICATION,
     BUFFER,
     STRONGBOX,
     WAREHOUSE,
     PRODUCTION_BOARD,
-    FINAL_PRODUCTION
+    FINAL_PRODUCTION,
+
+    //Notification message sent by the model to the controller
+    VATICAN_REPORT_NOTIFICATION,
+    DISCARDED_RESOURCE
+
 }

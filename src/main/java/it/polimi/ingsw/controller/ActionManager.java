@@ -48,7 +48,9 @@ public final class ActionManager {
             //gameManager.getLobbyManager().setNextTurn();
 
         } catch (NoMatchingRequisitesException e) {
-            actionAccepted = false;
+            gameManager.getCurrentView()
+                    .showInvalidAction("You don't fulfill the requirements to buy this card!\n");
+
         } catch (LeaderCardException e) {
             actionAccepted = false;
         } catch (EndGameException e) {

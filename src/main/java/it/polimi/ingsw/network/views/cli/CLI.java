@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
+import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
@@ -108,6 +109,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void askNickname() {
+        clearCLI();
 
         out.println("\nWhat nickname would you like to use? ");
         out.print(">>> ");
@@ -122,6 +124,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void askPlayerNumber() {
+        clearCLI();
 
         if(isOffline) {
             notifyObserver(o -> o.onUpdateNumberOfPlayers(1));
@@ -189,6 +192,8 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void askReplacementResource(ResourceType r1, ResourceType r2) {
+        clearCLI();
+
         out.println("You just bought resources from the market." +
                 "It appears you have a choice though." +
                 "\nWhat resource would you like to get for this white marble?");
@@ -397,19 +402,22 @@ public class CLI extends ViewObservable implements IView {
                 break;
 
             case("END_TURN") :
-                notifyObserver(o -> o.onUpdateEndTurn());
+                notifyObserver(ViewObserver::onUpdateEndTurn);
                 break;
 
             case("WAREHOUSE") :
-                notifyObserver(o -> o.onUpdateSourceWarehouse());
+                notifyObserver(ViewObserver::onUpdateSourceWarehouse);
                 break;
 
             case("STRONGBOX") :
-                notifyObserver(o -> o.onUpdateSourceStrongBox());
+                notifyObserver(ViewObserver::onUpdateSourceStrongBox);
                 break;
 
-            case("UNKNOWN_COMMAND"): break;
+            case("UNKNOWN_COMMAND"):
+                out.println("\nParsing error!");
+                break;
             }
+
 
     }
 

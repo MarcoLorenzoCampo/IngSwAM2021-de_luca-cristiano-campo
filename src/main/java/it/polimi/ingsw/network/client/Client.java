@@ -64,7 +64,7 @@ public class Client extends Observable implements IClient {
 
             output = new ObjectOutputStream(clientSocket.getOutputStream());
             input = new ObjectInputStream(clientSocket.getInputStream());
-            clientLogger.info(() -> "Connection successful.");
+            //clientLogger.info(() -> "Connection successful.");
 
         } catch (IOException e) {
             clientLogger.severe(() -> "Couldn't connect to the host.");
@@ -83,7 +83,7 @@ public class Client extends Observable implements IClient {
                 Message message = null;
                 try {
                     message = (Message) input.readObject();
-                    Client.clientLogger.info("Received: " + message);
+                    //Client.clientLogger.info("Received: " + message);
                 } catch (EOFException e) {
                     Client.clientLogger.info("Stream error.");
                     disconnect();
