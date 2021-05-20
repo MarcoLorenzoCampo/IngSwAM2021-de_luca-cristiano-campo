@@ -32,7 +32,9 @@ public class DiscardLeaderCardAction extends Action {
         ActionValidator.senderValidation(actionSender);
         ActionValidator.discardLeaderValidator(leaderToDiscard);
 
-        runAction();
+        if(!game.getCurrentState().getGameState().equals(PossibleGameStates.SETUP_LEADER)) {
+            runAction();
+        }
     }
 
     private void runAction() {
