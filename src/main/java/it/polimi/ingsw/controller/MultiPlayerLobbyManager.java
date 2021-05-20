@@ -398,9 +398,9 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         //faith track
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);
         //strongbox
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().getStrongbox().addObserver(virtualView);
+        //realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().getStrongbox().addObserver(virtualView);
         //warehouse
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().getWarehouse().addObserver(virtualView);
+        //realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().getWarehouse().addObserver(virtualView);
         //production board
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
     }

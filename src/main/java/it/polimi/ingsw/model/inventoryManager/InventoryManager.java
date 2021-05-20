@@ -1,16 +1,17 @@
 package it.polimi.ingsw.model.inventoryManager;
 
-import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
-import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.strongbox.Strongbox;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.warehouse.Shelf;
 import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.network.messages.serverMessages.BufferMessage;
+import it.polimi.ingsw.network.messages.serverMessages.StrongboxMessage;
+import it.polimi.ingsw.network.messages.serverMessages.WarehouseMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,6 +99,7 @@ public class InventoryManager extends Observable {
                 iterator.setResourceType(exchange.get(0));
             }
         }
+        notifyObserver(messageUpdate());
     }
 
 
@@ -105,6 +107,7 @@ public class InventoryManager extends Observable {
         if(exchange.contains(type)) {
             buffer.get(index).setResourceType(type);
         }
+        notifyObserver(messageUpdate());
     }
 
     /**
@@ -133,6 +136,7 @@ public class InventoryManager extends Observable {
      */
     public void removeFromBuffer(int index){
         buffer.remove(buffer.get(index));
+        notifyObserver(messageUpdate());
     }
 
 
@@ -146,6 +150,7 @@ public class InventoryManager extends Observable {
         warehouse.addResource(buffer.get(index));
         inventory.put(key, inventory.get(key) + 1);
         removeFromBuffer(index);
+        updateInventory();
     }
 
 
@@ -159,6 +164,7 @@ public class InventoryManager extends Observable {
             inventory.put(iterator.getResourceType(), inventory.get(iterator.getResourceType())+1);
         }
         buffer.clear();
+        updateInventory();
     }
 
 
@@ -210,12 +216,15 @@ public class InventoryManager extends Observable {
         }
 
         for (Shelf iterator: warehouse.getShelves()) {
+            if(!iterator.getType().equals(ResourceType.UNDEFINED))
             temp.put(iterator.getType(), temp.get(iterator.getType()) + iterator.getQuantity());
         }
 
         for (ResourceType iterator : temp.keySet()){
             inventory.put(iterator, temp.get(iterator));
         }
+        notifyObserver(new StrongboxMessage((HashMap<ResourceType, Integer>) strongbox.getInventory()));
+        notifyObserver(new WarehouseMessage(warehouse));
     }
 
 
@@ -234,5 +243,9 @@ public class InventoryManager extends Observable {
 
     public void deposit(MaterialResource materialResource) {
         buffer.add(materialResource);
+    }
+
+    public BufferMessage messageUpdate(){
+        return new BufferMessage(buffer);
     }
 }
