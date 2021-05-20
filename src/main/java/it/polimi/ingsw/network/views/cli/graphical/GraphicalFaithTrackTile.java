@@ -9,22 +9,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GraphicalFaithTrackTile {
-    private static final int MAX_VERT_TILES = 15; //rows.
-    private static final int MAX_HORIZ_TILES = 15; //cols.
+    private static final int MAX_VERT_TILES = 8; //rows.
+    private static final int MAX_HORIZ_TILES = 12; //cols.
 
     private final Tile tile;
     private final String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
     private int checkpoint;
     private int vaticanSpace;
     private int index;
-    private int faithMarker;
+    private final int faithMarker;
     private ColorCLI colorCard;
     private Integer cardVaticanSpace;
 
-    private Map<Integer, ColorCLI> cardVaticanSpaceColor = new HashMap<>();
-    private Map<ResourceType, String> faithMarkerType = new HashMap<>();
+    private final Map<Integer, ColorCLI> cardVaticanSpaceColor;
+    private final Map<ResourceType, String> faithMarkerType = new HashMap<>();
 
     public GraphicalFaithTrackTile(Tile tile, int faithMarker){
+        cardVaticanSpaceColor = new HashMap<>();
         this.tile = tile;
         this.faithMarker = faithMarker;
         borderBuilding();
@@ -84,20 +85,20 @@ public class GraphicalFaithTrackTile {
     }
 
     private void insertingGraphicalFaithMarker(){
-        cells[5][5] = "\uD83D\uDD47" + " ";
+        cells[7][5] = "\uD83D\uDD47" + " "; //🕇
         cells[6][1] = "  ";
-        cells[7][1] = "  ";
-        cells[8][1] = "  ";
+        //cells[7][1] = "  ";
+        //cells[7][1] = "  ";
     }
 
     private void insertingGraphicalPope(){
-        cells[9][5] = "\u26EA";
-        cells[10][1] = "  ";
+        cells[5][5] = "\u26EA"; //⛪
+        cells[7][1] = "  ";
     }
 
     private void insertingCheckpoint(Integer checkpoint){
-        cells[11][(MAX_HORIZ_TILES / 2) - 1] = "" + checkpoint;
-        cells[12][1] = "  ";
+        cells[6][(MAX_HORIZ_TILES / 2) - 1] = "" + checkpoint;
+        cells[6][1] = "  ";
     }
 
 
@@ -110,7 +111,7 @@ public class GraphicalFaithTrackTile {
 
 
     public void draw() {
-        System.out.print(this.colorCard.escape());
+        //System.out.print(this.colorCard.escape());
         for (int r = 0; r < MAX_VERT_TILES; r++) {
             System.out.println();
             for (int c = 0; c < MAX_HORIZ_TILES; c++) {

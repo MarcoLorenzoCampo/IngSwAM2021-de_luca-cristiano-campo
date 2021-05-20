@@ -382,11 +382,12 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     private void setObserver(String nickname, VirtualView virtualView) {
         //Registering lobby manager as observer of the faith tracks.
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
+        //Registering lobby manager as observer of the inventory managers to check for discarded resources.
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(this);
 
-        //Adding an observer to the ResourceMarket.
+        //Adding the player as an observer to the ResourceMarket.
         gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
-
-        //Adding an observer to the ProductionCardMarket.
+        //Adding the player as an observer to the ProductionCardMarket.
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
 
         //Valutare observer sugli altri player.
@@ -434,22 +435,38 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     }
 
     /**
-     * The lobby manager observes each player's faith track, waiting for a vatican report notification.
+     * The lobby manager observes each player's faith track and
      * @param message: vatican report notification.
      */
     @Override
     public void update(Message message) {
 
-        if(message.getMessageType().equals(PossibleMessages.VATICAN_REPORT_NOTIFICATION)) {
+        switch(message.getMessageType()) {
+            case VATICAN_REPORT_NOTIFICATION:
+                VaticanReportNotification v = (VaticanReportNotification) message;
+                int popeTileIndex = v.getPopeTileIndex();
+                int rangeToCheck = v.getRange();
 
-            VaticanReportNotification v = (VaticanReportNotification) message;
-            int popeTileIndex = v.getPopeTileIndex();
+                for(RealPlayer realPlayer : realPlayerList) {
 
-            for(RealPlayer realPlayer : realPlayerList) {
+                    if(realPlayer.getPlayerBoard().getFaithTrack().getFaithMarker() < (popeTileIndex - rangeToCheck)
+                            && realPlayer.getPlayerState().isConnected()) {
 
-                //guardare il range
-                realPlayer.getPlayerBoard().getFaithTrack().setPopeTileInactive(popeTileIndex);
-            }
+                        realPlayer.getPlayerBoard().getFaithTrack().setPopeTileInactive(popeTileIndex);
+                    }
+                }
+                break;
+
+            case DISCARDED_RESOURCE:
+                for(RealPlayer realPlayer : realPlayerList) {
+                    if(realPlayer.getPlayerState().isConnected()) {
+                        realPlayer.getPlayerBoard().getFaithTrack().increaseFaithMarker();
+                    }
+                }
+                break;
+
+            default: //Ignore any other message
+                break;
         }
     }
 }

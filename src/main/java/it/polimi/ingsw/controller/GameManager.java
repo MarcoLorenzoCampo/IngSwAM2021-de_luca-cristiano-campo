@@ -549,6 +549,7 @@ public final class GameManager implements Observer, Serializable {
      * Resets the variable of the controller and game instance.
      */
     public void resetFSM() {
+        Server.LOGGER.info("Game ended, preparing the server for a new game . . .");
         PlayingGame.terminate();
 
     }

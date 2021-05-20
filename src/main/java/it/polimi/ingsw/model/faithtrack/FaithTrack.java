@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.faithtrack;
 
 import it.polimi.ingsw.enumerations.Constants;
 import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.network.messages.serverMessages.FaithTrackMessage;
 import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
 
 import java.io.Serializable;
@@ -83,6 +84,9 @@ public class FaithTrack extends Observable implements Serializable {
 
         this.faithMarker++;
 
+        //Notify all observers, but only the clients will get an updated version.
+        notifyObserver(new FaithTrackMessage(this));
+
         if(isPopeTile(faithMarker)) {
 
             PopeTile currentTile = (PopeTile) this.faithTrack.get(faithMarker);
@@ -94,7 +98,7 @@ public class FaithTrack extends Observable implements Serializable {
                 ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
 
                 //Notifying the controller he needs to start a vatican report session.
-                notifyObserver(new VaticanReportNotification(faithMarker));
+                notifyObserver(new VaticanReportNotification(faithMarker, cardVaticanSpace.get(faithMarker)));
             }
         }
     }
