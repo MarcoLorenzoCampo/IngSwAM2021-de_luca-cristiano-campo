@@ -3,13 +3,14 @@ package it.polimi.ingsw.model.strongbox;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.model.utilities.ResourceTag;
+import it.polimi.ingsw.network.eventHandlers.Observable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Strongbox {
-    Map<ResourceType, Integer> strongbox;
+public class Strongbox extends Observable {
 
+    private final Map<ResourceType, Integer> strongbox;
 
     /**
      * Strongbox initialization, it always holds all the elements

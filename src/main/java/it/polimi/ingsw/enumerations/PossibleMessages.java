@@ -50,5 +50,8 @@ public enum PossibleMessages {
     AVAILABLE_LEADERS,
     WIN_MESSAGE,
     YOUR_TURN,
-    EXECUTE_PRODUCTION
+    EXECUTE_PRODUCTION,
+
+    //Notification message sent by the model to the controller
+    VATICAN_REPORT_NOTIFICATION
 }

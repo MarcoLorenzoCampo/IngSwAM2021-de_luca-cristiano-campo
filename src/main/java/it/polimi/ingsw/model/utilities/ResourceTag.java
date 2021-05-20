@@ -22,6 +22,7 @@ public class ResourceTag extends Tag {
     public String toString() {
         return "ResourceTag{" +
                 "type=" + type +
+                super.toString() +
                 '}';
     }
 }

@@ -127,9 +127,10 @@ public class ResourceMarket extends Observable implements Reducible {
         LinkedList<ResourceType> pickedFromMarket = pickResourceLine(index);
         placeExtraMarble(index, pickedFromMarket.getLast());
         LinkedList<Resource> obtainedResources = ResourceBuilder.build(pickedFromMarket);
-        obtainedResources.forEach(Resource::deposit);
 
         notifyObserver(new ResourceMarketMessage(reduce()));
+
+        obtainedResources.forEach(Resource::deposit);
     }
 
     public ResourceType[][] getResourceBoard() {

@@ -27,7 +27,7 @@ public class StrongboxTest {
         strongbox.addResource(input);
 
         //Assert
-        assertEquals(2, (int) strongbox.strongbox.get(ResourceType.COIN));
+        assertEquals(2, (int) strongbox.getInventory().get(ResourceType.COIN));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class StrongboxTest {
         Assertions.assertDoesNotThrow(() -> strongbox.removeResource(toBeRemoved));
 
         //Assert
-        assertEquals(0, (int) strongbox.strongbox.get(ResourceType.COIN));
+        assertEquals(0, (int) strongbox.getInventory().get(ResourceType.COIN));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class StrongboxTest {
                 ()-> strongbox.removeResource(toBeRemoved));
 
         //Assert
-        assertEquals(0, (int) strongbox.strongbox.get(ResourceType.COIN));
+        assertEquals(0, (int) strongbox.getInventory().get(ResourceType.COIN));
         assertEquals(ResourceType.COIN, exception.getType());
         assertEquals(1, exception.getQuantity());
     }

@@ -13,8 +13,7 @@ abstract class Tag {
 
     @Override
     public String toString() {
-        return "Tag{" +
-                "quantity=" + quantity +
+        return ", quantity=" + quantity +
                 '}';
     }
 }

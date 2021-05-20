@@ -7,8 +7,10 @@ import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.PlayerState;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
+import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
 import it.polimi.ingsw.network.views.cli.ColorCLI;
 
 import java.util.*;
@@ -19,7 +21,7 @@ import static it.polimi.ingsw.network.server.Server.LOGGER;
 /**
  * Class to manage players and turns in a multiplayer game.
  */
-public final class MultiPlayerLobbyManager implements ILobbyManager {
+public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
     /**
      * Lobby dimension set by the first client to connect.
@@ -83,7 +85,7 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
         }
 
         connectPlayer(nickname);
-        setObserver(virtualView);
+        setObserver(nickname, virtualView);
     }
 
     /**
@@ -374,16 +376,33 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
     }
 
     /**
-     * Auxiliary method to add observers to the model.
+     * Auxiliary method to make player's virtual views observe directly the model.
      * @param virtualView: new observer.
      */
-    private void setObserver(VirtualView virtualView) {
+    private void setObserver(String nickname, VirtualView virtualView) {
+        //Registering lobby manager as observer of the faith tracks.
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
+
         //Adding an observer to the ResourceMarket.
         gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
+
         //Adding an observer to the ProductionCardMarket.
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
 
+        //Valutare observer sugli altri player.
+
         //Adding observers to the players.
+
+        //buffer
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
+        //faith track
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);
+        //strongbox
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().getStrongbox().addObserver(virtualView);
+        //warehouse
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().getWarehouse().addObserver(virtualView);
+        //production board
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
     }
 
     /**
@@ -391,8 +410,46 @@ public final class MultiPlayerLobbyManager implements ILobbyManager {
      */
     private void showStartingUpdates() {
         for (Map.Entry<String, VirtualView> entry : viewsByNickname.entrySet()) {
+
             entry.getValue().printResourceMarket(PlayingGame.getGameInstance().getGameBoard().getResourceMarket().reduce());
             entry.getValue().printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().reduce());
+
+            entry.getValue().printFaithTrack(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getFaithTrack());
+        }
+    }
+
+    /**
+     * Helper method to find a player in the player list by using his nicknae.
+     * @param nickname: name to find
+     * @return: index of said nickname.
+     */
+    private int getPlayerByNickname(String nickname) {
+
+        for(int i=0; i<realPlayerList.size(); i++) {
+            if(realPlayerList.get(i).getName().equals(nickname)) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * The lobby manager observes each player's faith track, waiting for a vatican report notification.
+     * @param message: vatican report notification.
+     */
+    @Override
+    public void update(Message message) {
+
+        if(message.getMessageType().equals(PossibleMessages.VATICAN_REPORT_NOTIFICATION)) {
+
+            VaticanReportNotification v = (VaticanReportNotification) message;
+            int popeTileIndex = v.getPopeTileIndex();
+
+            for(RealPlayer realPlayer : realPlayerList) {
+
+                //guardare il range
+                realPlayer.getPlayerBoard().getFaithTrack().setPopeTileInactive(popeTileIndex);
+            }
         }
     }
 }

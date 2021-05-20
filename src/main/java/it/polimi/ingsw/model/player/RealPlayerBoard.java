@@ -30,12 +30,12 @@ public class RealPlayerBoard {
     /**
      * Reference to the production cards bought.
      */
-    ProductionBoard productionBoard;
+    private final ProductionBoard productionBoard;
 
     /**
      * Reference to the inventory manager.
      */
-    InventoryManager inventoryManager;
+    private final InventoryManager inventoryManager;
 
     public RealPlayerBoard(String owner) {
         this.owner = owner;
