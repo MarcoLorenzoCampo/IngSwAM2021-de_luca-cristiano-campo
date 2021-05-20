@@ -5,6 +5,7 @@ import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.utilities.Reducible;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.AvailableCardsMessage;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
@@ -18,7 +19,7 @@ import static it.polimi.ingsw.enumerations.Level.*;
 /**
  * Class containing the production card deck and method to buy/discard cards.
  */
-public class ProductionCardMarket extends Observable {
+public class ProductionCardMarket extends Observable implements Reducible {
 
     /**
      * Whole production cards deck.
@@ -154,10 +155,21 @@ public class ProductionCardMarket extends Observable {
 
         String reducedAvailableCards = "";
 
-        for (int i = 0; i < availableCards.size(); i++) {
-            reducedAvailableCards = reducedAvailableCards.concat(availableCards.get(i).reduce() + "\n");
+        for (ProductionCard availableCard : availableCards) {
+            reducedAvailableCards = reducedAvailableCards.concat(availableCard.reduce() + "\n");
         }
 
         notifyObserver(new AvailableCardsMessage(reducedAvailableCards));
+    }
+
+    @Override
+    public String reduce() {
+        String reducedAvailableCards = "";
+
+        for (ProductionCard availableCard : availableCards) {
+            reducedAvailableCards = reducedAvailableCards.concat(availableCard.reduce() + "\n");
+        }
+
+        return reducedAvailableCards;
     }
 }

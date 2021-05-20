@@ -91,12 +91,14 @@ public class ProductionCard extends BaseProduction implements Reducible {
         String signature =  "--- ProductionCard ---" +
             "\nLevel: " + level +
             "\nColor: " + color +
-            "\nVictory Points: " + victoryPoints;
+            "\nVictory Points: " + victoryPoints + "\n";
 
         String req = "";
         for (ResourceTag requirement : requirements) {
             req = req.concat(requirement.toString()) + "\n";
         }
+
+
 
         String input = "";
         for (int i=0; i<super.getInputResources().size(); i++) {
@@ -108,6 +110,9 @@ public class ProductionCard extends BaseProduction implements Reducible {
             output = output.concat(super.getOutputResources().get(j).toString()) + "\n";
         }
 
-        return signature + req + input + output;
+        return signature + "\n" + "Requirements:\n" + req + "\n"
+                + "Input resources:\n" +  input + "\n"
+                + "Output provided:\n" + output + "\n"
+                + "\n------------------+++++\n";
     }
 }

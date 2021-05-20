@@ -10,6 +10,7 @@ import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
+import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrackTile;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -317,6 +318,14 @@ public class CLI extends ViewObservable implements IView {
         String[] cmdMembers;
         String output;
 
+        /*if(lightweightModel.getReducedResourceMarket() != null && lightweightModel.getReducedAvailableCards() != null) {
+
+            out.println("Showing: Updated ProductionCardMarket and ResourceMarket!\n\n");
+
+            out.println(lightweightModel.getReducedAvailableCards());
+            out.println(lightweightModel.getReducedResourceMarket());
+        }*/
+
         //enable player input
         out.println("\nIt's your turn now. Chose an action to perform!" +
                 "\n[type -help for a complete list of actions]");
@@ -335,8 +344,11 @@ public class CLI extends ViewObservable implements IView {
             output = CommandParser.parseCmd(cmdMembers);
 
             if(output.equals("HELP")) printPossibleActions();
+            if(output.equals("CHECK_MARKET")) out.println(lightweightModel.getReducedResourceMarket());
+            if(output.equals("CHECK_CARDS")) out.println(lightweightModel.getReducedAvailableCards());
 
-        } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP"));
+        } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP")
+                || output.equals("CHECK_MARKET") || output.equals("CHECK_CARDS"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
@@ -472,7 +484,7 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printResourceMarket(String reducedResourceMarket) {
 
-        out.println("\nThe ResourceMarket has been modified, here's an updated version: ");
+        out.println("\nThe ResourceMarket has been modified, here's an updated version: \n");
 
         lightweightModel.setReducedResourceMarket(reducedResourceMarket);
         out.println(reducedResourceMarket);
@@ -481,7 +493,7 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printAvailableCards(String reducedAvailableCards) {
 
-        out.println("\nThe ProductionCardsMarket has been modified, here's an updated version: ");
+        out.println("\nThe ProductionCardsMarket has been modified, here's an updated version: \n");
 
         lightweightModel.setReducedAvailableCards(reducedAvailableCards);
         out.println(reducedAvailableCards);
@@ -489,7 +501,10 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
-
+        for(int i = 0; i < faithTrack.getFaithTrack().size(); i++){
+            GraphicalFaithTrackTile graphicalFaithTrackTile = new GraphicalFaithTrackTile(faithTrack.getFaithTrack().get(i), faithTrack.getFaithMarker());
+            graphicalFaithTrackTile.draw();
+        }
     }
 
     @Override
@@ -513,7 +528,8 @@ public class CLI extends ViewObservable implements IView {
                     "\n     Activates the base production (asks you 2 input resources and 1 output resource);" +
                 "\n - 'CARD_PRODUCTION': " +
                 "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
-                "\n--------------------------------------------------------------------------------------------------------------"
+                "" +
+                "\n-------------------------------------------------------------------------------------------------------------\n"
         );
     }
 

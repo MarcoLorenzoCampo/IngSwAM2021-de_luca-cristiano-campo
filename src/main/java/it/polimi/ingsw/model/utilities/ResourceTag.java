@@ -17,4 +17,11 @@ public class ResourceTag extends Tag {
     public void setType(ResourceType type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "ResourceTag{" +
+                "type=" + type +
+                '}';
+    }
 }
