@@ -12,8 +12,8 @@ public class GraphicalFaithTrackTile {
     private static final int MAX_VERT_TILES = 15; //rows.
     private static final int MAX_HORIZ_TILES = 15; //cols.
 
-    private Tile tile;
-    private String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
+    private final Tile tile;
+    private final String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
     private int checkpoint;
     private int vaticanSpace;
     private int index;

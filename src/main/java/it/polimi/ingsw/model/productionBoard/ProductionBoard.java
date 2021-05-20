@@ -10,10 +10,11 @@ import it.polimi.ingsw.model.utilities.BaseProduction;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
+import it.polimi.ingsw.network.eventHandlers.Observable;
 
 import java.util.*;
 
-public class ProductionBoard {
+public class ProductionBoard extends Observable {
     private final ProductionSlot[] productionSlots  ;
     private final ArrayList<ExtraProductionLeaderCard> leaderProductions;
     private boolean baseProductionSelected;

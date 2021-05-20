@@ -33,7 +33,7 @@ public final class GameManager implements Observer, Serializable {
 
     private boolean gameStarted = false;
     private boolean firstTurn;
-    private Map<String, VirtualView> virtualViewLog;
+    private final Map<String, VirtualView> virtualViewLog;
 
     private String currentPlayer;
     private VirtualView currentView;

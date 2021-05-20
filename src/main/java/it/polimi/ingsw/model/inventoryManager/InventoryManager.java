@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.warehouse.Shelf;
 import it.polimi.ingsw.model.warehouse.Warehouse;
+import it.polimi.ingsw.network.eventHandlers.Observable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,13 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class InventoryManager {
+public class InventoryManager extends Observable {
+
     private ArrayList<MaterialResource> buffer;
     private final Warehouse warehouse;
     private final Strongbox strongbox;
     private final Map<ResourceType, Integer> inventory;
-    private ArrayList<ResourceType> exchange;
-    private ArrayList<ResourceType> discount;
+    private final ArrayList<ResourceType> exchange;
+    private final ArrayList<ResourceType> discount;
 
     public InventoryManager(){
         buffer = new ArrayList<>();

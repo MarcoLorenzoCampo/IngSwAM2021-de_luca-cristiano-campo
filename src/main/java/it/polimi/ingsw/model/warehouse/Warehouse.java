@@ -5,19 +5,19 @@ import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
+import it.polimi.ingsw.network.eventHandlers.Observable;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class Warehouse {
-    private ArrayList<Shelf> shelves;
+public class Warehouse extends Observable {
 
+    private final ArrayList<Shelf> shelves;
 
     public ArrayList<Shelf> getShelves() {
         return shelves;
     }
-
 
     /**
      * warehouse constructor, initializes shelves as an arraylist of size 3 with all elements as
@@ -29,7 +29,6 @@ public class Warehouse {
             shelves.add(new Shelf(ResourceType.UNDEFINED, i+1));
         }
     }
-
 
     /**
      *
@@ -268,7 +267,7 @@ public class Warehouse {
             if(quantity > 0) throw new CannotRemoveResourceException(tag.getType(), quantity);
         }
         else{
-            throw  new CannotRemoveResourceException(tag.getType(), tag.getQuantity());
+            throw new CannotRemoveResourceException(tag.getType(), tag.getQuantity());
         }
     }
 }

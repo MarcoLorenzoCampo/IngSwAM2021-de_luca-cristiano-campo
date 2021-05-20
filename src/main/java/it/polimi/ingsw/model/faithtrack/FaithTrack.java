@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.faithtrack;
 
-import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.enumerations.Constants;
-import it.polimi.ingsw.model.player.RealPlayer;
+import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,17 +12,17 @@ import java.lang.*;
 import java.util.Map;
 
 
-public class FaithTrack {
+public class FaithTrack extends Observable implements Serializable {
 
-    GameManager gameManager;
+    private static final long serialVersionUID = 7136541748211952620L;
 
-    List<Tile> faithTrack = new ArrayList<>();
+    private final List<Tile> faithTrack = new ArrayList<>();
     private int finalPoints;
     private int faithMarker;
     private int currentFavorPoints;
     public Map<Integer, Integer> cardVaticanSpace = new HashMap<>();
 
-    List<Integer> checkpoints = new ArrayList<>();
+    private List<Integer> checkpoints = new ArrayList<>();
 
     public FaithTrack() {
         this.faithMarker=0;
@@ -30,9 +31,7 @@ public class FaithTrack {
         initFaithTrack();
         initCheckpoint();
         initCardVaticanSpace();
-        //this.gameManager = gameManager;
     }
-
 
     private void initFaithTrack() {
         faithTrack.add(new SimpleTile(0, Constants.NEUTRAL, 0));
@@ -62,7 +61,6 @@ public class FaithTrack {
         faithTrack.add(new PopeTile(24, Constants.RED, 20));
     }
 
-
     private void initCheckpoint() {
         checkpoints.add(0);
         checkpoints.add(1);
@@ -82,13 +80,21 @@ public class FaithTrack {
      * it eventually activates vatican reports.
      */
     public void increaseFaithMarker(){
+
         this.faithMarker++;
+
         if(isPopeTile(faithMarker)) {
+
             PopeTile currentTile = (PopeTile) this.faithTrack.get(faithMarker);
-            if(currentTile.getIsActive()){
+
+            if(currentTile.getIsActive()) {
+
                 pickFavorPoints(currentTile);
-                checkOtherPlayerPosition(currentTile);
+
                 ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
+
+                //Notifying the controller he needs to start a vatican report session.
+                notifyObserver(new VaticanReportNotification(faithMarker));
             }
         }
     }
@@ -105,7 +111,6 @@ public class FaithTrack {
      * @return points due to checkpoints
      */
     public int calculationCheckPoints(){
-
         return faithTrack.get(this.faithMarker).getCheckpoint();
 
     }
@@ -118,28 +123,6 @@ public class FaithTrack {
         return currentFavorPoints;
     }
 
-
-
-
-
-
-
-
-    //comparison between players' faith marker
-    public void checkOtherPlayerPosition(PopeTile popeT) {
-        /*List<RealPlayer> temp = gameManager.getLobbyManager().getRealPlayerList();
-
-        for(RealPlayer player : temp) {
-            player.getPlayerBoard().getFaithTrack().receiveControl(popeT);
-        }*/
-    }
-
-
-
-
-
-
-
     //control that the player is in the Vatican space during Vatican report to earn points
     public void receiveControl(PopeTile popeT){
         if(this.faithTrack.get(this.faithMarker).getVaticanSpace() == popeT.getVaticanSpace()){
@@ -149,6 +132,13 @@ public class FaithTrack {
 
     public boolean isPopeTile(int faithMarker){
         return (faithMarker == 8) || (faithMarker == 16) || (faithMarker == 24);
+    }
+
+    public void setPopeTileInactive(int index) {
+        if(isPopeTile(index)) {
+            PopeTile p = (PopeTile) faithTrack.get(8);
+            p.setIsActive(false);
+        }
     }
 
     public void calculationFinalPoints(){

@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.faithtrack;
 
-public class Tile {
+import java.io.Serializable;
+
+public class Tile implements Serializable {
+    private static final long serialVersionUID = -1082270924910375418L;
     private int index;
     private int vaticanSpace;
     private int checkpoint;
