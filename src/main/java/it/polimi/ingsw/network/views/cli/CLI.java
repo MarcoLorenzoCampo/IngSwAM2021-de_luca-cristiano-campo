@@ -10,6 +10,7 @@ import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
+import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrackTile;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -266,6 +267,8 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
+
+
         for (LeaderCard iterator: cards) {
 
             switch (iterator.getEffectType()){
@@ -498,7 +501,10 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
-
+        for(int i = 0; i < faithTrack.getFaithTrack().size(); i++){
+            GraphicalFaithTrackTile graphicalFaithTrackTile = new GraphicalFaithTrackTile(faithTrack.getFaithTrack().get(i), faithTrack.getFaithMarker());
+            graphicalFaithTrackTile.draw();
+        }
     }
 
     @Override

@@ -140,7 +140,8 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 break;
 
             case YOUR_TURN:
-                viewUpdater.execute(() -> view.currentTurn("It's your turn!"));
+                YourTurnMessage yourTurnMessage = (YourTurnMessage) message;
+                viewUpdater.execute(() -> view.currentTurn(yourTurnMessage.getMessage()));
                 break;
 
             default: break;

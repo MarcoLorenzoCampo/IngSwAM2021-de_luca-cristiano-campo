@@ -4,10 +4,11 @@ public class PopeTile extends Tile {
     private int vaticanReportRange;
     boolean isActive;
     private int popeFavorPoints;
+    private int checkpoint;
 
 
-    public PopeTile(int index,int vaticanSpace) {
-        super(index, vaticanSpace);
+    public PopeTile(int index,int vaticanSpace, int checkpoint) {
+        super(index, vaticanSpace, checkpoint);
         isActive = true;
     }
 

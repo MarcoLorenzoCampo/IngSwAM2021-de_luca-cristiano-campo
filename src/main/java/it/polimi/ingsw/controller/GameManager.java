@@ -259,7 +259,7 @@ public final class GameManager implements Observer, Serializable {
                         }
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.GET_RESOURCES)){
+                    else if(message.getMessageType().equals(PossibleMessages.GET_RESOURCES)){
                         OneIntMessage get_resources = (OneIntMessage) message;
                         actionManager
                                 .onReceiveAction(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame));
@@ -281,7 +281,7 @@ public final class GameManager implements Observer, Serializable {
                         }
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)
+                    else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)
                     || message.getMessageType().equals(PossibleMessages.ACTIVATE_PRODUCTION)
                     || message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
 
@@ -311,7 +311,7 @@ public final class GameManager implements Observer, Serializable {
                         currentGame.setCurrentState(PossibleGameStates.ACTIVATE_PRODUCTION);
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
+                    else if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
                         TwoIntMessage buy_card = (TwoIntMessage) message;
                         actionManager
                                 .onReceiveAction(new BuyProductionCardAction(buy_card.getSenderUsername(), currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy_card.getFirstNumber()),
@@ -320,7 +320,7 @@ public final class GameManager implements Observer, Serializable {
                             currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
+                    else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                         && currentPlayerState.getHasPlaceableLeaders()
                         && !currentPlayerState.getHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
@@ -328,7 +328,7 @@ public final class GameManager implements Observer, Serializable {
                                 .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
+                    else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
                         && currentPlayerState.getHasPlaceableLeaders()
                         && !currentPlayerState.getHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
@@ -336,10 +336,7 @@ public final class GameManager implements Observer, Serializable {
                                 .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                     }
                 }
-                //currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
-
                 onStartTurn();
-
                 break;
 
 
@@ -410,20 +407,20 @@ public final class GameManager implements Observer, Serializable {
                                             activate_prod.getIndex(), currentGame));
                         }
 
-                        if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)) {
+                        else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)) {
                             BaseProductionMessage base_prod = (BaseProductionMessage) message;
                             actionManager
                                     .onReceiveAction(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
                                             base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
                         }
 
-                        if(message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
+                        else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
                             ExtraProductionMessage extra_prod = (ExtraProductionMessage) message;
                             actionManager
                                     .onReceiveAction(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
                                             extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
                         }
-                        if(message.getMessageType().equals(PossibleMessages.EXECUTE_PRODUCTION)){
+                        else if(message.getMessageType().equals(PossibleMessages.EXECUTE_PRODUCTION)){
                             actionManager
                                     .onReceiveAction(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
                         }
@@ -485,6 +482,7 @@ public final class GameManager implements Observer, Serializable {
                         actionManager
                                 .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                     }
+                    onStartTurn();
                 }
                 break;
         }
@@ -510,15 +508,31 @@ public final class GameManager implements Observer, Serializable {
                 currentView.currentTurn("\n Choose an action to perform.");
                 break;
 
+            case CHANGE_COLOR:
+                currentView.currentTurn("\nLooks like you can change white marbles, please select the resource type you want");
+                break;
+
+            case DEPOSIT:
+                currentView.currentTurn("\n Resources have been added to your buffer! Please deposit them in your warehouse");
+                break;
+
+            case BUY_CARD:
+                currentView.currentTurn("\n The card is yours! Time to pay now");
+                break;
+
+            case ACTIVATE_PRODUCTION:
+                currentView.currentTurn("\nAdding productions to your final production,when you are ready execute them");
+                break;
+
+            case REMOVE:
+                currentView.currentTurn("\n The production was successful! Please remove the needed resources");
+                break;
+
             case MAIN_ACTION_DONE:
                 currentView.currentTurn("\n Main action performed you can place/discard leaders or peek on other players.");
                 break;
 
-            case DEPOSIT:
-                currentView.currentTurn("\n Main action performed you can place/discard leaders or peek on other players.");
-                break;
-
-            default: break;
+                default: currentView.currentTurn("\n Your command cannot be processed now, please try a different one");
         }
     }
 

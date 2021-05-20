@@ -35,32 +35,33 @@ public class FaithTrack {
 
 
     private void initFaithTrack() {
-        faithTrack.add(new SimpleTile(0, Constants.NEUTRAL));
-        faithTrack.add(new SimpleTile(1, Constants.NEUTRAL));
-        faithTrack.add(new SimpleTile(2, Constants.NEUTRAL));
-        faithTrack.add(new SimpleTile(3, Constants.NEUTRAL));
-        faithTrack.add(new SimpleTile(4, Constants.NEUTRAL));
-        faithTrack.add(new SimpleTile(5, Constants.YELLOW));
-        faithTrack.add(new SimpleTile(6, Constants.YELLOW));
-        faithTrack.add(new SimpleTile(7, Constants.YELLOW));
-        faithTrack.add(new PopeTile(8, Constants.YELLOW));
-        faithTrack.add(new SimpleTile(9, Constants.NEUTRAL));
-        faithTrack.add(new SimpleTile(10, Constants.NEUTRAL));
-        faithTrack.add(new SimpleTile(11, Constants.NEUTRAL));
-        faithTrack.add(new SimpleTile(12, Constants.ORANGE));
-        faithTrack.add(new SimpleTile(13, Constants.ORANGE));
-        faithTrack.add(new SimpleTile(14, Constants.ORANGE));
-        faithTrack.add(new SimpleTile(15, Constants.ORANGE));
-        faithTrack.add(new PopeTile(16, Constants.ORANGE));
-        faithTrack.add(new SimpleTile(17, Constants.NEUTRAL));
-        faithTrack.add(new SimpleTile(18, Constants.NEUTRAL));
-        faithTrack.add(new SimpleTile(19, Constants.RED));
-        faithTrack.add(new SimpleTile(20, Constants.RED));
-        faithTrack.add(new SimpleTile(21, Constants.RED));
-        faithTrack.add(new SimpleTile(22, Constants.RED));
-        faithTrack.add(new SimpleTile(23, Constants.RED));
-        faithTrack.add(new PopeTile(24, Constants.RED));
+        faithTrack.add(new SimpleTile(0, Constants.NEUTRAL, 0));
+        faithTrack.add(new SimpleTile(1, Constants.NEUTRAL, 0));
+        faithTrack.add(new SimpleTile(2, Constants.NEUTRAL, 0));
+        faithTrack.add(new SimpleTile(3, Constants.NEUTRAL, 1));
+        faithTrack.add(new SimpleTile(4, Constants.NEUTRAL, 1));
+        faithTrack.add(new SimpleTile(5, Constants.YELLOW, 1));
+        faithTrack.add(new SimpleTile(6, Constants.YELLOW, 2));
+        faithTrack.add(new SimpleTile(7, Constants.YELLOW, 2));
+        faithTrack.add(new PopeTile(8, Constants.YELLOW, 2));
+        faithTrack.add(new SimpleTile(9, Constants.NEUTRAL, 4));
+        faithTrack.add(new SimpleTile(10, Constants.NEUTRAL, 4));
+        faithTrack.add(new SimpleTile(11, Constants.NEUTRAL, 4));
+        faithTrack.add(new SimpleTile(12, Constants.ORANGE, 6));
+        faithTrack.add(new SimpleTile(13, Constants.ORANGE, 6));
+        faithTrack.add(new SimpleTile(14, Constants.ORANGE, 6));
+        faithTrack.add(new SimpleTile(15, Constants.ORANGE, 9));
+        faithTrack.add(new PopeTile(16, Constants.ORANGE, 9));
+        faithTrack.add(new SimpleTile(17, Constants.NEUTRAL, 9));
+        faithTrack.add(new SimpleTile(18, Constants.NEUTRAL, 12));
+        faithTrack.add(new SimpleTile(19, Constants.RED, 12));
+        faithTrack.add(new SimpleTile(20, Constants.RED, 12));
+        faithTrack.add(new SimpleTile(21, Constants.RED, 16));
+        faithTrack.add(new SimpleTile(22, Constants.RED, 16));
+        faithTrack.add(new SimpleTile(23, Constants.RED, 16));
+        faithTrack.add(new PopeTile(24, Constants.RED, 20));
     }
+
 
     private void initCheckpoint() {
         checkpoints.add(0);
@@ -105,7 +106,7 @@ public class FaithTrack {
      */
     public int calculationCheckPoints(){
 
-        return checkpoints.get(Math.floorDiv(this.faithMarker, 3));
+        return faithTrack.get(this.faithMarker).getCheckpoint();
 
     }
 

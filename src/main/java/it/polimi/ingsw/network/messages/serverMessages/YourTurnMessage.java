@@ -13,4 +13,8 @@ public class YourTurnMessage extends Message {
         this.message = message;
         super.setSenderUsername("SERVER_MESSAGE");
     }
+
+    public String getMessage() {
+        return message;
+    }
 }
