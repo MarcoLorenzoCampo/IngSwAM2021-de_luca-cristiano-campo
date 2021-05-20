@@ -149,6 +149,16 @@ public class VirtualView implements IView, Observer {
 
     }
 
+    @Override
+    public void printProductionBoard(String productions) {
+
+    }
+
+    @Override
+    public void printFinalProduction(HashMap<ResourceType, Integer> input, HashMap<ResourceType, Integer> output) {
+
+    }
+
     /**
      * Receives an update message from the model and sends it over the network to the client.
      * The action is performed based on the message type and depends on the view implemented by the client.

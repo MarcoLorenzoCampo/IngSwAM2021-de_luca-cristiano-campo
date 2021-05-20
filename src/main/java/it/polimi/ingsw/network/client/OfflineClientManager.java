@@ -234,4 +234,9 @@ public class OfflineClientManager implements ViewObserver, Observer {
     public void onUpdateEndTurn() {
 
     }
+
+    @Override
+    public void onUpdateExecuteProduction() {
+        
+    }
 }

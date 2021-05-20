@@ -12,6 +12,10 @@ import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 
+import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.serverMessages.ChosenProductionMessage;
+import it.polimi.ingsw.network.messages.serverMessages.ProductionBoardMessage;
+
 import java.util.*;
 
 public class ProductionBoard extends Observable {
@@ -76,6 +80,7 @@ public class ProductionBoard extends Observable {
         cardsInventory.get(newProductionCard.getColor())[newProductionCard.getLevel().ordinal()]++;
         cardsInventory.get(newProductionCard.getColor())[Level.ANY.ordinal()]++;
         victoryPoints = victoryPoints + newProductionCard.getVictoryPoints();
+        notifyObserver(new ProductionBoardMessage(this));
     }
 
     /**
@@ -110,6 +115,7 @@ public class ProductionBoard extends Observable {
                 destination.add(input);
             }
         }
+        notifyObserver(new ChosenProductionMessage(finalProduction));
     }
 
     /**

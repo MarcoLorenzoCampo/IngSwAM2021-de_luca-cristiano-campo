@@ -2,7 +2,6 @@ package it.polimi.ingsw.network.views.cli;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
-import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
@@ -353,6 +352,10 @@ public class CLI extends ViewObservable implements IView {
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
+            case("EXECUTE"):
+                notifyObserver(o -> o.onUpdateExecuteProduction());
+                break;
+
             case ("DISCARD_LEADER") :
                 String[] finalCmdMembers = cmdMembers;
                 notifyObserver(o -> o.onUpdateDiscardLeader(Integer.parseInt(finalCmdMembers[1])));
@@ -521,6 +524,24 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
+    public void printProductionBoard(String productions) {
+        out.println(productions);
+    }
+
+    @Override
+    public void printFinalProduction(HashMap<ResourceType, Integer> input, HashMap<ResourceType, Integer> output) {
+        out.println("INPUT: ");
+        for (Map.Entry<ResourceType,Integer> iterator: input.entrySet()) {
+            out.println(iterator);
+        }
+        out.println("OUTPUT: ");
+        for (Map.Entry<ResourceType,Integer> iterator: output.entrySet()) {
+            out.println(iterator);
+        }
+        out.println();
+    }
+
+    @Override
     public void printResourceMarket(String reducedResourceMarket) {
 
         out.println("\nThe ResourceMarket has been modified, here's an updated version: \n");
@@ -564,8 +585,8 @@ public class CLI extends ViewObservable implements IView {
                 "\n - 'ACTIVATE_LEADER <int>': Places one of your leader cards (Requires a valid card index);" +
                 "\n - 'GET_RESOURCES <int>': Gets resources from the market (Requires and index form 0 to 6);" +
                 "\n - 'BUY_CARD <int>': Buys an available card (Requires a valid card index and a valid production slot index);" +
-                "\n - 'BASE_PRODUCTION <ResourceType> <ResourceType> <ResourceType>': " +
-                    "\n     Activates the base production (asks you 2 input resources and 1 output resource);" +
+                "\n - 'ACTIVATE_BASE_PRODUCTION <ResourceType> <ResourceType> <ResourceType>': " +
+                "\n     Activates the base production (asks you 2 input resources and 1 output resource);" +
                 "\n - 'CARD_PRODUCTION': " +
                 "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
                 "" +

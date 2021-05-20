@@ -1,9 +1,7 @@
 package it.polimi.ingsw.network.views;
 
-import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
-import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
@@ -106,7 +104,7 @@ public interface IView {
     /**
      * Method to show the resource market.
      *
-     * @param resourceMarket: resource market
+     * @param reducedResourceMarket: resource market
      * {@link it.polimi.ingsw.model.market.ResourceMarket}
      */
     void printResourceMarket(String reducedResourceMarket);
@@ -150,4 +148,8 @@ public interface IView {
     void printStrongbox(HashMap<ResourceType, Integer> strongbox);
 
     void printWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras);
+
+    void printProductionBoard(String productions);
+
+    void printFinalProduction(HashMap<ResourceType, Integer> input, HashMap<ResourceType, Integer> output);
 }

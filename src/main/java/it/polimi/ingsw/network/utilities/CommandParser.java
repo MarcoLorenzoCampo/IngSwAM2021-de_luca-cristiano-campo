@@ -23,6 +23,9 @@ public final class CommandParser {
                     case ("CHECK_MARKET"):
                         return "CHECK_MARKET";
 
+                    case("EXECUTE"):
+                        return "EXECUTE";
+
 
                     default : return "UNKNOWN_COMMAND";
                 }

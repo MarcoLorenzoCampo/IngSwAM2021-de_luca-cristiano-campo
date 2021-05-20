@@ -126,4 +126,5 @@ public interface ViewObserver {
 
     void onUpdateEndTurn();
 
+    void onUpdateExecuteProduction();
 }

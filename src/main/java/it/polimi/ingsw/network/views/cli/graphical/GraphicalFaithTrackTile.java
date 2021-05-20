@@ -110,7 +110,7 @@ public class GraphicalFaithTrackTile {
 
 
     public void draw() {
-        System.out.print(this.colorCard.escape());
+        //System.out.print(this.colorCard.escape());
         for (int r = 0; r < MAX_VERT_TILES; r++) {
             System.out.println();
             for (int c = 0; c < MAX_HORIZ_TILES; c++) {

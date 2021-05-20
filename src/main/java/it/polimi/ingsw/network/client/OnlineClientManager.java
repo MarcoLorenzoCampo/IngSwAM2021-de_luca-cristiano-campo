@@ -100,6 +100,13 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 viewUpdater.execute(() -> view.printStrongbox(strongbox.getStrongbox()));
                 break;
 
+            case PRODUCTION_BOARD:
+                ProductionBoardMessage productionBoard = (ProductionBoardMessage) message;
+                List<LeaderCard> leader_prod = deserializeLeaderCards(productionBoard.getExtra_productions());
+                viewUpdater.execute(() ->
+                        view.showLeaderCards(leader_prod));
+                viewUpdater.execute(() -> view.printProductionBoard(productionBoard.getProductions()));
+
             case WAREHOUSE:
                 WarehouseMessage warehouse = (WarehouseMessage) message;
                 viewUpdater.execute(() -> view.printWarehouse(warehouse.getWarehouse(), warehouse.getExtra_shelf()));
@@ -127,6 +134,10 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 });
                 break;
 
+            case FINAL_PRODUCTION:
+                ChosenProductionMessage finalProduction = (ChosenProductionMessage) message;
+                viewUpdater.execute(() -> view.printFinalProduction(finalProduction.getInput(), finalProduction.getOutput()));
+                break;
             case AVAILABLE_PRODUCTION_CARDS:
                 AvailableCardsMessage a = (AvailableCardsMessage) message;
                 viewUpdater.execute(() -> view.printAvailableCards(a.getReducedAvailableCards()));
@@ -341,5 +352,10 @@ public class OnlineClientManager implements ViewObserver, Observer {
     @Override
     public void onUpdateEndTurn() {
         client.sendMessage(new EndTurnMessage(nickname));
+    }
+
+    @Override
+    public void onUpdateExecuteProduction() {
+        client.sendMessage(new ExecuteProductionMessage(nickname));
     }
 }
