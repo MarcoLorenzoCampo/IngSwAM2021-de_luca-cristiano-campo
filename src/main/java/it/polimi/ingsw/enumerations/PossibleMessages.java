@@ -53,5 +53,8 @@ public enum PossibleMessages {
     EXECUTE_PRODUCTION,
 
     //Notification message sent by the model to the controller
-    VATICAN_REPORT_NOTIFICATION
+    VATICAN_REPORT_NOTIFICATION,
+    BUFFER,
+    STRONGBOX,
+    WAREHOUSE
 }

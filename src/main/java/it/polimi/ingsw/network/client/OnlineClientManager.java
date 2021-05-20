@@ -4,6 +4,7 @@ import it.polimi.ingsw.enumerations.*;
 import it.polimi.ingsw.model.market.leaderCards.*;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
+import it.polimi.ingsw.model.warehouse.Warehouse;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
@@ -87,6 +88,21 @@ public class OnlineClientManager implements ViewObserver, Observer {
             case BOARD:
                 ResourceMarketMessage r = (ResourceMarketMessage) message;
                 viewUpdater.execute(() -> view.printResourceMarket(r.getResourceBoard()));
+                break;
+
+            case BUFFER:
+                BufferMessage buffer = (BufferMessage) message;
+                viewUpdater.execute(() -> view.printBuffer(buffer.getBuffer()));
+                break;
+
+            case STRONGBOX:
+                StrongboxMessage strongbox = (StrongboxMessage) message;
+                viewUpdater.execute(() -> view.printStrongbox(strongbox.getStrongbox()));
+                break;
+
+            case WAREHOUSE:
+                WarehouseMessage warehouse = (WarehouseMessage) message;
+                viewUpdater.execute(() -> view.printWarehouse(warehouse.getWarehouse(), warehouse.getExtra_shelf()));
                 break;
 
             case LORENZO_TOKEN:

@@ -12,6 +12,7 @@ import it.polimi.ingsw.network.server.IClientHandler;
 import it.polimi.ingsw.network.views.IView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -130,6 +131,21 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void printLeaders(List<LeaderCard> leaderCards) {
+
+    }
+
+    @Override
+    public void printBuffer(ArrayList<ResourceType> buffer) {
+
+    }
+
+    @Override
+    public void printStrongbox(HashMap<ResourceType, Integer> strongbox) {
+
+    }
+
+    @Override
+    public void printWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras) {
 
     }
 

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.network.views.cli;
 
+import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.player.PlayerState;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -15,6 +17,10 @@ public class LightweightModel {
     private String reducedResourceMarket;
     private String reducedAvailableCards;
     private final List<LightweightPlayerState> playerStates;
+    private ArrayList<ResourceType> buffer;
+    private HashMap<ResourceType, Integer> strongbox;
+    private ArrayList<ResourceType> shelves;
+    private ArrayList<ResourceType> extra_shelves_types;
 
     public LightweightModel() {
         this.playerStates = new ArrayList<>();
@@ -49,5 +55,18 @@ public class LightweightModel {
         }
 
         return null;
+    }
+
+    public void setBuffer(ArrayList<ResourceType> buffer) {
+        this.buffer = buffer;
+    }
+
+    public void setStrongbox(HashMap<ResourceType, Integer> strongbox) {
+        this.strongbox = strongbox;
+    }
+
+    public void setWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras) {
+        this.shelves = shelves;
+        this.extra_shelves_types = extras;
     }
 }

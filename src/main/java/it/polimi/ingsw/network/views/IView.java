@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -113,7 +114,7 @@ public interface IView {
     /**
      * Method to show the available production cards.
      *
-     * @param availableCards: available production cards.
+     * @param reducedAvailableCards: available production cards.
      */
     void printAvailableCards(String reducedAvailableCards);
 
@@ -134,4 +135,19 @@ public interface IView {
      * @param leaderCards: a list of owned leader cards.
      */
     void printLeaders(List<LeaderCard> leaderCards);
+
+
+    /**
+     * Prints the player's buffer
+     * @param buffer: list of resource types in buffer
+     */
+    void printBuffer(ArrayList<ResourceType> buffer);
+
+    /**
+     * Prints the strongbox
+     * @param strongbox: map with the strongbox inventory
+     */
+    void printStrongbox(HashMap<ResourceType, Integer> strongbox);
+
+    void printWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras);
 }

@@ -483,6 +483,44 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
+    public void printBuffer(ArrayList<ResourceType> buffer) {
+        lightweightModel.setBuffer(buffer);
+        out.println("Buffer:");
+        for (ResourceType iterator : buffer) {
+            out.print(iterator + " ");
+        }
+        out.println();
+    }
+
+    @Override
+    public void printStrongbox(HashMap<ResourceType, Integer> strongbox) {
+        lightweightModel.setStrongbox(strongbox);
+        out.println("STRONGBOX: " +"\nSHIELD = " + strongbox.get(ResourceType.SHIELD) +
+                "\nCOIN = " + strongbox.get(ResourceType.COIN) +
+                "\nSTONE = " + strongbox.get(ResourceType.STONE) +
+                "\nSERVANT = " + strongbox.get(ResourceType.SERVANT));
+        out.println();
+    }
+
+    @Override
+    public void printWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras) {
+        lightweightModel.setWarehouse(shelves, extras);
+        out.println("extra shelves: " + extras);
+        out.println("Warehouse: ");
+        if(shelves.size() == 6) {
+            out.println("SHELF 1 = " + shelves.get(0));
+            out.println("SHELF 2 = " + shelves.get(1) + " " + shelves.get(2));
+            out.println("SHELF 3 = " + shelves.get(3) + " " + shelves.get(4) + " " + shelves.get(5));
+        }
+        out.println();
+        if(shelves.size()>6){
+            for (int i = 6; i < shelves.size(); i++) {
+                out.print(shelves.get(i) + " ");
+            }
+        }
+    }
+
+    @Override
     public void printResourceMarket(String reducedResourceMarket) {
 
         out.println("\nThe ResourceMarket has been modified, here's an updated version: \n");
