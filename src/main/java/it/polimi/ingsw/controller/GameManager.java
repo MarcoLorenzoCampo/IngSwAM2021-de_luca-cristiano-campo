@@ -345,23 +345,26 @@ public final class GameManager implements Observer, Serializable {
 
                     ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved();
 
-                    if(toBeRemoved.isEmpty())
-                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
 
                     if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                         SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
                         actionManager
                                 .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
-                        toBeRemoved.remove(toBeRemoved.get(0));
+                        currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
                     }
 
                     else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
                         SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
                         actionManager
                                 .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
-                        toBeRemoved.remove(toBeRemoved.get(0));
+                        currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
                     }
 
+                    if(toBeRemoved.isEmpty())
+                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
+                    onStartTurn();
                 }
                 break;
 
@@ -439,18 +442,21 @@ public final class GameManager implements Observer, Serializable {
 
 
             case REMOVE:
-                if(message.getSenderUsername().equals(currentPlayer)){
+                if(message.getSenderUsername().equals(currentPlayer)) {
 
                     ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources();
 
-                    if(toBeRemoved.isEmpty())
-                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+                    //if (toBeRemoved.isEmpty()){
+                    //    currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+                    //    onStartTurn();
+                    //}
 
                     if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                         SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
                         actionManager
                                 .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
                         currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
+
                     }
 
                     else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
@@ -458,10 +464,16 @@ public final class GameManager implements Observer, Serializable {
                         actionManager
                                 .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
                         currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
+
                     }
 
+                    if (toBeRemoved.isEmpty()){
+                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
+                    }
+                    onStartTurn();
                 }
-                onStartTurn();
+
                 break;
 
             case MAIN_ACTION_DONE:
@@ -489,6 +501,7 @@ public final class GameManager implements Observer, Serializable {
                                 .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                         onStartTurn();
                     }
+                    else onStartTurn();
                 }
                 break;
         }
