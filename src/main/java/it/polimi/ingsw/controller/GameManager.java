@@ -436,6 +436,8 @@ public final class GameManager implements Observer, Serializable {
                 }
                 break;
 
+
+
             case REMOVE:
                 if(message.getSenderUsername().equals(currentPlayer)){
 
