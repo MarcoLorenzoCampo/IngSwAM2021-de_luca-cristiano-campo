@@ -266,6 +266,8 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
+
+
         for (LeaderCard iterator: cards) {
 
             switch (iterator.getEffectType()){

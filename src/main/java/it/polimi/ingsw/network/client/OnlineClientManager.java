@@ -124,7 +124,6 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 break;
 
             case SETUP_LEADERS:
-                SetupLeaderRequest setupLeaderRequest = (SetupLeaderRequest) message;
                 viewUpdater.execute(() ->
                 {
                    try{
