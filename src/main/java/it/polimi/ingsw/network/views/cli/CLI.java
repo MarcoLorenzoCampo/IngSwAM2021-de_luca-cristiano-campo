@@ -11,6 +11,7 @@ import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrackTile;
+import it.polimi.ingsw.network.views.cli.graphical.GraphicalToken;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -509,7 +510,8 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void printLorenzoToken(IToken lorenzoAction) {
-
+        GraphicalToken graphicalToken = new GraphicalToken(lorenzoAction);
+        graphicalToken.draw();
     }
 
     /**
