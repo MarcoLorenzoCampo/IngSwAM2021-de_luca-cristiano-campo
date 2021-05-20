@@ -429,7 +429,7 @@ public final class GameManager implements Observer, Serializable {
                         if(currentGame.getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()){
                             currentGame.setCurrentState(PossibleGameStates.REMOVE);
                         } else {
-                            //reset all productions
+
                             currentGame.setCurrentState(PossibleGameStates.PLAYING);
                         }
                         onStartTurn();
