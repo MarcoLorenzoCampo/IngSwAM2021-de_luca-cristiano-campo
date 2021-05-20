@@ -39,8 +39,7 @@ public class DiscardLeaderCardAction extends Action {
 
     private void runAction() {
         this.game.getCurrentPlayer()
-                .getOwnedLeaderCards()
-                .remove(leaderToDiscard);
+                .discardLeaderCard(leaderToDiscard);
 
         if(!game.getCurrentState().getGameState().equals(PossibleGameStates.SETUP_LEADER))
             this.game.getCurrentPlayer();

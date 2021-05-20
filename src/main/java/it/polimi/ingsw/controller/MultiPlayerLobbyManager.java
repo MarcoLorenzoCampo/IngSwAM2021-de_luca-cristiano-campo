@@ -392,18 +392,16 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         //Valutare observer sugli altri player.
 
-        //Adding observers to the players.
+        //Adding observers to the player's attributes.
 
         //buffer
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
         //faith track
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);
-        //strongbox
-        //realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().getStrongbox().addObserver(virtualView);
-        //warehouse
-        //realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().getWarehouse().addObserver(virtualView);
         //production board
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
+        //leader cards observer
+        realPlayerList.get(getPlayerByNickname(nickname)).addObserver(virtualView);
     }
 
     /**

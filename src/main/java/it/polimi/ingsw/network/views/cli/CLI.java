@@ -273,7 +273,6 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
 
-
         for (LeaderCard iterator: cards) {
 
             switch (iterator.getEffectType()){
@@ -322,14 +321,6 @@ public class CLI extends ViewObservable implements IView {
         String cmd = "";
         String[] cmdMembers;
         String output;
-
-        /*if(lightweightModel.getReducedResourceMarket() != null && lightweightModel.getReducedAvailableCards() != null) {
-
-            out.println("Showing: Updated ProductionCardMarket and ResourceMarket!\n\n");
-
-            out.println(lightweightModel.getReducedAvailableCards());
-            out.println(lightweightModel.getReducedResourceMarket());
-        }*/
 
         //enable player input
         out.println("\nIt's your turn now. Chose an action to perform!" +
@@ -597,6 +588,8 @@ public class CLI extends ViewObservable implements IView {
                 "\n     Activates the base production (asks you 2 input resources and 1 output resource);" +
                 "\n - 'CARD_PRODUCTION': " +
                 "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
+                "\n - 'CHECK_MARKET': For an updated ResourceMarket;" +
+                "\n - 'CHECK_CARDS': For an updated ProductionCardsMarket;" +
                 "" +
                 "\n-------------------------------------------------------------------------------------------------------------\n"
         );

@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
+import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.network.messages.serverMessages.LeaderCardMessage;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -10,7 +12,7 @@ import java.util.List;
 /**
  * Player Class, ha references to a few useful classes.
  */
-public class RealPlayer implements Serializable {
+public class RealPlayer extends Observable implements Serializable {
 
     private static final long serialVersionUID = -8446287370449348970L;
 
@@ -61,6 +63,16 @@ public class RealPlayer implements Serializable {
         this.playerState = new PlayerState();
         //this.inventoryManager = new InventoryManager();
         this.ownedLeaderCards = new LinkedList<>();
+    }
+
+    /**
+     * Method to remove a leader card and notify the player.
+     * @param leaderToDiscard: index of the leader to discard.
+     */
+    public void discardLeaderCard(int leaderToDiscard) {
+        ownedLeaderCards.remove(leaderToDiscard);
+
+        notifyObserver(new LeaderCardMessage(ownedLeaderCards));
     }
 
     public void setOwnedLeaderCards(List<LeaderCard> ownedLeaderCards) {
