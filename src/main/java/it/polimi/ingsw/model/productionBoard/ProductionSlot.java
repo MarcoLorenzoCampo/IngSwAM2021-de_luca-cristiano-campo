@@ -33,4 +33,6 @@ public class ProductionSlot {
         return newCard.getLevel().ordinal() == level.ordinal() + 1;
     }
 
+
+
 }

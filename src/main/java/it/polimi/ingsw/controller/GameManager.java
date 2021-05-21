@@ -251,8 +251,7 @@ public final class GameManager implements Observer, Serializable {
                                         currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
                                         buy.getSecondNumber(), currentGame));
                         if(currentPlayerState.getHasBoughCard()){
-                            currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
-                            onStartTurn();
+                            currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
                         }
                         else{
                             currentView.showGenericString("\nAction could not be performed");
@@ -310,7 +309,7 @@ public final class GameManager implements Observer, Serializable {
 
                         currentGame.setCurrentState(PossibleGameStates.ACTIVATE_PRODUCTION);
                     }
-
+/*
                     else if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
                         TwoIntMessage buy_card = (TwoIntMessage) message;
                         actionManager
@@ -319,7 +318,7 @@ public final class GameManager implements Observer, Serializable {
                         if(currentPlayerState.hasPerformedExclusiveAction())
                             currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
                     }
-
+*/
                     else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                         && currentPlayerState.getHasPlaceableLeaders()
                         && !currentPlayerState.getHasPlacedLeaders()){
@@ -345,23 +344,26 @@ public final class GameManager implements Observer, Serializable {
 
                     ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved();
 
-                    if(toBeRemoved.isEmpty())
-                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
 
                     if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                         SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
                         actionManager
                                 .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
-                        toBeRemoved.remove(toBeRemoved.get(0));
+                        currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
                     }
 
                     else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
                         SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
                         actionManager
                                 .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
-                        toBeRemoved.remove(toBeRemoved.get(0));
+                        currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
                     }
 
+                    if(toBeRemoved.isEmpty())
+                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
+                    onStartTurn();
                 }
                 break;
 
@@ -393,9 +395,10 @@ public final class GameManager implements Observer, Serializable {
                         if(currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().isEmpty()){
                             currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
                         }
-                        onStartTurn();
+
                     }
                 }
+                onStartTurn();
                 break;
 
             case ACTIVATE_PRODUCTION:
@@ -428,25 +431,31 @@ public final class GameManager implements Observer, Serializable {
                         if(currentGame.getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()){
                             currentGame.setCurrentState(PossibleGameStates.REMOVE);
                         } else {
-                            //reset all productions
+
                             currentGame.setCurrentState(PossibleGameStates.PLAYING);
                         }
+                        onStartTurn();
                 }
                 break;
 
+
+
             case REMOVE:
-                if(message.getSenderUsername().equals(currentPlayer)){
+                if(message.getSenderUsername().equals(currentPlayer)) {
 
                     ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources();
 
-                    if(toBeRemoved.isEmpty())
-                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+                    //if (toBeRemoved.isEmpty()){
+                    //    currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+                    //    onStartTurn();
+                    //}
 
                     if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                         SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
                         actionManager
                                 .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
                         currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
+
                     }
 
                     else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
@@ -454,9 +463,16 @@ public final class GameManager implements Observer, Serializable {
                         actionManager
                                 .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
                         currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
+
                     }
 
+                    if (toBeRemoved.isEmpty()){
+                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
+                    }
+                    onStartTurn();
                 }
+
                 break;
 
             case MAIN_ACTION_DONE:
@@ -467,22 +483,24 @@ public final class GameManager implements Observer, Serializable {
                         lobbyManager.setNextTurn();
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
+                    else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                             && currentPlayerState.getHasPlaceableLeaders()
                             && !currentPlayerState.getHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
                         actionManager
                                 .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
+                        onStartTurn();
                     }
 
-                    if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
+                    else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
                             && currentPlayerState.getHasPlaceableLeaders()
                             && !currentPlayerState.getHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
                         actionManager
                                 .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
+                        onStartTurn();
                     }
-                    onStartTurn();
+                    else onStartTurn();
                 }
                 break;
         }

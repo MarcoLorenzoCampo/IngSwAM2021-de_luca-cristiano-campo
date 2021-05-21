@@ -115,7 +115,7 @@ public class ProductionBoard extends Observable {
                 destination.add(input);
             }
         }
-        notifyObserver(new ChosenProductionMessage(finalProduction));
+
     }
 
     /**
@@ -138,6 +138,7 @@ public class ProductionBoard extends Observable {
             updateFinalProduction(finalProduction.getInputResources(), new ResourceTag(input2, 1));
             updateFinalProduction(finalProduction.getOutputResources(), new ResourceTag(output, 1));
             setBaseProductionSelected(true);
+            notifyObserver(new ChosenProductionMessage(finalProduction));
         }
     }
 
@@ -154,6 +155,7 @@ public class ProductionBoard extends Observable {
                 updateFinalProduction(finalProduction.getOutputResources(), iterator);
             }
             productionSlots[index].setSelected(true);
+            notifyObserver(new ChosenProductionMessage(finalProduction));
         }
     }
 
@@ -175,6 +177,7 @@ public class ProductionBoard extends Observable {
                     updateFinalProduction(finalProduction.getOutputResources(), iterator);
                 }
             }
+            notifyObserver(new ChosenProductionMessage(finalProduction));
         }
     }
 
