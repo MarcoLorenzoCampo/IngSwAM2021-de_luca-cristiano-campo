@@ -177,6 +177,8 @@ public class FaithTrack extends Observable implements Serializable {
         this.checkpoints = checkpoints;
     }
 
+
+
     public int getFinalPoints() {
         return finalPoints;
     }
