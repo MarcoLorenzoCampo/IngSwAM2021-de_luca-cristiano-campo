@@ -70,7 +70,7 @@ public final class CommandParser {
                             return "\nPick a valid resource to deposit.";
                         }
                         return "DEPOSIT_RESOURCE";
-                        //return "DEPOSIT";
+
 
                     case("ACTIVATE_PRODUCTION") :
                         try {
@@ -84,7 +84,9 @@ public final class CommandParser {
                         return "ACTIVATE_PRODUCTION";
 
                     case("SOURCE"):
+                        if(cmdMembers[1].equals("WAREHOUSE") || cmdMembers[1].equals("STRONGBOX"))
                         return cmdMembers[1];
+                        else return "UNKNOWN_COMMAND";
 
                     default : return "UNKNOWN_COMMAND";
                 }

@@ -106,6 +106,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 viewUpdater.execute(() ->
                         view.showLeaderCards(leader_prod));
                 viewUpdater.execute(() -> view.printProductionBoard(productionBoard.getProductions()));
+                break;
 
             case WAREHOUSE:
                 WarehouseMessage warehouse = (WarehouseMessage) message;

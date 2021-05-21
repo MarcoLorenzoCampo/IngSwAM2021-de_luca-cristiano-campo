@@ -21,7 +21,7 @@ public class ProductionBoardMessage extends Message {
         ProductionSlot[] slots = productionBoard.getProductionSlots();
 
         for (int i = 0; i < slots.length ; i++) {
-            if (!slots[i].getProductionCard().equals(null)){
+            if (slots[i].getProductionCard() != null){
                 if (i == 0) {
                     productions = slots[i].getProductionCard().reduce();
                 } else

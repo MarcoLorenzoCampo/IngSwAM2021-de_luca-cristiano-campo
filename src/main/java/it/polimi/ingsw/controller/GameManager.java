@@ -251,8 +251,7 @@ public final class GameManager implements Observer, Serializable {
                                         currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
                                         buy.getSecondNumber(), currentGame));
                         if(currentPlayerState.getHasBoughCard()){
-                            currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
-                            onStartTurn();
+                            currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
                         }
                         else{
                             currentView.showGenericString("\nAction could not be performed");
@@ -310,7 +309,7 @@ public final class GameManager implements Observer, Serializable {
 
                         currentGame.setCurrentState(PossibleGameStates.ACTIVATE_PRODUCTION);
                     }
-
+/*
                     else if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
                         TwoIntMessage buy_card = (TwoIntMessage) message;
                         actionManager
@@ -319,7 +318,7 @@ public final class GameManager implements Observer, Serializable {
                         if(currentPlayerState.hasPerformedExclusiveAction())
                             currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
                     }
-
+*/
                     else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                         && currentPlayerState.getHasPlaceableLeaders()
                         && !currentPlayerState.getHasPlacedLeaders()){
