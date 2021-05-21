@@ -565,10 +565,7 @@ public class CLI extends ViewObservable implements IView {
     public void printFaithTrack(FaithTrack faithTrack) {
         GraphicalFaithTrack graphicalFaithTrack = new GraphicalFaithTrack(faithTrack);
         graphicalFaithTrack.draw();
-        /* for(int i = 0; i < faithTrack.getFaithTrack().size(); i++){
-            GraphicalFaithTrackTile graphicalFaithTrackTile = new GraphicalFaithTrackTile(faithTrack.getFaithTrack().get(i), faithTrack.getFaithMarker());
-
-        } */
+        out.println();
     }
 
     @Override

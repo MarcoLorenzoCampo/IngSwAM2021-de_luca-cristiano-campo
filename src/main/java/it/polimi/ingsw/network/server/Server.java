@@ -89,7 +89,7 @@ public class Server {
         }
 
         //first player already connected.
-        if (isSizeSet && (clientHandlerMap.size() != 0)) {
+        else if (isSizeSet) {
 
             RealPlayer potentialFound = findRegisteredMatch(nickname);
 
@@ -131,9 +131,7 @@ public class Server {
                 }
             }
 
-        }
-
-        if (!isSizeSet && (clientHandlerMap.size() != 0)) {
+        } else {
 
             //Joining when the game is being set is forbidden.
             virtualView.showError("You can't join when the lobby is being set!");
