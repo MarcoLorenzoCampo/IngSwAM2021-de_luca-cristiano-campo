@@ -171,6 +171,11 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 viewUpdater.execute(() -> view.currentTurn(yourTurnMessage.getMessage()));
                 break;
 
+            case ERROR:
+                ErrorMessage e = (ErrorMessage) message;
+                viewUpdater.execute(() -> view.showError(e.getErrorMessage()));
+                break;
+
             default: break;
         }
     }

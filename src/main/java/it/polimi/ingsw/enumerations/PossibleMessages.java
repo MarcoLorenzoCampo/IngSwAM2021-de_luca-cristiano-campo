@@ -56,6 +56,7 @@ public enum PossibleMessages {
     WAREHOUSE,
     PRODUCTION_BOARD,
     FINAL_PRODUCTION,
+    ERROR,
 
     //Notification message sent by the model to the controller
     VATICAN_REPORT_NOTIFICATION,

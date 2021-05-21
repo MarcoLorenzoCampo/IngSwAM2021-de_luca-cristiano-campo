@@ -86,7 +86,7 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void showError(String errorMessage) {
-
+        clientHandler.sendMessage(new ErrorMessage(errorMessage));
     }
 
     @Override

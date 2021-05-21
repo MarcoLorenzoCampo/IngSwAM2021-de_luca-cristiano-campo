@@ -5,15 +5,12 @@ import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
-import it.polimi.ingsw.network.messages.serverMessages.WinMessage;
 import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
 import it.polimi.ingsw.parsers.CommandLineParser;
 import it.polimi.ingsw.parsers.ServerConfigParser;
 
-import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Accepted commands:
@@ -46,7 +43,6 @@ public class Server {
      * Auxiliary boolean to know when lobby size is set
      */
     private boolean isSizeSet;
-
 
     /**
      * Default constructor. Creates empty instances of the collections needed and sets up
@@ -89,17 +85,18 @@ public class Server {
             gameManager.addVirtualView(nickname, virtualView);
             virtualView.showLoginOutput(true, true, false);
             virtualView.askPlayerNumber();
-
         }
 
         //first player already connected.
-        else if (isSizeSet) {
+        if (isSizeSet && (clientHandlerMap.size() != 0)) {
+
+            RealPlayer potentialFound = findRegisteredMatch(nickname);
 
             //First: check if it's a known name.
-            if(findMatch(nickname) != null) {
+            if(potentialFound != null) {
 
                 //Second: check if the player is disconnected.
-                if(!Objects.requireNonNull(findMatch(nickname)).getPlayerState().isConnected()) {
+                if(!potentialFound.getPlayerState().isConnected()) {
 
                     //The player matched is currently offline, he can reconnect.
                     clientHandlerMap.put(nickname, clientHandler);
@@ -112,7 +109,9 @@ public class Server {
                     clientHandler.disconnect();
                 }
 
-            } else {
+            }
+
+            if (potentialFound == null) {
 
                 //The nickname is not known. If the game hasn't started yet he can connect.
                 if(!gameManager.isGameStarted()) {
@@ -131,7 +130,9 @@ public class Server {
                 }
             }
 
-        } else {
+        }
+
+        if (!isSizeSet && (clientHandlerMap.size() != 0)) {
 
             //Joining when the game is being set is forbidden.
             virtualView.showGenericString("Please rejoin later, the lobby is being set!" +
@@ -153,7 +154,7 @@ public class Server {
      * @param nickname: nickname to match
      * @return: player reference.
      */
-    private RealPlayer findMatch(String nickname) {
+    private RealPlayer findRegisteredMatch(String nickname) {
 
         for(RealPlayer realPlayer : gameManager.getLobbyManager().getRealPlayerList()) {
             if (realPlayer.getName().equals(nickname)) {
@@ -204,13 +205,6 @@ public class Server {
      */
     private void reconnectKnownPlayer(String nickname, VirtualView vv) {
         gameManager.getLobbyManager().reconnectPlayer(nickname, vv);
-    }
-
-    /**
-     * Get a map containing handlers associated with the respective player nickname.
-     */
-    public Map<String, ClientHandler> getClientHandlerMap() {
-        return clientHandlerMap;
     }
 
     //------------------------------------- MAIN METHOD ----------------------------------------------------------

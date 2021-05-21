@@ -308,7 +308,9 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showError(String errorMessage) {
+        out.println("Error: " + errorMessage);
 
+        System.exit(1);
     }
 
     /**
@@ -350,7 +352,7 @@ public class CLI extends ViewObservable implements IView {
         switch(CommandParser.parseCmd(cmdMembers)) {
 
             case("EXECUTE"):
-                notifyObserver(o -> o.onUpdateExecuteProduction());
+                notifyObserver(ViewObserver::onUpdateExecuteProduction);
                 break;
 
             case ("DISCARD_LEADER") :
