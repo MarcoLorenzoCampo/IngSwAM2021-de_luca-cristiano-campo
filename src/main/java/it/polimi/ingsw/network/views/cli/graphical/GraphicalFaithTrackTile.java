@@ -1,12 +1,12 @@
 package it.polimi.ingsw.network.views.cli.graphical;
 
-import it.polimi.ingsw.enumerations.ResourceType;
+
 import it.polimi.ingsw.model.faithtrack.Tile;
 import it.polimi.ingsw.network.views.cli.ColorCLI;
-import it.polimi.ingsw.network.views.cli.constants.GraphicalResourceConstants;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class GraphicalFaithTrackTile {
     private static final int MAX_VERT_TILES = 8; //rows.
@@ -20,51 +20,49 @@ public class GraphicalFaithTrackTile {
     private int checkpoint;
     private int vaticanSpace;
     private int index;
+    private ColorCLI colorBoard;
     private final int faithMarker;
-    private ColorCLI colorCard;
-    private Integer cardVaticanSpace;
+    private final Map<Integer, ColorCLI> colorFaithTrackTile = new HashMap<>();
 
-    private final Map<Integer, ColorCLI> cardVaticanSpaceColor;
-    private final Map<ResourceType, String> faithMarkerType = new HashMap<>();
-
-    public GraphicalFaithTrackTile(Tile tile, int faithMarker){
-        cardVaticanSpaceColor = new HashMap<>();
+    public GraphicalFaithTrackTile(Tile tile, int faithMarker, int vaticanSpace){
+        initColorFaithTrackTile();
         this.tile = tile;
         this.faithMarker = faithMarker;
-        borderBuilding();
+        this.vaticanSpace = vaticanSpace;
+        this.colorBoard = colorFaithTrackTile.get(this.vaticanSpace);
+        borderBuilding(colorBoard);
         loadTile();
-        initCardVaticanSpaceColor();
     }
 
-    private void borderBuilding(){
-        cells[0][0] = "╭";
+    private void borderBuilding(ColorCLI colorBoard){
+        cells[0][0] = colorBoard.escape() + "╭" + ColorCLI.ANSI_BRIGHT_WHITE.escape();
         for (int c = 1; c < MAX_HORIZ_TILES - 1; c++) {
-            cells[0][c] = "-";
+            cells[0][c] = colorBoard.escape() + "-" + ColorCLI.ANSI_BRIGHT_WHITE.escape();
         }
 
-        cells[0][MAX_HORIZ_TILES - 1] = "╮";
+        cells[0][MAX_HORIZ_TILES - 1] = colorBoard.escape() + "╮" + ColorCLI.ANSI_BRIGHT_WHITE.escape();
 
         for (int r = 1; r < MAX_VERT_TILES - 1; r++) {
-            cells[r][0] = "|";
+            cells[r][0] = colorBoard.escape() + "|" + ColorCLI.ANSI_BRIGHT_WHITE.escape();
             for (int c = 1; c < MAX_HORIZ_TILES - 1; c++) {
-                cells[r][c] = " ";
+                cells[r][c] = " " + ColorCLI.ANSI_WHITE.escape();
             }
-            cells[r][MAX_HORIZ_TILES - 1] = "|";
+            cells[r][MAX_HORIZ_TILES - 1] = colorBoard.escape() + "|" + ColorCLI.ANSI_BRIGHT_WHITE.escape();
         }
 
-        cells[MAX_VERT_TILES - 1][0] = "╰";
+        cells[MAX_VERT_TILES - 1][0] = colorBoard.escape() + "╰" + ColorCLI.ANSI_BRIGHT_WHITE.escape();
         for (int c = 1; c < MAX_HORIZ_TILES - 1; c++) {
-            cells[MAX_VERT_TILES - 1][c] = "-";
+            cells[MAX_VERT_TILES - 1][c] = colorBoard.escape() + "-" + ColorCLI.ANSI_BRIGHT_WHITE.escape();
         }
 
-        cells[MAX_VERT_TILES - 1][MAX_HORIZ_TILES - 1] = "╯";
+        cells[MAX_VERT_TILES - 1][MAX_HORIZ_TILES - 1] = colorBoard.escape() + "╯" + ColorCLI.ANSI_BRIGHT_WHITE.escape();
     }
 
     private void loadTile(){
 
         this.index = tile.getIndex();
         if(this.index < 10){
-        insertingIndexCard(this.index); }
+            insertingIndexCard(this.index); }
         else if(this.index == 10){
             insertingIndexCard10();
         }
@@ -116,7 +114,7 @@ public class GraphicalFaithTrackTile {
 
         this.checkpoint = tile.getCheckpoint();
         if(this.checkpoint < 10){
-        insertingCheckpoint(this.checkpoint);
+            insertingCheckpoint(this.checkpoint);
         }
         else if (this.checkpoint == 12){
             insertingCheckpoint12();
@@ -128,8 +126,8 @@ public class GraphicalFaithTrackTile {
             insertingCheckpoint20();
         }
 
-        this.vaticanSpace = tile.getVaticanSpace();
-        this.colorCard = this.cardVaticanSpaceColor.get(this.vaticanSpace);
+
+
 
         if(this.faithMarker == this.index){
             insertingGraphicalFaithMarker();
@@ -392,12 +390,11 @@ public class GraphicalFaithTrackTile {
         cells[6][8] = "0";
     }
 
-
-    private void initCardVaticanSpaceColor(){
-        cardVaticanSpaceColor.put(0, ColorCLI.ANSI_BRIGHT_WHITE);
-        cardVaticanSpaceColor.put(1, ColorCLI.ANSI_BRIGHT_YELLOW);
-        cardVaticanSpaceColor.put(2, ColorCLI.ANSI_BRIGHT_RED);
-        cardVaticanSpaceColor.put(3, ColorCLI.ANSI_RED);
+    private void initColorFaithTrackTile(){
+        colorFaithTrackTile.put(0, ColorCLI.ANSI_BRIGHT_WHITE);
+        colorFaithTrackTile.put(1, ColorCLI.ANSI_YELLOW);
+        colorFaithTrackTile.put(2, ColorCLI.ANSI_BRIGHT_RED);
+        colorFaithTrackTile.put(3, ColorCLI.ANSI_RED);
     }
 
     public int getMaxVertTiles() {

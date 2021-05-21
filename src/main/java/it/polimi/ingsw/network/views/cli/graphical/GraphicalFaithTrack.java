@@ -16,7 +16,7 @@ public class GraphicalFaithTrack {
     public void updatingGraphicalFaithTrackTiles() {
         int k2 = 0;
         for (int i = 0; i < 25; i++) {
-            GraphicalFaithTrackTile graphicalFaithTrackTile = new GraphicalFaithTrackTile(faithTrack.getFaithTrack().get(i), faithTrack.getFaithMarker());
+            GraphicalFaithTrackTile graphicalFaithTrackTile = new GraphicalFaithTrackTile(faithTrack.getFaithTrack().get(i), faithTrack.getFaithMarker(), faithTrack.getFaithTrack().get(i).getVaticanSpace());
             for(int j = 0; j < graphicalFaithTrackTile.getMaxVertTiles(); j++){
                 for(int k = 0; k < graphicalFaithTrackTile.getMaxHorizTiles(); k++){
                     cells[j][k + k2] = (graphicalFaithTrackTile.getCells())[j][k];
