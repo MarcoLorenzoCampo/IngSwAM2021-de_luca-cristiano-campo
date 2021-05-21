@@ -95,15 +95,15 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void reconnectPlayer(String nickname, VirtualView vv) {
 
-        for(RealPlayer realPlayer : realPlayerList) {
-            if(realPlayer.getName().equals(nickname)) {
-                realPlayer.getPlayerState().connect();
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerState().connect();
+        viewsByNickname.put(nickname, vv);
+        gameManager.getVirtualViewLog().put(nickname, vv);
 
-                vv.showLoginOutput(true, true, true);
+        vv.showLoginOutput(true, true, true);
+        broadcastGenericMessage("Player reconnected: " + nickname);
 
-                broadcastGenericMessage("Player reconnected: " + nickname);
-            }
-        }
+        reconnectObserver(nickname, vv);
+        sendReducedModel(nickname, vv);
     }
 
     /**
@@ -150,8 +150,11 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
      */
     @Override
     public void setNextTurn() {
-        viewsByNickname.get(realPlayerList.get(auxIndex).getName())
-                .turnEnded("Your turn has ended.");
+
+        if(viewsByNickname.get(realPlayerList.get(auxIndex).getName()) != null) {
+            viewsByNickname.get(realPlayerList.get(auxIndex).getName())
+                    .turnEnded("Your turn has ended.");
+        }
 
         numberOfTurns++;
         auxIndex ++;
@@ -328,6 +331,10 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                         .filter(p -> p.getName().equals(nicknameToDisconnect))
                         .forEach(p -> p.getPlayerState().disconnect());
 
+                removeObserver(nicknameToDisconnect);
+                viewsByNickname.remove(nicknameToDisconnect);
+                gameManager.getVirtualViewLog().remove(nicknameToDisconnect);
+
                 //If he was playing when he got disconnected, then his turn needs to be skipped.
                 if(nicknameToDisconnect.equals(gameManager.getCurrentGame().getCurrentPlayer().getName())) {
                     setNextTurn();
@@ -345,6 +352,10 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                             .collect(Collectors.toList()).get(0).getName();
 
                     broadCastWinMessage(lastOnline);
+                }
+
+                if(realPlayerList.stream().noneMatch(p -> p.getPlayerState().isConnected())) {
+                    gameManager.endGame("No more players connected!");
                 }
             }
 
@@ -380,27 +391,41 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
      * @param virtualView: new observer.
      */
     private void setObserver(String nickname, VirtualView virtualView) {
-        //Registering lobby manager as observer of the faith tracks.
+
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
-        //Registering lobby manager as observer of the inventory managers to check for discarded resources.
+
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(this);
 
-        //Adding the player as an observer to the ResourceMarket.
         gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
-        //Adding the player as an observer to the ProductionCardMarket.
+
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
 
-        //Valutare observer sugli altri player.
-
-        //Adding observers to the player's attributes.
-
-        //buffer
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
-        //faith track
+
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);
-        //production board
+
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
-        //leader cards observer
+
+        realPlayerList.get(getPlayerByNickname(nickname)).addObserver(virtualView);
+    }
+
+    /**
+     * Auxiliary method to set a new observer to the player after disconnecting the previous one.
+     * @param nickname: name to reconnect.
+     * @param virtualView: virtual view to re-observer the player.
+     */
+    private void reconnectObserver(String nickname, VirtualView virtualView) {
+
+        gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
+
+        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
+
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
+
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);
+
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
+
         realPlayerList.get(getPlayerByNickname(nickname)).addObserver(virtualView);
     }
 
@@ -467,5 +492,44 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             default: //Ignore any other message
                 break;
         }
+    }
+
+    /**
+     * Method to send the stored data of a reconnected player.
+     * @param nickname: player who get reconnected.
+     * @param vv: virtual view of said player.
+     */
+    private void sendReducedModel(String nickname, VirtualView vv) {
+        vv.printFaithTrack(realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack());
+
+        vv.printAvailableCards(gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().reduce());
+
+        vv.printResourceMarket(gameManager.getCurrentGame().getGameBoard().getResourceMarket().getResourceBoard(),
+                gameManager.getCurrentGame().getGameBoard().getResourceMarket().getExtraMarble());
+
+        vv.printLeaders(realPlayerList.get(getPlayerByNickname(nickname)).getOwnedLeaderCards());
+
+        //more stuff to send
+    }
+
+    /**
+     * When a player gets disconnected, he gets removed from the list of observers.
+     * @param nickname: player who got disconnected.
+     */
+    private void removeObserver(String nickname) {
+
+        VirtualView vv = viewsByNickname.get(nickname);
+
+        gameManager.getCurrentGame().getGameBoard().getResourceMarket().removeObserver(vv);
+
+        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().removeObserver(vv);
+
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().removeObserver(vv);
+
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().removeObserver(vv);
+
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().removeObserver(vv);
+
+        realPlayerList.get(getPlayerByNickname(nickname)).removeObserver(vv);
     }
 }

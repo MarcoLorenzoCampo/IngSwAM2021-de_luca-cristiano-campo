@@ -105,7 +105,7 @@ public class Server {
                 }
 
                 //The player who has the same name is currently connected. Nickname rejected.
-                if (potentialFound.getPlayerState().isConnected()) {
+                 else if (potentialFound.getPlayerState().isConnected()) {
 
                     virtualView.showError("Name already in use, join with a different one!");
                     clientHandler.disconnect();

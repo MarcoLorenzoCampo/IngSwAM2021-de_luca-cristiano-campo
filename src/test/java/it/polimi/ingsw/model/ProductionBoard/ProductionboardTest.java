@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.market.ProductionCardMarket;
 import it.polimi.ingsw.model.productionBoard.ProductionBoard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class ProductionboardTest {
         );
     }
 
+    @Disabled
     @Test
     void PlaceProductionCard(){
         //Arrange

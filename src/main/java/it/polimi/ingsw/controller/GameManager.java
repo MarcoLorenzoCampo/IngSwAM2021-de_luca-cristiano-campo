@@ -571,4 +571,8 @@ public final class GameManager implements Observer, Serializable {
         PlayingGame.terminate();
 
     }
+
+    public Map<String, VirtualView> getVirtualViewLog() {
+        return virtualViewLog;
+    }
 }
