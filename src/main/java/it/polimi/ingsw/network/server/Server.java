@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
+import it.polimi.ingsw.network.messages.serverMessages.ErrorMessage;
 import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
 import it.polimi.ingsw.parsers.CommandLineParser;
 import it.polimi.ingsw.parsers.ServerConfigParser;
@@ -77,7 +78,7 @@ public class Server {
         String nickname = message.getSenderUsername();
 
         //first player logged in
-        if(clientHandlerMap.size() == 0) {
+        if (clientHandlerMap.size() == 0) {
 
             clientHandlerMap.put(nickname, clientHandler);
             onMessage(message);
@@ -93,22 +94,22 @@ public class Server {
             RealPlayer potentialFound = findRegisteredMatch(nickname);
 
             //First: check if it's a known name.
-            if(potentialFound != null) {
+            if (potentialFound != null) {
 
                 //Second: check if the player is disconnected.
-                if(!potentialFound.getPlayerState().isConnected()) {
+                if (!potentialFound.getPlayerState().isConnected()) {
 
                     //The player matched is currently offline, he can reconnect.
                     clientHandlerMap.put(nickname, clientHandler);
                     reconnectKnownPlayer(nickname, virtualView);
-
-                } else {
-
-                    //The player who has the same name is currently connected. Nickname rejected.
-                    virtualView.showLoginOutput(true, false, false);
-                    clientHandler.disconnect();
                 }
 
+                //The player who has the same name is currently connected. Nickname rejected.
+                if (potentialFound.getPlayerState().isConnected()) {
+
+                    virtualView.showError("Name already in use, join with a different one!");
+                    clientHandler.disconnect();
+                }
             }
 
             if (potentialFound == null) {
@@ -125,7 +126,7 @@ public class Server {
                 } else {
 
                     //Nickname not known but game started, connection can't happen.
-                    virtualView.showGenericString("The game is started, you can't connect now!");
+                    virtualView.showError("The game is started, you can't connect now!");
                     clientHandler.disconnect();
                 }
             }
@@ -135,8 +136,7 @@ public class Server {
         if (!isSizeSet && (clientHandlerMap.size() != 0)) {
 
             //Joining when the game is being set is forbidden.
-            virtualView.showGenericString("Please rejoin later, the lobby is being set!" +
-                    " You've been disconnected from the game.");
+            virtualView.showError("You can't join when the lobby is being set!");
             clientHandler.disconnect();
         }
     }
