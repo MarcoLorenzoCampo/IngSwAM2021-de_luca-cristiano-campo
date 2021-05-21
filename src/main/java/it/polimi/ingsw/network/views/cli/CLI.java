@@ -601,24 +601,24 @@ public class CLI extends ViewObservable implements IView {
         int k=0;
 
         StringBuilder reducedMarketBoardBuilder = new StringBuilder(reducedMarketBoard
-                + ("     0        1        2        3    "));
-        reducedMarketBoardBuilder.append("\n╔════════╦════════╦════════╦════════╗\n");
+                + ("     0         1         2         3    "));
+        reducedMarketBoardBuilder.append("\n╔═════════╦═════════╦═════════╦═════════╗\n");
         for(int i = 0; i<3; i++) {
             for(int j=0; j<4; j++) {
 
                 switch (resourceBoard[i][j]) {
                     case STONE:
-                        temp = "STONE  "; break;
+                        temp = "STONE   "; break;
                     case SERVANT:
-                        temp = "SERVANT"; break;
+                        temp = "SERVANT "; break;
                     case COIN:
-                        temp = "COIN   "; break;
+                        temp = "COIN    "; break;
                     case SHIELD:
-                        temp = "SHIELD "; break;
+                        temp = "SHIELD  "; break;
                     case UNDEFINED:
-                        temp = "WHITE  "; break;
+                        temp = "WHITE   "; break;
                     case FAITH:
-                        temp = "FAITH  "; break;
+                        temp = "FAITH   "; break;
                     default: break;
                 }
 
@@ -628,9 +628,9 @@ public class CLI extends ViewObservable implements IView {
             reducedMarketBoardBuilder.append("║").append("  ").append(i+k);
 
             if(!(i == 2)) {
-                reducedMarketBoardBuilder.append("\n╠════════╣════════╣════════╣════════╣\n");
+                reducedMarketBoardBuilder.append("\n╠═════════╣═════════╣═════════╣═════════╣\n");
             } else {
-                reducedMarketBoardBuilder.append("\n╚════════╩════════╩════════╩════════╝");
+                reducedMarketBoardBuilder.append("\n╚═════════╩═════════╩═════════╩═════════╝");
             }
         }
         reducedMarketBoard = reducedMarketBoardBuilder.toString();
