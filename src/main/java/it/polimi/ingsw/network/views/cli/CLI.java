@@ -274,6 +274,8 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
 
+        lightweightModel.setLeaderCards(cards);
+
         for (LeaderCard iterator: cards) {
 
             switch (iterator.getEffectType()){
@@ -345,9 +347,11 @@ public class CLI extends ViewObservable implements IView {
             if(output.equals("HELP")) printPossibleActions();
             if(output.equals("CHECK_MARKET")) out.println(lightweightModel.getReducedResourceMarket());
             if(output.equals("CHECK_CARDS")) out.println(lightweightModel.getReducedAvailableCards());
+            if(output.equals("CHECK_LEADERS")) printLeaders(lightweightModel.getLeaderCards());
 
         } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP")
-                || output.equals("CHECK_MARKET") || output.equals("CHECK_CARDS"));
+                || output.equals("CHECK_MARKET") || output.equals("CHECK_CARDS")
+                || output.equals("CHECK_LEADERS"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
@@ -482,9 +486,36 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printLeaders(List<LeaderCard> leaderCards) {
 
-        //
+        for (LeaderCard iterator: leaderCards) {
 
-        currentTurn("What's your action now?");
+            switch (iterator.getEffectType()){
+                case DISCOUNT:
+                    out.println("\n\nDISCOUNT: -1 of "+ iterator.getResource() + "\nNeeded: ");
+                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
+                        out.print("1 " + innerIterator.getColor() +"\n");
+                    }
+                    break;
+
+                case EXTRA_INVENTORY:
+                    out.println("\n\nEXTRA INVENTORY: + 2 spaces of "+ iterator.getResource() + "\nNeeded: ");
+                    out.print("5 " + iterator.getRequirementsResource()[0].getType() +"\n");
+                    break;
+
+                case MARBLE_EXCHANGE:
+                    out.println("\n\nMARBLE EXCHANGE: change white into "+ iterator.getResource() + "\nNeeded: ");
+                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
+                        out.print(innerIterator.getQuantity() + " " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
+                    }
+                    break;
+                case EXTRA_PRODUCTION:
+                    out.println("\n\nEXTRA PRODUCTION:  "+ iterator.getResource() +" --> FAITH + UNDEFINED");
+                    out.println("Needed: ");
+                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
+                        out.print("1 " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
+                    }
+                    break;
+            }
+        }
     }
 
     @Override
@@ -592,7 +623,7 @@ public class CLI extends ViewObservable implements IView {
                 "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
                 "\n - 'CHECK_MARKET': For an updated ResourceMarket;" +
                 "\n - 'CHECK_CARDS': For an updated ProductionCardsMarket;" +
-                "" +
+                "\n - 'CHECK_LEADERS': For un updated LeaderCards list;" +
                 "\n-------------------------------------------------------------------------------------------------------------\n"
         );
     }

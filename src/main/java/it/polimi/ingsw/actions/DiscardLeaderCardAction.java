@@ -32,22 +32,31 @@ public class DiscardLeaderCardAction extends Action {
         ActionValidator.senderValidation(actionSender);
         ActionValidator.discardLeaderValidator(leaderToDiscard);
 
-        if(!game.getCurrentState().getGameState().equals(PossibleGameStates.SETUP_LEADER)) {
+        /*if(!game.getCurrentState().getGameState().equals(PossibleGameStates.SETUP_LEADER)) {
             runAction();
-        }
+        }*/
+
+        runAction();
     }
 
     private void runAction() {
-        this.game.getCurrentPlayer()
-                .discardLeaderCard(leaderToDiscard);
+        if(game.getCurrentState().getGameState().equals(PossibleGameStates.SETUP_LEADER)) {
+            this.game.getCurrentPlayer()
+                    .setupLeaderCard(leaderToDiscard);
+        } else {
+            this.game.getCurrentPlayer()
+                    .discardLeaderCard(leaderToDiscard);
+        }
 
         if(!game.getCurrentState().getGameState().equals(PossibleGameStates.SETUP_LEADER))
             this.game.getCurrentPlayer();
 
-        this.game.getCurrentPlayer()
-                .getPlayerBoard()
-                .getFaithTrack()
-                .increaseFaithMarker();
+        if(!game.getCurrentState().getGameState().equals(PossibleGameStates.SETUP_LEADER)) {
+            this.game.getCurrentPlayer()
+                    .getPlayerBoard()
+                    .getFaithTrack()
+                    .increaseFaithMarker();
+        }
 
     }
 

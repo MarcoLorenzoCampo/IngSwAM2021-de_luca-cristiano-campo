@@ -22,10 +22,10 @@ public final class CommandParser {
                         return "CHECK_CARDS";
                     case ("CHECK_MARKET"):
                         return "CHECK_MARKET";
-
+                    case ("CHECK_LEADERS"):
+                        return "CHECK_LEADERS";
                     case("EXECUTE"):
                         return "EXECUTE";
-
 
                     default : return "UNKNOWN_COMMAND";
                 }

@@ -75,6 +75,19 @@ public class RealPlayer extends Observable implements Serializable {
         notifyObserver(new LeaderCardMessage(ownedLeaderCards));
     }
 
+    /**
+     * Method to remove a leader card and notify the player during the setup phase.
+     * @param leaderToDiscard: index of the leader to discard.
+     */
+    public void setupLeaderCard(int leaderToDiscard) {
+
+        ownedLeaderCards.remove(leaderToDiscard);
+
+        if(ownedLeaderCards.size() == 2) {
+            notifyObserver(new LeaderCardMessage(ownedLeaderCards));
+        }
+    }
+
     public void setOwnedLeaderCards(List<LeaderCard> ownedLeaderCards) {
         this.ownedLeaderCards = ownedLeaderCards;
     }

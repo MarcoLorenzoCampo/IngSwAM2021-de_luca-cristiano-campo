@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.views.cli;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.PlayerState;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class LightweightModel {
     private HashMap<ResourceType, Integer> strongbox;
     private ArrayList<ResourceType> shelves;
     private ArrayList<ResourceType> extra_shelves_types;
+    private List<LeaderCard> leaderCards;
 
     public LightweightModel() {
         this.playerStates = new ArrayList<>();
@@ -30,8 +32,16 @@ public class LightweightModel {
         
     }
 
+    public void setLeaderCards(List<LeaderCard> leaderCards) {
+        this.leaderCards = leaderCards;
+    }
+
     public void setReducedResourceMarket(String reducedResourceMarket) {
         this.reducedResourceMarket = reducedResourceMarket;
+    }
+
+    public List<LeaderCard> getLeaderCards() {
+        return leaderCards;
     }
 
     public String getReducedResourceMarket() {
