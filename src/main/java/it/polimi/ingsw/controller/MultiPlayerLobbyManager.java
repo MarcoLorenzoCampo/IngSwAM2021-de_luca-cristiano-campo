@@ -410,7 +410,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     private void showStartingUpdates() {
         for (Map.Entry<String, VirtualView> entry : viewsByNickname.entrySet()) {
 
-            entry.getValue().printResourceMarket(PlayingGame.getGameInstance().getGameBoard().getResourceMarket().reduce());
+            entry.getValue().printResourceMarket(PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getResourceBoard(),
+                    PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getExtraMarble());
             entry.getValue().printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().reduce());
 
             entry.getValue().printFaithTrack(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getFaithTrack());
@@ -433,8 +434,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     }
 
     /**
-     * The lobby manager observes each player's faith track and
-     * @param message: vatican report notification.
+     * The lobby manager observes each player's faith track and warehouse, registering events.
+     * @param message: controller notification.
      */
     @Override
     public void update(Message message) {

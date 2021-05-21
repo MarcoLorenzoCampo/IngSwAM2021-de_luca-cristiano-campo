@@ -19,6 +19,8 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
+import static it.polimi.ingsw.enumerations.ResourceType.*;
+
 /**
  * This class offers a visual Interface via terminal. It is an implementation of the IView interface.
  * {@link IView}.
@@ -344,14 +346,15 @@ public class CLI extends ViewObservable implements IView {
 
             output = CommandParser.parseCmd(cmdMembers);
 
-            if(output.equals("HELP")) printPossibleActions();
-            if(output.equals("CHECK_MARKET")) out.println(lightweightModel.getReducedResourceMarket());
-            if(output.equals("CHECK_CARDS")) out.println(lightweightModel.getReducedAvailableCards());
-            if(output.equals("CHECK_LEADERS")) printLeaders(lightweightModel.getLeaderCards());
+            switch (output) {
+                case ("HELP") : printPossibleActions(); break;
+                case ("CHECK_MARKET") :  out.println(lightweightModel.getReducedResourceMarket()); break;
+                case ("CHECK_CARDS") : out.println(lightweightModel.getReducedAvailableCards()); break;
+                case ("CHECK_LEADERS") : printLeaders(lightweightModel.getLeaderCards()); break;
+            }
 
-        } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP")
-                || output.equals("CHECK_MARKET") || output.equals("CHECK_CARDS")
-                || output.equals("CHECK_LEADERS"));
+        } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP") || output.equals("CHECK_MARKET")
+                || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
@@ -419,7 +422,6 @@ public class CLI extends ViewObservable implements IView {
 
     }
 
-
     /**
      * When the current player's turn is over, his input stream is shut down.
      * @param message: generic message.
@@ -455,7 +457,7 @@ public class CLI extends ViewObservable implements IView {
             }
 
             if(picked != null && (picked.equals(ResourceType.SERVANT) || picked.equals(ResourceType.COIN)
-            || picked.equals(ResourceType.STONE) || picked.equals(ResourceType.SHIELD))) {
+            || picked.equals(STONE) || picked.equals(ResourceType.SHIELD))) {
 
                 finalPicked.add(picked);
                 out.println("Resource accepted! Added to your inventory.");
@@ -533,7 +535,7 @@ public class CLI extends ViewObservable implements IView {
         lightweightModel.setStrongbox(strongbox);
         out.println("STRONGBOX: " +"\nSHIELD = " + strongbox.get(ResourceType.SHIELD) +
                 "\nCOIN = " + strongbox.get(ResourceType.COIN) +
-                "\nSTONE = " + strongbox.get(ResourceType.STONE) +
+                "\nSTONE = " + strongbox.get(STONE) +
                 "\nSERVANT = " + strongbox.get(ResourceType.SERVANT));
         out.println();
     }
@@ -575,12 +577,71 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printResourceMarket(String reducedResourceMarket) {
+    public void printResourceMarket(ResourceType[][] resourceBoard, ResourceType extraMarble) {
+
+        String reducedExtraMarble = null;
+        switch (extraMarble) {
+            case STONE:
+                reducedExtraMarble = "STONE  "; break;
+            case SERVANT:
+                reducedExtraMarble = "SERVANT"; break;
+            case COIN:
+                reducedExtraMarble = "COIN   "; break;
+            case SHIELD:
+                reducedExtraMarble = "SHIELD "; break;
+            case UNDEFINED:
+                reducedExtraMarble = "WHITE  "; break;
+            case FAITH:
+                reducedExtraMarble = "FAITH  "; break;
+            default: break;
+        }
+        String reducedMarketBoard = "";
+
+        String temp = "";
+        int k=0;
+
+        StringBuilder reducedMarketBoardBuilder = new StringBuilder(reducedMarketBoard
+                + ("     0        1        2        3    "));
+        reducedMarketBoardBuilder.append("\n╔════════╦════════╦════════╦════════╗\n");
+        for(int i = 0; i<3; i++) {
+            for(int j=0; j<4; j++) {
+
+                switch (resourceBoard[i][j]) {
+                    case STONE:
+                        temp = "STONE  "; break;
+                    case SERVANT:
+                        temp = "SERVANT"; break;
+                    case COIN:
+                        temp = "COIN   "; break;
+                    case SHIELD:
+                        temp = "SHIELD "; break;
+                    case UNDEFINED:
+                        temp = "WHITE  "; break;
+                    case FAITH:
+                        temp = "FAITH  "; break;
+                    default: break;
+                }
+
+                k=j+1;
+                reducedMarketBoardBuilder.append("║ ").append(temp);
+            }
+            reducedMarketBoardBuilder.append("║").append("  ").append(i+k);
+
+            if(!(i == 2)) {
+                reducedMarketBoardBuilder.append("\n╠════════╣════════╣════════╣════════╣\n");
+            } else {
+                reducedMarketBoardBuilder.append("\n╚════════╩════════╩════════╩════════╝");
+            }
+        }
+        reducedMarketBoard = reducedMarketBoardBuilder.toString();
+
+        reducedMarketBoard = reducedMarketBoard.concat("\nExtra marble -> ").concat(reducedExtraMarble).concat("\n");
+
 
         out.println("\nThe ResourceMarket has been modified, here's an updated version: \n");
 
-        lightweightModel.setReducedResourceMarket(reducedResourceMarket);
-        out.println(reducedResourceMarket);
+        lightweightModel.setReducedResourceMarket(reducedMarketBoard);
+        out.println(reducedMarketBoard);
     }
 
     @Override

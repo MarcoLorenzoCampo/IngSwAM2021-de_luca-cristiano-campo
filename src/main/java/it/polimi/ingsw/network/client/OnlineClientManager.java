@@ -86,7 +86,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
 
             case BOARD:
                 ResourceMarketMessage r = (ResourceMarketMessage) message;
-                viewUpdater.execute(() -> view.printResourceMarket(r.getResourceBoard()));
+                viewUpdater.execute(() -> view.printResourceMarket(r.getResourceBoard(), r.getExtraMarble()));
                 break;
 
             case BUFFER:

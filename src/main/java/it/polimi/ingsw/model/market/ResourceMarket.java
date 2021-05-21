@@ -11,6 +11,7 @@ import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.ResourceMarketMessage;
 import it.polimi.ingsw.parsers.ResourceMarketParser;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -19,8 +20,9 @@ import java.util.LinkedList;
  * Contains the market where players can acquire resources and the methods
  * to manipulated marbles.
  */
-public class ResourceMarket extends Observable implements Reducible {
+public class ResourceMarket extends Observable implements Serializable {
 
+    private static final long serialVersionUID = -2042410588179158925L;
     /**
      * Auxiliary marble.
      */
@@ -127,7 +129,7 @@ public class ResourceMarket extends Observable implements Reducible {
         placeExtraMarble(index, pickedFromMarket.getLast());
         LinkedList<Resource> obtainedResources = ResourceBuilder.build(pickedFromMarket);
 
-        notifyObserver(new ResourceMarketMessage(reduce()));
+        notifyObserver(new ResourceMarketMessage(resourceBoard, extraMarble));
 
         obtainedResources.forEach(Resource::deposit);
     }
@@ -136,62 +138,7 @@ public class ResourceMarket extends Observable implements Reducible {
         return resourceBoard;
     }
 
-    @Override
-    public String reduce() {
-
-        String reducedExtraMarble = null;
-        switch (extraMarble) {
-            case STONE:
-                reducedExtraMarble = "STONE  "; break;
-            case SERVANT:
-                reducedExtraMarble = "SERVANT"; break;
-            case COIN:
-                reducedExtraMarble = "COIN   "; break;
-            case SHIELD:
-                reducedExtraMarble = "SHIELD "; break;
-            case UNDEFINED:
-                reducedExtraMarble = "WHITE  "; break;
-            case FAITH:
-                reducedExtraMarble = "FAITH  "; break;
-            default: break;
-        }
-        String reducedMarketBoard = "";
-
-        String temp = "";
-        int k=0;
-
-        StringBuilder reducedMarketBoardBuilder = new StringBuilder(reducedMarketBoard
-                + ("     0        1        2        3    "));
-        reducedMarketBoardBuilder.append("\n╔════════╦════════╦════════╦════════╗\n");
-        for(int i = 0; i<dimensions[0]; i++) {
-            for(int j=0; j<dimensions[1]; j++) {
-
-                switch (resourceBoard[i][j]) {
-                    case STONE:
-                        temp = "STONE  "; break;
-                    case SERVANT:
-                        temp = "SERVANT"; break;
-                    case COIN:
-                        temp = "COIN   "; break;
-                    case SHIELD:
-                        temp = "SHIELD "; break;
-                    case UNDEFINED:
-                        temp = "WHITE  "; break;
-                    case FAITH:
-                        temp = "FAITH  "; break;
-                    default: break;
-                }
-
-                k=j+1;
-                reducedMarketBoardBuilder.append("║ ").append(temp);
-            }
-            reducedMarketBoardBuilder.append("║").append("   ").append(i+k);
-            reducedMarketBoardBuilder.append("\n╠════════╣════════╣════════╣════════╣\n");
-        }
-        reducedMarketBoard = reducedMarketBoardBuilder.toString();
-
-        reducedMarketBoard = reducedMarketBoard.concat("\nExtra marble -> ").concat(reducedExtraMarble).concat("\n");
-
-        return reducedMarketBoard;
+    public ResourceType getExtraMarble() {
+        return extraMarble;
     }
 }

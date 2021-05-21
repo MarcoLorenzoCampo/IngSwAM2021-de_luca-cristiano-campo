@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.views;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
+import it.polimi.ingsw.model.market.ResourceMarket;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.token.IToken;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
@@ -107,7 +108,7 @@ public interface IView {
      * @param reducedResourceMarket: resource market
      * {@link it.polimi.ingsw.model.market.ResourceMarket}
      */
-    void printResourceMarket(String reducedResourceMarket);
+    void printResourceMarket(ResourceType[][] resourceMarket, ResourceType extraMarble);
 
     /**
      * Method to show the available production cards.

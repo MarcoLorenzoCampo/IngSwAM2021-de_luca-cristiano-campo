@@ -57,7 +57,6 @@ public class DiscardLeaderCardAction extends Action {
                     .getFaithTrack()
                     .increaseFaithMarker();
         }
-
     }
 
     public PossibleAction getActionTag() {
