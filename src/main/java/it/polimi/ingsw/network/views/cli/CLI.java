@@ -10,6 +10,7 @@ import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
+import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrack;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrackTile;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalToken;
 
@@ -560,10 +561,12 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
-        for(int i = 0; i < faithTrack.getFaithTrack().size(); i++){
+        GraphicalFaithTrack graphicalFaithTrack = new GraphicalFaithTrack(faithTrack);
+        graphicalFaithTrack.draw();
+        /* for(int i = 0; i < faithTrack.getFaithTrack().size(); i++){
             GraphicalFaithTrackTile graphicalFaithTrackTile = new GraphicalFaithTrackTile(faithTrack.getFaithTrack().get(i), faithTrack.getFaithMarker());
-            graphicalFaithTrackTile.draw();
-        }
+
+        } */
     }
 
     @Override
