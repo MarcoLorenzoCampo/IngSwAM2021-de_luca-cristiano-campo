@@ -2,12 +2,12 @@ package it.polimi.ingsw.model.token;
 
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
+import it.polimi.ingsw.model.utilities.Reducible;
 
 import java.io.Serializable;
 
-public class TokenMove extends AbstractToken implements Serializable {
+public class TokenMove extends AbstractToken {
 
-    private static final long serialVersionUID = 6677708315422960155L;
     private final int moves;
     private final boolean shuffle;
 
@@ -49,5 +49,19 @@ public class TokenMove extends AbstractToken implements Serializable {
         else{
             return "2 \uD83D\uDD42";
         }
+    }
+
+    @Override
+    public String toString() {
+        String reducedToken = "\n----------------------------------------------" +
+                "\nLorenzo played a 'Move' token:" +
+                "\nLorenzo moves: " + moves + " times!"
+                + "\n\n----------------------------------------------\n";
+
+        if(shuffle) {
+            reducedToken = reducedToken.concat("\nLorenzo shuffled his token deck!");
+        }
+
+        return reducedToken;
     }
 }

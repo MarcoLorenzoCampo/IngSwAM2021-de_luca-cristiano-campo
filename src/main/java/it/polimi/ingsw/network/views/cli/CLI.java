@@ -3,7 +3,6 @@ package it.polimi.ingsw.network.views.cli;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.token.AbstractToken;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.views.IView;
@@ -11,7 +10,6 @@ import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrack;
-import it.polimi.ingsw.network.views.cli.graphical.GraphicalToken;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -658,12 +656,12 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printLorenzoToken(AbstractToken lorenzoAction) {
+    public void printLorenzoToken(String lorenzoTokenReduced) {
 
-        out.println("\nLorenzo just played a token:\n");
+        out.println(lorenzoTokenReduced);
 
-        GraphicalToken graphicalToken = new GraphicalToken(lorenzoAction);
-        graphicalToken.draw();
+        /*GraphicalToken graphicalToken = new GraphicalToken(lorenzoAction);
+        graphicalToken.draw();*/
     }
 
     /**

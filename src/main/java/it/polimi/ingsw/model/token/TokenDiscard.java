@@ -4,17 +4,17 @@ import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.market.ProductionCardMarket;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
+import it.polimi.ingsw.model.utilities.Reducible;
 import it.polimi.ingsw.network.views.cli.ColorCLI;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TokenDiscard extends AbstractToken implements Serializable {
+public class TokenDiscard extends AbstractToken {
 
-    private static final long serialVersionUID = 4085994326876425695L;
     private final Color color;
-    private final ProductionCardMarket productionCardMarketReference;
+    private final ProductionCardMarket cardMarket;
     private ColorCLI colorCLI;
     private Map<Color, ColorCLI> cardColor = new HashMap<>();
 
@@ -23,17 +23,16 @@ public class TokenDiscard extends AbstractToken implements Serializable {
     public TokenDiscard(Color color, IGame game) {
         this.color = color;
         this.game = game;
-        this.productionCardMarketReference = game.getGameBoard().getProductionCardMarket();
+        this.cardMarket = game.getGameBoard().getProductionCardMarket();
     }
-
 
     /**
      * Method to remove two cards of a specified color from the production
      * cards deck.
      */
     public void tokenAction(LorenzoPlayer lorenzo) {
-        productionCardMarketReference.lorenzoRemoves(color);
-        productionCardMarketReference.lorenzoRemoves(color);
+        cardMarket.lorenzoRemoves(color);
+        cardMarket.lorenzoRemoves(color);
     }
 
     @Override
@@ -48,5 +47,13 @@ public class TokenDiscard extends AbstractToken implements Serializable {
         cardColor.put(Color.BLUE, ColorCLI.ANSI_BLUE);
         cardColor.put(Color.YELLOW, ColorCLI.ANSI_BRIGHT_YELLOW);
         cardColor.put(Color.PURPLE, ColorCLI.ANSI_BRIGHT_PURPLE);
+    }
+
+    @Override
+    public String toString() {
+        return "\n----------------------------------------------\n" + "" +
+                "Lorenzo played a 'Discard 2 Cards' Token:" +
+            "\nColor discarded: " + color
+                + "\n----------------------------------------------\n";
     }
 }

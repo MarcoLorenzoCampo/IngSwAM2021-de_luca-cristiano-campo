@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.utilities;
 
-abstract class Tag {
+import java.io.Serializable;
+
+abstract class Tag implements Serializable {
+    private static final long serialVersionUID = 6258127563979295716L;
     private int quantity;
 
     public int getQuantity() {
@@ -13,7 +16,6 @@ abstract class Tag {
 
     @Override
     public String toString() {
-        return ", quantity=" + quantity +
-                '}';
+        return ", quantity = " + quantity;
     }
 }

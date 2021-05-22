@@ -12,6 +12,7 @@ import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -157,17 +158,16 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
 
     @Override
     public void broadcastGenericMessage(String message) {
-
+        playerVV.showGenericString(message);
     }
 
     @Override
     public void broadCastWinMessage(String message) {
-
+        playerVV.showWinMatch(message);
     }
 
     @Override
     public void broadCastMatchInfo() {
-
     }
 
     @Override
@@ -181,7 +181,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
 
     @Override
     public void disconnectPlayer(String nicknameToDisconnect) {
-
+        gameManager.resetFSM();
     }
 
     @Override

@@ -252,6 +252,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         return lobbySize;
     }
 
+    @Override
     public List<RealPlayer> getRealPlayerList() {
         return realPlayerList;
     }

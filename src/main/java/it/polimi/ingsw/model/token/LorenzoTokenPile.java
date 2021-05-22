@@ -8,9 +8,8 @@ import it.polimi.ingsw.network.messages.serverMessages.LorenzoTokenMessage;
 import java.io.Serializable;
 import java.util.List;
 
-public class LorenzoTokenPile extends Observable implements Serializable {
+public class LorenzoTokenPile extends Observable {
 
-    private static final long serialVersionUID = -5070654741566730370L;
     private int lastTaken;
     private final List<AbstractToken> lorenzoTokens;
 
@@ -21,7 +20,7 @@ public class LorenzoTokenPile extends Observable implements Serializable {
 
     public void performTokenAction(LorenzoPlayer lorenzo) {
 
-        notifyObserver(new LorenzoTokenMessage(lorenzoTokens.get(lastTaken)));
+        notifyObserver(new LorenzoTokenMessage(lorenzoTokens.get(lastTaken).toString()));
 
         lorenzoTokens.get(lastTaken%lorenzoTokens.size()).tokenAction(lorenzo);
         lastTaken++;

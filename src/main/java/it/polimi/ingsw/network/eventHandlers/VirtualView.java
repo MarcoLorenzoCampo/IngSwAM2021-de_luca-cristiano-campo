@@ -3,7 +3,6 @@ package it.polimi.ingsw.network.eventHandlers;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.token.AbstractToken;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.server.ClientHandler;
@@ -117,14 +116,19 @@ public class VirtualView implements IView, Observer {
         clientHandler.sendMessage(new ResourceMarketMessage(resourceMarket, extraMarble));
     }
 
+    /**
+     * Method to show the available production cards.
+     *
+     * @param reducedAvailableCards : available production cards.
+     */
     @Override
     public void printAvailableCards(String reducedAvailableCards) {
         clientHandler.sendMessage(new AvailableCardsMessage(reducedAvailableCards));
     }
 
     @Override
-    public void printLorenzoToken(AbstractToken lorenzoAction) {
-        clientHandler.sendMessage(new LorenzoTokenMessage(lorenzoAction));
+    public void printLorenzoToken(String lorenzoTokenReduced) {
+        clientHandler.sendMessage(new LorenzoTokenMessage(lorenzoTokenReduced));
     }
 
     @Override
