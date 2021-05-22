@@ -11,7 +11,6 @@ import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrack;
-import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrackTile;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalToken;
 
 import java.io.PrintStream;
@@ -95,7 +94,7 @@ public class CLI extends ViewObservable implements IView {
 
             out.println("\nSpecify a valid IPAddress: " + "\nDefault is 0.0.0.0");
             out.print(">>> ");
-            
+
             try {
                 IPAddress = readLine();
 
@@ -417,7 +416,7 @@ public class CLI extends ViewObservable implements IView {
             case("UNKNOWN_COMMAND"):
                 out.println("\nParsing error!");
                 break;
-            }
+        }
 
 
     }
@@ -457,7 +456,7 @@ public class CLI extends ViewObservable implements IView {
             }
 
             if(picked != null && (picked.equals(ResourceType.SERVANT) || picked.equals(ResourceType.COIN)
-            || picked.equals(STONE) || picked.equals(ResourceType.SHIELD))) {
+                    || picked.equals(STONE) || picked.equals(ResourceType.SHIELD))) {
 
                 finalPicked.add(picked);
                 out.println("Resource accepted! Added to your inventory.");
@@ -582,17 +581,17 @@ public class CLI extends ViewObservable implements IView {
         String reducedExtraMarble = null;
         switch (extraMarble) {
             case STONE:
-                reducedExtraMarble = ColorCLI.ANSI_WHITE.escape() + "STONE  " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_WHITE.escape() + "STONE  " + ColorCLI.getRESET(); break;
             case SERVANT:
-                reducedExtraMarble = ColorCLI.ANSI_PURPLE.escape() + "SERVANT" + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_PURPLE.escape() + "SERVANT" + ColorCLI.getRESET(); break;
             case COIN:
-                reducedExtraMarble = ColorCLI.ANSI_YELLOW.escape() + "COIN   " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_YELLOW.escape() + "COIN   " + ColorCLI.getRESET(); break;
             case SHIELD:
-                reducedExtraMarble = ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.getRESET(); break;
             case UNDEFINED:
                 reducedExtraMarble = "WHITE  "; break;
             case FAITH:
-                reducedExtraMarble = ColorCLI.ANSI_RED.escape() + "FAITH  " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_RED.escape() + "FAITH  " + ColorCLI.getRESET(); break;
             default: break;
         }
         String reducedMarketBoard = "";
@@ -608,17 +607,17 @@ public class CLI extends ViewObservable implements IView {
 
                 switch (resourceBoard[i][j]) {
                     case STONE:
-                        temp = ColorCLI.ANSI_WHITE.escape() + "STONE   " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_WHITE.escape() + "STONE   " + ColorCLI.getRESET(); break;
                     case SERVANT:
-                        temp = ColorCLI.ANSI_PURPLE.escape() + "SERVANT " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_PURPLE.escape() + "SERVANT " + ColorCLI.getRESET(); break;
                     case COIN:
-                        temp = ColorCLI.ANSI_YELLOW.escape() + "COIN    " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_YELLOW.escape() + "COIN    " + ColorCLI.getRESET(); break;
                     case SHIELD:
-                        temp = ColorCLI.ANSI_BLUE.escape() + "SHIELD  " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_BLUE.escape() + "SHIELD  " + ColorCLI.getRESET(); break;
                     case UNDEFINED:
                         temp = "WHITE   "; break;
                     case FAITH:
-                        temp = ColorCLI.ANSI_RED.escape() + "FAITH   " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_RED.escape() + "FAITH   " + ColorCLI.getRESET(); break;
                     default: break;
                 }
 
@@ -672,20 +671,20 @@ public class CLI extends ViewObservable implements IView {
     private void printPossibleActions() {
 
         out.println(
-            "-------------------------------------------------------------------------------------------------------------" +
-            "\nHere's a complete list of the accepted commands:" +
-                "\n - 'DISCARD_LEADER <int>': Discards one of your leader cards (Requires a valid card index);" +
-                "\n - 'ACTIVATE_LEADER <int>': Places one of your leader cards (Requires a valid card index);" +
-                "\n - 'GET_RESOURCES <int>': Gets resources from the market (Requires and index form 0 to 6);" +
-                "\n - 'BUY_CARD <int>': Buys an available card (Requires a valid card index and a valid production slot index);" +
-                "\n - 'ACTIVATE_BASE_PRODUCTION <ResourceType> <ResourceType> <ResourceType>': " +
-                "\n     Activates the base production (asks you 2 input resources and 1 output resource);" +
-                "\n - 'CARD_PRODUCTION': " +
-                "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
-                "\n - 'CHECK_MARKET': For an updated ResourceMarket;" +
-                "\n - 'CHECK_CARDS': For an updated ProductionCardsMarket;" +
-                "\n - 'CHECK_LEADERS': For un updated LeaderCards list;" +
-                "\n-------------------------------------------------------------------------------------------------------------\n"
+                "-------------------------------------------------------------------------------------------------------------" +
+                        "\nHere's a complete list of the accepted commands:" +
+                        "\n - 'DISCARD_LEADER <int>': Discards one of your leader cards (Requires a valid card index);" +
+                        "\n - 'ACTIVATE_LEADER <int>': Places one of your leader cards (Requires a valid card index);" +
+                        "\n - 'GET_RESOURCES <int>': Gets resources from the market (Requires and index form 0 to 6);" +
+                        "\n - 'BUY_CARD <int>': Buys an available card (Requires a valid card index and a valid production slot index);" +
+                        "\n - 'ACTIVATE_BASE_PRODUCTION <ResourceType> <ResourceType> <ResourceType>': " +
+                        "\n     Activates the base production (asks you 2 input resources and 1 output resource);" +
+                        "\n - 'CARD_PRODUCTION': " +
+                        "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
+                        "\n - 'CHECK_MARKET': For an updated ResourceMarket;" +
+                        "\n - 'CHECK_CARDS': For an updated ProductionCardsMarket;" +
+                        "\n - 'CHECK_LEADERS': For un updated LeaderCards list;" +
+                        "\n-------------------------------------------------------------------------------------------------------------\n"
         );
     }
 
