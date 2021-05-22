@@ -582,17 +582,17 @@ public class CLI extends ViewObservable implements IView {
         String reducedExtraMarble = null;
         switch (extraMarble) {
             case STONE:
-                reducedExtraMarble = "STONE  "; break;
+                reducedExtraMarble = ColorCLI.ANSI_WHITE.escape() + "STONE  " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
             case SERVANT:
-                reducedExtraMarble = "SERVANT"; break;
+                reducedExtraMarble = ColorCLI.ANSI_PURPLE.escape() + "SERVANT" + ColorCLI.ANSI_WHITE.escape(); break;
             case COIN:
-                reducedExtraMarble = "COIN   "; break;
+                reducedExtraMarble = ColorCLI.ANSI_YELLOW.escape() + "COIN   " + ColorCLI.ANSI_WHITE.escape(); break;
             case SHIELD:
-                reducedExtraMarble = "SHIELD "; break;
+                reducedExtraMarble = ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.ANSI_WHITE.escape(); break;
             case UNDEFINED:
                 reducedExtraMarble = "WHITE  "; break;
             case FAITH:
-                reducedExtraMarble = "FAITH  "; break;
+                reducedExtraMarble = ColorCLI.ANSI_RED.escape() + "FAITH  " + ColorCLI.ANSI_WHITE.escape(); break;
             default: break;
         }
         String reducedMarketBoard = "";
@@ -608,17 +608,17 @@ public class CLI extends ViewObservable implements IView {
 
                 switch (resourceBoard[i][j]) {
                     case STONE:
-                        temp = "STONE   "; break;
+                        temp = ColorCLI.ANSI_WHITE.escape() + "STONE   " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
                     case SERVANT:
-                        temp = "SERVANT "; break;
+                        temp = ColorCLI.ANSI_PURPLE.escape() + "SERVANT " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
                     case COIN:
-                        temp = "COIN    "; break;
+                        temp = ColorCLI.ANSI_YELLOW.escape() + "COIN    " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
                     case SHIELD:
-                        temp = "SHIELD  "; break;
+                        temp = ColorCLI.ANSI_BLUE.escape() + "SHIELD  " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
                     case UNDEFINED:
                         temp = "WHITE   "; break;
                     case FAITH:
-                        temp = "FAITH   "; break;
+                        temp = ColorCLI.ANSI_RED.escape() + "FAITH   " + ColorCLI.ANSI_WHITE.escape(); break;
                     default: break;
                 }
 
