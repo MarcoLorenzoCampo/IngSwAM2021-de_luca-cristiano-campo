@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network.views.cli;
 
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 public class MiniCli {
 
@@ -40,6 +39,6 @@ public class MiniCli {
     }
 
     private void printLogo() {
-        System.out.println(Logo.getLogo() + Logo.getGreetings());
+        System.out.println(UsefulStrings.getLogo() + UsefulStrings.getGreetings());
     }
 }

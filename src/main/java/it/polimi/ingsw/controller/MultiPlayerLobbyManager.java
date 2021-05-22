@@ -390,7 +390,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
      * Auxiliary method to make player's virtual views observe directly the model.
      * @param virtualView: new observer.
      */
-    private void setObserver(String nickname, VirtualView virtualView) {
+    @Override
+    public void setObserver(String nickname, VirtualView virtualView) {
 
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
 
@@ -432,7 +433,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     /**
      * Method to send updates to the player when the game starts.
      */
-    private void showStartingUpdates() {
+    @Override
+    public void showStartingUpdates() {
         for (Map.Entry<String, VirtualView> entry : viewsByNickname.entrySet()) {
 
             entry.getValue().printResourceMarket(PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getResourceBoard(),

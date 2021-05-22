@@ -6,11 +6,13 @@ import it.polimi.ingsw.model.market.ProductionCardMarket;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
 import it.polimi.ingsw.network.views.cli.ColorCLI;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TokenDiscard implements IToken{
+public class TokenDiscard extends AbstractToken implements Serializable {
 
+    private static final long serialVersionUID = 4085994326876425695L;
     private final Color color;
     private final ProductionCardMarket productionCardMarketReference;
     private ColorCLI colorCLI;

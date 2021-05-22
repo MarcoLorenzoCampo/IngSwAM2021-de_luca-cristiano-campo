@@ -66,117 +66,118 @@ public class OnlineClientManager implements ViewObserver, Observer {
     @Override
     public void update(Message message) {
 
-        if(message != null)
+        if(message != null) {
+            switch (message.getMessageType()) {
+                case LOBBY_SIZE_REQUEST:
+                    viewUpdater.execute(view::askPlayerNumber);
+                    break;
 
-        switch (message.getMessageType()) {
-            case LOBBY_SIZE_REQUEST:
-                viewUpdater.execute(view::askPlayerNumber);
-                break;
+                case LOGIN_OUTCOME:
+                    LoginOutcomeMessage m = (LoginOutcomeMessage) message;
+                    viewUpdater.execute(() ->
+                            view.showLoginOutput(m.isConnectionOutcome(), m.isNicknameAccepted(), m.isReconnected()));
+                    break;
 
-            case LOGIN_OUTCOME:
-                LoginOutcomeMessage m = (LoginOutcomeMessage) message;
-                viewUpdater.execute(() ->
-                        view.showLoginOutput(m.isConnectionOutcome(), m.isNicknameAccepted(), m.isReconnected()));
-                break;
+                case GENERIC_SERVER_MESSAGE:
+                    GenericMessageFromServer g = (GenericMessageFromServer) message;
+                    viewUpdater.execute(() -> view.showGenericString(g.getServerString()));
+                    break;
 
-            case GENERIC_SERVER_MESSAGE:
-                GenericMessageFromServer g = (GenericMessageFromServer) message;
-                viewUpdater.execute(() -> view.showGenericString(g.getServerString()));
-                break;
+                case BOARD:
+                    ResourceMarketMessage r = (ResourceMarketMessage) message;
+                    viewUpdater.execute(() -> view.printResourceMarket(r.getResourceBoard(), r.getExtraMarble()));
+                    break;
 
-            case BOARD:
-                ResourceMarketMessage r = (ResourceMarketMessage) message;
-                viewUpdater.execute(() -> view.printResourceMarket(r.getResourceBoard(), r.getExtraMarble()));
-                break;
+                case BUFFER:
+                    BufferMessage buffer = (BufferMessage) message;
+                    viewUpdater.execute(() -> view.printBuffer(buffer.getBuffer()));
+                    break;
 
-            case BUFFER:
-                BufferMessage buffer = (BufferMessage) message;
-                viewUpdater.execute(() -> view.printBuffer(buffer.getBuffer()));
-                break;
+                case STRONGBOX:
+                    StrongboxMessage strongbox = (StrongboxMessage) message;
+                    viewUpdater.execute(() -> view.printStrongbox(strongbox.getStrongbox()));
+                    break;
 
-            case STRONGBOX:
-                StrongboxMessage strongbox = (StrongboxMessage) message;
-                viewUpdater.execute(() -> view.printStrongbox(strongbox.getStrongbox()));
-                break;
+                case PRODUCTION_BOARD:
+                    ProductionBoardMessage productionBoard = (ProductionBoardMessage) message;
+                    List<LeaderCard> leader_prod = deserializeLeaderCards(productionBoard.getExtra_productions());
+                    viewUpdater.execute(() ->
+                            view.showLeaderCards(leader_prod));
+                    viewUpdater.execute(() -> view.printProductionBoard(productionBoard.getProductions()));
+                    break;
 
-            case PRODUCTION_BOARD:
-                ProductionBoardMessage productionBoard = (ProductionBoardMessage) message;
-                List<LeaderCard> leader_prod = deserializeLeaderCards(productionBoard.getExtra_productions());
-                viewUpdater.execute(() ->
-                        view.showLeaderCards(leader_prod));
-                viewUpdater.execute(() -> view.printProductionBoard(productionBoard.getProductions()));
-                break;
+                case WAREHOUSE:
+                    WarehouseMessage warehouse = (WarehouseMessage) message;
+                    viewUpdater.execute(() -> view.printWarehouse(warehouse.getWarehouse(), warehouse.getExtra_shelf()));
+                    break;
 
-            case WAREHOUSE:
-                WarehouseMessage warehouse = (WarehouseMessage) message;
-                viewUpdater.execute(() -> view.printWarehouse(warehouse.getWarehouse(), warehouse.getExtra_shelf()));
-                break;
+                case LORENZO_TOKEN:
+                    LorenzoTokenMessage l = (LorenzoTokenMessage) message;
+                    viewUpdater.execute(() -> view.printLorenzoToken(l.getLorenzoToken()));
+                    break;
 
-            case LORENZO_TOKEN:
-                LorenzoTokenMessage l = (LorenzoTokenMessage) message;
-                viewUpdater.execute(() -> view.printLorenzoToken(l.getLorenzoToken()));
-                break;
+                case FAITH_TRACK_MESSAGE:
+                    FaithTrackMessage f = (FaithTrackMessage) message;
+                    viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
+                    break;
 
-            case FAITH_TRACK_MESSAGE:
-                FaithTrackMessage f = (FaithTrackMessage) message;
-                viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
-                break;
+                case SETUP_RESOURCES:
+                    SetupResourcesRequest resourcesRequest = (SetupResourcesRequest) message;
+                    viewUpdater.execute(() ->
+                    {
+                        try {
+                            view.askSetupResource(resourcesRequest.getNumberOfResources());
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    break;
 
-            case SETUP_RESOURCES:
-                SetupResourcesRequest resourcesRequest = (SetupResourcesRequest) message;
-                viewUpdater.execute(() ->
-                {
-                    try {
-                        view.askSetupResource(resourcesRequest.getNumberOfResources());
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                });
-                break;
+                case FINAL_PRODUCTION:
+                    ChosenProductionMessage finalProduction = (ChosenProductionMessage) message;
+                    viewUpdater.execute(() -> view.printFinalProduction(finalProduction.getInput(), finalProduction.getOutput()));
+                    break;
+                case AVAILABLE_PRODUCTION_CARDS:
+                    AvailableCardsMessage a = (AvailableCardsMessage) message;
+                    viewUpdater.execute(() -> view.printAvailableCards(a.getReducedAvailableCards()));
+                    break;
 
-            case FINAL_PRODUCTION:
-                ChosenProductionMessage finalProduction = (ChosenProductionMessage) message;
-                viewUpdater.execute(() -> view.printFinalProduction(finalProduction.getInput(), finalProduction.getOutput()));
-                break;
-            case AVAILABLE_PRODUCTION_CARDS:
-                AvailableCardsMessage a = (AvailableCardsMessage) message;
-                viewUpdater.execute(() -> view.printAvailableCards(a.getReducedAvailableCards()));
-                break;
+                case AVAILABLE_LEADERS:
+                    LeaderCardMessage leaderCardMessage = (LeaderCardMessage) message;
+                    List<LeaderCard> built = deserializeLeaderCards(leaderCardMessage);
+                    viewUpdater.execute(() ->
+                            view.showLeaderCards(built));
+                    break;
 
-            case AVAILABLE_LEADERS:
-                LeaderCardMessage leaderCardMessage = (LeaderCardMessage) message;
-                List<LeaderCard> built = deserializeLeaderCards(leaderCardMessage);
-                viewUpdater.execute(() ->
-                        view.showLeaderCards(built));
-                break;
+                case SETUP_LEADERS:
+                    viewUpdater.execute(() ->
+                    {
+                        try {
+                            view.askToDiscard();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    break;
 
-            case SETUP_LEADERS:
-                viewUpdater.execute(() ->
-                {
-                   try{
-                       view.askToDiscard();
-                   } catch (ExecutionException e) {
-                       e.printStackTrace();
-                   }
-                });
-                break;
+                case WIN_MESSAGE:
+                    WinMessage winMessage = (WinMessage) message;
+                    viewUpdater.execute(() -> view.showWinMatch(winMessage.getMessage()));
+                    break;
 
-            case WIN_MESSAGE:
-                WinMessage winMessage = (WinMessage) message;
-                viewUpdater.execute(() -> view.showWinMatch(winMessage.getMessage()));
-                break;
+                case YOUR_TURN:
+                    YourTurnMessage yourTurnMessage = (YourTurnMessage) message;
+                    viewUpdater.execute(() -> view.currentTurn(yourTurnMessage.getMessage()));
+                    break;
 
-            case YOUR_TURN:
-                YourTurnMessage yourTurnMessage = (YourTurnMessage) message;
-                viewUpdater.execute(() -> view.currentTurn(yourTurnMessage.getMessage()));
-                break;
+                case ERROR:
+                    ErrorMessage e = (ErrorMessage) message;
+                    viewUpdater.execute(() -> view.showError(e.getErrorMessage()));
+                    break;
 
-            case ERROR:
-                ErrorMessage e = (ErrorMessage) message;
-                viewUpdater.execute(() -> view.showError(e.getErrorMessage()));
-                break;
-
-            default: break;
+                default:
+                    break;
+            }
         }
     }
 

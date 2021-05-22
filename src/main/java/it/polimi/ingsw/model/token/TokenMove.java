@@ -3,8 +3,11 @@ package it.polimi.ingsw.model.token;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
 
-public class TokenMove implements IToken{
+import java.io.Serializable;
 
+public class TokenMove extends AbstractToken implements Serializable {
+
+    private static final long serialVersionUID = 6677708315422960155L;
     private final int moves;
     private final boolean shuffle;
 

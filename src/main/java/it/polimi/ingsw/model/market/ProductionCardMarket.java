@@ -60,8 +60,6 @@ public class ProductionCardMarket extends Observable implements Reducible {
                 .values());
 
         sortAvailableCardsByLevel();
-
-        reduceAndNotify();
     }
 
     /**
@@ -111,7 +109,7 @@ public class ProductionCardMarket extends Observable implements Reducible {
                 playableProductionCards.remove(iterator);
                 replaceBoughtCard(iterator);
                 sortAvailableCardsByLevel();
-                return;
+                break;
             }
         }
 

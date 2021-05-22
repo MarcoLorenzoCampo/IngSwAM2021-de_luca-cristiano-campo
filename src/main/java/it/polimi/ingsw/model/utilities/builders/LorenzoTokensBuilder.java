@@ -3,19 +3,18 @@ package it.polimi.ingsw.model.utilities.builders;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.model.token.IToken;
+import it.polimi.ingsw.model.token.AbstractToken;
 import it.polimi.ingsw.model.token.TokenDiscard;
 import it.polimi.ingsw.model.token.TokenMove;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public final class LorenzoTokensBuilder {
 
     private final static IGame game = PlayingGame.getGameInstance();
 
-    public static ArrayList<IToken> build() {
-        ArrayList<IToken> builtList = new ArrayList<>();
+    public static ArrayList<AbstractToken> build() {
+        ArrayList<AbstractToken> builtList = new ArrayList<>();
 
         builtList.add(new TokenDiscard(Color.PURPLE, game));
         builtList.add(new TokenDiscard(Color.BLUE, game));
@@ -24,7 +23,7 @@ public final class LorenzoTokensBuilder {
         builtList.add(new TokenMove(2, game));
         builtList.add(new TokenMove(game));
 
-        Collections.shuffle(builtList);
+        //Collections.shuffle(builtList);
         return builtList;
     }
 }

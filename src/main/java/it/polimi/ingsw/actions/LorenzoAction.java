@@ -15,7 +15,7 @@ public class LorenzoAction extends Action {
     @Override
     public void isValid() {
         lorenzo.getLorenzoPlayerBoard()
-                .getLorenzoActionToken()
+                .getLorenzoTokenPile()
                 .performTokenAction(lorenzo);
     }
 }

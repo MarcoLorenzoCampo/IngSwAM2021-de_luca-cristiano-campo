@@ -2,32 +2,38 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
+import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Class to manage players and turns in a single player game.
  */
-public class SinglePlayerLobbyManager implements ILobbyManager {
+public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
 
     private int numberOfTurns;
     private final IGame currentGame;
-    private RealPlayer player = null;
+    private final List<RealPlayer> realPlayerList;
     private final LorenzoPlayer lorenzo;
+    private final GameManager gameManager;
 
     private VirtualView playerVV;
 
-    public SinglePlayerLobbyManager(IGame currentGame) {
-        this.currentGame = currentGame;
+    public SinglePlayerLobbyManager(GameManager gameManager) {
+        this.currentGame = PlayingGame.getGameInstance();
         lorenzo = new LorenzoPlayer();
+        realPlayerList = new ArrayList<>();
         numberOfTurns = 0;
+        this.gameManager = gameManager;
     }
 
     /**
@@ -36,16 +42,16 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
      */
     @Override
     public void addNewPlayer(String nickname, VirtualView virtualView) {
-        if(player == null) {
-            player = new RealPlayer(nickname);
+        if(realPlayerList.size() == 0) {
+            realPlayerList.add(new RealPlayer(nickname));
+
+            setObserver(nickname, virtualView);
 
             playerVV = virtualView;
             playerVV.showLoginOutput(true, true, false);
 
-            setPlayingOrder();
         } else {
-
-            playerVV.showLoginOutput(false, false, false);
+            playerVV.showError("A single player match has already started!");
         }
     }
 
@@ -55,12 +61,14 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
      */
     @Override
     public void setPlayingOrder() {
-        player.setFirstToPlay();
+        realPlayerList.get(0).setFirstToPlay();
 
-        playerVV.showGenericString("You'll move first, Lorenzo second.");
+        playerVV.showGenericString("\nYou'll move first, Lorenzo second.");
 
-        currentGame.setCurrentPlayer(player);
+        currentGame.setCurrentPlayer(realPlayerList.get(0));
+        gameManager.setCurrentPlayer(realPlayerList.get(0).getName());
 
+        showStartingUpdates();
         giveLeaderCards();
     }
 
@@ -72,7 +80,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
     public void setNextTurn() {
         numberOfTurns++;
 
-        playerVV.turnEnded("Lorenzo's turn now.");
+        playerVV.showGenericString("Lorenzo's turn now.");
         lorenzo.getLorenzoPlayerBoard().getAction(new LorenzoAction(lorenzo));
     }
 
@@ -83,7 +91,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
     public void giveLeaderCards() {
         List<LeaderCard> leaderCards = LeaderCardsDeckBuilder.deckBuilder();
 
-        player.setOwnedLeaderCards(
+        realPlayerList.get(0).setOwnedLeaderCards(
                 leaderCards
                         .stream()
                         .limit(4)
@@ -91,8 +99,45 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
     }
 
     @Override
+    public void setObserver(String nickname, VirtualView vv) {
+
+        realPlayerList.get(0).getPlayerBoard().getFaithTrack().addObserver(this);
+
+        realPlayerList.get(0).getPlayerBoard().getInventoryManager().addObserver(this);
+
+        gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(vv);
+
+        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(vv);
+
+        realPlayerList.get(0).getPlayerBoard().getInventoryManager().addObserver(vv);
+
+        realPlayerList.get(0).getPlayerBoard().getFaithTrack().addObserver(vv);
+
+        realPlayerList.get(0).getPlayerBoard().getProductionBoard().addObserver(vv);
+
+        realPlayerList.get(0).addObserver(vv);
+
+        lorenzo.getFaithTrack().addObserver(vv);
+
+        lorenzo.getLorenzoPlayerBoard().addObserver(vv);
+
+        lorenzo.getLorenzoPlayerBoard().getLorenzoTokenPile().addObserver(vv);
+    }
+
+    @Override
+    public void showStartingUpdates() {
+
+        playerVV.printResourceMarket(PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getResourceBoard(),
+                PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getExtraMarble());
+
+        playerVV.printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().reduce());
+
+        playerVV.printFaithTrack(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getFaithTrack());
+    }
+
+    @Override
     public List<RealPlayer> getRealPlayerList() {
-        return null;
+        return realPlayerList;
     }
 
     @Override
@@ -136,6 +181,11 @@ public class SinglePlayerLobbyManager implements ILobbyManager {
 
     @Override
     public void disconnectPlayer(String nicknameToDisconnect) {
+
+    }
+
+    @Override
+    public void update(Message message) {
 
     }
 }

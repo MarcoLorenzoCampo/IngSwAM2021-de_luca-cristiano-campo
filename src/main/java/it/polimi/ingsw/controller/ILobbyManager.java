@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,4 +25,6 @@ public interface ILobbyManager {
     void broadCastMatchInfo();
     int turnOfPlayer(String current);
     void disconnectPlayer(String nicknameToDisconnect);
+    void setObserver(String nickname, VirtualView vv);
+    void showStartingUpdates();
 }

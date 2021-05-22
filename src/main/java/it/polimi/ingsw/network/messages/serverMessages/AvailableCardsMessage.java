@@ -21,6 +21,7 @@ public class AvailableCardsMessage extends Message {
     public AvailableCardsMessage(String reducedAvailableCards) {
 
         super.setMessageType(PossibleMessages.AVAILABLE_PRODUCTION_CARDS);
+        super.setSenderUsername("SERVER_MESSAGE");
 
         this.reducedAvailableCards = reducedAvailableCards;
     }

@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.views.cli;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.token.IToken;
+import it.polimi.ingsw.model.token.AbstractToken;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.views.IView;
@@ -11,7 +11,6 @@ import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrack;
-import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrackTile;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalToken;
 
 import java.io.PrintStream;
@@ -177,7 +176,7 @@ public class CLI extends ViewObservable implements IView {
         } else {
 
             out.println("\nWe had trouble contacting the server. Game can't be played.");
-            out.println(Logo.getDisgracefulEnding());
+            out.println(UsefulStrings.getDisgracefulEnding());
 
             System.exit(1);
         }
@@ -418,8 +417,6 @@ public class CLI extends ViewObservable implements IView {
                 out.println("\nParsing error!");
                 break;
             }
-
-
     }
 
     /**
@@ -661,7 +658,10 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printLorenzoToken(IToken lorenzoAction) {
+    public void printLorenzoToken(AbstractToken lorenzoAction) {
+
+        out.println("\nLorenzo just played a token:\n");
+
         GraphicalToken graphicalToken = new GraphicalToken(lorenzoAction);
         graphicalToken.draw();
     }
@@ -670,23 +670,7 @@ public class CLI extends ViewObservable implements IView {
      * Print every possible action allowed during the playing phase.
      */
     private void printPossibleActions() {
-
-        out.println(
-            "-------------------------------------------------------------------------------------------------------------" +
-            "\nHere's a complete list of the accepted commands:" +
-                "\n - 'DISCARD_LEADER <int>': Discards one of your leader cards (Requires a valid card index);" +
-                "\n - 'ACTIVATE_LEADER <int>': Places one of your leader cards (Requires a valid card index);" +
-                "\n - 'GET_RESOURCES <int>': Gets resources from the market (Requires and index form 0 to 6);" +
-                "\n - 'BUY_CARD <int>': Buys an available card (Requires a valid card index and a valid production slot index);" +
-                "\n - 'ACTIVATE_BASE_PRODUCTION <ResourceType> <ResourceType> <ResourceType>': " +
-                "\n     Activates the base production (asks you 2 input resources and 1 output resource);" +
-                "\n - 'CARD_PRODUCTION': " +
-                "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
-                "\n - 'CHECK_MARKET': For an updated ResourceMarket;" +
-                "\n - 'CHECK_CARDS': For an updated ProductionCardsMarket;" +
-                "\n - 'CHECK_LEADERS': For un updated LeaderCards list;" +
-                "\n-------------------------------------------------------------------------------------------------------------\n"
-        );
+        out.println(UsefulStrings.getWhatToDo());
     }
 
     /**

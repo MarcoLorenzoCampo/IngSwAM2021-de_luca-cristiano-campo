@@ -68,10 +68,10 @@ public final class GameManager implements Observer, Serializable {
      */
     public void setLobbyManager(String gameMode) {
 
-        if (gameMode.equals("singlePlayer")) {
-            lobbyManager = new SinglePlayerLobbyManager(currentGame);
+        if (gameMode.equalsIgnoreCase("singlePlayer")) {
+            lobbyManager = new SinglePlayerLobbyManager(this);
         }
-        if (gameMode.equals("multiPlayer")) {
+        if (gameMode.equalsIgnoreCase("multiPlayer")) {
             lobbyManager = new MultiPlayerLobbyManager(this);
         }
     }
@@ -232,7 +232,7 @@ public final class GameManager implements Observer, Serializable {
                                 .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
                     }
 
-                    if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)){
+                    if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)) {
                         currentGame.setCurrentState(PossibleGameStates.PLAYING);
 
                     }
