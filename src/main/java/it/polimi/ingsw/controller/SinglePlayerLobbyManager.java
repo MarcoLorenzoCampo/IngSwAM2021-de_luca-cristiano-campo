@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.actions.LorenzoAction;
+import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
@@ -82,7 +83,10 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
         numberOfTurns++;
 
         playerVV.showGenericString("Lorenzo's turn now.");
+
         lorenzo.getLorenzoPlayerBoard().getAction(new LorenzoAction(lorenzo));
+
+        gameManager.onStartTurn();
     }
 
     /**

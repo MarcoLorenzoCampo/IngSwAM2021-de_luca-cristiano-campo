@@ -178,8 +178,6 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         gameManager.setCurrentPlayer(nowPlaying);
 
-        //viewsByNickname.get(nowPlaying).currentTurn("It's your turn now");
-
         broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
         gameManager.onStartTurn();
     }
