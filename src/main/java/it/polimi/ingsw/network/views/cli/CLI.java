@@ -584,15 +584,15 @@ public class CLI extends ViewObservable implements IView {
             case STONE:
                 reducedExtraMarble = ColorCLI.ANSI_WHITE.escape() + "STONE  " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
             case SERVANT:
-                reducedExtraMarble = ColorCLI.ANSI_PURPLE.escape() + "SERVANT" + ColorCLI.ANSI_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_PURPLE.escape() + "SERVANT" + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
             case COIN:
-                reducedExtraMarble = ColorCLI.ANSI_YELLOW.escape() + "COIN   " + ColorCLI.ANSI_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_YELLOW.escape() + "COIN   " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
             case SHIELD:
-                reducedExtraMarble = ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.ANSI_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
             case UNDEFINED:
                 reducedExtraMarble = "WHITE  "; break;
             case FAITH:
-                reducedExtraMarble = ColorCLI.ANSI_RED.escape() + "FAITH  " + ColorCLI.ANSI_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_RED.escape() + "FAITH  " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
             default: break;
         }
         String reducedMarketBoard = "";
@@ -618,7 +618,7 @@ public class CLI extends ViewObservable implements IView {
                     case UNDEFINED:
                         temp = "WHITE   "; break;
                     case FAITH:
-                        temp = ColorCLI.ANSI_RED.escape() + "FAITH   " + ColorCLI.ANSI_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_RED.escape() + "FAITH   " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
                     default: break;
                 }
 
