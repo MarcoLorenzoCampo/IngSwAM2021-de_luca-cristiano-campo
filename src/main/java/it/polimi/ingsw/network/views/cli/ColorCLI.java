@@ -4,8 +4,7 @@ package it.polimi.ingsw.network.views.cli;
  * Enum with the Codes of the colors used to fill the cli.
  */
 public enum ColorCLI {
-    //Color end string, color reset
-    RESET("\033[0m"),
+    //Color end string
     CLEAR("\033[H\033[2J"),
 
     ANSI_BLACK("\u001B[30m"),
@@ -25,8 +24,13 @@ public enum ColorCLI {
     ANSI_BRIGHT_CYAN ("\u001B[96m"),
     ANSI_BRIGHT_WHITE("\u001B[97m");
 
+    public static final String RESET = "\u001B[0m";
 
     private String escape;
+
+    public static String getRESET() {
+        return RESET;
+    }
 
     ColorCLI(String escape) {
         this.escape = escape;
