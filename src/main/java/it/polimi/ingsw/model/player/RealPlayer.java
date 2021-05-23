@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.actions.*;
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.game.PlayingGame;
@@ -10,6 +12,7 @@ import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.ProductionCardMarket;
 import it.polimi.ingsw.model.market.ResourceMarket;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
+import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.LeaderCardMessage;
@@ -18,6 +21,8 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static it.polimi.ingsw.enumerations.ResourceType.UNDEFINED;
 
 /**
  * Player Class, ha references to a few useful classes.
@@ -140,13 +145,23 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
 
     @Override
     public void visit(ActivateProductionAction action) {
-
+        if(action.getActionSender().equals(playerName)
+        && !playerBoard.getProductionBoard().getProductionSlots()[action.getSlot()].isSelected()){
+            playerBoard.getProductionBoard().selectProductionSlot(action.getSlot());
+        }
+        //notify not available
     }
 
     @Override
     public void visit(ActivateExtraProductionAction action) {
-
+        if(action.getActionSender().equals(playerName)
+        && productionResourceValidator(action.getOutput())
+        && extraProductionSlotValidator(action.getSlot())){
+            playerBoard.getProductionBoard().selectLeaderProduction(action.getSlot(), action.getOutput());
+        }
+        //notify not available
     }
+
 
     @Override
     public void visit(ActivateBaseProductionAction action) {
@@ -182,7 +197,19 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
 
     @Override
     public void visit(ChangeMarbleAction action) {
+        if(action.getActionSender().equals(playerName)
+        && bufferIndexValidator(action.getIndex())
+        && colorExchangeValidator(action.getColor())){
+            playerBoard.getInventoryManager().customExchange(action.getIndex(),action.getColor());
 
+            playerState
+                    .setCanDeposit(playerBoard
+                            .getInventoryManager()
+                            .getBuffer()
+                            .stream()
+                            .anyMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
+        }
+        //notify
     }
 
     @Override
@@ -218,12 +245,20 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
 
     @Override
     public void visit(EndTurnAction action) {
-
+        if(action.getActionSender().equals(playerName)
+        && playerState.hasPerformedExclusiveAction()){
+            playerState.endTurnReset();
+        }
     }
 
     @Override
     public void visit(ExecuteProductionAction action) {
-
+        if(action.getActionSender().equals(playerName)
+        && finalProductionValidator()){
+            playerBoard.getProductionBoard().executeProduction();
+            playerBoard.getInventoryManager().addResourceToStrongbox();
+            playerState.performedExclusiveAction();
+        }
     }
 
     @Override
@@ -240,21 +275,52 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
 
     @Override
     public void visit(PlaceLeaderAction action) {
+        if(action.getActionSender().equals(playerName)
+        && !playerState.getHasPlacedLeaders()
+        && leaderValidator(action.getLeaderToActivate())){
+            ownedLeaderCards.get(action.getLeaderToActivate()).setActive(playerBoard);
+            playerState.placedLeader();
+        }
+    }
+
+
+
+    @Override
+    public void visit(RemoveResourcesAction action) {
+        if(action.getActionSender().equals(playerName)
+        && (action.getSource().equals("STRONGBOX") || action.getSource().equals("WAREHOUSE"))){
+            if(action.getSource().equals("WAREHOUSE")){
+                try {
+                    playerBoard.getInventoryManager().removeFromWarehouse(action.getToBeRemoved());
+                } catch (CannotRemoveResourceException e) {
+                    try {
+                        playerBoard.getInventoryManager().removeFromStrongbox(new ResourceTag(e.getType(), e.getQuantity()));
+                    } catch (CannotRemoveResourceException cannotRemoveResourceException) {
+                        cannotRemoveResourceException.printStackTrace();
+                    }
+                }
+            }
+            else{
+                try {
+                    playerBoard.getInventoryManager().removeFromStrongbox(action.getToBeRemoved());
+                } catch (CannotRemoveResourceException e) {
+                    try {
+                        playerBoard.getInventoryManager().removeFromWarehouse(new ResourceTag(e.getType(), e.getQuantity()));
+                    } catch (CannotRemoveResourceException cannotRemoveResourceException) {
+                        cannotRemoveResourceException.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void visit(LorenzoAction action) {
 
     }
 
     @Override
     public void visit(RearrangeInventoryAction action) {
-
-    }
-
-    @Override
-    public void visit(RemoveResourcesAction action) {
-
-    }
-
-    @Override
-    public void visit(LorenzoAction action) {
 
     }
 
@@ -279,9 +345,53 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
         return playerBoard.getProductionBoard().checkPutCard(productionSlotIndex, bought);
     }
 
+    private boolean leaderValidator (int index){
+        if(index > ownedLeaderCards.size()) return false;
+        else{
+            if(ownedLeaderCards.get(index).isActive()) return false;
+            else return leaderRequirementsValidator(ownedLeaderCards.get(index));
+        }
+    }
 
+    private boolean leaderRequirementsValidator(LeaderCard leader){
+        if(leader.getEffectType().equals(EffectType.EXTRA_INVENTORY)){
+            Map<ResourceType, Integer> actualInventory = playerBoard.getInventoryManager().getInventory();
 
+            for (ResourceTag requirement : leader.getRequirementsResource()) {
+                if(requirement.getQuantity() > actualInventory.get(requirement.getType()))
+                    return false;
+            }
+            return true;
+        }
+        else{
+            for(DevelopmentTag iterator : leader.getRequirementsDevCards()) {
 
+                if(iterator.getQuantity() > playerBoard.getProductionBoard().getCardsInventory().get(iterator.getColor())[iterator.getLevel().ordinal()])
+                    return false;
+            }
+            return false;
+        }
 
+    }
+
+    private boolean extraProductionSlotValidator(int slot) {
+        if(slot > playerBoard.getProductionBoard().getLeaderProductions().size()) return false;
+        else{
+            if(playerBoard.getProductionBoard().getLeaderProductions().get(slot).getSelected()) return false;
+            else return true;
+        }
+    }
+
+    private boolean colorExchangeValidator(ResourceType color){
+         return playerBoard.getInventoryManager().getExchange().contains(color);
+    }
+
+    private boolean bufferIndexValidator(int index){
+        return playerBoard.getInventoryManager().getBuffer().get(index).equals(ResourceType.UNDEFINED);
+    }
+
+    private boolean finalProductionValidator() {
+        return playerBoard.getProductionBoard().validateFinalProduction(playerBoard.getInventoryManager());
+    }
 
 }

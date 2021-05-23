@@ -16,7 +16,7 @@ public class PlaceLeaderAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.PLACE_LEADER_CARD;
 
-    private final String actionSender;
+
     private final int leaderToActivate;
 
     private final IGame game;
@@ -27,9 +27,13 @@ public class PlaceLeaderAction extends Action {
      * @param leaderToActivate: Card index to activate;
      */
     public PlaceLeaderAction(String actionSender, int leaderToActivate, IGame game) {
-        this.actionSender = actionSender;
+        super.setActionSender(actionSender);
         this.leaderToActivate = leaderToActivate;
         this.game = game;
+    }
+
+    public int getLeaderToActivate() {
+        return leaderToActivate;
     }
 
     /**
@@ -44,7 +48,7 @@ public class PlaceLeaderAction extends Action {
             LeaderCardException, NoMatchingRequisitesException {
 
         ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(actionSender);
+        ActionValidator.senderValidation(super.getActionSender());
         ActionValidator.leaderValidator(leaderToActivate);
 
         runAction();
@@ -54,7 +58,7 @@ public class PlaceLeaderAction extends Action {
         this.game.getCurrentPlayer()
                 .getOwnedLeaderCards()
                 .get(leaderToActivate)
-                .setActive();
+                .setActive(game.getCurrentPlayer().getPlayerBoard());
 
         this.game.getCurrentPlayer()
                 .getPlayerState()

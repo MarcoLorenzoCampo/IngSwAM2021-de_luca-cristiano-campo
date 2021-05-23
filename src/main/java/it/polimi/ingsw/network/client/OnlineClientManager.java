@@ -102,7 +102,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
                     ProductionBoardMessage productionBoard = (ProductionBoardMessage) message;
                     List<LeaderCard> leader_prod = deserializeLeaderCards(productionBoard.getExtra_productions());
                     viewUpdater.execute(() ->
-                            view.showLeaderCards(leader_prod));
+                            view.printLeaders(leader_prod));
                     viewUpdater.execute(() -> view.printProductionBoard(productionBoard.getProductions()));
                     break;
 

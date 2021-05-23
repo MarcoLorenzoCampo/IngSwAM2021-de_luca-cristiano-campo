@@ -9,21 +9,25 @@ import it.polimi.ingsw.model.player.Visitor;
 public class ActivateProductionAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.ACTIVATE_PRODUCTION;
-    private final String actionSender;
     private final int slot;
 
     private final IGame game;
 
     public ActivateProductionAction(String sender, int number, IGame current){
-        this.actionSender = sender;
+        super.setActionSender(sender);
         this.slot = number;
         this.game = current;
     }
 
+    public int getSlot() {
+        return slot;
+    }
+
+
     @Override
     public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
         ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(actionSender);
+        ActionValidator.senderValidation(super.getActionSender());
         ActionValidator.validateProductionSlot(slot);
 
         runAction();

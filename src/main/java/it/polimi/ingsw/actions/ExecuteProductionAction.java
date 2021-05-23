@@ -9,18 +9,17 @@ import it.polimi.ingsw.model.utilities.MaterialResource;
 
 public class ExecuteProductionAction extends Action {
     private final PossibleAction actionTag = PossibleAction.EXECUTE_PRODUCTION;
-    private final String actionSender;
     private final IGame game;
 
     public ExecuteProductionAction(String actionSender, IGame game) {
-        this.actionSender = actionSender;
+        super.setActionSender(actionSender);
         this.game = game;
     }
 
     @Override
     public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
         ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(actionSender);
+        ActionValidator.senderValidation(getActionSender());
         ActionValidator.validateFinalProduction();
 
         runAction();

@@ -298,9 +298,11 @@ public final class GameManager implements Observer, Serializable {
                         switch (message.getMessageType()){
                             case ACTIVATE_PRODUCTION:
                                 OneIntMessage activate_prod = (OneIntMessage) message;
-                                actionManager
-                                        .onReceiveAction(new ActivateProductionAction(activate_prod.getSenderUsername(),
-                                                activate_prod.getIndex(), currentGame));
+                                currentGame.getCurrentPlayer().visit(new ActivateProductionAction(activate_prod.getSenderUsername(),
+                                        activate_prod.getIndex(), currentGame));
+                                //actionManager
+                                //        .onReceiveAction(new ActivateProductionAction(activate_prod.getSenderUsername(),
+                                //                activate_prod.getIndex(), currentGame));
                                 break;
 
                             case ACTIVATE_BASE_PRODUCTION:
@@ -314,9 +316,11 @@ public final class GameManager implements Observer, Serializable {
 
                             case ACTIVATE_EXTRA_PRODUCTION:
                                 ExtraProductionMessage extra_prod = (ExtraProductionMessage) message;
-                                actionManager
-                                        .onReceiveAction(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
-                                                extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
+                                currentGame.getCurrentPlayer().visit(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
+                                        extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
+                                //actionManager
+                                //        .onReceiveAction(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
+                                //                extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
                                 break;
                         }
 
@@ -336,8 +340,9 @@ public final class GameManager implements Observer, Serializable {
                         && currentPlayerState.getHasPlaceableLeaders()
                         && !currentPlayerState.getHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
-                        actionManager
-                                .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
+                        currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                     }
                 }
                 onStartTurn();
@@ -353,15 +358,17 @@ public final class GameManager implements Observer, Serializable {
 
                     if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                         SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
-                        actionManager
-                                .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
+                        currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
                         currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
                     }
 
                     else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
                         SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
-                        actionManager
-                                .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
+                        currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
                         currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
                     }
 
@@ -378,9 +385,11 @@ public final class GameManager implements Observer, Serializable {
 
                     if(message.getMessageType().equals(PossibleMessages.RESOURCE)){
                         ExchangeResourceMessage colorChange = (ExchangeResourceMessage) message;
-                        actionManager
-                                .onReceiveAction(new ChangeMarbleAction(colorChange.getSenderUsername(),
-                                        colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
+                        currentGame.getCurrentPlayer().visit(new ChangeMarbleAction(colorChange.getSenderUsername(),
+                                                colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new ChangeMarbleAction(colorChange.getSenderUsername(),
+                        //                colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
                     }
 
                     if(currentPlayerState.CanDeposit()){
@@ -410,9 +419,11 @@ public final class GameManager implements Observer, Serializable {
                 if(message.getSenderUsername().equals(currentPlayer)) {
                         if(message.getMessageType().equals(PossibleMessages.ACTIVATE_PRODUCTION)) {
                             OneIntMessage activate_prod = (OneIntMessage) message;
-                            actionManager
-                                    .onReceiveAction(new ActivateProductionAction(activate_prod.getSenderUsername(),
-                                            activate_prod.getIndex(), currentGame));
+                            currentGame.getCurrentPlayer().visit(new ActivateProductionAction(activate_prod.getSenderUsername(),
+                                                    activate_prod.getIndex(), currentGame));
+                            //actionManager
+                            //        .onReceiveAction(new ActivateProductionAction(activate_prod.getSenderUsername(),
+                            //                activate_prod.getIndex(), currentGame));
                         }
 
                         else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)) {
@@ -426,13 +437,16 @@ public final class GameManager implements Observer, Serializable {
 
                         else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
                             ExtraProductionMessage extra_prod = (ExtraProductionMessage) message;
-                            actionManager
-                                    .onReceiveAction(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
-                                            extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
+                            currentGame.getCurrentPlayer().visit(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
+                                    extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
+                            //actionManager
+                            //        .onReceiveAction(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
+                            //                extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
                         }
                         else if(message.getMessageType().equals(PossibleMessages.EXECUTE_PRODUCTION)){
-                            actionManager
-                                    .onReceiveAction(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
+                            currentGame.getCurrentPlayer().visit(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
+                            //actionManager
+                            //        .onReceiveAction(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
                         }
 
                         if(currentGame.getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()){
@@ -459,16 +473,18 @@ public final class GameManager implements Observer, Serializable {
 
                     if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                         SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
-                        actionManager
-                                .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
+                        currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
                         currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
 
                     }
 
                     else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
                         SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
-                        actionManager
-                                .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
+                        currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
                         currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
 
                     }
@@ -485,7 +501,8 @@ public final class GameManager implements Observer, Serializable {
             case MAIN_ACTION_DONE:
                 if(message.getSenderUsername().equals(currentPlayer)){
                     if(message.getMessageType().equals(PossibleMessages.END_TURN)){
-                        currentPlayerState.endTurnReset();
+                        currentGame.getCurrentPlayer().visit(new EndTurnAction(message.getSenderUsername(), currentGame));
+                        //currentPlayerState.endTurnReset();
                         currentGame.setCurrentState(PossibleGameStates.PLAYING);
                         lobbyManager.setNextTurn();
                     }
@@ -504,8 +521,9 @@ public final class GameManager implements Observer, Serializable {
                             && currentPlayerState.getHasPlaceableLeaders()
                             && !currentPlayerState.getHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
-                        actionManager
-                                .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
+                        currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                         onStartTurn();
                     }
                     else onStartTurn();

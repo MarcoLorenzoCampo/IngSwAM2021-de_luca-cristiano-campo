@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.market.leaderCards;
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.player.RealPlayerBoard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
@@ -28,14 +29,9 @@ public class ExtraInventoryLeaderCard extends LeaderCard {
      * {@link it.polimi.ingsw.model.warehouse.Warehouse}
      */
     @Override
-    public void setActive() {
-        super.setActive();
-        PlayingGame.getGameInstance()
-                .getCurrentPlayer()
-                .getPlayerBoard()
-                .getInventoryManager()
-                .getWarehouse()
-                .addExtraInventory(getResource());
+    public void setActive(RealPlayerBoard playerBoard) {
+        super.setActive(playerBoard);
+        playerBoard.getInventoryManager().getWarehouse().addExtraInventory(getResource());
     }
 
 }

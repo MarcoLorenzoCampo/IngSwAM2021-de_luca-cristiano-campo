@@ -540,7 +540,7 @@ public class CLI extends ViewObservable implements IView {
         lightweightModel.setWarehouse(shelves, extras);
         out.println("extra shelves: " + extras);
         out.println("Warehouse: ");
-        if(shelves.size() == 6) {
+        if(shelves.size() >= 6) {
             out.println("SHELF 1 = " + shelves.get(0));
             out.println("SHELF 2 = " + shelves.get(1) + " " + shelves.get(2));
             out.println("SHELF 3 = " + shelves.get(3) + " " + shelves.get(4) + " " + shelves.get(5));

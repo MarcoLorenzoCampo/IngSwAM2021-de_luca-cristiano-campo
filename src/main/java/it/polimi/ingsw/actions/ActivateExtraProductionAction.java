@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.player.Visitor;
 
 public class ActivateExtraProductionAction extends Action {
     private final PossibleAction actionTag = PossibleAction.ACTIVATE_PRODUCTION;
-    private final String actionSender;
     private final int slot;
     private final ResourceType output;
 
@@ -18,7 +17,7 @@ public class ActivateExtraProductionAction extends Action {
 
 
     public ActivateExtraProductionAction(String actionSender, int slot, ResourceType output, IGame game) {
-        this.actionSender = actionSender;
+        super.setActionSender(actionSender);
         this.slot = slot;
         this.output = output;
         this.game = game;
@@ -35,7 +34,7 @@ public class ActivateExtraProductionAction extends Action {
     @Override
     public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
         ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(actionSender);
+        ActionValidator.senderValidation(super.getActionSender());
         ActionValidator.validateExtraProductionSlot(slot);
         ActionValidator.validateResourceProduction(output);
 
