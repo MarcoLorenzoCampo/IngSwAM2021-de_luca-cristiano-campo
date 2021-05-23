@@ -18,6 +18,7 @@ public class ResourceMarketMessage extends Message {
     public ResourceMarketMessage(ResourceType[][] resourceBoard, ResourceType extraMarble) {
 
         super.setMessageType(PossibleMessages.BOARD);
+        super.setSenderUsername("SERVER_MESSAGE");
         this.resourceBoard = resourceBoard;
         this.extraMarble = extraMarble;
     }

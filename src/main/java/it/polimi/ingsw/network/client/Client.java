@@ -68,6 +68,7 @@ public class Client extends Observable implements IClient {
 
         } catch (IOException e) {
             clientLogger.severe(() -> "Couldn't connect to the host.");
+
         }
     }
 
@@ -121,8 +122,9 @@ public class Client extends Observable implements IClient {
 
         if (!clientSocket.isClosed()) {
             try {
-
                 clientSocket.close();
+                System.exit(1);
+
             } catch (IOException e) {
 
                 clientLogger.severe(() -> "Could not disconnect. Critical error.");

@@ -474,10 +474,12 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
                 for(RealPlayer realPlayer : realPlayerList) {
 
-                    if(realPlayer.getPlayerBoard().getFaithTrack().getFaithMarker() < (popeTileIndex - rangeToCheck)
-                            && realPlayer.getPlayerState().isConnected()) {
+                    if(realPlayer.getPlayerState().isConnected()) {
 
-                        realPlayer.getPlayerBoard().getFaithTrack().setPopeTileInactive(popeTileIndex);
+                        if (realPlayer.getPlayerBoard().getFaithTrack().getFaithMarker() < (popeTileIndex - rangeToCheck)) {
+
+                            realPlayer.getPlayerBoard().getFaithTrack().setPopeTileInactive(popeTileIndex);
+                        }
                     }
                 }
                 break;
