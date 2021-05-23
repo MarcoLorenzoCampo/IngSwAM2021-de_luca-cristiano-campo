@@ -15,6 +15,7 @@ import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.server.Server;
+import it.polimi.ingsw.network.views.IView;
 
 import java.io.Serializable;
 import java.util.*;
@@ -45,7 +46,7 @@ public final class GameManager implements Observer, Serializable {
         this.currentPlayerState = currentGame.getCurrentPlayer().getPlayerState();
     }
 
-    public VirtualView getCurrentView() {
+    public IView getCurrentView() {
         return currentView;
     }
 

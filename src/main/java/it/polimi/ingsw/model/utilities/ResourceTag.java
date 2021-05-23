@@ -2,7 +2,10 @@ package it.polimi.ingsw.model.utilities;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 
-public class ResourceTag extends Tag {
+import java.io.Serializable;
+
+public class ResourceTag extends Tag implements Serializable {
+    private static final long serialVersionUID = -6385279486823380885L;
     private ResourceType type;
 
     public ResourceTag (ResourceType type, int quantity ){
@@ -20,9 +23,7 @@ public class ResourceTag extends Tag {
 
     @Override
     public String toString() {
-        return "ResourceTag{" +
-                "type=" + type +
-                super.toString() +
-                '}';
+        return type +
+                super.toString();
     }
 }

@@ -1,12 +1,7 @@
 package it.polimi.ingsw.network.messages.serverMessages;
 
 import it.polimi.ingsw.enumerations.PossibleMessages;
-import it.polimi.ingsw.model.market.ProductionCard;
-import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.messages.Message;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Contains the information about the available production cards. Is shown when a player updates

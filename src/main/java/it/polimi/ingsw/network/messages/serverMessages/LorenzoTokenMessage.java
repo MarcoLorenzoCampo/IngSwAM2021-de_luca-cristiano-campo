@@ -12,16 +12,16 @@ public class LorenzoTokenMessage extends Message {
 
     private static final long serialVersionUID = 4057993691377248426L;
 
-    private final AbstractToken lorenzoToken;
+    private final String lorenzoTokenReduced;
 
-    public LorenzoTokenMessage(AbstractToken lorenzoToken) {
+    public LorenzoTokenMessage(String lorenzoTokenReduced) {
 
         super.setMessageType(PossibleMessages.LORENZO_TOKEN);
         super.setSenderUsername("SERVER_MESSAGE");
-        this.lorenzoToken = lorenzoToken;
+        this.lorenzoTokenReduced = lorenzoTokenReduced;
     }
 
-    public AbstractToken getLorenzoToken() {
-        return lorenzoToken;
+    public String getLorenzoTokenReduced() {
+        return lorenzoTokenReduced;
     }
 }

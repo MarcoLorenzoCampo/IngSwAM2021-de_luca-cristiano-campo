@@ -3,7 +3,6 @@ package it.polimi.ingsw.network.views;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.token.AbstractToken;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 
 import java.util.ArrayList;
@@ -123,9 +122,9 @@ public interface IView {
 
     /**
      * Prints the action token lorenzo has just played.
-     * @param lorenzoAction: played token.
+     * @param lorenzoTokenReduced: played token.
      */
-    void printLorenzoToken(AbstractToken lorenzoAction);
+    void printLorenzoToken(String lorenzoTokenReduced);
 
     /**
      * Prints a list of all the available leaders, both place and available ones.

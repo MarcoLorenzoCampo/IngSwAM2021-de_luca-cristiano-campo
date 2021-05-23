@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.actions.LorenzoAction;
+import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
@@ -12,6 +13,7 @@ import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,7 +83,10 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
         numberOfTurns++;
 
         playerVV.showGenericString("Lorenzo's turn now.");
+
         lorenzo.getLorenzoPlayerBoard().getAction(new LorenzoAction(lorenzo));
+
+        gameManager.onStartTurn();
     }
 
     /**
@@ -157,17 +162,16 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
 
     @Override
     public void broadcastGenericMessage(String message) {
-
+        playerVV.showGenericString(message);
     }
 
     @Override
     public void broadCastWinMessage(String message) {
-
+        playerVV.showWinMatch(message);
     }
 
     @Override
     public void broadCastMatchInfo() {
-
     }
 
     @Override
@@ -181,7 +185,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
 
     @Override
     public void disconnectPlayer(String nicknameToDisconnect) {
-
+        gameManager.resetFSM();
     }
 
     @Override
