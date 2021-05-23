@@ -577,17 +577,17 @@ public class CLI extends ViewObservable implements IView {
         String reducedExtraMarble = null;
         switch (extraMarble) {
             case STONE:
-                reducedExtraMarble = ColorCLI.ANSI_WHITE.escape() + "STONE  " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_WHITE.escape() + "STONE  " + ColorCLI.getRESET(); break;
             case SERVANT:
-                reducedExtraMarble = ColorCLI.ANSI_PURPLE.escape() + "SERVANT" + ColorCLI.ANSI_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_PURPLE.escape() + "SERVANT" + ColorCLI.getRESET(); break;
             case COIN:
-                reducedExtraMarble = ColorCLI.ANSI_YELLOW.escape() + "COIN   " + ColorCLI.ANSI_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_YELLOW.escape() + "COIN   " + ColorCLI.getRESET(); break;
             case SHIELD:
-                reducedExtraMarble = ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.ANSI_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.getRESET(); break;
             case UNDEFINED:
                 reducedExtraMarble = "WHITE  "; break;
             case FAITH:
-                reducedExtraMarble = ColorCLI.ANSI_RED.escape() + "FAITH  " + ColorCLI.ANSI_WHITE.escape(); break;
+                reducedExtraMarble = ColorCLI.ANSI_RED.escape() + "FAITH  " + ColorCLI.getRESET(); break;
             default: break;
         }
         String reducedMarketBoard = "";
@@ -603,17 +603,17 @@ public class CLI extends ViewObservable implements IView {
 
                 switch (resourceBoard[i][j]) {
                     case STONE:
-                        temp = ColorCLI.ANSI_WHITE.escape() + "STONE   " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_WHITE.escape() + "STONE   " + ColorCLI.getRESET(); break;
                     case SERVANT:
-                        temp = ColorCLI.ANSI_PURPLE.escape() + "SERVANT " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_PURPLE.escape() + "SERVANT " + ColorCLI.getRESET(); break;
                     case COIN:
-                        temp = ColorCLI.ANSI_YELLOW.escape() + "COIN    " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_YELLOW.escape() + "COIN    " + ColorCLI.getRESET(); break;
                     case SHIELD:
-                        temp = ColorCLI.ANSI_BLUE.escape() + "SHIELD  " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_BLUE.escape() + "SHIELD  " + ColorCLI.getRESET(); break;
                     case UNDEFINED:
                         temp = "WHITE   "; break;
                     case FAITH:
-                        temp = ColorCLI.ANSI_RED.escape() + "FAITH   " + ColorCLI.ANSI_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_RED.escape() + "FAITH   " + ColorCLI.getRESET(); break;
                     default: break;
                 }
 
