@@ -15,6 +15,9 @@ import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.network.messages.playerMessages.EndTurnMessage;
+import it.polimi.ingsw.network.messages.serverMessages.DiscardedResourceMessage;
+import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 import it.polimi.ingsw.network.messages.serverMessages.LeaderCardMessage;
 
 import java.io.Serializable;
@@ -188,6 +191,9 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
                 playerState.setToBeRemoved(action.getBoughtCard().getRequirements());
                 playerState.performedExclusiveAction();
                 playerBoard.increaseBoughCardsCount();
+                if(ownedLeaderCards.size()==7){
+                    notifyObserver(new EndGameMessage());
+                }
             } catch (EndGameException e) {
                 e.printStackTrace();
                 //send notification
@@ -220,6 +226,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
                 playerBoard.getInventoryManager().addResourceToWarehouse(action.getIndex());
 
             } catch (DiscardResourceException exception) {
+                notifyObserver(new DiscardedResourceMessage());
                 playerBoard.getInventoryManager().removeFromBuffer(action.getIndex());
                 //notify game of penalty
             }

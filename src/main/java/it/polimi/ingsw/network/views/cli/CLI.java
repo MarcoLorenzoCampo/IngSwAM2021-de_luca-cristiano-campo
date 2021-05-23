@@ -64,6 +64,7 @@ public class CLI extends ViewObservable implements IView {
         }
     }
 
+
     /**
      * Asks the player to specify a port and Ip address to connect to. They will be then validated and used.
      */
@@ -348,10 +349,11 @@ public class CLI extends ViewObservable implements IView {
                 case ("CHECK_MARKET") :  out.println(lightweightModel.getReducedResourceMarket()); break;
                 case ("CHECK_CARDS") : out.println(lightweightModel.getReducedAvailableCards()); break;
                 case ("CHECK_LEADERS") : printLeaders(lightweightModel.getLeaderCards()); break;
+                case ("CHECK_PRODUCTIONS") : printProductionBoard(lightweightModel.getProductionBoard()); break;
             }
 
         } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP") || output.equals("CHECK_MARKET")
-                || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS"));
+                || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS") || output.equals("CHECK_PRODUCTIONS"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
@@ -555,6 +557,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void printProductionBoard(String productions) {
+        lightweightModel.setProductionBoard(productions);
         out.println(productions);
     }
 

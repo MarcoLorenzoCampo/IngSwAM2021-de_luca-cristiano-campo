@@ -23,6 +23,7 @@ public class LightweightModel {
     private ArrayList<ResourceType> shelves;
     private ArrayList<ResourceType> extra_shelves_types;
     private List<LeaderCard> leaderCards;
+    private String productionBoard;
 
     public LightweightModel() {
         this.playerStates = new ArrayList<>();
@@ -56,6 +57,10 @@ public class LightweightModel {
         this.reducedAvailableCards = reducedAvailableCards;
     }
 
+    public String getProductionBoard() {
+        return productionBoard;
+    }
+
     public String getPlayerStateByNickname(String nickname) {
 
         for(LightweightPlayerState playerState : playerStates) {
@@ -78,5 +83,9 @@ public class LightweightModel {
     public void setWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras) {
         this.shelves = shelves;
         this.extra_shelves_types = extras;
+    }
+
+    public void setProductionBoard(String productions) {
+        this.productionBoard = productions;
     }
 }

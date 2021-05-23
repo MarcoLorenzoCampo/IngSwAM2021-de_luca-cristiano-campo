@@ -118,6 +118,10 @@ public final class GameManager implements Observer, Serializable {
         resetFSM();
     }
 
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     /**
      * Sets the boolean value gameStarted to true.
      */

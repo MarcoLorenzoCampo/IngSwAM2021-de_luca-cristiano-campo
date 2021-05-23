@@ -392,9 +392,13 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void setObserver(String nickname, VirtualView virtualView) {
 
+        realPlayerList.get(getPlayerByNickname(nickname)).addObserver(this);
+
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
 
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(this);
+
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().addObserver(this);
 
         gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
 
@@ -407,6 +411,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
 
         realPlayerList.get(getPlayerByNickname(nickname)).addObserver(virtualView);
+
+
     }
 
     /**
@@ -484,10 +490,14 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
             case DISCARDED_RESOURCE:
                 for(RealPlayer realPlayer : realPlayerList) {
-                    if(realPlayer.getPlayerState().isConnected()) {
+                    if(realPlayer.getPlayerState().isConnected()
+                    && !realPlayer.getName().equals(gameManager.getCurrentPlayer())) {
                         realPlayer.getPlayerBoard().getFaithTrack().increaseFaithMarker();
                     }
                 }
+                break;
+
+            case END_GAME:
                 break;
 
             default: //Ignore any other message

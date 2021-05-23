@@ -6,11 +6,12 @@ import it.polimi.ingsw.actions.Action;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.productionBoard.ProductionBoard;
+import it.polimi.ingsw.network.eventHandlers.Observable;
 
 /**
  * Main board of the player. Contains all the references to play the game.
  */
-public class RealPlayerBoard {
+public class RealPlayerBoard extends Observable {
 
     /**
      * Number of cards bought.
