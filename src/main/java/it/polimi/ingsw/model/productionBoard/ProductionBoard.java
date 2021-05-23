@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.productionBoard;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.ExtraProductionLeaderCard;
@@ -204,7 +205,7 @@ public class ProductionBoard extends Observable {
     public void executeProduction(){
         LinkedList<Resource> obtained = ResourceBuilder.build(finalProduction.getOutputResources());
         for (Resource iterator:obtained) {
-            iterator.deposit();
+            iterator.deposit(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard());
         }
     }
 

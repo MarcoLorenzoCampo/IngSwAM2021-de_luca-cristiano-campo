@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.ActionValidator;
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.player.Visitor;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 
 public class ExecuteProductionAction extends Action {
@@ -34,5 +35,10 @@ public class ExecuteProductionAction extends Action {
         game.getCurrentPlayer().getPlayerBoard().getInventoryManager().addResourceToStrongbox();
 
         game.getCurrentPlayer().getPlayerState().performedExclusiveAction();
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

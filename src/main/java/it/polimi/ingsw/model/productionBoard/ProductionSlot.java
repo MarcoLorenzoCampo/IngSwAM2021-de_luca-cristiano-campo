@@ -30,7 +30,7 @@ public class ProductionSlot {
     }
 
     public boolean canPlaceAnotherCard(ProductionCard newCard){
-        return newCard.getLevel().ordinal() == level.ordinal() + 1;
+        return (newCard.getLevel().ordinal() == (level.ordinal() + 1));
     }
 
 

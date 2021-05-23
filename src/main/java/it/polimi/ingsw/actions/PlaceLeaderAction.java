@@ -4,6 +4,7 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.controller.ActionValidator;
+import it.polimi.ingsw.model.player.Visitor;
 
 /**
  * Action to activate a LeaderCard. Verifies different steps:
@@ -62,5 +63,10 @@ public class PlaceLeaderAction extends Action {
 
     public PossibleAction getActionTag() {
         return actionTag;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

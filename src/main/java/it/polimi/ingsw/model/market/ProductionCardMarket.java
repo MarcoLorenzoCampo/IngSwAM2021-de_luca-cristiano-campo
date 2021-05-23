@@ -86,10 +86,10 @@ public class ProductionCardMarket extends Observable implements Reducible {
     public void buyCard(ProductionCard boughtCard) throws EndGameException {
         playableProductionCards.remove(boughtCard);
         replaceBoughtCard(boughtCard);
-        PlayingGame.getGameInstance()
-                .getCurrentPlayer()
-                .getPlayerBoard()
-                .increaseBoughCardsCount();
+        //PlayingGame.getGameInstance()
+        //        .getCurrentPlayer()
+        //        .getPlayerBoard()
+        //        .increaseBoughCardsCount();
 
         sortAvailableCardsByLevel();
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.ActionValidator;
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.player.Visitor;
 
 public class ActivateProductionAction extends Action {
 
@@ -33,5 +34,10 @@ public class ActivateProductionAction extends Action {
                 .getPlayerBoard()
                 .getProductionBoard()
                 .selectProductionSlot(slot);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

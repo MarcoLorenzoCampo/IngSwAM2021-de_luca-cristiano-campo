@@ -196,7 +196,7 @@ public final class GameManager implements Observer, Serializable {
                         LinkedList<Resource> obtained = ResourceBuilder.build((LinkedList<ResourceType>) setupResourceAnswer.getResourceTypes());
 
                         for (Resource iterator : obtained) {
-                                iterator.deposit();
+                                iterator.deposit(currentGame.getCurrentPlayer().getPlayerBoard());
                                 actionManager
                                         .onReceiveAction( new DepositAction(0, message.getSenderUsername(), currentGame) );
                         }
@@ -219,24 +219,28 @@ public final class GameManager implements Observer, Serializable {
 
                     if(l1 > l2){
 
-                        actionManager
-                                .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
-                        actionManager
-                                .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame) );
+                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
                     } else {
 
-                        actionManager
-                                .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
 
-                        actionManager
-                                .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
+                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame) );
+                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
                     }
 
                     if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)) {
                         currentGame.setCurrentState(PossibleGameStates.PLAYING);
-
                     }
 
+                    currentPlayerState.setSetUpPhase(false);
                     lobbyManager.setNextTurn();
                 }
                 break;
@@ -246,10 +250,14 @@ public final class GameManager implements Observer, Serializable {
 
                     if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
                         TwoIntMessage buy = (TwoIntMessage) message;
-                        actionManager
-                                .onReceiveAction(new BuyProductionCardAction(buy.getSenderUsername(),
-                                        currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
-                                        buy.getSecondNumber(), currentGame));
+
+                        currentGame.getCurrentPlayer().visit(new BuyProductionCardAction(buy.getSenderUsername(),
+                                currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
+                                buy.getSecondNumber(), currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new BuyProductionCardAction(buy.getSenderUsername(),
+                        //                currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
+                        //                buy.getSecondNumber(), currentGame));
                         if(currentPlayerState.getHasBoughCard()){
                             currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
                         }
@@ -260,8 +268,10 @@ public final class GameManager implements Observer, Serializable {
 
                     else if(message.getMessageType().equals(PossibleMessages.GET_RESOURCES)){
                         OneIntMessage get_resources = (OneIntMessage) message;
-                        actionManager
-                                .onReceiveAction(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame));
+
+                        currentGame.getCurrentPlayer().visit(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame ));
 
                         if(currentPlayerState.getHasPickedResources()) {
 
@@ -294,9 +304,11 @@ public final class GameManager implements Observer, Serializable {
 
                             case ACTIVATE_BASE_PRODUCTION:
                                 BaseProductionMessage base_prod = (BaseProductionMessage) message;
-                                actionManager
-                                        .onReceiveAction(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
-                                                base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
+                                //actionManager
+                                //        .onReceiveAction(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
+                                //                base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
+                                currentGame.getCurrentPlayer().visit(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
+                                        base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
                                 break;
 
                             case ACTIVATE_EXTRA_PRODUCTION:
@@ -309,22 +321,14 @@ public final class GameManager implements Observer, Serializable {
 
                         currentGame.setCurrentState(PossibleGameStates.ACTIVATE_PRODUCTION);
                     }
-/*
-                    else if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
-                        TwoIntMessage buy_card = (TwoIntMessage) message;
-                        actionManager
-                                .onReceiveAction(new BuyProductionCardAction(buy_card.getSenderUsername(), currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy_card.getFirstNumber()),
-                                        buy_card.getSecondNumber(), currentGame));
-                        if(currentPlayerState.hasPerformedExclusiveAction())
-                            currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
-                    }
-*/
+
                     else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                         && currentPlayerState.getHasPlaceableLeaders()
                         && !currentPlayerState.getHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
-                        actionManager
-                                .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
+                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
                     }
 
                     else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
@@ -389,9 +393,9 @@ public final class GameManager implements Observer, Serializable {
                 if(message.getSenderUsername().equals(currentPlayer)){
                     if(message.getMessageType().equals(PossibleMessages.DEPOSIT)){
                         OneIntMessage deposit = (OneIntMessage) message;
-                        actionManager
-                                .onReceiveAction(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
-
+                        //actionManager
+                        //        .onReceiveAction(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
+                        currentGame.getCurrentPlayer().visit(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
                         if(currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().isEmpty()){
                             currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
                         }
@@ -412,9 +416,11 @@ public final class GameManager implements Observer, Serializable {
 
                         else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)) {
                             BaseProductionMessage base_prod = (BaseProductionMessage) message;
-                            actionManager
-                                    .onReceiveAction(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
-                                            base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
+                            //actionManager
+                            //        .onReceiveAction(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
+                            //                base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
+                            currentGame.getCurrentPlayer().visit(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
+                                                    base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
                         }
 
                         else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
@@ -487,8 +493,9 @@ public final class GameManager implements Observer, Serializable {
                             && currentPlayerState.getHasPlaceableLeaders()
                             && !currentPlayerState.getHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
-                        actionManager
-                                .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
+                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
+                        //actionManager
+                        //        .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
                         onStartTurn();
                     }
 

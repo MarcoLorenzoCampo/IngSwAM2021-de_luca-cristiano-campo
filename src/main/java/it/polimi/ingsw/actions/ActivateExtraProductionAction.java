@@ -5,6 +5,7 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.player.Visitor;
 
 public class ActivateExtraProductionAction extends Action {
     private final PossibleAction actionTag = PossibleAction.ACTIVATE_PRODUCTION;
@@ -46,5 +47,10 @@ public class ActivateExtraProductionAction extends Action {
                 .getPlayerBoard()
                 .getProductionBoard()
                 .selectLeaderProduction(slot, output);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

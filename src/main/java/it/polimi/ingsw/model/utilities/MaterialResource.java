@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.utilities;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.player.RealPlayerBoard;
 
 public class MaterialResource extends Resource {
 
@@ -21,12 +22,8 @@ public class MaterialResource extends Resource {
     }
 
     @Override
-    public void deposit() {
-        PlayingGame.getGameInstance()
-                .getCurrentPlayer()
-                .getPlayerBoard()
-                .getInventoryManager()
-                .deposit(this);
+    public void deposit(RealPlayerBoard playerBoard) {
+       playerBoard.getInventoryManager().deposit(this);
     }
 
 

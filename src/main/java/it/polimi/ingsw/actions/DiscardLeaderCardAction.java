@@ -8,20 +8,25 @@ import it.polimi.ingsw.exceptions.LeaderCardException;
 import it.polimi.ingsw.exceptions.NoMatchingRequisitesException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.controller.ActionValidator;
+import it.polimi.ingsw.model.player.Visitor;
 
 public class DiscardLeaderCardAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.DISCARD_LEADER_CARD;
 
-    private final String actionSender;
+
     private final int leaderToDiscard;
 
     private final IGame game;
 
     public DiscardLeaderCardAction(String actionSender, int leaderToDiscard, IGame game) {
-        this.actionSender = actionSender;
+        super.setActionSender(actionSender);
         this.leaderToDiscard = leaderToDiscard;
         this.game = game;
+    }
+
+    public int getLeaderToDiscard() {
+        return leaderToDiscard;
     }
 
     @Override
@@ -29,7 +34,7 @@ public class DiscardLeaderCardAction extends Action {
             LeaderCardException, NoMatchingRequisitesException {
 
         ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(actionSender);
+        ActionValidator.senderValidation(super.getActionSender());
         ActionValidator.discardLeaderValidator(leaderToDiscard);
 
         /*if(!game.getCurrentState().getGameState().equals(PossibleGameStates.SETUP_LEADER)) {
@@ -61,5 +66,10 @@ public class DiscardLeaderCardAction extends Action {
 
     public PossibleAction getActionTag() {
         return actionTag;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -17,10 +17,16 @@ public class Strongbox extends Observable {
      */
     public Strongbox (){
         this.strongbox = new HashMap<>();
+        /*
         strongbox.put(ResourceType.COIN, 0);
         strongbox.put(ResourceType.STONE,0);
         strongbox.put(ResourceType.SHIELD,0);
         strongbox.put(ResourceType.SERVANT,0);
+                 */
+        strongbox.put(ResourceType.COIN, 100);
+        strongbox.put(ResourceType.STONE,100);
+        strongbox.put(ResourceType.SHIELD,100);
+        strongbox.put(ResourceType.SERVANT,100);
     }
 
 

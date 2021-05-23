@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.ActionValidator;
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.player.Visitor;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
 public class RemoveResourcesAction extends Action {
@@ -65,5 +66,10 @@ public class RemoveResourcesAction extends Action {
                 }
             }
         }
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

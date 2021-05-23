@@ -7,6 +7,7 @@ import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.exceptions.MustPerformActionException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.controller.ActionValidator;
+import it.polimi.ingsw.model.player.Visitor;
 
 /**
  * Action to notify a player's turn has ended and the MultiPLayerLobbyManager should get ready to
@@ -53,5 +54,10 @@ public class EndTurnAction extends Action {
 
     public String getActionSender() {
         return actionSender;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }
