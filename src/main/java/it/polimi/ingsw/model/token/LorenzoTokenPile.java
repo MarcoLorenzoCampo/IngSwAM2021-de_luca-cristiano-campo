@@ -20,9 +20,11 @@ public class LorenzoTokenPile extends Observable {
 
     public void performTokenAction(LorenzoPlayer lorenzo) {
 
-        notifyObserver(new LorenzoTokenMessage(lorenzoTokens.get(lastTaken).toString()));
+        int nextToken = lastTaken%lorenzoTokens.size();
 
-        lorenzoTokens.get(lastTaken%lorenzoTokens.size()).tokenAction(lorenzo);
+        notifyObserver(new LorenzoTokenMessage(lorenzoTokens.get(nextToken).toString()));
+
+        lorenzoTokens.get(nextToken).tokenAction(lorenzo);
         lastTaken++;
     }
 

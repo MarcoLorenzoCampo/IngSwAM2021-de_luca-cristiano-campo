@@ -26,7 +26,7 @@ public class FaithTrack extends Observable implements Serializable {
     private List<Integer> checkpoints = new ArrayList<>();
 
     public FaithTrack() {
-        this.faithMarker=0;
+        this.faithMarker=7;
         this.currentFavorPoints=0;
         this.finalPoints=0;
         initFaithTrack();
