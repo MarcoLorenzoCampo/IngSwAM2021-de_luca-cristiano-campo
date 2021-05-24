@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.PossibleMessages;
+import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.PlayerState;
@@ -468,17 +469,19 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         switch(message.getMessageType()) {
             case VATICAN_REPORT_NOTIFICATION:
+
                 VaticanReportNotification v = (VaticanReportNotification) message;
+
                 int popeTileIndex = v.getPopeTileIndex();
                 int rangeToCheck = v.getRange();
 
                 for(RealPlayer realPlayer : realPlayerList) {
 
                     if(realPlayer.getPlayerState().isConnected()) {
+                        FaithTrack ft = realPlayer.getPlayerBoard().getFaithTrack();
 
-                        if (realPlayer.getPlayerBoard().getFaithTrack().getFaithMarker() < (popeTileIndex - rangeToCheck)) {
-
-                            realPlayer.getPlayerBoard().getFaithTrack().setPopeTileInactive(popeTileIndex);
+                        if (ft.getFaithMarker() < (popeTileIndex - rangeToCheck)) {
+                            ft.setPopeTileInactive(popeTileIndex);
                         }
                     }
                 }
