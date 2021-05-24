@@ -359,10 +359,11 @@ public class CLI extends ViewObservable implements IView {
                 case ("CHECK_MARKET") :  out.println(lightweightModel.getReducedResourceMarket()); break;
                 case ("CHECK_CARDS") : out.println(lightweightModel.getReducedAvailableCards()); break;
                 case ("CHECK_LEADERS") : printLeaders(lightweightModel.getLeaderCards()); break;
+                case ("CHECK_PRODUCTIONS") : printProductionBoard(lightweightModel.getProductionBoard()); break;
             }
 
         } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP") || output.equals("CHECK_MARKET")
-                || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS"));
+                || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS") || output.equals("CHECK_PRODUCTIONS"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 

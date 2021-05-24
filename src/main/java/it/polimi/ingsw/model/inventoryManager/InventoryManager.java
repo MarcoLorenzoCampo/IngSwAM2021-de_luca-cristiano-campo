@@ -102,7 +102,7 @@ public class InventoryManager extends Observable {
 
         else if (exchange.size()==1){
             for (MaterialResource iterator : buffer) {
-                iterator.setResourceType(exchange.get(0));
+                if(iterator.getResourceType().equals(ResourceType.UNDEFINED)) iterator.setResourceType(exchange.get(0));
             }
         }
         notifyObserver(messageUpdate());
