@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.views;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
+import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 
@@ -110,9 +111,9 @@ public interface IView {
     /**
      * Method to show the available production cards.
      *
-     * @param reducedAvailableCards: available production cards.
+     * @param available: available production cards.
      */
-    void printAvailableCards(String reducedAvailableCards);
+    void printAvailableCards(List<ProductionCard> available);
 
     /**
      * Prints a faith track regarding the player.
@@ -147,7 +148,7 @@ public interface IView {
 
     void printWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras);
 
-    void printProductionBoard(String productions);
+    void printProductionBoard(HashMap<Integer, ProductionCard> productionBoard);
 
     void printFinalProduction(HashMap<ResourceType, Integer> input, HashMap<ResourceType, Integer> output);
 }

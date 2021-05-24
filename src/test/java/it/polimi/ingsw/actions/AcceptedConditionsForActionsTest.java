@@ -76,7 +76,7 @@ class AcceptedConditionsForActionsTest {
         BuyProductionCardAction testBuyCard;
         RealPlayer customPlayer = new RealPlayer("customScenarioPlayer");
         gameManager.getCurrentGame().setCurrentPlayer(customPlayer);
-        ProductionCard toAdd = new ProductionCard(Level.ONE, Color.BLUE, 0,
+        ProductionCard toAdd = new ProductionCard(Level.ONE, Color.BLUE, 0,0,
                         new ArrayList<>());
 
         //Act

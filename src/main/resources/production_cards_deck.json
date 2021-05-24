@@ -2,6 +2,7 @@
 	{
 		"level": "ONE",
 		"color": "GREEN",
+		"id": 0,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -25,6 +26,7 @@
 	{
 		"level": "ONE",
 		"color": "PURPLE",
+		"id": 1,
 		"requirements": [
 			{
 				"type": "SERVANT",
@@ -48,6 +50,7 @@
 	{
 		"level": "ONE",
 		"color": "BLUE",
+		"id": 2,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -71,6 +74,7 @@
 	{
 		"level": "ONE",
 		"color": "YELLOW",
+		"id": 3,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -94,6 +98,7 @@
 	{
 		"level": "ONE",
 		"color": "BLUE",
+		"id": 4,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -125,6 +130,7 @@
 	{
 		"level": "ONE",
 		"color": "PURPLE",
+		"id": 5,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -156,6 +162,7 @@
 	{
 		"level": "ONE",
 		"color": "GREEN",
+		"id": 6,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -187,6 +194,7 @@
 	{
 		"level": "ONE",
 		"color": "YELLOW",
+		"id": 7,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -218,6 +226,7 @@
 	{
 		"level": "ONE",
 		"color": "PURPLE",
+		"id": 8,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -249,6 +258,7 @@
 	{
 		"level": "ONE",
 		"color": "YELLOW",
+		"id": 9,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -280,6 +290,7 @@
 	{
 		"level": "ONE",
 		"color": "BLUE",
+		"id": 10,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -311,6 +322,7 @@
 	{
 		"level": "ONE",
 		"color": "GREEN",
+		"id": 11,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -342,6 +354,7 @@
 	{
 		"level": "ONE",
 		"color": "PURPLE",
+		"id": 12,
 		"requirements": [
 			{
 				"type": "SERVANT",
@@ -377,6 +390,7 @@
 	{
 		"level": "ONE",
 		"color": "BLUE",
+		"id": 13,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -412,6 +426,7 @@
 	{
 		"level": "ONE",
 		"color": "GREEN",
+		"id": 14,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -447,6 +462,7 @@
 	{
 		"level": "ONE",
 		"color": "YELLOW",
+		"id": 15,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -482,6 +498,7 @@
 	{
 		"level": "TWO",
 		"color": "BLUE",
+		"id": 16,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -505,6 +522,7 @@
 	{
 		"level": "TWO",
 		"color": "GREEN",
+		"id": 17,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -528,6 +546,7 @@
 	{
 		"level": "TWO",
 		"color": "YELLOW",
+		"id": 18,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -551,6 +570,7 @@
 	{
 		"level": "TWO",
 		"color": "PURPLE",
+		"id": 19,
 		"requirements": [
 			{
 				"type": "SERVANT",
@@ -574,6 +594,7 @@
 	{
 		"level": "TWO",
 		"color": "GREEN",
+		"id": 20,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -605,6 +626,7 @@
 	{
 		"level": "TWO",
 		"color": "BLUE",
+		"id": 21,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -636,6 +658,7 @@
 	{
 		"level": "TWO",
 		"color": "PURPLE",
+		"id": 22,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -667,6 +690,7 @@
 	{
 		"level": "TWO",
 		"color": "YELLOW",
+		"id": 23,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -698,6 +722,7 @@
 	{
 		"level": "TWO",
 		"color": "GREEN",
+		"id": 24,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -725,6 +750,7 @@
 	{
 		"level": "TWO",
 		"color": "YELLOW",
+		"id": 25,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -752,6 +778,7 @@
 	{
 		"level": "TWO",
 		"color": "BLUE",
+		"id": 26,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -779,6 +806,7 @@
 	{
 		"level": "TWO",
 		"color": "PURPLE",
+		"id": 27,
 		"requirements": [
 			{
 				"type": "SERVANT",
@@ -806,6 +834,7 @@
 	{
 		"level": "TWO",
 		"color": "GREEN",
+		"id": 28,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -837,6 +866,7 @@
 	{
 		"level": "TWO",
 		"color": "YELLOW",
+		"id": 29,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -868,6 +898,7 @@
 	{
 		"level": "TWO",
 		"color": "PURPLE",
+		"id": 30,
 		"requirements": [
 			{
 				"type": "SERVANT",
@@ -899,6 +930,7 @@
 	{
 		"level": "TWO",
 		"color": "BLUE",
+		"id": 31,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -930,6 +962,7 @@
 	{
 		"level": "THREE",
 		"color": "GREEN",
+		"id": 32,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -957,6 +990,7 @@
 	{
 		"level": "THREE",
 		"color": "GREEN",
+		"id": 33,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -984,6 +1018,7 @@
 	{
 		"level": "THREE",
 		"color": "GREEN",
+		"id": 34,
 		"requirements": [
 			{
 				"type": "SERVANT",
@@ -1011,6 +1046,7 @@
 	{
 		"level": "THREE",
 		"color": "GREEN",
+		"id": 35,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -1038,6 +1074,7 @@
 	{
 		"level": "THREE",
 		"color": "PURPLE",
+		"id": 36,
 		"requirements": [
 			{
 				"type": "SERVANT",
@@ -1077,6 +1114,7 @@
 	{
 		"level": "THREE",
 		"color": "YELLOW",
+		"id": 37,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -1116,6 +1154,7 @@
 	{
 		"level": "THREE",
 		"color": "BLUE",
+		"id": 38,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -1155,6 +1194,7 @@
 	{
 		"level": "THREE",
 		"color": "GREEN",
+		"id": 39,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -1194,6 +1234,7 @@
 	{
 		"level": "THREE",
 		"color": "YELLOW",
+		"id": 40,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -1221,6 +1262,7 @@
 	{
 		"level": "THREE",
 		"color": "PURPLE",
+		"id": 41,
 		"requirements": [
 			{
 				"type": "SERVANT",
@@ -1248,6 +1290,7 @@
 	{
 		"level": "THREE",
 		"color": "BLUE",
+		"id": 42,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -1275,6 +1318,7 @@
 	{
 		"level": "THREE",
 		"color": "GREEN",
+		"id": 43,
 		"requirements": [
 			{
 				"type": "SHIELD",
@@ -1302,6 +1346,7 @@
 	{
 		"level": "THREE",
 		"color": "BLUE",
+		"id": 44,
 		"requirements": [
 			{
 				"type": "COIN",
@@ -1333,6 +1378,7 @@
 	{
 		"level": "THREE",
 		"color": "PURPLE",
+		"id": 45,
 		"requirements": [
 			{
 				"type": "SERVANT",
@@ -1364,6 +1410,7 @@
 	{
 		"level": "THREE",
 		"color": "YELLOW",
+		"id": 46,
 		"requirements": [
 			{
 				"type": "STONE",
@@ -1395,6 +1442,7 @@
 	{
 		"level": "THREE",
 		"color": "GREEN",
+		"id": 47,
 		"requirements": [
 			{
 				"type": "COIN",

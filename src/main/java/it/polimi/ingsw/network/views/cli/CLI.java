@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.views.cli;
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
+import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
@@ -357,7 +358,7 @@ public class CLI extends ViewObservable implements IView {
             switch (output) {
                 case ("HELP") : printPossibleActions(); break;
                 case ("CHECK_MARKET") :  out.println(lightweightModel.getReducedResourceMarket()); break;
-                case ("CHECK_CARDS") : out.println(lightweightModel.getReducedAvailableCards()); break;
+                case ("CHECK_CARDS") : printAvailableCards(lightweightModel.getReducedAvailableCards()); break;
                 case ("CHECK_LEADERS") : printLeaders(lightweightModel.getLeaderCards()); break;
                 case ("CHECK_PRODUCTIONS") : printProductionBoard(lightweightModel.getProductionBoard()); break;
             }
@@ -574,24 +575,28 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printProductionBoard(String productions) {
-        lightweightModel.setProductionBoard(productions);
+    public void printProductionBoard(HashMap<Integer,ProductionCard> productionBoard) {
+        lightweightModel.setProductionBoard(productionBoard);
         out.println("BASE PRODUCTION\n");
         out.println(" UNDEFINED + UNDEFINED --> UNDEFINED\n");
-        if(!productions.isEmpty()) {
-            out.println("PRODUCTION CARDS\n");
-            out.println(productions);
+        out.println("PRODUCTION CARDS\n");
+
+        for (Map.Entry<Integer, ProductionCard> iterator:productionBoard.entrySet()) {
+            if(iterator.getValue() == null) out.println("EMPTY\n");
+            else out.println(iterator.getValue().reduce()+"\n");
+        }
+
             List<LeaderCard> active_extra_prod=
             lightweightModel.getLeaderCards()
                     .stream()
                     .filter(leaderCard -> leaderCard.getEffectType().equals(EffectType.EXTRA_PRODUCTION))
-                    .filter(leaderCard -> leaderCard.isActive())
+                    .filter(LeaderCard::isActive)
                     .collect(Collectors.toList());
             if(active_extra_prod.size()>0){
                 out.println("EXTRA PRODUCTION CARDS\n");
                 printLeaders(active_extra_prod);
             }
-        }
+
     }
 
     @Override
@@ -676,12 +681,15 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printAvailableCards(String reducedAvailableCards) {
+    public void printAvailableCards(List<ProductionCard> available) {
 
         out.println("\nThe ProductionCardsMarket has been modified, here's an updated version: \n");
 
-        lightweightModel.setReducedAvailableCards(reducedAvailableCards);
-        out.println(reducedAvailableCards);
+        lightweightModel.setReducedAvailableCards(available);
+        for (ProductionCard iterator: available) {
+            out.println(iterator.reduce());
+        }
+
     }
 
     @Override

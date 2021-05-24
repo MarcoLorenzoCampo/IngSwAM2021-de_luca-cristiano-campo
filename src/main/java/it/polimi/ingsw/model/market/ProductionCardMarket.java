@@ -157,7 +157,7 @@ public class ProductionCardMarket extends Observable implements Reducible {
             reducedAvailableCards = reducedAvailableCards.concat(availableCard.reduce() + "\n");
         }
 
-        notifyObserver(new AvailableCardsMessage(reducedAvailableCards));
+        notifyObserver(new AvailableCardsMessage(availableCards));
     }
 
     @Override

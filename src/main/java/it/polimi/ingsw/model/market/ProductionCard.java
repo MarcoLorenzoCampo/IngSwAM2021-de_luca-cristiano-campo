@@ -15,13 +15,15 @@ public class ProductionCard extends BaseProduction implements Reducible {
 
     private final Level level;
     private final Color color;
+    private final int id;
     private final int victoryPoints;
     private final ArrayList<ResourceTag> requirements;
 
     /* for testing purposes */
-    public ProductionCard(Level level, Color color, int victoryPoints, ArrayList<ResourceTag> requirements) {
+    public ProductionCard(Level level, Color color,int id, int victoryPoints, ArrayList<ResourceTag> requirements) {
         this.level = level;
         this.color = color;
+        this.id = id;
         this.victoryPoints = victoryPoints;
         this.requirements = requirements;
     }
@@ -35,6 +37,7 @@ public class ProductionCard extends BaseProduction implements Reducible {
     public int getVictoryPoints() {
         return victoryPoints;
     }
+    public int getId(){return id;}
 
 
     public ArrayList<ResourceTag> getRequirements() {

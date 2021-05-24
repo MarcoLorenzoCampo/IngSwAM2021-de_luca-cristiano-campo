@@ -458,7 +458,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
             entry.getValue().printResourceMarket(PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getResourceBoard(),
                     PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getExtraMarble());
-            entry.getValue().printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().reduce());
+            entry.getValue().printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().getAvailableCards());
 
             entry.getValue().printFaithTrack(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getFaithTrack());
         }
@@ -530,7 +530,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     private void sendReducedModel(String nickname, VirtualView vv) {
         vv.printFaithTrack(realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack());
 
-        vv.printAvailableCards(gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().reduce());
+        vv.printAvailableCards(gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().getAvailableCards());
 
         vv.printResourceMarket(gameManager.getCurrentGame().getGameBoard().getResourceMarket().getResourceBoard(),
                 gameManager.getCurrentGame().getGameBoard().getResourceMarket().getExtraMarble());
