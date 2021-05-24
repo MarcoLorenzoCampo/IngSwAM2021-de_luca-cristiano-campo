@@ -1,8 +1,10 @@
 package it.polimi.ingsw.network.views.cli;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.PlayerState;
+import it.polimi.ingsw.parsers.ProductionCardsParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,17 +17,24 @@ import java.util.List;
  */
 public class LightweightModel {
 
+    private final List<ProductionCard> allProductions;
     private String reducedResourceMarket;
-    private String reducedAvailableCards;
+    private List<ProductionCard> AvailableCards;
     private final List<LightweightPlayerState> playerStates;
     private ArrayList<ResourceType> buffer;
     private HashMap<ResourceType, Integer> strongbox;
     private ArrayList<ResourceType> shelves;
     private ArrayList<ResourceType> extra_shelves_types;
     private List<LeaderCard> leaderCards;
+    private HashMap<Integer, ProductionCard> productionBoard;
 
     public LightweightModel() {
+        this.allProductions =  ProductionCardsParser.parseProductionDeck();
         this.playerStates = new ArrayList<>();
+        productionBoard = new HashMap<>();
+        productionBoard.put(0, null);
+        productionBoard.put(1, null);
+        productionBoard.put(2, null);
     }
 
     public void addToPlayerState(String nickname) {
@@ -48,12 +57,16 @@ public class LightweightModel {
         return reducedResourceMarket;
     }
 
-    public String getReducedAvailableCards() {
-        return reducedAvailableCards;
+    public List<ProductionCard> getReducedAvailableCards() {
+        return AvailableCards;
     }
 
-    public void setReducedAvailableCards(String reducedAvailableCards) {
-        this.reducedAvailableCards = reducedAvailableCards;
+    public void setReducedAvailableCards(List<ProductionCard> AvailableCards) {
+        this.AvailableCards = AvailableCards;
+    }
+
+    public HashMap<Integer,ProductionCard> getProductionBoard() {
+        return productionBoard;
     }
 
     public String getPlayerStateByNickname(String nickname) {
@@ -78,5 +91,9 @@ public class LightweightModel {
     public void setWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras) {
         this.shelves = shelves;
         this.extra_shelves_types = extras;
+    }
+
+    public void setProductionBoard(HashMap<Integer, ProductionCard> productions) {
+        this.productionBoard = productions;
     }
 }

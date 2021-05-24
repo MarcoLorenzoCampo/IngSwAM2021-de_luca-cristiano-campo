@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.enumerations.*;
+import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.*;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
@@ -11,11 +12,10 @@ import it.polimi.ingsw.network.messages.playerMessages.*;
 
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
+import it.polimi.ingsw.parsers.ProductionCardsParser;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -45,12 +45,15 @@ public class OnlineClientManager implements ViewObserver, Observer {
      */
     private final Executor viewUpdater;
 
+    private final List<ProductionCard> allProductionCards;
+
     /**
      * Constructor of the client controller.
      * @param view: cli or gui.
      */
     public OnlineClientManager(IView view) {
         this.view = view;
+        this.allProductionCards = ProductionCardsParser.parseProductionDeck();
         viewUpdater = Executors.newSingleThreadExecutor();
     }
 
@@ -102,8 +105,8 @@ public class OnlineClientManager implements ViewObserver, Observer {
                     ProductionBoardMessage productionBoard = (ProductionBoardMessage) message;
                     List<LeaderCard> leader_prod = deserializeLeaderCards(productionBoard.getExtra_productions());
                     viewUpdater.execute(() ->
-                            view.showLeaderCards(leader_prod));
-                    viewUpdater.execute(() -> view.printProductionBoard(productionBoard.getProductions()));
+                            view.printLeaders(leader_prod));
+                    viewUpdater.execute(() -> view.printProductionBoard(deserializeProductionBoard(productionBoard.getProductions())));
                     break;
 
                 case WAREHOUSE:
@@ -139,7 +142,8 @@ public class OnlineClientManager implements ViewObserver, Observer {
                     break;
                 case AVAILABLE_PRODUCTION_CARDS:
                     AvailableCardsMessage a = (AvailableCardsMessage) message;
-                    viewUpdater.execute(() -> view.printAvailableCards(a.getReducedAvailableCards()));
+                    ArrayList<ProductionCard> deserializedProductions = deserializeProductionCards(a.getAvailableID());
+                    viewUpdater.execute(() -> view.printAvailableCards(deserializedProductions));
                     break;
 
                 case AVAILABLE_LEADERS:
@@ -181,6 +185,27 @@ public class OnlineClientManager implements ViewObserver, Observer {
         }
     }
 
+    private HashMap<Integer, ProductionCard> deserializeProductionBoard(HashMap<Integer, Integer> productionSlots){
+        HashMap<Integer, ProductionCard> deserialized = new HashMap<>();
+        for (Map.Entry<Integer,Integer> iterator: productionSlots.entrySet()) {
+            if(iterator.getValue()==-1){
+                deserialized.put(iterator.getKey(), null);
+            }
+            else{
+                deserialized.put(iterator.getKey(), allProductionCards.get(iterator.getValue()));
+            }
+        }
+        return  deserialized;
+    }
+
+    private ArrayList<ProductionCard> deserializeProductionCards(ArrayList<Integer> availableID) {
+        ArrayList<ProductionCard> available = new ArrayList<>();
+        for (Integer iterator: availableID) {
+            available.add(allProductionCards.get(iterator));
+        }
+        return available;
+    }
+
     /**
      * Method to deserialize leader cards.
      * @param message: message with information
@@ -204,6 +229,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
                                 EffectType.DISCOUNT,
                                 discount,
                                 message.getResources().get(i)));
+
                         break;
 
                         case EXTRA_INVENTORY:
@@ -246,6 +272,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
                                                     new ResourceTag(ResourceType.FAITH, 1)}));
                         break;
                 }
+                deserialized.get(i).deserializeActive(message.getActive().get(i));
             }
         }
         return deserialized;

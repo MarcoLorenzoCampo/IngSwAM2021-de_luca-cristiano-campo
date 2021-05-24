@@ -5,13 +5,14 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
+import it.polimi.ingsw.model.player.Visitor;
 
 import java.util.ArrayList;
 
 public class ActivateBaseProductionAction extends Action {
     private final PossibleAction actiontag = PossibleAction.ACTIVATE_PRODUCTION;
 
-    private final String actionSender;
+
     private final ResourceType input_1;
     private final ResourceType input_2;
     private final ResourceType output;
@@ -19,7 +20,8 @@ public class ActivateBaseProductionAction extends Action {
     private final IGame game;
 
     public ActivateBaseProductionAction (String actionSender,ResourceType one, ResourceType two , ResourceType out, IGame game){
-        this.actionSender=actionSender;
+
+        super.setActionSender(actionSender);
         this.input_1 = one;
         this.input_2 = two;
         this.output = out;
@@ -41,7 +43,7 @@ public class ActivateBaseProductionAction extends Action {
     @Override
     public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
         ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(actionSender);
+        ActionValidator.senderValidation(super.getActionSender());
         ActionValidator.validateBaseProduction(this);
         ActionValidator.validateResourceProduction(input_1);
         ActionValidator.validateResourceProduction(input_2);
@@ -54,6 +56,11 @@ public class ActivateBaseProductionAction extends Action {
                 .getPlayerBoard()
                 .getProductionBoard()
                 .selectBaseProduction(input_1, input_2, output);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }
 

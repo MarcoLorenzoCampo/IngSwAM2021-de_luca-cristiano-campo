@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class PlayerState {
 
+    private boolean SetUpPhase;
+
     private boolean hasActivatedProductions;
     private boolean hasPickedResources;
     private boolean hasBoughCard;
@@ -30,6 +32,8 @@ public class PlayerState {
     private ArrayList<ResourceTag> toBeRemoved;
 
     public PlayerState() {
+
+        SetUpPhase = true;
         hasActivatedProductions = false;
         hasPickedResources = false;
         hasBoughCard = false;
@@ -40,6 +44,14 @@ public class PlayerState {
         hasTwoExchange = false;
 
         canDeposit = false;
+    }
+
+    public void setSetUpPhase(boolean setUpPhase) {
+        SetUpPhase = setUpPhase;
+    }
+
+    public boolean isSetUpPhase() {
+        return SetUpPhase;
     }
 
     public void setCanDeposit(boolean canDeposit) {
@@ -70,7 +82,6 @@ public class PlayerState {
         hasActivatedProductions = true;
         hasPickedResources = true;
         hasBoughCard = true;
-
         hasPlacedLeaders = false;
     }
 
@@ -106,7 +117,9 @@ public class PlayerState {
         hasActivatedProductions = false;
         hasPickedResources = false;
         hasBoughCard = false;
+
         hasPlacedLeaders = false;
+
         canDeposit = false;
     }
 

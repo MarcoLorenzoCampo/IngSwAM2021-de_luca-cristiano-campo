@@ -24,6 +24,8 @@ import static it.polimi.ingsw.network.server.Server.LOGGER;
  */
 public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
+    private boolean end_game;
+
     /**
      * Lobby dimension set by the first client to connect.
      */
@@ -45,6 +47,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
      */
     private final List<RealPlayer> realPlayerList;
 
+    private boolean endGame;
+
     /**
      * Map to store tuples: (Nickname, VirtualView).
      */
@@ -52,10 +56,12 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
     public MultiPlayerLobbyManager(GameManager gameManager) {
         this.realPlayerList = new LinkedList<>();
+        this.endGame = false;
         numberOfTurns = 0;
         auxIndex = 0;
         this.gameManager = gameManager;
         viewsByNickname= new HashMap<>();
+        end_game = false;
     }
 
     /**
@@ -152,37 +158,59 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void setNextTurn() {
 
-        if(viewsByNickname.get(realPlayerList.get(auxIndex).getName()) != null) {
+        if (viewsByNickname.get(realPlayerList.get(auxIndex).getName()) != null) {
             viewsByNickname.get(realPlayerList.get(auxIndex).getName())
                     .turnEnded("Your turn has ended.");
         }
 
-        numberOfTurns++;
-        auxIndex ++;
+        if(endGame && auxIndex==(realPlayerList.size()-1)){
+            HashMap<RealPlayer, Integer> victoryPoints = new HashMap<>();
 
-        int newCurrentIndex = auxIndex % realPlayerList.size();
+            for (RealPlayer iterator: realPlayerList) {
+                if(iterator.getPlayerState().isConnected())
+                victoryPoints.put(iterator, iterator.CalculateVictoryPoints());
+            }
 
-        if (!realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
-            while (realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
-                if (newCurrentIndex == realPlayerList.size() - 1) {
-                    newCurrentIndex = 0;
+            //TROVATI I PUNTI MASSIMI
+            //broadcastWinMessage(player with highest victory points);
+        } else {
+
+        if (end_game && auxIndex == (realPlayerList.size() - 1)) {
+
+            for (RealPlayer player: realPlayerList) {
+                //CALLING THE FUNCTION TO CALCULATE POINTS
+                //ALL POINTS ARE GATHERED AND A MESSAGE WITH THE WINNER IS SENT
+                //THE GAME IS ELIMINATED AND REINITIALIZED
+            }
+
+        } else {
+            numberOfTurns++;
+            auxIndex++;
+
+            int newCurrentIndex = auxIndex % realPlayerList.size();
+
+            if (!realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
+                while (realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
+                    if (newCurrentIndex == realPlayerList.size() - 1) {
+                        newCurrentIndex = 0;
+                    }
                 }
             }
+
+            auxIndex = newCurrentIndex;
+
+            String nowPlaying = realPlayerList.get(newCurrentIndex).getName();
+
+            gameManager.getCurrentGame()
+                    .setCurrentPlayer(realPlayerList.get(newCurrentIndex));
+
+            gameManager.setCurrentPlayer(nowPlaying);
+
+            broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
+            gameManager.onStartTurn();
+
         }
-
-        auxIndex = newCurrentIndex;
-
-        String nowPlaying = realPlayerList.get(newCurrentIndex).getName();
-
-        gameManager.getCurrentGame()
-                .setCurrentPlayer(realPlayerList.get(newCurrentIndex));
-
-        gameManager.setCurrentPlayer(nowPlaying);
-
-        broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
-        gameManager.onStartTurn();
     }
-
     /**
      * Method to deal 4 leader cards {@link LeaderCard} for each player.
      */
@@ -393,13 +421,18 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void setObserver(String nickname, VirtualView virtualView) {
 
+        realPlayerList.get(getPlayerByNickname(nickname)).addObserver(this);
+
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
 
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(this);
 
+        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().addObserver(this);
+
         gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
 
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
+
 
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
 
@@ -408,6 +441,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
 
         realPlayerList.get(getPlayerByNickname(nickname)).addObserver(virtualView);
+
+
     }
 
     /**
@@ -439,7 +474,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
             entry.getValue().printResourceMarket(PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getResourceBoard(),
                     PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getExtraMarble());
-            entry.getValue().printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().reduce());
+            entry.getValue().printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().getAvailableCards());
 
             entry.getValue().printFaithTrack(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getFaithTrack());
         }
@@ -489,10 +524,15 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
             case DISCARDED_RESOURCE:
                 for(RealPlayer realPlayer : realPlayerList) {
-                    if(realPlayer.getPlayerState().isConnected()) {
+                    if(realPlayer.getPlayerState().isConnected()
+                    && !realPlayer.getName().equals(gameManager.getCurrentPlayer())) {
                         realPlayer.getPlayerBoard().getFaithTrack().increaseFaithMarker();
                     }
                 }
+                break;
+
+            case END_GAME:
+                if(end_game = false) end_game = true;
                 break;
 
             default: //Ignore any other message
@@ -508,7 +548,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     private void sendReducedModel(String nickname, VirtualView vv) {
         vv.printFaithTrack(realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack());
 
-        vv.printAvailableCards(gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().reduce());
+        vv.printAvailableCards(gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().getAvailableCards());
 
         vv.printResourceMarket(gameManager.getCurrentGame().getGameBoard().getResourceMarket().getResourceBoard(),
                 gameManager.getCurrentGame().getGameBoard().getResourceMarket().getExtraMarble());

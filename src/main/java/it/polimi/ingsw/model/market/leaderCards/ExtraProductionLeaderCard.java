@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.market.leaderCards;
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.player.RealPlayerBoard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
@@ -38,13 +39,9 @@ public class ExtraProductionLeaderCard extends LeaderCard {
      * {@link it.polimi.ingsw.model.productionBoard.ProductionBoard}
      */
     @Override
-    public void setActive() {
-        super.setActive();
-        PlayingGame.getGameInstance()
-                .getCurrentPlayer()
-                .getPlayerBoard()
-                .getProductionBoard()
-                .addLeaderProduction(this);
+    public void setActive(RealPlayerBoard playerBoard) {
+        super.setActive(playerBoard);
+        playerBoard.getProductionBoard().addLeaderProduction(this);
     }
 
     public void setSelected(boolean selected) {

@@ -135,7 +135,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
         playerVV.printResourceMarket(PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getResourceBoard(),
                 PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getExtraMarble());
 
-        playerVV.printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().reduce());
+        playerVV.printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().getAvailableCards());
 
         playerVV.printFaithTrack(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getFaithTrack());
     }

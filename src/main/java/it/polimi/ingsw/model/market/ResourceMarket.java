@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.player.RealPlayerBoard;
 import it.polimi.ingsw.model.utilities.FaithResource;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Reducible;
@@ -124,14 +125,16 @@ public class ResourceMarket extends Observable implements Serializable {
      * {@link MaterialResource}
      * {@link FaithResource}
      */
-    public void pickResources(int index) {
+    public void pickResources(int index, RealPlayerBoard playerBoard) {
         LinkedList<ResourceType> pickedFromMarket = pickResourceLine(index);
         placeExtraMarble(index, pickedFromMarket.getLast());
         LinkedList<Resource> obtainedResources = ResourceBuilder.build(pickedFromMarket);
 
         notifyObserver(new ResourceMarketMessage(resourceBoard, extraMarble));
 
-        obtainedResources.forEach(Resource::deposit);
+        for (Resource iterator: obtainedResources) {
+            iterator.deposit(playerBoard);
+        }
     }
 
     public ResourceType[][] getResourceBoard() {

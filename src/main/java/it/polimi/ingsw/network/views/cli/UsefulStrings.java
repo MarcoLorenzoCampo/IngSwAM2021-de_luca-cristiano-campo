@@ -74,6 +74,7 @@ public class UsefulStrings {
                     "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
                     "\n - 'CHECK_MARKET': For an updated ResourceMarket;" +
                     "\n - 'CHECK_CARDS': For an updated ProductionCardsMarket;" +
-                    "\n - 'CHECK_LEADERS': For un updated LeaderCards list;" +
+                    "\n - 'CHECK_LEADERS': For an updated LeaderCards list;" +
+                    "\n - 'CHECK_PRODUCTIONS': For an updated ProductionBoard;" +
                     "\n-------------------------------------------------------------------------------------------------------------\n";
 }

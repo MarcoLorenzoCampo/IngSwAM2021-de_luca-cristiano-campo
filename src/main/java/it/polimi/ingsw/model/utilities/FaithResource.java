@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.utilities;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.player.RealPlayerBoard;
 
 public class FaithResource extends Resource {
 
@@ -20,11 +21,7 @@ public class FaithResource extends Resource {
     }
 
     @Override
-    public void deposit() {
-        PlayingGame.getGameInstance()
-                .getCurrentPlayer()
-                .getPlayerBoard()
-                .getFaithTrack()
-                .increaseFaithMarker();
+    public void deposit(RealPlayerBoard playerBoard) {
+        playerBoard.getFaithTrack().increaseFaithMarker();
     }
 }

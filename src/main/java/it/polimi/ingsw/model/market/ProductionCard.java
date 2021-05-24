@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.model.game.PlayingGame;
+import it.polimi.ingsw.model.productionBoard.ProductionBoard;
 import it.polimi.ingsw.model.utilities.BaseProduction;
 import it.polimi.ingsw.model.utilities.Reducible;
 import it.polimi.ingsw.model.utilities.ResourceTag;
@@ -14,13 +15,15 @@ public class ProductionCard extends BaseProduction implements Reducible {
 
     private final Level level;
     private final Color color;
+    private final int id;
     private final int victoryPoints;
     private final ArrayList<ResourceTag> requirements;
 
     /* for testing purposes */
-    public ProductionCard(Level level, Color color, int victoryPoints, ArrayList<ResourceTag> requirements) {
+    public ProductionCard(Level level, Color color,int id, int victoryPoints, ArrayList<ResourceTag> requirements) {
         this.level = level;
         this.color = color;
+        this.id = id;
         this.victoryPoints = victoryPoints;
         this.requirements = requirements;
     }
@@ -34,18 +37,15 @@ public class ProductionCard extends BaseProduction implements Reducible {
     public int getVictoryPoints() {
         return victoryPoints;
     }
+    public int getId(){return id;}
 
 
     public ArrayList<ResourceTag> getRequirements() {
         return requirements;
     }
 
-    public void placeCard(int index, ProductionCard boughtCard) {
-        PlayingGame.getGameInstance()
-                .getCurrentPlayer()
-                .getPlayerBoard()
-                .getProductionBoard()
-                .placeProductionCard(index, boughtCard);
+    public void placeCard(int index, ProductionCard boughtCard, ProductionBoard productionBoard) {
+        productionBoard.placeProductionCard(index, boughtCard);
     }
 
     @Override

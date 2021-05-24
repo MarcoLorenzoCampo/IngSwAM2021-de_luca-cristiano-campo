@@ -6,11 +6,11 @@ import it.polimi.ingsw.exceptions.InvalidGameStateException;
 import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.controller.ActionValidator;
+import it.polimi.ingsw.model.player.Visitor;
 
 public class GetResourceFromMarketAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.GET_RESOURCE_FROM_MARKET;
-    private final String actionSender;
     private final int indexToPickFrom;
 
     private final IGame game;
@@ -21,9 +21,13 @@ public class GetResourceFromMarketAction extends Action {
      * @param indexToPickFrom the slot in which the card should be placed
      */
     public GetResourceFromMarketAction(String actionSender, int indexToPickFrom, IGame game) {
-        this.actionSender = actionSender;
+        super.setActionSender(actionSender);
         this.indexToPickFrom = indexToPickFrom;
         this.game = game;
+    }
+
+    public int getIndexToPickFrom() {
+        return indexToPickFrom;
     }
 
     /**
@@ -35,7 +39,7 @@ public class GetResourceFromMarketAction extends Action {
     @Override
     public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException {
         ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(actionSender);
+        ActionValidator.senderValidation(super.getActionSender());
         ActionValidator.validateGetFromMarket();
 
         runAction();
@@ -46,9 +50,9 @@ public class GetResourceFromMarketAction extends Action {
      * Picks resources from market, deposits them and asks for an exchange if necessary.
      */
     private void runAction() {
-        this.game.getGameBoard()
-                .getResourceMarket()
-                .pickResources(indexToPickFrom);
+        //this.game.getGameBoard()
+        //        .getResourceMarket()
+        //        .pickResources(indexToPickFrom);
 
         this.game.getCurrentPlayer()
                 .getPlayerBoard()
@@ -62,5 +66,10 @@ public class GetResourceFromMarketAction extends Action {
 
     public PossibleAction getActionTag() {
         return actionTag;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

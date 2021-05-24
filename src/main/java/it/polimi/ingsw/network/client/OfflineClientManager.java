@@ -6,6 +6,7 @@ import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.ResourceMarket;
 import it.polimi.ingsw.model.market.leaderCards.*;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
@@ -18,10 +19,9 @@ import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
+import it.polimi.ingsw.parsers.ProductionCardsParser;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -43,6 +43,8 @@ public class OfflineClientManager implements ViewObserver, Observer {
      */
     private String nickname;
 
+    private final List<ProductionCard> allProductionCards;
+
     /**
      * Thread to update the view.
      */
@@ -52,6 +54,7 @@ public class OfflineClientManager implements ViewObserver, Observer {
         this.gameManager = new GameManager();
         gameManager.setLobbyManager("singlePlayer");
         this.view = view;
+        this.allProductionCards = ProductionCardsParser.parseProductionDeck();
         viewUpdater = Executors.newSingleThreadExecutor();
     }
 
@@ -94,7 +97,7 @@ public class OfflineClientManager implements ViewObserver, Observer {
                     List<LeaderCard> leader_prod = deserializeLeaderCards(productionBoard.getExtra_productions());
                     viewUpdater.execute(() ->
                             view.showLeaderCards(leader_prod));
-                    viewUpdater.execute(() -> view.printProductionBoard(productionBoard.getProductions()));
+                    viewUpdater.execute(() -> view.printProductionBoard(deserializeProductionBoard(productionBoard.getProductions())));
                     break;
 
                 case WAREHOUSE:
@@ -130,7 +133,7 @@ public class OfflineClientManager implements ViewObserver, Observer {
                     break;
                 case AVAILABLE_PRODUCTION_CARDS:
                     AvailableCardsMessage a = (AvailableCardsMessage) message;
-                    viewUpdater.execute(() -> view.printAvailableCards(a.getReducedAvailableCards()));
+                    viewUpdater.execute(() -> view.printAvailableCards(deserializeProductionCards(a.getAvailableID())));
                     break;
 
                 case AVAILABLE_LEADERS:
@@ -170,6 +173,26 @@ public class OfflineClientManager implements ViewObserver, Observer {
                     break;
             }
         }
+    }
+    private HashMap<Integer, ProductionCard> deserializeProductionBoard(HashMap<Integer, Integer> productionSlots){
+        HashMap<Integer, ProductionCard> deserialized = new HashMap<>();
+        for (Map.Entry<Integer,Integer> iterator: productionSlots.entrySet()) {
+            if(iterator.getValue()==-1){
+                deserialized.put(iterator.getKey(), null);
+            }
+            else{
+                deserialized.put(iterator.getKey(), allProductionCards.get(iterator.getValue()));
+            }
+        }
+        return  deserialized;
+    }
+
+    private ArrayList<ProductionCard> deserializeProductionCards(ArrayList<Integer> availableID) {
+        ArrayList<ProductionCard> available = new ArrayList<>();
+        for (Integer iterator: availableID) {
+            available.add(allProductionCards.get(iterator));
+        }
+        return available;
     }
 
     /**
@@ -395,8 +418,8 @@ public class OfflineClientManager implements ViewObserver, Observer {
     /**
      * Sends a request to swap two shelves in the warehouse.
      *
-     * @param shelf1
-     * @param shelf2
+     * @param shelf1: first shelf
+     * @param shelf2: second shelf
      */
     @Override
     public void onUpdateSwap(int shelf1, int shelf2) {

@@ -33,10 +33,16 @@ public class InventoryManager extends Observable {
         warehouse = new Warehouse();
         strongbox = new Strongbox();
         inventory = new HashMap<>();
+        /*
         inventory.put(ResourceType.COIN, 0);
         inventory.put(ResourceType.STONE,0);
         inventory.put(ResourceType.SHIELD,0);
         inventory.put(ResourceType.SERVANT,0);
+        */
+        inventory.put(ResourceType.COIN, 100);
+        inventory.put(ResourceType.STONE,100);
+        inventory.put(ResourceType.SHIELD,100);
+        inventory.put(ResourceType.SERVANT,100);
         exchange = new ArrayList<>();
         discount =new ArrayList<>();
     }
@@ -96,7 +102,7 @@ public class InventoryManager extends Observable {
 
         else if (exchange.size()==1){
             for (MaterialResource iterator : buffer) {
-                iterator.setResourceType(exchange.get(0));
+                if(iterator.getResourceType().equals(ResourceType.UNDEFINED)) iterator.setResourceType(exchange.get(0));
             }
         }
         notifyObserver(messageUpdate());

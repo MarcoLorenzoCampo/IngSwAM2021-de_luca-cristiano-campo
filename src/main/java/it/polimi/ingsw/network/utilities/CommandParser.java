@@ -26,6 +26,8 @@ public final class CommandParser {
                         return "CHECK_LEADERS";
                     case("EXECUTE"):
                         return "EXECUTE";
+                    case("CHECK_PRODUCTIONS") :
+                        return "CHECK_PRODUCTIONS";
 
                     default : return "UNKNOWN_COMMAND";
                 }

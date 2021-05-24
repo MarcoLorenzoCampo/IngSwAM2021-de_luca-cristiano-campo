@@ -7,6 +7,7 @@ import it.polimi.ingsw.exceptions.InvalidPlayerException;
 import it.polimi.ingsw.exceptions.MustPerformActionException;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.controller.ActionValidator;
+import it.polimi.ingsw.model.player.Visitor;
 
 /**
  * Action to notify a player's turn has ended and the MultiPLayerLobbyManager should get ready to
@@ -18,12 +19,11 @@ import it.polimi.ingsw.controller.ActionValidator;
 public class EndTurnAction extends Action {
 
     private static final PossibleAction actionTag = PossibleAction.END_TURN;
-    private final String actionSender;
 
     private final IGame game;
 
     public EndTurnAction(String actionSender, IGame game) {
-        this.actionSender = actionSender;
+        super.setActionSender(actionSender);
         this.game = game;
 
     }
@@ -37,21 +37,23 @@ public class EndTurnAction extends Action {
     public void isValid() throws InvalidPlayerException, InvalidGameStateException, EndTurnException, MustPerformActionException {
 
         ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(actionSender);
+        ActionValidator.senderValidation(getActionSender());
         ActionValidator.canEndTurnValidator();
 
         this.game.getCurrentPlayer()
                 .getPlayerState()
                 .endTurnReset();
 
-        throw new EndTurnException(actionSender);
+        throw new EndTurnException(getActionSender());
     }
 
     public static PossibleAction getActionTag() {
         return actionTag;
     }
 
-    public String getActionSender() {
-        return actionSender;
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -22,6 +22,7 @@ public class LeaderCardMessage extends Message {
     private final ArrayList<EffectType> effects;
     private final ArrayList<ResourceType> resources;
     private final ArrayList<Integer> victoryPoints;
+    private final ArrayList<Boolean> active;
     private final HashMap<Integer, ResourceType> storage;
     private final HashMap<Integer, ArrayList<Color>> others;
 
@@ -36,11 +37,13 @@ public class LeaderCardMessage extends Message {
         this.effects = new ArrayList<>();
         this.resources = new ArrayList<>();
         this.victoryPoints = new ArrayList<>();
+        this.active = new ArrayList<>();
 
         for (LeaderCard iterator : inModel) {
             effects.add(iterator.getEffectType());
             resources.add(iterator.getResource());
             victoryPoints.add(iterator.getVictoryPoints());
+            active.add(iterator.isActive());
 
             if(iterator.getEffectType().equals(EffectType.EXTRA_INVENTORY)){
                 storage.put(inModel.indexOf(iterator), iterator.getRequirementsResource()[0].getType());
@@ -56,6 +59,10 @@ public class LeaderCardMessage extends Message {
                 others.put(inModel.indexOf(iterator), colors);
             }
         }
+    }
+
+    public ArrayList<Boolean> getActive() {
+        return active;
     }
 
     public int getSize() { return size; }

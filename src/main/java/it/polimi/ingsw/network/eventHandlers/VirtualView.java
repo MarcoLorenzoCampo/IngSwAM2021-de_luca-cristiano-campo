@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.eventHandlers;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
+import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.*;
@@ -119,11 +120,11 @@ public class VirtualView implements IView, Observer {
     /**
      * Method to show the available production cards.
      *
-     * @param reducedAvailableCards : available production cards.
+     * @param available : available production cards.
      */
     @Override
-    public void printAvailableCards(String reducedAvailableCards) {
-        clientHandler.sendMessage(new AvailableCardsMessage(reducedAvailableCards));
+    public void printAvailableCards(List<ProductionCard> available) {
+        clientHandler.sendMessage(new AvailableCardsMessage(available));
     }
 
     @Override
@@ -152,7 +153,7 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void printProductionBoard(String productions) {
+    public void printProductionBoard(HashMap<Integer, ProductionCard> productionBoard) {
 
     }
 

@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.controller.ActionValidator;
+import it.polimi.ingsw.model.player.Visitor;
 
 /**
  * This action contains two "micro-actions": buy a card and place it.
@@ -20,7 +21,6 @@ import it.polimi.ingsw.controller.ActionValidator;
 public class BuyProductionCardAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.BUY_PRODUCTION_CARD;
-    private final String actionSender;
     private final ProductionCard boughtCard;
     private final int destinationSlot;
 
@@ -33,10 +33,18 @@ public class BuyProductionCardAction extends Action {
      * @param destinationSlot: destination slot in the ProductionBoard;
      */
     public BuyProductionCardAction(String actionSender, ProductionCard boughtCard, int destinationSlot, IGame game) {
-        this.actionSender = actionSender;
+        super.setActionSender(actionSender);
         this.boughtCard = boughtCard;
         this.destinationSlot = destinationSlot;
         this.game = game;
+    }
+
+    public ProductionCard getBoughtCard() {
+        return boughtCard;
+    }
+
+    public int getDestinationSlot() {
+        return destinationSlot;
     }
 
     /**
@@ -53,7 +61,7 @@ public class BuyProductionCardAction extends Action {
             NoMatchingRequisitesException, EndGameException, InvalidProductionSlotException {
 
         ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(actionSender);
+        ActionValidator.senderValidation(getActionSender());
         ActionValidator.validateBuyCardFromMarketAction(boughtCard);
         ActionValidator.validateProductionSlot(destinationSlot, boughtCard);
 
@@ -66,7 +74,7 @@ public class BuyProductionCardAction extends Action {
                 .buyCard(boughtCard);
 
         game.getCurrentPlayer().getPlayerState().setToBeRemoved(boughtCard.getRequirements());
-        boughtCard.placeCard(destinationSlot, boughtCard);
+        boughtCard.placeCard(destinationSlot, boughtCard, game.getCurrentPlayer().getPlayerBoard().getProductionBoard());
 
         this.game.getCurrentPlayer()
                 .getPlayerState()
@@ -75,5 +83,10 @@ public class BuyProductionCardAction extends Action {
 
     public PossibleAction getActionTag() {
         return actionTag;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -42,7 +42,7 @@ class InventoryManagerTest {
         toBeAdded.add(new MaterialResource(ResourceType.SERVANT));
 
         for (MaterialResource materialResource : toBeAdded) {
-            materialResource.deposit();
+            materialResource.deposit(testRealPlayer.getPlayerBoard());
         }
 
         //Assert

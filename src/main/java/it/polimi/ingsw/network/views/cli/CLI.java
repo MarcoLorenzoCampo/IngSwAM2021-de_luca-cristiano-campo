@@ -1,7 +1,9 @@
 package it.polimi.ingsw.network.views.cli;
 
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
+import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
@@ -15,6 +17,7 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.enumerations.ResourceType.*;
 
@@ -63,6 +66,7 @@ public class CLI extends ViewObservable implements IView {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Asks the player to specify a port and Ip address to connect to. They will be then validated and used.
@@ -283,11 +287,15 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print("1 " + innerIterator.getColor() +"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
 
                 case EXTRA_INVENTORY:
                     out.println("\n\nEXTRA INVENTORY: + 2 spaces of "+ iterator.getResource() + "\nNeeded: ");
                     out.print("5 " + iterator.getRequirementsResource()[0].getType() +"\n");
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
 
                 case MARBLE_EXCHANGE:
@@ -295,6 +303,8 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print(innerIterator.getQuantity() + " " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
                 case EXTRA_PRODUCTION:
                     out.println("\n\nEXTRA PRODUCTION:  "+ iterator.getResource() +" --> FAITH + UNDEFINED");
@@ -302,6 +312,8 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print("1 " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
             }
         }
@@ -346,12 +358,13 @@ public class CLI extends ViewObservable implements IView {
             switch (output) {
                 case ("HELP") : printPossibleActions(); break;
                 case ("CHECK_MARKET") :  out.println(lightweightModel.getReducedResourceMarket()); break;
-                case ("CHECK_CARDS") : out.println(lightweightModel.getReducedAvailableCards()); break;
+                case ("CHECK_CARDS") : printAvailableCards(lightweightModel.getReducedAvailableCards()); break;
                 case ("CHECK_LEADERS") : printLeaders(lightweightModel.getLeaderCards()); break;
+                case ("CHECK_PRODUCTIONS") : printProductionBoard(lightweightModel.getProductionBoard()); break;
             }
 
         } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP") || output.equals("CHECK_MARKET")
-                || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS"));
+                || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS") || output.equals("CHECK_PRODUCTIONS"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
@@ -491,11 +504,15 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print("1 " + innerIterator.getColor() +"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
 
                 case EXTRA_INVENTORY:
                     out.println("\n\nEXTRA INVENTORY: + 2 spaces of "+ iterator.getResource() + "\nNeeded: ");
                     out.print("5 " + iterator.getRequirementsResource()[0].getType() +"\n");
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
 
                 case MARBLE_EXCHANGE:
@@ -503,6 +520,8 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print(innerIterator.getQuantity() + " " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
                 case EXTRA_PRODUCTION:
                     out.println("\n\nEXTRA PRODUCTION:  "+ iterator.getResource() +" --> FAITH + UNDEFINED");
@@ -510,6 +529,8 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print("1 " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
             }
         }
@@ -540,7 +561,7 @@ public class CLI extends ViewObservable implements IView {
         lightweightModel.setWarehouse(shelves, extras);
         out.println("extra shelves: " + extras);
         out.println("Warehouse: ");
-        if(shelves.size() == 6) {
+        if(shelves.size() >= 6) {
             out.println("SHELF 1 = " + shelves.get(0));
             out.println("SHELF 2 = " + shelves.get(1) + " " + shelves.get(2));
             out.println("SHELF 3 = " + shelves.get(3) + " " + shelves.get(4) + " " + shelves.get(5));
@@ -554,8 +575,28 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printProductionBoard(String productions) {
-        out.println(productions);
+    public void printProductionBoard(HashMap<Integer,ProductionCard> productionBoard) {
+        lightweightModel.setProductionBoard(productionBoard);
+        out.println("BASE PRODUCTION\n");
+        out.println(" UNDEFINED + UNDEFINED --> UNDEFINED\n");
+        out.println("PRODUCTION CARDS\n");
+
+        for (Map.Entry<Integer, ProductionCard> iterator:productionBoard.entrySet()) {
+            if(iterator.getValue() == null) out.println("EMPTY\n");
+            else out.println(iterator.getValue().reduce()+"\n");
+        }
+
+            List<LeaderCard> active_extra_prod=
+            lightweightModel.getLeaderCards()
+                    .stream()
+                    .filter(leaderCard -> leaderCard.getEffectType().equals(EffectType.EXTRA_PRODUCTION))
+                    .filter(LeaderCard::isActive)
+                    .collect(Collectors.toList());
+            if(active_extra_prod.size()>0){
+                out.println("EXTRA PRODUCTION CARDS\n");
+                printLeaders(active_extra_prod);
+            }
+
     }
 
     @Override
@@ -640,12 +681,15 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printAvailableCards(String reducedAvailableCards) {
+    public void printAvailableCards(List<ProductionCard> available) {
 
         out.println("\nThe ProductionCardsMarket has been modified, here's an updated version: \n");
 
-        lightweightModel.setReducedAvailableCards(reducedAvailableCards);
-        out.println(reducedAvailableCards);
+        lightweightModel.setReducedAvailableCards(available);
+        for (ProductionCard iterator: available) {
+            out.println(iterator.reduce());
+        }
+
     }
 
     @Override

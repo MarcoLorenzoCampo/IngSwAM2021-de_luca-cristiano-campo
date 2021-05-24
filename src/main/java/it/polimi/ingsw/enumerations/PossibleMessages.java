@@ -60,6 +60,6 @@ public enum PossibleMessages {
 
     //Notification message sent by the model to the controller
     VATICAN_REPORT_NOTIFICATION,
-    DISCARDED_RESOURCE
-
+    DISCARDED_RESOURCE,
+    END_GAME
 }

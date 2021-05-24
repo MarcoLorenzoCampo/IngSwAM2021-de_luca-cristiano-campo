@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.market.leaderCards;
 
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.player.RealPlayerBoard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
@@ -43,7 +44,7 @@ public abstract class LeaderCard implements Serializable {
      * Sets the boolean value to true and gets overridden by the subclass activating its specific
      * effect.
      */
-    public void setActive() {
+    public void setActive(RealPlayerBoard playerBoard) {
         isActive = true;
     }
 
@@ -61,5 +62,8 @@ public abstract class LeaderCard implements Serializable {
     }
     public ResourceTag[] getRequirementsResource() {
         return requirementsResource;
+    }
+    public void deserializeActive(boolean activation){
+        this.isActive = activation;
     }
 }

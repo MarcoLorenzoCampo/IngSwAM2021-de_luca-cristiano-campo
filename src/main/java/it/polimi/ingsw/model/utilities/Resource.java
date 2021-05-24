@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.utilities;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.player.RealPlayerBoard;
 
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ public abstract class Resource {
     private ResourceType resourceType;
 
     /* deposit() is used to deposit the resource. Overridden by MaterialResource and FaithResource */
-    public void deposit() { }
+    public void deposit(RealPlayerBoard playerBoard) { }
 
     /* default setter */
     public void setResourceType(ResourceType resourceType) {
