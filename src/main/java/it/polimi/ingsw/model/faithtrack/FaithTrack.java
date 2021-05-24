@@ -24,10 +24,12 @@ public class FaithTrack extends Observable implements Serializable {
     private int currentFavorPoints;
     public Map<Integer, Integer> cardVaticanSpace = new HashMap<>();
 
-    private List<Integer> checkpoints = new ArrayList<>();
+    private final List<Integer> checkpoints = new ArrayList<>();
+
+    private final Map<Integer, Integer> ranges = new HashMap<>();
 
     public FaithTrack() {
-        this.faithMarker=0;
+        this.faithMarker=7;
         this.currentFavorPoints=0;
         this.finalPoints=0;
         initFaithTrack();
@@ -100,7 +102,7 @@ public class FaithTrack extends Observable implements Serializable {
                 ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
 
                 //Notifying the controller he needs to start a vatican report session.
-                notifyObserver(new VaticanReportNotification(faithMarker, cardVaticanSpace.get(faithMarker)));
+                notifyObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
             }
         }
     }
@@ -111,6 +113,10 @@ public class FaithTrack extends Observable implements Serializable {
         cardVaticanSpace.put(Constants.YELLOW, 2);
         cardVaticanSpace.put(Constants.ORANGE, 3);
         cardVaticanSpace.put(Constants.RED, 4);
+
+        ranges.put(8, 3);
+        ranges.put(16, 4);
+        ranges.put(24, 5);
     }
 
     /**
@@ -175,11 +181,6 @@ public class FaithTrack extends Observable implements Serializable {
     public List<Integer> getCheckpoints() {
         return checkpoints;
     }
-
-    public void setCheckpoints(List<Integer> checkpoints) {
-        this.checkpoints = checkpoints;
-    }
-
 
 
     public int getFinalPoints() {

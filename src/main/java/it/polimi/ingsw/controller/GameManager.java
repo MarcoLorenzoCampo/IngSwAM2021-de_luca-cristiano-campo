@@ -24,9 +24,8 @@ import java.util.*;
  * Class to manage the entire playing game. It has instances of the currentGame, LobbyManager,
  * ActionManager.
  */
-public final class GameManager implements Observer, Serializable {
+public final class GameManager implements Observer {
 
-    private static final long serialVersionUID = -5547896474378477025L;
     private Server server;
     private final IGame currentGame;
     private final ActionManager actionManager;
