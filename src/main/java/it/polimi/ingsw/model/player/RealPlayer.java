@@ -142,7 +142,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
         for (Map.Entry<ResourceType, Integer> iterator: playerBoard.getInventoryManager().getInventory().entrySet()) {
             totalResources += iterator.getValue();
         }
-        victoryPoints += (totalResources /5);
+        victoryPoints += (totalResources/5);
         return victoryPoints;
     }
 

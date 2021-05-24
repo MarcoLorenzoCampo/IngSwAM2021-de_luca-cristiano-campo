@@ -162,6 +162,18 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                     .turnEnded("Your turn has ended.");
         }
 
+        if(endGame && auxIndex==(realPlayerList.size()-1)){
+            HashMap<RealPlayer, Integer> victoryPoints = new HashMap<>();
+
+            for (RealPlayer iterator: realPlayerList) {
+                if(iterator.getPlayerState().isConnected())
+                victoryPoints.put(iterator, iterator.CalculateVictoryPoints());
+            }
+
+            //TROVATI I PUNTI MASSIMI
+            //broadcastWinMessage(player with highest victory points);
+        } else {
+
         if (end_game && auxIndex == (realPlayerList.size() - 1)) {
 
             for (RealPlayer player: realPlayerList) {
