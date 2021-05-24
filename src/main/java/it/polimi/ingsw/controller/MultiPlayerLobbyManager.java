@@ -175,15 +175,6 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             //broadcastWinMessage(player with highest victory points);
         } else {
 
-        if (end_game && auxIndex == (realPlayerList.size() - 1)) {
-
-            for (RealPlayer player: realPlayerList) {
-                //CALLING THE FUNCTION TO CALCULATE POINTS
-                //ALL POINTS ARE GATHERED AND A MESSAGE WITH THE WINNER IS SENT
-                //THE GAME IS ELIMINATED AND REINITIALIZED
-            }
-
-        } else {
             numberOfTurns++;
             auxIndex++;
 
@@ -208,7 +199,6 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
             broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
             gameManager.onStartTurn();
-
         }
     }
     /**
