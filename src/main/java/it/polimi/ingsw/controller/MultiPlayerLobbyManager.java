@@ -23,6 +23,8 @@ import static it.polimi.ingsw.network.server.Server.LOGGER;
  */
 public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
+    private boolean end_game;
+
     /**
      * Lobby dimension set by the first client to connect.
      */
@@ -55,6 +57,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         auxIndex = 0;
         this.gameManager = gameManager;
         viewsByNickname= new HashMap<>();
+        end_game = false;
     }
 
     /**
@@ -151,37 +154,47 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void setNextTurn() {
 
-        if(viewsByNickname.get(realPlayerList.get(auxIndex).getName()) != null) {
+        if (viewsByNickname.get(realPlayerList.get(auxIndex).getName()) != null) {
             viewsByNickname.get(realPlayerList.get(auxIndex).getName())
                     .turnEnded("Your turn has ended.");
         }
 
-        numberOfTurns++;
-        auxIndex ++;
+        if (end_game && auxIndex == (realPlayerList.size() - 1)) {
 
-        int newCurrentIndex = auxIndex % realPlayerList.size();
+            for (RealPlayer player: realPlayerList) {
+                //CALLING THE FUNCTION TO CALCULATE POINTS
+                //ALL POINTS ARE GATHERED AND A MESSAGE WITH THE WINNER IS SENT
+                //THE GAME IS ELIMINATED AND REINITIALIZED
+            }
 
-        if (!realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
-            while (realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
-                if (newCurrentIndex == realPlayerList.size() - 1) {
-                    newCurrentIndex = 0;
+        } else {
+            numberOfTurns++;
+            auxIndex++;
+
+            int newCurrentIndex = auxIndex % realPlayerList.size();
+
+            if (!realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
+                while (realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
+                    if (newCurrentIndex == realPlayerList.size() - 1) {
+                        newCurrentIndex = 0;
+                    }
                 }
             }
+
+            auxIndex = newCurrentIndex;
+
+            String nowPlaying = realPlayerList.get(newCurrentIndex).getName();
+
+            gameManager.getCurrentGame()
+                    .setCurrentPlayer(realPlayerList.get(newCurrentIndex));
+
+            gameManager.setCurrentPlayer(nowPlaying);
+
+            broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
+            gameManager.onStartTurn();
+
         }
-
-        auxIndex = newCurrentIndex;
-
-        String nowPlaying = realPlayerList.get(newCurrentIndex).getName();
-
-        gameManager.getCurrentGame()
-                .setCurrentPlayer(realPlayerList.get(newCurrentIndex));
-
-        gameManager.setCurrentPlayer(nowPlaying);
-
-        broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
-        gameManager.onStartTurn();
     }
-
     /**
      * Method to deal 4 leader cards {@link LeaderCard} for each player.
      */
@@ -499,6 +512,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                 break;
 
             case END_GAME:
+                if(end_game = false) end_game = true;
                 break;
 
             default: //Ignore any other message
