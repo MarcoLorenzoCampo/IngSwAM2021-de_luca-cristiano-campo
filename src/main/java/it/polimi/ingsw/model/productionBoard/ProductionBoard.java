@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.ExtraProductionLeaderCard;
+import it.polimi.ingsw.model.player.RealPlayerBoard;
 import it.polimi.ingsw.model.utilities.BaseProduction;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
@@ -202,10 +203,10 @@ public class ProductionBoard extends Observable {
      *
      * @return -- generates the list of material resources
      */
-    public void executeProduction(){
+    public void executeProduction(RealPlayerBoard playerBoard){
         LinkedList<Resource> obtained = ResourceBuilder.build(finalProduction.getOutputResources());
         for (Resource iterator:obtained) {
-            iterator.deposit(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard());
+            iterator.deposit(playerBoard);
         }
     }
 

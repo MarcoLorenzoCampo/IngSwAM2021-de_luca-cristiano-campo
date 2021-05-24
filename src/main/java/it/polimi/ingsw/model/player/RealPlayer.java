@@ -7,7 +7,6 @@ import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.ProductionCardMarket;
 import it.polimi.ingsw.model.market.ResourceMarket;
@@ -15,7 +14,6 @@ import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.eventHandlers.Observable;
-import it.polimi.ingsw.network.messages.playerMessages.EndTurnMessage;
 import it.polimi.ingsw.network.messages.serverMessages.DiscardedResourceMessage;
 import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 import it.polimi.ingsw.network.messages.serverMessages.LeaderCardMessage;
@@ -39,10 +37,6 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
      */
     private final String playerName;
 
-    /**
-     * Victory points acquired.
-     */
-    private int victoryPoints;
 
     /**
      * Reference to the player board.
@@ -79,7 +73,6 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
 
         this.playerBoard = new RealPlayerBoard(name);
         this.playerName = name;
-        this.victoryPoints = 0;
         this.playerState = new PlayerState();
         this.ownedLeaderCards = new LinkedList<>();
         this.resourceMarket = PlayingGame.getGameInstance().getGameBoard().getResourceMarket();
@@ -126,16 +119,8 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
         return playerName;
     }
 
-    public int getVictoryPoints() {
-        return victoryPoints;
-    }
-
     public RealPlayerBoard getPlayerBoard() {
         return playerBoard;
-    }
-
-    public void setVictoryPoints(int victoryPoints) {
-        this.victoryPoints = victoryPoints;
     }
 
     public PlayerState getPlayerState() {
@@ -144,6 +129,21 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
 
     public List<LeaderCard> getOwnedLeaderCards() {
         return ownedLeaderCards;
+    }
+
+    public int CalculateVictoryPoints(){
+        int victoryPoints = 0;
+        victoryPoints += playerBoard.getFaithTrack().getFinalPoints();
+        victoryPoints += playerBoard.getProductionBoard().getVictoryPoints();
+        for (LeaderCard iterator:ownedLeaderCards) {
+            if(iterator.isActive()) victoryPoints += iterator.getVictoryPoints();
+        }
+        int totalResources = 0;
+        for (Map.Entry<ResourceType, Integer> iterator: playerBoard.getInventoryManager().getInventory().entrySet()) {
+            totalResources += iterator.getValue();
+        }
+        victoryPoints += (totalResources /5);
+        return victoryPoints;
     }
 
     @Override
@@ -262,7 +262,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
     public void visit(ExecuteProductionAction action) {
         if(action.getActionSender().equals(playerName)
         && finalProductionValidator()){
-            playerBoard.getProductionBoard().executeProduction();
+            playerBoard.getProductionBoard().executeProduction(playerBoard);
             playerBoard.getInventoryManager().addResourceToStrongbox();
             playerState.performedExclusiveAction();
         }
@@ -401,5 +401,6 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
     private boolean finalProductionValidator() {
         return playerBoard.getProductionBoard().validateFinalProduction(playerBoard.getInventoryManager());
     }
+
 
 }

@@ -46,6 +46,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
      */
     private final List<RealPlayer> realPlayerList;
 
+    private boolean endGame;
+
     /**
      * Map to store tuples: (Nickname, VirtualView).
      */
@@ -53,6 +55,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
     public MultiPlayerLobbyManager(GameManager gameManager) {
         this.realPlayerList = new LinkedList<>();
+        this.endGame = false;
         numberOfTurns = 0;
         auxIndex = 0;
         this.gameManager = gameManager;

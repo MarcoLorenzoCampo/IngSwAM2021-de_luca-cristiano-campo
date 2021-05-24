@@ -148,7 +148,7 @@ public class FaithTrack extends Observable implements Serializable {
 
     public void setPopeTileInactive(int index) {
         if(isPopeTile(index)) {
-            PopeTile p = (PopeTile) faithTrack.get(8);
+            PopeTile p = (PopeTile) faithTrack.get(index);
             p.setIsActive(false);
             notifyObserver(new FaithTrackMessage(this));
         }

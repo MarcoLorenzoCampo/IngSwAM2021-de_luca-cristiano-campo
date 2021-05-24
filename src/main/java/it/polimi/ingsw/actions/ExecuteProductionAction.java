@@ -29,7 +29,7 @@ public class ExecuteProductionAction extends Action {
         game.getCurrentPlayer()
                 .getPlayerBoard()
                 .getProductionBoard()
-                .executeProduction();
+                .executeProduction(game.getCurrentPlayer().getPlayerBoard());
 
         game.getCurrentPlayer().getPlayerBoard().getInventoryManager().addResourceToStrongbox();
 
