@@ -4,6 +4,7 @@ import it.polimi.ingsw.enumerations.Constants;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 import it.polimi.ingsw.network.messages.serverMessages.FaithTrackMessage;
+import it.polimi.ingsw.network.messages.serverMessages.GenericMessageFromServer;
 import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
 
 import java.io.Serializable;
@@ -147,6 +148,7 @@ public class FaithTrack extends Observable implements Serializable {
     }
 
     public void setPopeTileInactive(int index) {
+
         if(isPopeTile(index)) {
             PopeTile p = (PopeTile) faithTrack.get(index);
             p.setIsActive(false);
