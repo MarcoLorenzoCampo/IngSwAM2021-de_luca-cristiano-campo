@@ -451,13 +451,11 @@ public final class GameManager implements Observer, Serializable {
                             currentGame.getCurrentPlayer().visit(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
                             //actionManager
                             //        .onReceiveAction(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
-                        }
-
-                        if(currentGame.getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()){
-                            currentGame.setCurrentState(PossibleGameStates.REMOVE);
-                        } else {
-
-                            currentGame.setCurrentState(PossibleGameStates.PLAYING);
+                            if(currentGame.getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()){
+                                currentGame.setCurrentState(PossibleGameStates.REMOVE);
+                            } else {
+                                currentGame.setCurrentState(PossibleGameStates.PLAYING);
+                            }
                         }
                         onStartTurn();
                 }

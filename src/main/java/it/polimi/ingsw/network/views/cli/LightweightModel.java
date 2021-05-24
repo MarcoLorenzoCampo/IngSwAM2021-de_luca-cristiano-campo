@@ -27,6 +27,7 @@ public class LightweightModel {
 
     public LightweightModel() {
         this.playerStates = new ArrayList<>();
+        productionBoard = new String();
     }
 
     public void addToPlayerState(String nickname) {

@@ -20,12 +20,15 @@ public class ProductionBoardMessage extends Message {
         extra_productions = new LeaderCardMessage((List) productionBoard.getLeaderProductions());
         ProductionSlot[] slots = productionBoard.getProductionSlots();
 
-        for (int i = 0; i < slots.length ; i++) {
+
+        if(slots[0].getProductionCard() != null) productions = slots[0].getProductionCard().reduce();
+        else productions = "EMPTY SLOT\n";
+        for (int i = 1; i < slots.length ; i++) {
             if (slots[i].getProductionCard() != null){
-                if (i == 0) {
-                    productions = slots[i].getProductionCard().reduce();
-                } else
                     productions = productions.concat(slots[i].getProductionCard().reduce());
+            }
+            else{
+                productions = productions.concat("EMPTY SLOT\n");
             }
         }
     }

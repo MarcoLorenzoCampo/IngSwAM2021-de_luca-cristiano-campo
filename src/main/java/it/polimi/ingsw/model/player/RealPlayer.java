@@ -287,6 +287,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
         && leaderValidator(action.getLeaderToActivate())){
             ownedLeaderCards.get(action.getLeaderToActivate()).setActive(playerBoard);
             playerState.placedLeader();
+            notifyObserver(new LeaderCardMessage(ownedLeaderCards));
         }
     }
 
@@ -376,7 +377,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
                 if(iterator.getQuantity() > playerBoard.getProductionBoard().getCardsInventory().get(iterator.getColor())[iterator.getLevel().ordinal()])
                     return false;
             }
-            return false;
+            return true;
         }
 
     }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.views.cli;
 
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
@@ -15,6 +16,7 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.enumerations.ResourceType.*;
 
@@ -284,11 +286,15 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print("1 " + innerIterator.getColor() +"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
 
                 case EXTRA_INVENTORY:
                     out.println("\n\nEXTRA INVENTORY: + 2 spaces of "+ iterator.getResource() + "\nNeeded: ");
                     out.print("5 " + iterator.getRequirementsResource()[0].getType() +"\n");
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
 
                 case MARBLE_EXCHANGE:
@@ -296,6 +302,8 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print(innerIterator.getQuantity() + " " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
                 case EXTRA_PRODUCTION:
                     out.println("\n\nEXTRA PRODUCTION:  "+ iterator.getResource() +" --> FAITH + UNDEFINED");
@@ -303,6 +311,8 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print("1 " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
             }
         }
@@ -493,11 +503,15 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print("1 " + innerIterator.getColor() +"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
 
                 case EXTRA_INVENTORY:
                     out.println("\n\nEXTRA INVENTORY: + 2 spaces of "+ iterator.getResource() + "\nNeeded: ");
                     out.print("5 " + iterator.getRequirementsResource()[0].getType() +"\n");
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
 
                 case MARBLE_EXCHANGE:
@@ -505,6 +519,8 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print(innerIterator.getQuantity() + " " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
                 case EXTRA_PRODUCTION:
                     out.println("\n\nEXTRA PRODUCTION:  "+ iterator.getResource() +" --> FAITH + UNDEFINED");
@@ -512,6 +528,8 @@ public class CLI extends ViewObservable implements IView {
                     for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
                         out.print("1 " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
                     }
+                    if(iterator.isActive()) out.println("ACTIVE");
+                    else  out.println("NOT ACTIVE");
                     break;
             }
         }
@@ -558,7 +576,22 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printProductionBoard(String productions) {
         lightweightModel.setProductionBoard(productions);
-        out.println(productions);
+        out.println("BASE PRODUCTION\n");
+        out.println(" UNDEFINED + UNDEFINED --> UNDEFINED\n");
+        if(!productions.isEmpty()) {
+            out.println("PRODUCTION CARDS\n");
+            out.println(productions);
+            List<LeaderCard> active_extra_prod=
+            lightweightModel.getLeaderCards()
+                    .stream()
+                    .filter(leaderCard -> leaderCard.getEffectType().equals(EffectType.EXTRA_PRODUCTION))
+                    .filter(leaderCard -> leaderCard.isActive())
+                    .collect(Collectors.toList());
+            if(active_extra_prod.size()>0){
+                out.println("EXTRA PRODUCTION CARDS\n");
+                printLeaders(active_extra_prod);
+            }
+        }
     }
 
     @Override
@@ -616,7 +649,7 @@ public class CLI extends ViewObservable implements IView {
                     case UNDEFINED:
                         temp = "WHITE   "; break;
                     case FAITH:
-                        temp = ColorCLI.ANSI_RED.escape() + "FAITH   " + ColorCLI.ANSI_WHITE.escape(); break;
+                        temp = ColorCLI.ANSI_RED.escape() + "FAITH   " + ColorCLI.ANSI_BRIGHT_WHITE.escape(); break;
                     default: break;
                 }
 

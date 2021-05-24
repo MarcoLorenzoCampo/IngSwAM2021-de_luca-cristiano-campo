@@ -404,6 +404,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
 
+
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
 
         realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);

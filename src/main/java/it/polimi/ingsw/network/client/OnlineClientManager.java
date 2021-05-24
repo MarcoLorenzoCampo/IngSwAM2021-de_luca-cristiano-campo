@@ -204,6 +204,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
                                 EffectType.DISCOUNT,
                                 discount,
                                 message.getResources().get(i)));
+
                         break;
 
                         case EXTRA_INVENTORY:
@@ -246,6 +247,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
                                                     new ResourceTag(ResourceType.FAITH, 1)}));
                         break;
                 }
+                deserialized.get(i).deserializeActive(message.getActive().get(i));
             }
         }
         return deserialized;

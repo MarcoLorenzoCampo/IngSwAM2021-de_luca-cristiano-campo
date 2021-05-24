@@ -63,4 +63,7 @@ public abstract class LeaderCard implements Serializable {
     public ResourceTag[] getRequirementsResource() {
         return requirementsResource;
     }
+    public void deserializeActive(boolean activation){
+        this.isActive = activation;
+    }
 }
