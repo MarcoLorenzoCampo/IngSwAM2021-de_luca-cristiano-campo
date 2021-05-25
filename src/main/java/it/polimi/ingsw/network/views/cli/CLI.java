@@ -13,6 +13,7 @@ import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
 import it.polimi.ingsw.network.views.cli.constants.GraphicalResourceConstants;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrack;
+import it.polimi.ingsw.network.views.cli.graphical.GraphicalLeaderCards;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalWarehouse;
 
 import java.io.PrintStream;
@@ -278,47 +279,9 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
-
-        lightweightModel.setLeaderCards(cards);
-
-        for (LeaderCard iterator: cards) {
-
-            switch (iterator.getEffectType()){
-                case DISCOUNT:
-                    out.println("\n\nDISCOUNT: -1 of "+ iterator.getResource() + "\nNeeded: ");
-                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
-                        out.print("1 " + innerIterator.getColor() +"\n");
-                    }
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-
-                case EXTRA_INVENTORY:
-                    out.println("\n\nEXTRA INVENTORY: + 2 spaces of "+ iterator.getResource() + "\nNeeded: ");
-                    out.print("5 " + iterator.getRequirementsResource()[0].getType() +"\n");
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-
-                case MARBLE_EXCHANGE:
-                    out.println("\n\nMARBLE EXCHANGE: change white into "+ iterator.getResource() + "\nNeeded: ");
-                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
-                        out.print(innerIterator.getQuantity() + " " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
-                    }
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-                case EXTRA_PRODUCTION:
-                    out.println("\n\nEXTRA PRODUCTION:  "+ iterator.getResource() +" --> FAITH + UNDEFINED");
-                    out.println("Needed: ");
-                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
-                        out.print("1 " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
-                    }
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-            }
-        }
+        GraphicalLeaderCards graphicalLeaderCards = new GraphicalLeaderCards(cards);
+        graphicalLeaderCards.draw();
+        out.println();
     }
 
     @Override
