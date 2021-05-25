@@ -247,6 +247,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
             else{
                 discardLeaderCard(action.getLeaderToDiscard());
                 playerBoard.getFaithTrack().increaseFaithMarker();
+                playerState.placedLeader();
             }
         }
     }
