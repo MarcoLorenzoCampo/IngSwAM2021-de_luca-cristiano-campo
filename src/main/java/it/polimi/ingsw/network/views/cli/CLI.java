@@ -279,6 +279,9 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
+
+        lightweightModel.setLeaderCards(cards);
+
         GraphicalLeaderCards graphicalLeaderCards = new GraphicalLeaderCards(cards);
         graphicalLeaderCards.draw();
         out.println();
