@@ -6,4 +6,5 @@ public class GraphicalResourceConstants {
     public static final String shield = "\uD83D\uDEE1";
     public static final String stone = "\uD83D\uDC8E";
     public static final String faith = "\uD83D\uDD47";
+    public static final String undefined = "\u2B55";
 }

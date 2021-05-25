@@ -11,7 +11,10 @@ import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
+import it.polimi.ingsw.network.views.cli.constants.GraphicalResourceConstants;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrack;
+import it.polimi.ingsw.network.views.cli.graphical.GraphicalLeaderCards;
+import it.polimi.ingsw.network.views.cli.graphical.GraphicalWarehouse;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -279,44 +282,9 @@ public class CLI extends ViewObservable implements IView {
 
         lightweightModel.setLeaderCards(cards);
 
-        for (LeaderCard iterator: cards) {
-
-            switch (iterator.getEffectType()){
-                case DISCOUNT:
-                    out.println("\n\nDISCOUNT: -1 of "+ iterator.getResource() + "\nNeeded: ");
-                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
-                        out.print("1 " + innerIterator.getColor() +"\n");
-                    }
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-
-                case EXTRA_INVENTORY:
-                    out.println("\n\nEXTRA INVENTORY: + 2 spaces of "+ iterator.getResource() + "\nNeeded: ");
-                    out.print("5 " + iterator.getRequirementsResource()[0].getType() +"\n");
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-
-                case MARBLE_EXCHANGE:
-                    out.println("\n\nMARBLE EXCHANGE: change white into "+ iterator.getResource() + "\nNeeded: ");
-                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
-                        out.print(innerIterator.getQuantity() + " " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
-                    }
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-                case EXTRA_PRODUCTION:
-                    out.println("\n\nEXTRA PRODUCTION:  "+ iterator.getResource() +" --> FAITH + UNDEFINED");
-                    out.println("Needed: ");
-                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
-                        out.print("1 " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
-                    }
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-            }
-        }
+        GraphicalLeaderCards graphicalLeaderCards = new GraphicalLeaderCards(cards);
+        graphicalLeaderCards.draw();
+        out.println();
     }
 
     @Override
@@ -549,29 +517,16 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printStrongbox(HashMap<ResourceType, Integer> strongbox) {
         lightweightModel.setStrongbox(strongbox);
-        out.println("STRONGBOX: " +"\nSHIELD = " + strongbox.get(ResourceType.SHIELD) +
-                "\nCOIN = " + strongbox.get(ResourceType.COIN) +
-                "\nSTONE = " + strongbox.get(STONE) +
-                "\nSERVANT = " + strongbox.get(ResourceType.SERVANT));
+        out.println("STRONGBOX: " + ColorCLI.ANSI_BLUE.escape() + "\n" + GraphicalResourceConstants.shield + ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.SHIELD) +
+                "\n" + ColorCLI.ANSI_YELLOW.escape() + GraphicalResourceConstants.coin + ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.COIN) +
+                "\n" + ColorCLI.ANSI_WHITE.escape() + GraphicalResourceConstants.stone + ColorCLI.getRESET() + " = " + strongbox.get(STONE) +
+                "\n" + ColorCLI.ANSI_PURPLE.escape() + GraphicalResourceConstants.servant+ ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.SERVANT));
         out.println();
     }
 
     @Override
     public void printWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras) {
-        lightweightModel.setWarehouse(shelves, extras);
-        out.println("extra shelves: " + extras);
-        out.println("Warehouse: ");
-        if(shelves.size() >= 6) {
-            out.println("SHELF 1 = " + shelves.get(0));
-            out.println("SHELF 2 = " + shelves.get(1) + " " + shelves.get(2));
-            out.println("SHELF 3 = " + shelves.get(3) + " " + shelves.get(4) + " " + shelves.get(5));
-        }
-        out.println();
-        if(shelves.size()>6){
-            for (int i = 6; i < shelves.size(); i++) {
-                out.print(shelves.get(i) + " ");
-            }
-        }
+        GraphicalWarehouse graphicalWarehouse = new GraphicalWarehouse(shelves, extras);
     }
 
     @Override
