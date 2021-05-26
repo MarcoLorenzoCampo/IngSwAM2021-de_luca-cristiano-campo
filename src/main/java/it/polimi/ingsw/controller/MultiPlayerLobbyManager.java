@@ -201,6 +201,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             gameManager.onStartTurn();
         }
     }
+
     /**
      * Method to deal 4 leader cards {@link LeaderCard} for each player.
      */

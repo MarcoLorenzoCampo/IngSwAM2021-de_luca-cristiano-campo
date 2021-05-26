@@ -5,7 +5,10 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.PingMessage;
 import it.polimi.ingsw.network.views.cli.MiniCli;
 import it.polimi.ingsw.network.views.cli.CLI;
+import it.polimi.ingsw.network.views.gui.MiniGui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -187,9 +190,7 @@ public class Client extends Observable implements IClient {
             cliView.startCli();
 
         } else {
-
-            //launch gui
-
+            MiniGui miniGui = new MiniGui();
         }
     }
 }

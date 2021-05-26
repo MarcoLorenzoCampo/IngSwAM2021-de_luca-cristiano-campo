@@ -132,6 +132,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
     }
 
     public int CalculateVictoryPoints(){
+        //comment to commit
         int victoryPoints = 0;
         victoryPoints += playerBoard.getFaithTrack().getFinalPoints();
         victoryPoints += playerBoard.getProductionBoard().getVictoryPoints();
@@ -246,6 +247,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
             else{
                 discardLeaderCard(action.getLeaderToDiscard());
                 playerBoard.getFaithTrack().increaseFaithMarker();
+                playerState.placedLeader();
             }
         }
     }
