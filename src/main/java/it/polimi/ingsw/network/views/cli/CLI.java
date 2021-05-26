@@ -327,7 +327,7 @@ public class CLI extends ViewObservable implements IView {
                 case ("HELP") : printPossibleActions(); break;
                 case ("CHECK_MARKET") :  out.println(lightweightModel.getReducedResourceMarket()); break;
                 case ("CHECK_CARDS") : printAvailableCards(lightweightModel.getReducedAvailableCards()); break;
-                case ("CHECK_LEADERS") : printLeaders(lightweightModel.getLeaderCards()); break;
+                case ("CHECK_LEADERS") : showLeaderCards(lightweightModel.getLeaderCards()); break;
                 case ("CHECK_PRODUCTIONS") : printProductionBoard(lightweightModel.getProductionBoard()); break;
             }
 

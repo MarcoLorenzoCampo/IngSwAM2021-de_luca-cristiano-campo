@@ -172,6 +172,10 @@ public class Server {
 
         synchronized (lock) {
 
+            if(clientHandlerMap.size() == 1) {
+                gameManager.endGame("No more players connected");
+            }
+
             //If the nickname is null, that means the player's setup wasn't done.
             if(nicknameToRemove != null) {
                 gameManager.getLobbyManager().disconnectPlayer(nicknameToRemove);

@@ -10,7 +10,7 @@ public class GraphicalLeaderCards {
     private final LightweightModel lightweightModel;
 
     private static final int MAX_VERT_TILES = 8; //rows.
-    private static final int MAX_HORIZ_TILES = 12 ; //cols.
+    private static final int MAX_HORIZ_TILES = 12 ; //columns.
     private String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES * 5];
     private List<LeaderCard> leaderCards;
 
@@ -59,8 +59,8 @@ public class GraphicalLeaderCards {
 
             } k2 = k2 + 12;
             GraphicalLegend graphicalLegend = new GraphicalLegend();
-            for (int j = 0; j < graphicalLegend.getMaxVertTiles(); j++) {
-                for (int k = 0; k < graphicalLegend.getMaxHorizTiles(); k++) {
+            for (int j = 0; j < GraphicalLegend.getMaxVertTiles(); j++) {
+                for (int k = 0; k < GraphicalLegend.getMaxHorizTiles(); k++) {
                     cells[j][k + k2] = (graphicalLegend.getCells())[j][k];
                 }
             }
