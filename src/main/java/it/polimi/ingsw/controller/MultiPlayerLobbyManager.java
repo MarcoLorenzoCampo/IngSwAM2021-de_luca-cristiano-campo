@@ -341,23 +341,19 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         //If the nickname is null, that means the player's setup wasn't done.
         if(nicknameToDisconnect != null) {
 
+            RealPlayer playerToDisconnect = realPlayerList.get(getPlayerIndexByNickname(nicknameToDisconnect));
+
             //If the game is started, then he needs to be set as "disconnected".
             if (gameStarted) {
 
-                realPlayerList
-                        .get(getPlayerIndexByNickname(nicknameToDisconnect))
-                        .getPlayerState().disconnect();
+                playerToDisconnect.getPlayerState().disconnect();
 
                 removeObserver(nicknameToDisconnect);
                 viewsByNickname.remove(nicknameToDisconnect);
                 gameManager.getVirtualViewLog().remove(nicknameToDisconnect);
 
-                //If a player disconnects before setting up his initial resources/leaders.
-                if(realPlayerList.get(getPlayerIndexByNickname(nicknameToDisconnect)).getPlayerState().isSetUpPhase()) {
-                    randomizedSetup(nicknameToDisconnect);
-
-                    LOGGER.info("Randomized setup for player '" + nicknameToDisconnect + "' done.");
-                }
+                //Fixes the fsm to end every action that is being made by the player who got disconnected.
+                gameManager.prepareForNextTurn(playerToDisconnect);
 
                 //If he was playing when he got disconnected, then his turn needs to be skipped.
                 if(nicknameToDisconnect.equals(gameManager.getCurrentGame().getCurrentPlayer().getName())) {
@@ -366,8 +362,6 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                             + " was removed from the game.");
 
                     LOGGER.info("Removed " + nicknameToDisconnect + " from the game.");
-
-                    gameManager.prepareForNextTurn(realPlayerList.get(getPlayerIndexByNickname(nicknameToDisconnect)));
 
                     setNextTurn();
                 }
@@ -583,7 +577,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
      * be given random resources according to his index in the playing list and discarded 2 random leader cards.
      * @param disconnectedNickname: player who got disconnected.
      */
-    private void randomizedSetup(String disconnectedNickname) {
+    @Override
+    public void randomizedResourcesSetup(String disconnectedNickname) {
 
         RealPlayer disconnected = realPlayerList.get(getPlayerIndexByNickname(disconnectedNickname));
 
@@ -643,10 +638,29 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                             .getFaithTrack()
                             .increaseFaithMarker();
                 }
-
                 break;
 
             default: break; //Should never happen.
         }
+    }
+
+    /**
+     * Discards two random leader cards when a player gets disconnected during the setup phase.
+     * @param disconnectedNickname: player who got disconnected.
+     */
+    @Override
+    public void randomizedLeadersSetup(String disconnectedNickname) {
+
+        RealPlayer disconnected = realPlayerList.get(getPlayerIndexByNickname(disconnectedNickname));
+
+        int n1 = new Random().nextInt(3);
+        int n2;
+
+        do {
+            n2 = new Random().nextInt(3);
+        } while (n1 == n2);
+
+        disconnected.setupLeaderCard(n1);
+        disconnected.setupLeaderCard(n2);
     }
 }

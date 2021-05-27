@@ -27,4 +27,6 @@ public interface ILobbyManager {
     void disconnectPlayer(String nicknameToDisconnect);
     void setObserver(String nickname, VirtualView vv);
     void showStartingUpdates();
+    void randomizedResourcesSetup(String disconnectedNickname);
+    void randomizedLeadersSetup(String disconnectedNickname);
 }

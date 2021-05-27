@@ -141,6 +141,16 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     }
 
     @Override
+    public void randomizedResourcesSetup(String disconnectedNickname) {
+
+    }
+
+    @Override
+    public void randomizedLeadersSetup(String disconnectedNickname) {
+
+    }
+
+    @Override
     public List<RealPlayer> getRealPlayerList() {
         return realPlayerList;
     }

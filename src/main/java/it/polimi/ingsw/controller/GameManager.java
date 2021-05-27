@@ -604,14 +604,25 @@ public final class GameManager implements Observer {
      *
      * Also resets the game state to PLAYING.
      */
-    public void prepareForNextTurn(RealPlayer currentPlayerDisconnected) {
+    public void prepareForNextTurn(RealPlayer playerDisconnected) {
         switch (currentGame.getCurrentState().getGameState()) {
 
+            case SETUP_LEADER:
+                lobbyManager.randomizedLeadersSetup(playerDisconnected.getName());
+                Server.LOGGER.info("Random '" + currentPlayer + "' leaders set.");
+                break;
+
+            case SETUP_RESOURCES:
+                lobbyManager.randomizedResourcesSetup(playerDisconnected.getName());
+                Server.LOGGER.info("Random '" + currentPlayer + "' resources set.");
+                break;
+
             case CHANGE_COLOR:
+                break;
 
             //Buffer gets emptied.
             case DEPOSIT:
-                currentPlayerDisconnected.getPlayerBoard().getInventoryManager().resetBuffer();
+                playerDisconnected.getPlayerBoard().getInventoryManager().resetBuffer();
                 Server.LOGGER.info("Emptied '" + currentPlayer + "'s' buffer.");
                 break;
 
@@ -624,11 +635,11 @@ public final class GameManager implements Observer {
                 break;
 
             case REMOVE:
+                break;
 
             //The reset doesn't need to be made in every possible game state.
             default: break;
         }
-        currentGame.setCurrentState(PossibleGameStates.PLAYING);
     }
 
     public Map<String, VirtualView> getVirtualViewLog() {
