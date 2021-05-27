@@ -100,6 +100,10 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void reconnectPlayer(String nickname, VirtualView vv) {
 
+        if(realPlayerList.get(getPlayerIndexByNickname(nickname)).getOwnedLeaderCards().size() == 4) {
+            randomizedLeadersSetup(nickname);
+        }
+
         realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerState().connect();
         viewsByNickname.put(nickname, vv);
         gameManager.getVirtualViewLog().put(nickname, vv);
@@ -181,7 +185,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             if (!realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
                 while (!realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
                     newCurrentIndex++;
-                    if (newCurrentIndex == realPlayerList.size() - 1) {
+                    if (newCurrentIndex == realPlayerList.size()) {
                         newCurrentIndex = 0;
                     }
                 }
@@ -388,7 +392,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                 viewsByNickname.remove(nicknameToDisconnect);
                 broadcastGenericMessage(nicknameToDisconnect + " was removed from the game.");
                 LOGGER.info("Removed " + nicknameToDisconnect + " from setup phase.");
-                broadcastGenericMessage("["+ (lobbySize-realPlayerList.size()) + " players left]");
+                broadcastGenericMessage("\n["+ (lobbySize-realPlayerList.size()) + " players left]");
             }
         } else {
             LOGGER.info(() -> "Removed a client before the login phase.");

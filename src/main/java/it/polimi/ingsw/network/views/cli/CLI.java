@@ -282,6 +282,8 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
 
+        out.println("\nUpdated leader cards:");
+
         lightweightModel.setLeaderCards(cards);
 
         GraphicalLeaderCards graphicalLeaderCards = new GraphicalLeaderCards(cards);
@@ -642,14 +644,18 @@ public class CLI extends ViewObservable implements IView {
 
         out.println("\nThe ProductionCardsMarket has been modified, here's an updated version: \n");
 
+        lightweightModel.setReducedAvailableCards(available);
+
         GraphicalProductionCardsMarket graphicalProductionCardsMarket = new GraphicalProductionCardsMarket(available);
         graphicalProductionCardsMarket.draw();
         out.println();
-
     }
 
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
+
+        out.println("\nUpdated faith track:");
+
         GraphicalFaithTrack graphicalFaithTrack = new GraphicalFaithTrack(faithTrack);
         graphicalFaithTrack.draw();
         out.println();
