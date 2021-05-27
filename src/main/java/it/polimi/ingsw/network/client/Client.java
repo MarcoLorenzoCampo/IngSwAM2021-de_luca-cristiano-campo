@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.views.cli.MiniCli;
 import it.polimi.ingsw.network.views.cli.CLI;
 import it.polimi.ingsw.network.views.gui.MiniGui;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.EOFException;
@@ -19,6 +20,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import static it.polimi.ingsw.network.views.gui.MiniGui.initializeGame;
 
 /**
  * Class to handle client operations.
@@ -190,7 +193,11 @@ public class Client extends Observable implements IClient {
             cliView.startCli();
 
         } else {
-            MiniGui miniGui = new MiniGui();
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                   initializeGame();
+                }
+            });
         }
     }
 }

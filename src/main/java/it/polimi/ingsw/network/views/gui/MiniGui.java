@@ -1,6 +1,8 @@
 package it.polimi.ingsw.network.views.gui;
 
 import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.network.client.OfflineClientManager;
+import it.polimi.ingsw.network.client.OnlineClientManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,12 +61,27 @@ public class MiniGui  {
         frame.add(offline);
     }
 
-    public boolean askLocal(){
-        frame.setVisible(true);
+    public static void initializeGame(){
+        MiniGui miniGui = new MiniGui();
+        miniGui.online.addActionListener( e -> miniGui.initializeOnlineGame());
+        miniGui.offline.addActionListener(e -> miniGui.initializeOfflineGame());
+        miniGui.frame.setVisible(true);
 
-        while(!isChosen) {
-        }
-        return option;
     }
 
+    public void initializeOnlineGame(){
+        System.out.println("ONLINE");
+        this.frame.dispose();
+        GUI guiView = new GUI(true);
+        OnlineClientManager OnlineClientManager = new OnlineClientManager(guiView);
+        guiView.addObserver(OnlineClientManager);
+    }
+
+    public void initializeOfflineGame(){
+        System.out.println("OFFLINE");
+        this.frame.dispose();
+        GUI guiView = new GUI(false);
+        OfflineClientManager OfflineClientManager = new OfflineClientManager(guiView);
+        guiView.addObserver(OfflineClientManager);
+    }
 }

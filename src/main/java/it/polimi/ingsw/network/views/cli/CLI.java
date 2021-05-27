@@ -464,6 +464,10 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printLeaders(List<LeaderCard> leaderCards) {
 
+        GraphicalLeaderCards graphicalLeaderCards = new GraphicalLeaderCards(leaderCards);
+        graphicalLeaderCards.draw();
+        out.println();
+    /*
         for (LeaderCard iterator: leaderCards) {
 
             switch (iterator.getEffectType()){
@@ -500,8 +504,13 @@ public class CLI extends ViewObservable implements IView {
                     if(iterator.isActive()) out.println("ACTIVE");
                     else  out.println("NOT ACTIVE");
                     break;
+
             }
+
+
         }
+
+     */
     }
 
     @Override
