@@ -108,8 +108,7 @@ public class Server {
                  else if (potentialFound.getPlayerState().isConnected()) {
 
                     virtualView.showError("Name already in use, join with a different one!");
-                    virtualView = null;
-                    clientHandler.disconnect();
+                    clientHandler.sameNameDisconnect();
                 }
             }
 

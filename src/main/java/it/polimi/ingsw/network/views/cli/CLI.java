@@ -126,6 +126,7 @@ public class CLI extends ViewObservable implements IView {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
         notifyObserver(o -> o.onUpdateNickname(nickname));
     }
 

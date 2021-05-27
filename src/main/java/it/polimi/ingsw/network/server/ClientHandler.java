@@ -158,6 +158,21 @@ public class ClientHandler implements Runnable, IClientHandler {
         }
     }
 
+    @Override
+    public void sameNameDisconnect() {
+        if (isConnected) {
+            try {
+                if (!clientSocket.isClosed()) {
+                    clientSocket.close();
+                }
+            } catch (IOException e) {
+                Server.LOGGER.severe(e.getMessage());
+            }
+            isConnected = false;
+            Thread.currentThread().interrupt();
+        }
+    }
+
     /**
      * Method to send messages to the client through socket.
      * @param message: data sent.
