@@ -14,6 +14,7 @@ import it.polimi.ingsw.network.utilities.CommandParser;
 import it.polimi.ingsw.network.views.cli.constants.GraphicalResourceConstants;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrack;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalLeaderCards;
+import it.polimi.ingsw.network.views.cli.graphical.GraphicalProductionCardsMarket;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalWarehouse;
 
 import java.io.PrintStream;
@@ -641,10 +642,9 @@ public class CLI extends ViewObservable implements IView {
 
         out.println("\nThe ProductionCardsMarket has been modified, here's an updated version: \n");
 
-        lightweightModel.setReducedAvailableCards(available);
-        for (ProductionCard iterator: available) {
-            out.println(iterator.reduce());
-        }
+        GraphicalProductionCardsMarket graphicalProductionCardsMarket = new GraphicalProductionCardsMarket(available);
+        graphicalProductionCardsMarket.draw();
+        out.println();
 
     }
 
