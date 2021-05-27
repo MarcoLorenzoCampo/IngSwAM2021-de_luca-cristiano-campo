@@ -242,6 +242,7 @@ public final class GameManager implements Observer {
                     if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)) {
                         currentGame.setCurrentState(PossibleGameStates.PLAYING);
 
+
                         //Before the game starts, if a player got disconnected before discarding 2 leaders,
                         // they get randomly selected and discarded.
                         for(RealPlayer realPlayer : lobbyManager.getRealPlayerList()) {

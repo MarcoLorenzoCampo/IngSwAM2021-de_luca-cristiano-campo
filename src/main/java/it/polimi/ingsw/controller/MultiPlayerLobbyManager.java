@@ -100,10 +100,6 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void reconnectPlayer(String nickname, VirtualView vv) {
 
-        if(realPlayerList.get(getPlayerIndexByNickname(nickname)).getOwnedLeaderCards().size() == 4) {
-            randomizedLeadersSetup(nickname);
-        }
-
         realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerState().connect();
         viewsByNickname.put(nickname, vv);
         gameManager.getVirtualViewLog().put(nickname, vv);
