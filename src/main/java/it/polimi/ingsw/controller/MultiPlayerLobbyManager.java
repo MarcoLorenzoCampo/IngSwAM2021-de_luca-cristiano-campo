@@ -1,18 +1,16 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.enumerations.PossibleGameStates;
-import it.polimi.ingsw.enumerations.PossibleMessages;
+import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.player.PlayerState;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
-import it.polimi.ingsw.network.views.cli.ColorCLI;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -102,7 +100,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void reconnectPlayer(String nickname, VirtualView vv) {
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerState().connect();
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerState().connect();
         viewsByNickname.put(nickname, vv);
         gameManager.getVirtualViewLog().put(nickname, vv);
 
@@ -181,7 +179,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             int newCurrentIndex = auxIndex % realPlayerList.size();
 
             if (!realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
-                while (realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
+                while (!realPlayerList.get(newCurrentIndex).getPlayerState().isConnected()) {
+                    newCurrentIndex++;
                     if (newCurrentIndex == realPlayerList.size() - 1) {
                         newCurrentIndex = 0;
                     }
@@ -346,21 +345,31 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             if (gameStarted) {
 
                 realPlayerList
-                        .stream()
-                        .filter(p -> p.getName().equals(nicknameToDisconnect))
-                        .forEach(p -> p.getPlayerState().disconnect());
+                        .get(getPlayerIndexByNickname(nicknameToDisconnect))
+                        .getPlayerState().disconnect();
 
                 removeObserver(nicknameToDisconnect);
                 viewsByNickname.remove(nicknameToDisconnect);
                 gameManager.getVirtualViewLog().remove(nicknameToDisconnect);
 
+                //If a player disconnects before setting up his initial resources/leaders.
+                if(realPlayerList.get(getPlayerIndexByNickname(nicknameToDisconnect)).getPlayerState().isSetUpPhase()) {
+                    randomizedSetup(nicknameToDisconnect);
+
+                    LOGGER.info("Randomized setup for player '" + nicknameToDisconnect + "' done.");
+                }
+
                 //If he was playing when he got disconnected, then his turn needs to be skipped.
                 if(nicknameToDisconnect.equals(gameManager.getCurrentGame().getCurrentPlayer().getName())) {
-                    setNextTurn();
-                    LOGGER.info("Removed " + nicknameToDisconnect + " from the game.");
 
                     gameManager.getLobbyManager().broadcastGenericMessage(nicknameToDisconnect
                             + " was removed from the game.");
+
+                    LOGGER.info("Removed " + nicknameToDisconnect + " from the game.");
+
+                    gameManager.prepareForNextTurn(realPlayerList.get(getPlayerIndexByNickname(nicknameToDisconnect)));
+
+                    setNextTurn();
                 }
 
                 if(realPlayerList.stream().filter(p -> p.getPlayerState().isConnected()).count() == 1) {
@@ -387,7 +396,6 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                 LOGGER.info("Removed " + nicknameToDisconnect + " from setup phase.");
                 broadcastGenericMessage("["+ (lobbySize-realPlayerList.size()) + " players left]");
             }
-
         } else {
             LOGGER.info(() -> "Removed a client before the login phase.");
         }
@@ -412,26 +420,26 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void setObserver(String nickname, VirtualView virtualView) {
 
-        realPlayerList.get(getPlayerByNickname(nickname)).addObserver(this);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).addObserver(this);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(this);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(this);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().addObserver(this);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().addObserver(this);
 
         gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
 
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
 
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).addObserver(virtualView);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).addObserver(virtualView);
 
 
     }
@@ -447,13 +455,13 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).addObserver(virtualView);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).addObserver(virtualView);
     }
 
     /**
@@ -476,7 +484,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
      * @param nickname: name to find
      * @return: index of said nickname.
      */
-    private int getPlayerByNickname(String nickname) {
+    private int getPlayerIndexByNickname(String nickname) {
 
         for(int i=0; i<realPlayerList.size(); i++) {
             if(realPlayerList.get(i).getName().equals(nickname)) {
@@ -537,14 +545,14 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
      * @param vv: virtual view of said player.
      */
     private void sendReducedModel(String nickname, VirtualView vv) {
-        vv.printFaithTrack(realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack());
+        vv.printFaithTrack(realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getFaithTrack());
 
         vv.printAvailableCards(gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().getAvailableCards());
 
         vv.printResourceMarket(gameManager.getCurrentGame().getGameBoard().getResourceMarket().getResourceBoard(),
                 gameManager.getCurrentGame().getGameBoard().getResourceMarket().getExtraMarble());
 
-        vv.printLeaders(realPlayerList.get(getPlayerByNickname(nickname)).getOwnedLeaderCards());
+        vv.printLeaders(realPlayerList.get(getPlayerIndexByNickname(nickname)).getOwnedLeaderCards());
 
         //more stuff to send
     }
@@ -561,12 +569,84 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().removeObserver(vv);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getInventoryManager().removeObserver(vv);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().removeObserver(vv);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getFaithTrack().removeObserver(vv);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getFaithTrack().removeObserver(vv);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).getPlayerBoard().getProductionBoard().removeObserver(vv);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getProductionBoard().removeObserver(vv);
 
-        realPlayerList.get(getPlayerByNickname(nickname)).removeObserver(vv);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).removeObserver(vv);
+    }
+
+    /**
+     * When a player gets disconnected during the setup phase, he gets a randomized setup. This means he will
+     * be given random resources according to his index in the playing list and discarded 2 random leader cards.
+     * @param disconnectedNickname: player who got disconnected.
+     */
+    private void randomizedSetup(String disconnectedNickname) {
+
+        RealPlayer disconnected = realPlayerList.get(getPlayerIndexByNickname(disconnectedNickname));
+
+        switch(getPlayerIndexByNickname(disconnectedNickname)) {
+
+            case 1:
+                try {
+                    disconnected
+                            .getPlayerBoard()
+                            .getInventoryManager()
+                            .getWarehouse()
+                            .addResource(ResourceType.randomizedMaterialResource());
+
+                } catch (DiscardResourceException e) {
+                    LOGGER.severe("Critical error!");
+                    //Should never happen
+                }
+                break;
+
+            case 2:
+                for(int i=0; i<2; i++) {
+                    try {
+                        disconnected
+                                .getPlayerBoard()
+                                .getInventoryManager()
+                                .getWarehouse()
+                                .addResource(ResourceType.randomizedMaterialResource());
+
+                    } catch (DiscardResourceException e) {
+                        LOGGER.severe("Critical error!");
+                        //Should never happen
+                    }
+                }
+
+                disconnected
+                        .getPlayerBoard()
+                        .getFaithTrack()
+                        .increaseFaithMarker();
+                break;
+
+            case 3:
+                for(int i=0; i<2; i++) {
+                    try {
+                        disconnected
+                                .getPlayerBoard()
+                                .getInventoryManager()
+                                .getWarehouse()
+                                .addResource(ResourceType.randomizedMaterialResource());
+
+                    } catch (DiscardResourceException e) {
+                        LOGGER.severe("Critical error!");
+                        //Should never happen
+                    }
+
+                    disconnected
+                            .getPlayerBoard()
+                            .getFaithTrack()
+                            .increaseFaithMarker();
+                }
+
+                break;
+
+            default: break; //Should never happen.
+        }
     }
 }

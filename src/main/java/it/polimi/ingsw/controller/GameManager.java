@@ -7,6 +7,7 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.PlayerState;
+import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
@@ -17,7 +18,6 @@ import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.network.views.IView;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -159,7 +159,6 @@ public final class GameManager implements Observer {
                         setGameStarted();
                         currentGame.setCurrentState(PossibleGameStates.SETUP_RESOURCES);
                         lobbyManager.setPlayingOrder();
-
                     }
                 }
                 break;
@@ -332,7 +331,7 @@ public final class GameManager implements Observer {
 
                     else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                         && currentPlayerState.getHasPlaceableLeaders()
-                        && !currentPlayerState.getHasPlacedLeaders()){
+                        && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
                         currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
                         //actionManager
@@ -341,7 +340,7 @@ public final class GameManager implements Observer {
 
                     else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
                         && currentPlayerState.getHasPlaceableLeaders()
-                        && !currentPlayerState.getHasPlacedLeaders()){
+                        && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
                         currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                         //actionManager
@@ -510,7 +509,7 @@ public final class GameManager implements Observer {
 
                     else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                             && currentPlayerState.getHasPlaceableLeaders()
-                            && !currentPlayerState.getHasPlacedLeaders()){
+                            && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
                         currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
                         //actionManager
@@ -520,7 +519,7 @@ public final class GameManager implements Observer {
 
                     else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
                             && currentPlayerState.getHasPlaceableLeaders()
-                            && !currentPlayerState.getHasPlacedLeaders()){
+                            && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
                         currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                         //actionManager
@@ -577,7 +576,7 @@ public final class GameManager implements Observer {
                 currentView.currentTurn("\n Main action performed you can place/discard leaders or peek on other players.");
                 break;
 
-                default: currentView.currentTurn("\n Your command cannot be processed now, please try a different one");
+            default: currentView.currentTurn("\n Your command cannot be processed now, please try a different one");
         }
     }
 
@@ -597,6 +596,39 @@ public final class GameManager implements Observer {
         Server.LOGGER.info("Game ended, preparing the server for a new game . . .");
         PlayingGame.terminate();
 
+    }
+
+    /**
+     * When the current player gets disconnected, a specific reset needs to be made in order to interrupt
+     * any action the player was doing and reset for a new player.
+     *
+     * Also resets the game state to PLAYING.
+     */
+    public void prepareForNextTurn(RealPlayer currentPlayerDisconnected) {
+        switch (currentGame.getCurrentState().getGameState()) {
+
+            case CHANGE_COLOR:
+
+            //Buffer gets emptied.
+            case DEPOSIT:
+                currentPlayerDisconnected.getPlayerBoard().getInventoryManager().resetBuffer();
+                Server.LOGGER.info("Emptied '" + currentPlayer + "'s' buffer.");
+                break;
+
+            //No card gets bought. Action is interrupted as it is.
+            case BUY_CARD:
+
+                break;
+
+            case ACTIVATE_PRODUCTION:
+                break;
+
+            case REMOVE:
+
+            //The reset doesn't need to be made in every possible game state.
+            default: break;
+        }
+        currentGame.setCurrentState(PossibleGameStates.PLAYING);
     }
 
     public Map<String, VirtualView> getVirtualViewLog() {

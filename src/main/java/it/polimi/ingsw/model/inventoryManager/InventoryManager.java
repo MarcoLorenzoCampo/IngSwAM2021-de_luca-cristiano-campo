@@ -245,7 +245,12 @@ public class InventoryManager extends Observable {
         updateInventory();
     }
 
-
+    /**
+     * When the player is disconnected, his buffer gets emptied.
+     */
+    public void resetBuffer() {
+        buffer.clear();
+    }
 
     public void deposit(MaterialResource materialResource) {
         buffer.add(materialResource);

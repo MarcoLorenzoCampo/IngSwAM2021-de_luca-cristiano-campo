@@ -108,6 +108,7 @@ public class Server {
                  else if (potentialFound.getPlayerState().isConnected()) {
 
                     virtualView.showError("Name already in use, join with a different one!");
+                    virtualView = null;
                     clientHandler.disconnect();
                 }
             }
@@ -130,7 +131,6 @@ public class Server {
                     clientHandler.disconnect();
                 }
             }
-
         } else {
 
             //Joining when the game is being set is forbidden.
@@ -172,14 +172,10 @@ public class Server {
 
         synchronized (lock) {
 
-            if(clientHandlerMap.size() == 1) {
-                gameManager.endGame("No more players connected");
-            }
-
             //If the nickname is null, that means the player's setup wasn't done.
             if(nicknameToRemove != null) {
-                gameManager.getLobbyManager().disconnectPlayer(nicknameToRemove);
                 clientHandlerMap.remove(nicknameToRemove);
+                gameManager.getLobbyManager().disconnectPlayer(nicknameToRemove);
 
                 //Last player online wins (when the game has started).
                 if(clientHandlerMap.size() == 1) {
@@ -187,11 +183,6 @@ public class Server {
                     if(gameManager.isGameStarted()) {
                         gameManager.endGame(nicknameToRemove);
                         clientHandlerMap.clear();
-                    }
-
-                    //gets removed before dealing resources and leader cards.
-                    if(!gameManager.isGameStarted()) {
-
                     }
                 }
 
@@ -209,7 +200,7 @@ public class Server {
         gameManager.getLobbyManager().reconnectPlayer(nickname, vv);
     }
 
-    //------------------------------------- MAIN METHOD ----------------------------------------------------------
+    //---------------------------------------------- MAIN METHOD ------------------------------------------------
 
     /**
      * Main method of the network.server package. Includes a small parsing using the {@link CommandLineParser}
