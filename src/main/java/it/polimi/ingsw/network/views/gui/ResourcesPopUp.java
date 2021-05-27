@@ -30,6 +30,8 @@ public class ResourcesPopUp extends JFrame implements ActionListener {
     public ResourcesPopUp(GUI gui, int number){
         super("SETUP RESOURCES");
 
+
+        this.number = number;
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setContentPane(mainPanel);
 

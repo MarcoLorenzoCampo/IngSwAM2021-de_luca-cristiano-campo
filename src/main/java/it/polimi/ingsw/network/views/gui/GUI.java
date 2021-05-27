@@ -133,11 +133,20 @@ public class GUI extends ViewObservable implements IView, ActionListener {
             ResourcesPopUp resourcesPopUp = new ResourcesPopUp(this, number);
             resourcesPopUp.setVisible(true);
             resourcesPopUp.getSUBMITButton().addActionListener(e ->{
-                resourcesPopUp.dispose();
                 LinkedList<ResourceType> send = new LinkedList<>();
-                send.add(ResourceType.valueOf(resourcesPopUp.getTextField1().getText()));
-                send.add(ResourceType.valueOf(resourcesPopUp.getTextField1().getText()));
-                notifyObserver(o -> o.onUpdateSetupResource(send));
+                if(!resourcesPopUp.getTextField1().getText().isEmpty() && resourcesPopUp.getNumber()==2){
+                    send.add(ResourceType.valueOf(resourcesPopUp.getTextField1().getText()));
+                    send.add(ResourceType.valueOf(resourcesPopUp.getTextField2().getText()));
+                    System.out.println(resourcesPopUp.getTextField1().getText()+" "+resourcesPopUp.getTextField2().getText());
+                    notifyObserver(o -> o.onUpdateSetupResource(send));
+                    resourcesPopUp.dispose();
+                }
+                else if(!resourcesPopUp.getTextField1().getText().isEmpty() && resourcesPopUp.getNumber()==1){
+                    send.add(ResourceType.valueOf(resourcesPopUp.getTextField1().getText()));
+                    System.out.println(resourcesPopUp.getTextField1().getText()+" "+resourcesPopUp.getTextField2().getText());
+                    notifyObserver(o -> o.onUpdateSetupResource(send));
+                    resourcesPopUp.dispose();
+                }
             });
         }
         else {
