@@ -183,24 +183,7 @@ public class FaithTrack extends Observable implements Serializable {
         this.currentFavorPoints = currentFavorPoints;
     }
 
-    public List<Integer> getCheckpoints() {
-        return checkpoints;
-    }
-
-
     public int getFinalPoints() {
         return finalPoints;
-    }
-
-    public void setFinalPoints(int finalPoints) {
-        this.finalPoints = finalPoints;
-    }
-
-    public Map<Integer, Integer> getCardVaticanSpace() {
-        return cardVaticanSpace;
-    }
-
-    public void setCardVaticanSpace(Map<Integer, Integer> cardVaticanSpace) {
-        this.cardVaticanSpace = cardVaticanSpace;
     }
 }
