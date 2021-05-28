@@ -140,6 +140,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
                     ChosenProductionMessage finalProduction = (ChosenProductionMessage) message;
                     viewUpdater.execute(() -> view.printFinalProduction(finalProduction.getInput(), finalProduction.getOutput()));
                     break;
+
                 case AVAILABLE_PRODUCTION_CARDS:
                     AvailableCardsMessage a = (AvailableCardsMessage) message;
                     ArrayList<ProductionCard> deserializedProductions = deserializeProductionCards(a.getAvailableID());

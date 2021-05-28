@@ -61,7 +61,7 @@ public class MiniGui  {
         frame.add(offline);
     }
 
-    public static void initializeGame(){
+    public void initializeGame(){
         MiniGui miniGui = new MiniGui();
         miniGui.online.addActionListener( e -> miniGui.initializeOnlineGame());
         miniGui.offline.addActionListener(e -> miniGui.initializeOfflineGame());
@@ -73,9 +73,19 @@ public class MiniGui  {
         System.out.println("ONLINE");
         this.frame.dispose();
         GUI guiView = new GUI(true);
-        OnlineClientManager OnlineClientManager = new OnlineClientManager(guiView);
-        guiView.addObserver(OnlineClientManager);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                OnlineClientManager OnlineClientManager = new OnlineClientManager(guiView);
+                guiView.addObserver(OnlineClientManager);
+            }
+        });
     }
+
+    //addicon("production"+productioncard.getid()+".png")
+    //String name = new String();
+    //if(effecttype equals (extrainvetory) name = extra_inventory_COIN.png
+    // addicon(leader.geteffectype()+leader.getmainreosurce+".png");
 
     public void initializeOfflineGame(){
         System.out.println("OFFLINE");
