@@ -26,7 +26,6 @@ import java.util.*;
  */
 public final class GameManager implements Observer {
 
-    private Server server;
     private final IGame currentGame;
     private final ActionManager actionManager;
     private ILobbyManager lobbyManager;
@@ -86,14 +85,6 @@ public final class GameManager implements Observer {
 
     public ILobbyManager getLobbyManager() {
         return lobbyManager;
-    }
-
-    public void setServer(Server server) {
-        this.server = server;
-    }
-
-    public Server getServer() {
-        return server;
     }
 
     /**
@@ -185,7 +176,6 @@ public final class GameManager implements Observer {
                         currentGame.setCurrentState(PossibleGameStates.SETUP);
                     }
                     firstTurn = false;
-                    server.sizeHasBeenSet();
                 }
                 break;
 

@@ -20,7 +20,7 @@ public class FaithTrack extends Observable implements Serializable {
     private static final long serialVersionUID = 7136541748211952620L;
 
     private final List<Tile> faithTrack = new ArrayList<>();
-    private int finalPoints;
+    private int finalPoints = 0;
     private int faithMarker;
     private int currentFavorPoints;
     public Map<Integer, Integer> cardVaticanSpace = new HashMap<>();
@@ -123,16 +123,15 @@ public class FaithTrack extends Observable implements Serializable {
     /**
      * @return points due to checkpoints
      */
-    public int calculationCheckPoints(){
+    public int computeCheckpoints() {
         return faithTrack.get(this.faithMarker).getCheckpoint();
-
     }
 
     //updating favor points
     public int pickFavorPoints(PopeTile popeT){
         int indexVaticanSpace = popeT.getVaticanSpace();
         int points = this.cardVaticanSpace.get(indexVaticanSpace);
-        currentFavorPoints = currentFavorPoints + points;
+        currentFavorPoints += points;
 
         notifyObserver(new GenericMessageFromServer("You gained: " + points +
                 " points from the latest vatican report!" + "\nYour vatican score is: " + currentFavorPoints + "\n"));
@@ -159,8 +158,12 @@ public class FaithTrack extends Observable implements Serializable {
         pt.setIsActive(false);
     }
 
-    public void calculationFinalPoints(){
-        this.finalPoints = this.currentFavorPoints + calculationCheckPoints();
+    public int computeFaithTrackPoints() {
+        //this.finalPoints = this.currentFavorPoints + calculationCheckPoints();
+        finalPoints += currentFavorPoints;
+        finalPoints += computeCheckpoints();
+
+        return finalPoints;
     }
 
     public List<Tile> getFaithTrack() {

@@ -4,13 +4,10 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.exceptions.EndGameException;
-import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.model.utilities.Reducible;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.AvailableCardsMessage;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
-import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,7 +16,7 @@ import static it.polimi.ingsw.enumerations.Level.*;
 /**
  * Class containing the production card deck and method to buy/discard cards.
  */
-public class ProductionCardMarket extends Observable implements Reducible {
+public class ProductionCardMarket extends Observable {
 
     /**
      * Whole production cards deck.
@@ -93,11 +90,11 @@ public class ProductionCardMarket extends Observable implements Reducible {
 
         sortAvailableCardsByLevel();
 
-        reduceAndNotify();
+        notifyObserver(new AvailableCardsMessage(availableCards));
     }
 
     /**
-     * Used during the singleplayer game by Lorenzo il Magnifico.
+     * Used during the single player game by Lorenzo.
      * The methods removes two of a specified color, the lowest level available.
      * @param color is the specific color to be removed.
      */
@@ -113,7 +110,10 @@ public class ProductionCardMarket extends Observable implements Reducible {
             }
         }
 
-        reduceAndNotify();
+        if(availableCards.size() == 11) {
+
+        }
+        notifyObserver(new AvailableCardsMessage(availableCards));
     }
 
     /**
@@ -143,31 +143,5 @@ public class ProductionCardMarket extends Observable implements Reducible {
                 .stream()
                 .sorted(Comparator.comparing(ProductionCard::getLevel))
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Auxiliary method to reduce available Cards with the appropriate method and send
-     * the reduced list to an observer.
-     */
-    private void reduceAndNotify() {
-
-        String reducedAvailableCards = "";
-
-        for (ProductionCard availableCard : availableCards) {
-            reducedAvailableCards = reducedAvailableCards.concat(availableCard.reduce() + "\n");
-        }
-
-        notifyObserver(new AvailableCardsMessage(availableCards));
-    }
-
-    @Override
-    public String reduce() {
-        String reducedAvailableCards = "";
-
-        for (ProductionCard availableCard : availableCards) {
-            reducedAvailableCards = reducedAvailableCards.concat(availableCard.reduce() + "\n");
-        }
-
-        return reducedAvailableCards;
     }
 }

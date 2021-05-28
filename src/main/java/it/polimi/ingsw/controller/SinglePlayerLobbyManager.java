@@ -141,14 +141,10 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     }
 
     @Override
-    public void randomizedResourcesSetup(String disconnectedNickname) {
-
-    }
+    public void randomizedResourcesSetup(String disconnectedNickname) { }
 
     @Override
-    public void randomizedLeadersSetup(String disconnectedNickname) {
-
-    }
+    public void randomizedLeadersSetup(String disconnectedNickname) { }
 
     @Override
     public List<RealPlayer> getRealPlayerList() {
@@ -166,9 +162,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     }
 
     @Override
-    public void reconnectPlayer(String nickname, VirtualView vv) {
-
-    }
+    public void reconnectPlayer(String nickname, VirtualView vv) { }
 
     @Override
     public void broadcastGenericMessage(String message) {
@@ -199,7 +193,5 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     }
 
     @Override
-    public void update(Message message) {
-
-    }
+    public void update(Message message) { }
 }

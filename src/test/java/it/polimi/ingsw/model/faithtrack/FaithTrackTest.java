@@ -90,9 +90,9 @@ class FaithTrackTest {
 
         //Act
         faithTrack.setFaithMarker(t1.getIndex());
-        int currentPosition1 = faithTrack.calculationCheckPoints();
+        int currentPosition1 = faithTrack.computeCheckpoints();
         faithTrack.setFaithMarker(t2.getIndex());
-        int currentPosition2 = faithTrack.calculationCheckPoints();
+        int currentPosition2 = faithTrack.computeCheckpoints();
 
         //Assert
         assertEquals(currentPosition1, 9);
@@ -229,9 +229,9 @@ class FaithTrackTest {
 
         //Act
         faithTrack.setFaithMarker(t1.getIndex());
-        faithTrack.calculationCheckPoints(); // it could be return 4 points
+        faithTrack.computeCheckpoints(); // it could be return 4 points
         faithTrack.setCurrentFavorPoints(5);
-        faithTrack.calculationFinalPoints();
+        faithTrack.computeFaithTrackPoints();
 
         //Assert
         assertEquals(faithTrack.getFinalPoints(), 9);
@@ -245,9 +245,9 @@ class FaithTrackTest {
 
         //Act
         faithTrack.setFaithMarker(t1.getIndex());
-        faithTrack.calculationCheckPoints(); // it could be return 4 points
+        faithTrack.computeCheckpoints(); // it could be return 4 points
         faithTrack.setCurrentFavorPoints(2);
-        faithTrack.calculationFinalPoints();
+        faithTrack.computeFaithTrackPoints();
 
         //Assert
         assertEquals(faithTrack.getFinalPoints(), 14);

@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.RealPlayer;
-import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
@@ -23,11 +22,6 @@ import static it.polimi.ingsw.network.server.Server.LOGGER;
  * Class to manage players and turns in a multiplayer game.
  */
 public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
-
-    /**
-     * Variable to store the first player who reached an end game scenario.
-     */
-    private int lastTurn = -1;
 
     /**
      * Lobby dimension set by the first client to connect.
@@ -165,12 +159,12 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         int newCurrentIndex = auxIndex % realPlayerList.size();
 
-        if(endGame && (newCurrentIndex == lastTurn)) {
+        if(endGame && (newCurrentIndex == realPlayerList.size()-1)) {
             HashMap<RealPlayer, Integer> victoryPoints = new HashMap<>();
 
             for (RealPlayer iterator: realPlayerList) {
                 if(iterator.getPlayerState().isConnected())
-                victoryPoints.put(iterator, iterator.CalculateVictoryPoints());
+                victoryPoints.put(iterator, iterator.computeTotalVictoryPoints());
             }
 
             Map.Entry<RealPlayer, Integer> maxEntry = null;
@@ -539,7 +533,6 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                 if(!endGame) {
                     Server.LOGGER.info("Last round started.");
                     endGame = true;
-                    this.lastTurn = getPlayerIndexByNickname(gameManager.getCurrentPlayer());
                 }
                 break;
 
@@ -684,9 +677,5 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         disconnected.setupLeaderCard(n1);
         disconnected.setupLeaderCard(n2);
-    }
-
-    public void setLastTurn(int lastTurn) {
-        this.lastTurn = lastTurn;
     }
 }

@@ -28,6 +28,8 @@ public final class CommandParser {
                         return "EXECUTE";
                     case("CHECK_PRODUCTIONS") :
                         return "CHECK_PRODUCTIONS";
+                    case("CHECK_INVENTORY") :
+                        return "CHECK_INVENTORY";
 
                     default : return "UNKNOWN_COMMAND";
                 }

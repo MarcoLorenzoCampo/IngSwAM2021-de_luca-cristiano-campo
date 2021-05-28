@@ -18,7 +18,6 @@ import it.polimi.ingsw.network.messages.serverMessages.DiscardedResourceMessage;
 import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 import it.polimi.ingsw.network.messages.serverMessages.LeaderCardMessage;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +27,7 @@ import static it.polimi.ingsw.enumerations.ResourceType.UNDEFINED;
 /**
  * Player Class, ha references to a few useful classes.
  */
-public class RealPlayer extends Observable implements Serializable, Visitor {
-
-    private static final long serialVersionUID = -8446287370449348970L;
+public class RealPlayer extends Observable implements Visitor {
 
     /**
      * Name of the player.
@@ -58,12 +55,8 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
      */
     private List<LeaderCard> ownedLeaderCards;
 
-    /**
-     * test di aggiunta, per adesso li metto globalmente se tutto funziona
-     * li faccio passare nel costruttore del player del lobby manager
-     */
-    private ResourceMarket resourceMarket;
-    private ProductionCardMarket productionCardMarket;
+    private final ResourceMarket resourceMarket;
+    private final ProductionCardMarket productionCardMarket;
 
     /**
      * Default player constructor.
@@ -131,19 +124,33 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
         return ownedLeaderCards;
     }
 
-    public int CalculateVictoryPoints(){
-        //comment to commit
+    public int computeTotalVictoryPoints() {
+
         int victoryPoints = 0;
-        victoryPoints += playerBoard.getFaithTrack().getFinalPoints();
-        victoryPoints += playerBoard.getProductionBoard().getVictoryPoints();
+
+        int pointsFromLeaders = 0;
+        int pointsFromResources = 0;
+        int pointsFromFaithTrack = 0;
+        int pointsFromProductions = 0;
+
+        //Points from faith track
+        pointsFromFaithTrack += playerBoard.getFaithTrack().computeFaithTrackPoints();
+
+        //Points from bought production cards.
+        pointsFromProductions += playerBoard.getProductionBoard().getVictoryPoints();
+
+        //Points from activated leader cards.
         for (LeaderCard iterator:ownedLeaderCards) {
-            if(iterator.isActive()) victoryPoints += iterator.getVictoryPoints();
+            if(iterator.isActive()) pointsFromLeaders += iterator.getVictoryPoints();
         }
-        int totalResources = 0;
+
+        //Points from owned resources.
         for (Map.Entry<ResourceType, Integer> iterator: playerBoard.getInventoryManager().getInventory().entrySet()) {
-            totalResources += iterator.getValue();
+            pointsFromResources += iterator.getValue();
         }
-        victoryPoints += (totalResources/5);
+
+        victoryPoints += (pointsFromResources/5) + pointsFromLeaders + pointsFromFaithTrack + pointsFromProductions;
+
         return victoryPoints;
     }
 
@@ -336,8 +343,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
 
 
     private boolean productionResourceValidator(ResourceType wantedType){
-        if(wantedType.equals(ResourceType.FAITH) || wantedType.equals(ResourceType.UNDEFINED)) return false;
-        else return true;
+        return !wantedType.equals(ResourceType.FAITH) && !wantedType.equals(ResourceType.UNDEFINED);
     }
 
     private boolean productionCardRequirementsValidator(ProductionCard toValidate){
@@ -371,7 +377,6 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
                 if(requirement.getQuantity() > actualInventory.get(requirement.getType()))
                     return false;
             }
-            return true;
         }
         else{
             for(DevelopmentTag iterator : leader.getRequirementsDevCards()) {
@@ -379,16 +384,15 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
                 if(iterator.getQuantity() > playerBoard.getProductionBoard().getCardsInventory().get(iterator.getColor())[iterator.getLevel().ordinal()])
                     return false;
             }
-            return true;
         }
+        return true;
 
     }
 
     private boolean extraProductionSlotValidator(int slot) {
         if(slot > playerBoard.getProductionBoard().getLeaderProductions().size()) return false;
         else{
-            if(playerBoard.getProductionBoard().getLeaderProductions().get(slot).getSelected()) return false;
-            else return true;
+            return !playerBoard.getProductionBoard().getLeaderProductions().get(slot).getSelected();
         }
     }
 
@@ -397,12 +401,10 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
     }
 
     private boolean bufferIndexValidator(int index){
-        return playerBoard.getInventoryManager().getBuffer().get(index).equals(ResourceType.UNDEFINED);
+        return playerBoard.getInventoryManager().getBuffer().get(index).getResourceType().equals(ResourceType.UNDEFINED);
     }
 
     private boolean finalProductionValidator() {
         return playerBoard.getProductionBoard().validateFinalProduction(playerBoard.getInventoryManager());
     }
-
-
 }

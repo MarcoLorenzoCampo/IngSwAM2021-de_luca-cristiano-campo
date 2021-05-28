@@ -52,7 +52,6 @@ public class Server {
      */
     public Server(GameManager gameManager) {
         this.gameManager = gameManager;
-        this.gameManager.setServer(this);
         this.clientHandlerMap = Collections.synchronizedMap(new HashMap<>());
         this.lock = new Object();
         this.isSizeSet = false;
