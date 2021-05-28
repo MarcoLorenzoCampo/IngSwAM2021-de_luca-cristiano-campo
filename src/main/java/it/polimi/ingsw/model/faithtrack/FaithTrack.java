@@ -30,7 +30,7 @@ public class FaithTrack extends Observable implements Serializable {
     private final Map<Integer, Integer> ranges = new HashMap<>();
 
     public FaithTrack() {
-        this.faithMarker=22;
+        this.faithMarker=23;
         this.currentFavorPoints=0;
         this.finalPoints=0;
         initFaithTrack();
@@ -140,13 +140,6 @@ public class FaithTrack extends Observable implements Serializable {
         return currentFavorPoints;
     }
 
-    public void notAddPoints(int faithMarker) {
-        notifyObserver(new GenericMessageFromServer("You didn't gain any points from this vatican report!"));
-
-        PopeTile pt = (PopeTile)faithTrack.get(faithMarker);
-        pt.setIsActive(false);
-    }
-
     //control that the player is in the Vatican space during Vatican report to earn points
     public void receiveControl(PopeTile popeT){
         if(this.faithTrack.get(this.faithMarker).getVaticanSpace() == popeT.getVaticanSpace()){
@@ -160,11 +153,10 @@ public class FaithTrack extends Observable implements Serializable {
 
     public void setPopeTileInactive(int index) {
 
-        if(isPopeTile(index)) {
-            PopeTile p = (PopeTile) faithTrack.get(index);
-            p.setIsActive(false);
-            notifyObserver(new FaithTrackMessage(this));
-        }
+        notifyObserver(new GenericMessageFromServer("You didn't gain any points from this vatican report!"));
+
+        PopeTile pt = (PopeTile)faithTrack.get(index);
+        pt.setIsActive(false);
     }
 
     public void calculationFinalPoints(){

@@ -460,7 +460,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showWinMatch(String winner) {
-        out.println(winner + " won!");
+        out.println(winner);
 
         System.exit(0);
     }

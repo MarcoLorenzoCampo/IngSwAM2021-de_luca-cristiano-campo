@@ -12,6 +12,7 @@ import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
+import it.polimi.ingsw.network.server.Server;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,8 +23,6 @@ import static it.polimi.ingsw.network.server.Server.LOGGER;
  * Class to manage players and turns in a multiplayer game.
  */
 public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
-
-    private boolean end_game;
 
     /**
      * Lobby dimension set by the first client to connect.
@@ -55,12 +54,11 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
     public MultiPlayerLobbyManager(GameManager gameManager) {
         this.realPlayerList = new LinkedList<>();
-        this.endGame = false;
         numberOfTurns = 0;
         auxIndex = 0;
         this.gameManager = gameManager;
         viewsByNickname= new HashMap<>();
-        end_game = false;
+        endGame = false;
     }
 
     /**
@@ -157,10 +155,6 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void setNextTurn() {
 
-        if (viewsByNickname.get(realPlayerList.get(auxIndex).getName()) != null) {
-            viewsByNickname.get(realPlayerList.get(auxIndex).getName())
-                    .turnEnded("Your turn has ended.");
-        }
 
         if(endGame && auxIndex==(realPlayerList.size()-1)){
             HashMap<RealPlayer, Integer> victoryPoints = new HashMap<>();
@@ -180,7 +174,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             }
 
             assert maxEntry != null;
-            broadCastWinMessage("Game ended! " + maxEntry.getKey() + " won!");
+            broadCastWinMessage("Game ended! " + maxEntry.getKey().getName() + " won!" +
+                    "\nHe scored: " + maxEntry.getValue() + " points!");
 
         } else {
 
@@ -516,13 +511,12 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
                 for(RealPlayer realPlayer : realPlayerList) {
 
-                    if(realPlayer.getPlayerState().isConnected()) {
+                    if(realPlayer.getPlayerState().isConnected() && !realPlayer.getName().equals(gameManager.getCurrentPlayer())) {
                         FaithTrack ft = realPlayer.getPlayerBoard().getFaithTrack();
 
+                        //If the players' position is before a vatican section, then he won't get the points.
                         if (ft.getFaithMarker() < (popeTileIndex - rangeToCheck)) {
                             ft.setPopeTileInactive(popeTileIndex);
-                        } else {
-                            ft.notAddPoints(popeTileIndex);
                         }
                     }
                 }
@@ -538,7 +532,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                 break;
 
             case END_GAME:
-                if(end_game = false) end_game = true;
+                Server.LOGGER.info("Last round started.");
+                endGame = true;
                 break;
 
             default: //Ignore any other message
