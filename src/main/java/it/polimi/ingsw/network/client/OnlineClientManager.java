@@ -283,7 +283,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
     public void onServerInfoUpdate(int port, String ipAddress) {
 
         try {
-            client = new Client(port, ipAddress);
+            client = new Client(port, ipAddress, view);
             client.addObserver(this);
             //client.startPing(true);
             client.readMessage();

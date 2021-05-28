@@ -259,4 +259,24 @@ public class InventoryManager extends Observable {
     public BufferMessage messageUpdate(){
         return new BufferMessage(buffer);
     }
+
+    /**
+     * Method to remove resources after buying a card or activating productions if the player
+     * gets disconnected.
+     *
+     * Removing from warehouse is prioritized.
+     *
+     * @param toBeRemoved: resources to remove.
+     */
+    public void defaultRemove(ArrayList<ResourceTag> toBeRemoved) {
+        for(ResourceTag resourceTag : toBeRemoved) {
+            try {
+                warehouse.removeResources(resourceTag);
+            } catch (CannotRemoveResourceException e) {
+                try {
+                    strongbox.removeResource(new ResourceTag(e.getType(), e.getQuantity()));
+                } catch (CannotRemoveResourceException ignored) { }
+            }
+        }
+    }
 }
