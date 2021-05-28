@@ -38,6 +38,9 @@ public class OnlineLoginPopUp extends JFrame {
         submit.setBounds(160,200,100,30);
         submit.addActionListener(gui);
 
+        socket_input.setText("2200");
+        ip_input.setText("0.0.0.0");
+
         this.add(title_1);
         this.add(title_2);
         this.add(socketPort);
