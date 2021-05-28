@@ -2,7 +2,6 @@ package it.polimi.ingsw.network.views.cli.graphical;
 
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.model.market.ProductionCard;
-import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.views.cli.LightweightModel;
 
 import java.util.List;
@@ -34,25 +33,25 @@ public class GraphicalProductionCardsMarket {
         lightweightModel.setReducedAvailableCards(productionCards);
 
         for(int i = 0; i < 12; i++){
-            GraphicalBoard graphicalBoard = new GraphicalBoard();
+            GraphicalProuctionCardBoard graphicalProuctionCardBoard = new GraphicalProuctionCardBoard();
             if (jj<48){
-                for (int j = 0; j < GraphicalBoard.getMaxVertTiles(); j++) {
-                    for (int k = 0; k < GraphicalBoard.getMaxHorizTiles(); k++) {
-                        cells[j][k + ll] = (graphicalBoard.getCells())[j][k];
+                for (int j = 0; j < GraphicalProuctionCardBoard.getMaxVertTiles(); j++) {
+                    for (int k = 0; k < GraphicalProuctionCardBoard.getMaxHorizTiles(); k++) {
+                        cells[j][k + ll] = (graphicalProuctionCardBoard.getCells())[j][k];
                     }
                 } ll = ll + 12;
             }
             else if ( jj>=48 && jj <96){
-                for (int j = 0; j < GraphicalBoard.getMaxVertTiles(); j++) {
-                    for (int k = 0; k < GraphicalBoard.getMaxHorizTiles(); k++) {
-                        cells[j + 12][k + mm] = (graphicalBoard.getCells())[j][k];
+                for (int j = 0; j < GraphicalProuctionCardBoard.getMaxVertTiles(); j++) {
+                    for (int k = 0; k < GraphicalProuctionCardBoard.getMaxHorizTiles(); k++) {
+                        cells[j + 12][k + mm] = (graphicalProuctionCardBoard.getCells())[j][k];
                     }
                 } mm = mm + 12;
             }
             else{
-                for (int j = 0; j < GraphicalBoard.getMaxVertTiles(); j++) {
-                    for (int k = 0; k < GraphicalBoard.getMaxHorizTiles(); k++) {
-                        cells[j + 24][k + pp] = (graphicalBoard.getCells())[j][k];
+                for (int j = 0; j < GraphicalProuctionCardBoard.getMaxVertTiles(); j++) {
+                    for (int k = 0; k < GraphicalProuctionCardBoard.getMaxHorizTiles(); k++) {
+                        cells[j + 24][k + pp] = (graphicalProuctionCardBoard.getCells())[j][k];
                     }
                 } pp = pp + 12;
             }

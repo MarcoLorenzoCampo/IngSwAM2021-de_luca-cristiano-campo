@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.client;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.PingMessage;
+import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.views.cli.MiniCli;
 import it.polimi.ingsw.network.views.cli.CLI;
 import it.polimi.ingsw.network.views.gui.MiniGui;
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Client extends Observable implements IClient {
 
+    private final IView view;
     /**
      * Socket that connects and communicates with the server's socket.
      */
@@ -55,7 +57,9 @@ public class Client extends Observable implements IClient {
      * @param port:       server's socket.
      * @param IP_Address: IP address.
      */
-    public Client(int port, String IP_Address) throws IOException {
+    public Client(int port, String IP_Address, IView view) throws IOException {
+
+        this.view = view;
 
         this.clientSocket = new Socket();
 
@@ -91,11 +95,13 @@ public class Client extends Observable implements IClient {
                     message = (Message) input.readObject();
                     //Client.clientLogger.info("Received: " + message);
                 } catch (EOFException e) {
-                    Client.clientLogger.info("Stream error.");
+                    //Client.clientLogger.info("Stream error.");
+                    view.showError("Dropped connection from the server!");
                     disconnect();
                     serverListener.shutdownNow();
                 } catch (IOException  e) {
-                    Client.clientLogger.info("Connection lost with the server.");
+                    view.showError("Dropped connection from the server!");
+                    //Client.clientLogger.info("Connection lost with the server.");
                     disconnect();
                     serverListener.shutdownNow();
                 } catch (ClassNotFoundException e) {

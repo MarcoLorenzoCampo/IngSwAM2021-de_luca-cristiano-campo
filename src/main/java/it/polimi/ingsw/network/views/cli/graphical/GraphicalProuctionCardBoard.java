@@ -2,7 +2,7 @@ package it.polimi.ingsw.network.views.cli.graphical;
 
 import it.polimi.ingsw.network.views.cli.ColorCLI;
 
-public class GraphicalBoard {
+public class GraphicalProuctionCardBoard {
 
     private static final int MAX_VERT_TILES = 12; //rows.
     private static final int MAX_HORIZ_TILES = 12; //cols.
@@ -12,7 +12,7 @@ public class GraphicalBoard {
 
     private String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
 
-    public GraphicalBoard(){
+    public GraphicalProuctionCardBoard(){
         updatingGraphicalBoard();
     }
 

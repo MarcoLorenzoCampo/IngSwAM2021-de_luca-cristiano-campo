@@ -615,37 +615,62 @@ public final class GameManager implements Observer {
      *
      * Also resets the game state to PLAYING.
      */
-    public void prepareForNextTurn(RealPlayer playerDisconnected) {
+    public void prepareForNextTurn(RealPlayer disconnected) {
         switch (currentGame.getCurrentState().getGameState()) {
 
             case SETUP_LEADER:
-                lobbyManager.randomizedLeadersSetup(playerDisconnected.getName());
+                lobbyManager.randomizedLeadersSetup(disconnected.getName());
                 Server.LOGGER.info("Random '" + currentPlayer + "' leaders set.");
                 break;
 
             case SETUP_RESOURCES:
-                lobbyManager.randomizedResourcesSetup(playerDisconnected.getName());
+                lobbyManager.randomizedResourcesSetup(disconnected.getName());
                 Server.LOGGER.info("Random '" + currentPlayer + "' resources set.");
                 break;
 
+            //Buffer gets emptied.
             case CHANGE_COLOR:
+                disconnected.getPlayerBoard().getInventoryManager().resetBuffer();
+                Server.LOGGER.info("No more exchanges for: " + currentPlayer);
+                disconnected.getPlayerState().endTurnReset();
+
+                currentGame.setCurrentState(PossibleGameStates.PLAYING);
                 break;
 
             //Buffer gets emptied.
             case DEPOSIT:
-                playerDisconnected.getPlayerBoard().getInventoryManager().resetBuffer();
+                disconnected.getPlayerBoard().getInventoryManager().resetBuffer();
                 Server.LOGGER.info("Emptied '" + currentPlayer + "'s' buffer.");
+                disconnected.getPlayerState().endTurnReset();
+
+                currentGame.setCurrentState(PossibleGameStates.PLAYING);
                 break;
 
-            //No card gets bought. Action is interrupted as it is.
+            //The card is bought (because validated) and resources are removed.
             case BUY_CARD:
+                disconnected.getPlayerBoard().getInventoryManager().defaultRemove(disconnected.getPlayerState().getToBeRemoved());
+                disconnected.getPlayerState().getToBeRemoved().clear();
+                disconnected.getPlayerState().endTurnReset();
 
+                currentGame.setCurrentState(PossibleGameStates.PLAYING);
                 break;
 
+            //Empties the list of desired productions.
             case ACTIVATE_PRODUCTION:
+                disconnected.getPlayerBoard().getProductionBoard().clearSelection();
+                disconnected.getPlayerState().endTurnReset();
+
+                currentGame.setCurrentState(PossibleGameStates.PLAYING);
                 break;
 
+            //Removes the resources to pay for productions.
             case REMOVE:
+                ArrayList<ResourceTag> toBeRemoved = disconnected.getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources();
+                disconnected.getPlayerBoard().getInventoryManager().defaultRemove(toBeRemoved);
+                disconnected.getPlayerBoard().getProductionBoard().clearSelection();
+                disconnected.getPlayerState().endTurnReset();
+
+                currentGame.setCurrentState(PossibleGameStates.PLAYING);
                 break;
 
             //The reset doesn't need to be made in every possible game state.
