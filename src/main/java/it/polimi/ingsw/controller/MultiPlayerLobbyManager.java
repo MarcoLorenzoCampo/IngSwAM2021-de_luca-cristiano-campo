@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.RealPlayer;
+import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
@@ -169,8 +170,18 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                 victoryPoints.put(iterator, iterator.CalculateVictoryPoints());
             }
 
-            //TROVATI I PUNTI MASSIMI
-            //broadcastWinMessage(player with highest victory points);
+            Map.Entry<RealPlayer, Integer> maxEntry = null;
+
+            for (Map.Entry<RealPlayer, Integer> entry : victoryPoints.entrySet()) {
+                if (maxEntry == null || entry.getValue()
+                        .compareTo(maxEntry.getValue()) > 0) {
+                    maxEntry = entry;
+                }
+            }
+
+            assert maxEntry != null;
+            broadCastWinMessage("Game ended! " + maxEntry.getKey() + " won!");
+
         } else {
 
             numberOfTurns++;
@@ -510,6 +521,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
                         if (ft.getFaithMarker() < (popeTileIndex - rangeToCheck)) {
                             ft.setPopeTileInactive(popeTileIndex);
+                        } else {
+                            ft.notAddPoints(popeTileIndex);
                         }
                     }
                 }
@@ -548,7 +561,14 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         vv.printLeaders(realPlayerList.get(getPlayerIndexByNickname(nickname)).getOwnedLeaderCards());
 
-        //more stuff to send
+        //send buffer, strongbox, warehouse.
+
+        vv.printBuffer(new ArrayList<>());
+
+        //vv.printWarehouse(realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().getWarehouse());
+
+        vv.printStrongbox(realPlayerList.get(getPlayerIndexByNickname(nickname))
+                .getPlayerBoard().getInventoryManager().getStrongbox().getInventory());
     }
 
     /**

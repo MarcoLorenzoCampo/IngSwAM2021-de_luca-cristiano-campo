@@ -528,7 +528,7 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printStrongbox(HashMap<ResourceType, Integer> strongbox) {
+    public void printStrongbox(Map<ResourceType, Integer> strongbox) {
         lightweightModel.setStrongbox(strongbox);
         out.println("STRONGBOX: " + ColorCLI.ANSI_BLUE.escape() + "\n" + GraphicalResourceConstants.shield + ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.SHIELD) +
                 "\n" + ColorCLI.ANSI_YELLOW.escape() + GraphicalResourceConstants.coin + ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.COIN) +

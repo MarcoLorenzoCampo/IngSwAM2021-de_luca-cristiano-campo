@@ -9,6 +9,7 @@ import it.polimi.ingsw.parsers.ProductionCardsParser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A read only String version of the model, it gets updated whenever a change in the real model occurs. This can be
@@ -22,7 +23,7 @@ public class LightweightModel {
     private List<ProductionCard> AvailableCards;
     private final List<LightweightPlayerState> playerStates;
     private ArrayList<ResourceType> buffer;
-    private HashMap<ResourceType, Integer> strongbox;
+    private Map<ResourceType, Integer> strongbox;
     private ArrayList<ResourceType> shelves;
     private ArrayList<ResourceType> extra_shelves_types;
     private List<LeaderCard> leaderCards;
@@ -84,7 +85,7 @@ public class LightweightModel {
         this.buffer = buffer;
     }
 
-    public void setStrongbox(HashMap<ResourceType, Integer> strongbox) {
+    public void setStrongbox(Map<ResourceType, Integer> strongbox) {
         this.strongbox = strongbox;
     }
 

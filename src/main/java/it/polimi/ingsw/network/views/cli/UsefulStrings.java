@@ -62,8 +62,8 @@ public class UsefulStrings {
                         "                               ";
 
     private static final String whatToDo =
-            "-------------------------------------------------------------------------------------------------------------" +
-                    "\nHere's a complete list of the accepted commands:" +
+            "\n\n-------------------------------------------------------------------------------------------------------------" +
+                    "\nHere's a complete list of the accepted commands:\n" +
                     "\n - 'DISCARD_LEADER <int>': Discards one of your leader cards (Requires a valid card index);" +
                     "\n - 'ACTIVATE_LEADER <int>': Places one of your leader cards (Requires a valid card index);" +
                     "\n - 'GET_RESOURCES <int>': Gets resources from the market (Requires and index form 0 to 6);" +
@@ -76,5 +76,5 @@ public class UsefulStrings {
                     "\n - 'CHECK_CARDS': For an updated ProductionCardsMarket;" +
                     "\n - 'CHECK_LEADERS': For an updated LeaderCards list;" +
                     "\n - 'CHECK_PRODUCTIONS': For an updated ProductionBoard;" +
-                    "\n-------------------------------------------------------------------------------------------------------------\n";
+                    "\n-------------------------------------------------------------------------------------------------------------\n\n";
 }

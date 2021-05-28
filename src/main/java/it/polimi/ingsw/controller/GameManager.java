@@ -619,8 +619,10 @@ public final class GameManager implements Observer {
         switch (currentGame.getCurrentState().getGameState()) {
 
             case SETUP_LEADER:
-                lobbyManager.randomizedLeadersSetup(disconnected.getName());
-                Server.LOGGER.info("Random '" + currentPlayer + "' leaders set.");
+                if(disconnected.getName().equals(currentPlayer)) {
+                    lobbyManager.randomizedLeadersSetup(disconnected.getName());
+                    Server.LOGGER.info("Random '" + currentPlayer + "' leaders set.");
+                }
                 break;
 
             case SETUP_RESOURCES:

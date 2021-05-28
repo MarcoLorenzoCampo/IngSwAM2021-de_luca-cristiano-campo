@@ -9,6 +9,7 @@ import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -144,7 +145,7 @@ public interface IView {
      * Prints the strongbox
      * @param strongbox: map with the strongbox inventory
      */
-    void printStrongbox(HashMap<ResourceType, Integer> strongbox);
+    void printStrongbox(Map<ResourceType, Integer> strongbox);
 
     void printWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras);
 
