@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -116,7 +115,7 @@ public final class ActionValidator {
     }
 
     private static boolean hasPlacedLeaderValidation() {
-        return PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getHasPlacedLeaders();
+        return PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().getGetHasPlacedLeaders();
     }
 
     /**

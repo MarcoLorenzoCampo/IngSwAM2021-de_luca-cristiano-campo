@@ -7,6 +7,7 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.PlayerState;
+import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
@@ -17,7 +18,6 @@ import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.network.views.IView;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -159,7 +159,6 @@ public final class GameManager implements Observer {
                         setGameStarted();
                         currentGame.setCurrentState(PossibleGameStates.SETUP_RESOURCES);
                         lobbyManager.setPlayingOrder();
-
                     }
                 }
                 break;
@@ -242,6 +241,17 @@ public final class GameManager implements Observer {
 
                     if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)) {
                         currentGame.setCurrentState(PossibleGameStates.PLAYING);
+
+
+                        //Before the game starts, if a player got disconnected before discarding 2 leaders,
+                        // they get randomly selected and discarded.
+                        for(RealPlayer realPlayer : lobbyManager.getRealPlayerList()) {
+                            if(!realPlayer.getPlayerState().isConnected() &&
+                                realPlayer.getOwnedLeaderCards().size() == 4) {
+
+                                lobbyManager.randomizedLeadersSetup(realPlayer.getName());
+                            }
+                        }
                     }
 
                     currentPlayerState.setSetUpPhase(false);
@@ -332,7 +342,7 @@ public final class GameManager implements Observer {
 
                     else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                         && currentPlayerState.getHasPlaceableLeaders()
-                        && !currentPlayerState.getHasPlacedLeaders()){
+                        && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
                         currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
                         //actionManager
@@ -341,7 +351,7 @@ public final class GameManager implements Observer {
 
                     else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
                         && currentPlayerState.getHasPlaceableLeaders()
-                        && !currentPlayerState.getHasPlacedLeaders()){
+                        && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
                         currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                         //actionManager
@@ -510,7 +520,7 @@ public final class GameManager implements Observer {
 
                     else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
                             && currentPlayerState.getHasPlaceableLeaders()
-                            && !currentPlayerState.getHasPlacedLeaders()){
+                            && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
                         currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
                         //actionManager
@@ -520,7 +530,7 @@ public final class GameManager implements Observer {
 
                     else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
                             && currentPlayerState.getHasPlaceableLeaders()
-                            && !currentPlayerState.getHasPlacedLeaders()){
+                            && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
                         currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                         //actionManager
@@ -577,7 +587,7 @@ public final class GameManager implements Observer {
                 currentView.currentTurn("\n Main action performed you can place/discard leaders or peek on other players.");
                 break;
 
-                default: currentView.currentTurn("\n Your command cannot be processed now, please try a different one");
+            default: currentView.currentTurn("\n Your command cannot be processed now, please try a different one");
         }
     }
 
@@ -597,6 +607,50 @@ public final class GameManager implements Observer {
         Server.LOGGER.info("Game ended, preparing the server for a new game . . .");
         PlayingGame.terminate();
 
+    }
+
+    /**
+     * When the current player gets disconnected, a specific reset needs to be made in order to interrupt
+     * any action the player was doing and reset for a new player.
+     *
+     * Also resets the game state to PLAYING.
+     */
+    public void prepareForNextTurn(RealPlayer playerDisconnected) {
+        switch (currentGame.getCurrentState().getGameState()) {
+
+            case SETUP_LEADER:
+                lobbyManager.randomizedLeadersSetup(playerDisconnected.getName());
+                Server.LOGGER.info("Random '" + currentPlayer + "' leaders set.");
+                break;
+
+            case SETUP_RESOURCES:
+                lobbyManager.randomizedResourcesSetup(playerDisconnected.getName());
+                Server.LOGGER.info("Random '" + currentPlayer + "' resources set.");
+                break;
+
+            case CHANGE_COLOR:
+                break;
+
+            //Buffer gets emptied.
+            case DEPOSIT:
+                playerDisconnected.getPlayerBoard().getInventoryManager().resetBuffer();
+                Server.LOGGER.info("Emptied '" + currentPlayer + "'s' buffer.");
+                break;
+
+            //No card gets bought. Action is interrupted as it is.
+            case BUY_CARD:
+
+                break;
+
+            case ACTIVATE_PRODUCTION:
+                break;
+
+            case REMOVE:
+                break;
+
+            //The reset doesn't need to be made in every possible game state.
+            default: break;
+        }
     }
 
     public Map<String, VirtualView> getVirtualViewLog() {

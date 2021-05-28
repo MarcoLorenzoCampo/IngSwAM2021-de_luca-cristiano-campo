@@ -14,6 +14,7 @@ import it.polimi.ingsw.network.utilities.CommandParser;
 import it.polimi.ingsw.network.views.cli.constants.GraphicalResourceConstants;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrack;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalLeaderCards;
+import it.polimi.ingsw.network.views.cli.graphical.GraphicalProductionCardsMarket;
 import it.polimi.ingsw.network.views.cli.graphical.GraphicalWarehouse;
 
 import java.io.PrintStream;
@@ -126,6 +127,7 @@ public class CLI extends ViewObservable implements IView {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
         notifyObserver(o -> o.onUpdateNickname(nickname));
     }
 
@@ -280,6 +282,8 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
 
+        out.println("\nUpdated leader cards:");
+
         lightweightModel.setLeaderCards(cards);
 
         GraphicalLeaderCards graphicalLeaderCards = new GraphicalLeaderCards(cards);
@@ -327,7 +331,7 @@ public class CLI extends ViewObservable implements IView {
                 case ("HELP") : printPossibleActions(); break;
                 case ("CHECK_MARKET") :  out.println(lightweightModel.getReducedResourceMarket()); break;
                 case ("CHECK_CARDS") : printAvailableCards(lightweightModel.getReducedAvailableCards()); break;
-                case ("CHECK_LEADERS") : printLeaders(lightweightModel.getLeaderCards()); break;
+                case ("CHECK_LEADERS") : showLeaderCards(lightweightModel.getLeaderCards()); break;
                 case ("CHECK_PRODUCTIONS") : printProductionBoard(lightweightModel.getProductionBoard()); break;
             }
 
@@ -650,14 +654,17 @@ public class CLI extends ViewObservable implements IView {
         out.println("\nThe ProductionCardsMarket has been modified, here's an updated version: \n");
 
         lightweightModel.setReducedAvailableCards(available);
-        for (ProductionCard iterator: available) {
-            out.println(iterator.reduce());
-        }
 
+        GraphicalProductionCardsMarket graphicalProductionCardsMarket = new GraphicalProductionCardsMarket(available);
+        graphicalProductionCardsMarket.draw();
+        out.println();
     }
 
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
+
+        out.println("\nUpdated faith track:");
+
         GraphicalFaithTrack graphicalFaithTrack = new GraphicalFaithTrack(faithTrack);
         graphicalFaithTrack.draw();
         out.println();

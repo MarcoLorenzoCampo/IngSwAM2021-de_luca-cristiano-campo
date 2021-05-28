@@ -238,7 +238,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
     @Override
     public void visit(DiscardLeaderCardAction action) {
         if(action.getActionSender().equals(playerName)
-        && !playerState.getHasPlacedLeaders()
+        && !playerState.getGetHasPlacedLeaders()
         && (ownedLeaderCards.size() > action.getLeaderToDiscard())){
 
             if(playerState.isSetUpPhase()){
@@ -285,7 +285,7 @@ public class RealPlayer extends Observable implements Serializable, Visitor {
     @Override
     public void visit(PlaceLeaderAction action) {
         if(action.getActionSender().equals(playerName)
-        && !playerState.getHasPlacedLeaders()
+        && !playerState.getGetHasPlacedLeaders()
         && leaderValidator(action.getLeaderToActivate())){
             ownedLeaderCards.get(action.getLeaderToActivate()).setActive(playerBoard);
             playerState.placedLeader();

@@ -21,7 +21,7 @@ public class PlayerState {
     private boolean hasBoughCard;
     private boolean isConnected;
 
-    private boolean hasPlacedLeaders;
+    private boolean getHasPlacedLeaders;
 
     private boolean hasPlaceableLeaders;
 
@@ -37,7 +37,7 @@ public class PlayerState {
         hasActivatedProductions = false;
         hasPickedResources = false;
         hasBoughCard = false;
-        hasPlacedLeaders = false;
+        getHasPlacedLeaders = false;
 
         hasPlaceableLeaders = true;
 
@@ -82,7 +82,7 @@ public class PlayerState {
         hasActivatedProductions = true;
         hasPickedResources = true;
         hasBoughCard = true;
-        hasPlacedLeaders = false;
+        getHasPlacedLeaders = false;
     }
 
     public boolean hasPerformedExclusiveAction(){
@@ -90,7 +90,7 @@ public class PlayerState {
     }
 
     public void placedLeader() {
-        this.hasPlacedLeaders = true;
+        this.getHasPlacedLeaders = true;
     }
 
     public void setHasTwoExchange(boolean twoExchange){ this.hasTwoExchange = twoExchange;}
@@ -108,8 +108,8 @@ public class PlayerState {
     public boolean getHasBoughCard() {
         return hasBoughCard;
     }
-    public boolean getHasPlacedLeaders() {
-        return hasPlacedLeaders;
+    public boolean getGetHasPlacedLeaders() {
+        return getHasPlacedLeaders;
     }
     public boolean isHasTwoExchange() { return hasTwoExchange; }
 
@@ -118,7 +118,7 @@ public class PlayerState {
         hasPickedResources = false;
         hasBoughCard = false;
 
-        hasPlacedLeaders = false;
+        getHasPlacedLeaders = false;
 
         canDeposit = false;
     }

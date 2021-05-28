@@ -23,4 +23,9 @@ public interface IClientHandler {
      * @param message: data sent.
      */
     void sendMessage(Message message);
+
+    /**
+     * Disconnects a player when the name is already taken.
+     */
+    void sameNameDisconnect();
 }
