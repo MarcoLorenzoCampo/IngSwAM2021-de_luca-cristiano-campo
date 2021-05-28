@@ -179,17 +179,14 @@ public class GraphicalProductionCard {
         }
 
         this.index = i;
-        if(this.index < 9) {
+        if(this.index < 10) {
             insertingIndex(index);
         }
-        else if(this.index == 9){
+        else if(this.index == 10){
             insertingIndex10();
         }
-        else if(this.index == 10){
-            insertingIndex11();
-        }
         else{
-            insertingIndex12();
+            insertingIndex11();
         }
 
 
@@ -259,7 +256,7 @@ public class GraphicalProductionCard {
         cells[7][3] = "D";
         cells[7][4] = "E";
         cells[7][5] = "X";
-        cells[7][7] = "" + (index + 1);
+        cells[7][7] = "" + index;
     }
 
     private void insertingIndex10(){
@@ -280,15 +277,6 @@ public class GraphicalProductionCard {
         cells[7][5] = "X";
         cells[7][7] = "1";
         cells[7][8] = "1";
-    }
-    private void insertingIndex12(){
-        cells[7][1] = "I";
-        cells[7][2] = "N";
-        cells[7][3] = "D";
-        cells[7][4] = "E";
-        cells[7][5] = "X";
-        cells[7][7] = "1";
-        cells[7][8] = "2";
     }
 
     private void insertingVictoryPointsCard(Integer victoryPoints){
