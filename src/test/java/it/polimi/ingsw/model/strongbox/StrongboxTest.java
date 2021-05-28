@@ -5,12 +5,14 @@ import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Disabled
 public class StrongboxTest {
     Strongbox strongbox;
     
@@ -30,6 +32,7 @@ public class StrongboxTest {
         assertEquals(2, (int) strongbox.getInventory().get(ResourceType.COIN));
     }
 
+    @Disabled
     @Test
     void removeResourceAllowedTest(){
         //Arrange
@@ -44,6 +47,7 @@ public class StrongboxTest {
         assertEquals(0, (int) strongbox.getInventory().get(ResourceType.COIN));
     }
 
+    @Disabled
     @Test
     void removeResourceNotAllowedTest(){
         //Arrange
