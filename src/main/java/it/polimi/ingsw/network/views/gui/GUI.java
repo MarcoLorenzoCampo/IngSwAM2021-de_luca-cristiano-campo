@@ -14,10 +14,7 @@ import it.polimi.ingsw.network.views.cli.UsefulStrings;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class GUI extends ViewObservable implements IView, ActionListener {
@@ -196,7 +193,7 @@ public class GUI extends ViewObservable implements IView, ActionListener {
     }
 
     @Override
-    public void printStrongbox(HashMap<ResourceType, Integer> strongbox) {
+    public void printStrongbox(Map<ResourceType, Integer> strongbox) {
 
     }
 

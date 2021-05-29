@@ -124,6 +124,7 @@ public class ClientHandler implements Runnable, IClientHandler {
 
         } catch (ClassCastException | ClassNotFoundException e) {
             Server.LOGGER.severe("Invalid stream");
+            Server.LOGGER.severe(e.getMessage());
         }
 
         clientSocket.close();

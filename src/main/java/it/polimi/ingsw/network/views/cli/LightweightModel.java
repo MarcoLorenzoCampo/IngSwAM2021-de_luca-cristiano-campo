@@ -3,12 +3,12 @@ package it.polimi.ingsw.network.views.cli;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.player.PlayerState;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A read only String version of the model, it gets updated whenever a change in the real model occurs. This can be
@@ -17,12 +17,12 @@ import java.util.List;
  */
 public class LightweightModel {
 
-    private final List<ProductionCard> allProductions;
+    private List<ProductionCard> allProductions;
     private String reducedResourceMarket;
-    private List<ProductionCard> AvailableCards;
-    private final List<LightweightPlayerState> playerStates;
+    private List<ProductionCard> availableCards;
+    private List<LightweightPlayerState> playerStates;
     private ArrayList<ResourceType> buffer;
-    private HashMap<ResourceType, Integer> strongbox;
+    private Map<ResourceType, Integer> strongbox;
     private ArrayList<ResourceType> shelves;
     private ArrayList<ResourceType> extra_shelves_types;
     private List<LeaderCard> leaderCards;
@@ -31,7 +31,14 @@ public class LightweightModel {
     public LightweightModel() {
         this.allProductions =  ProductionCardsParser.parseProductionDeck();
         this.playerStates = new ArrayList<>();
-        productionBoard = new HashMap<>();
+        this.productionBoard = new HashMap<>();
+        this.buffer = new ArrayList<>();
+        this.shelves = new ArrayList<>();
+        this.strongbox = new HashMap<>();
+        this.availableCards = new ArrayList<>();
+        this.extra_shelves_types = new ArrayList<>();
+        this.leaderCards = new ArrayList<>();
+
         productionBoard.put(0, null);
         productionBoard.put(1, null);
         productionBoard.put(2, null);
@@ -58,11 +65,11 @@ public class LightweightModel {
     }
 
     public List<ProductionCard> getReducedAvailableCards() {
-        return AvailableCards;
+        return availableCards;
     }
 
     public void setReducedAvailableCards(List<ProductionCard> AvailableCards) {
-        this.AvailableCards = AvailableCards;
+        this.availableCards = AvailableCards;
     }
 
     public HashMap<Integer,ProductionCard> getProductionBoard() {
@@ -80,11 +87,23 @@ public class LightweightModel {
         return null;
     }
 
+    public Map<ResourceType, Integer> getStrongbox() {
+        return strongbox;
+    }
+
+    public ArrayList<ResourceType> getShelves() {
+        return shelves;
+    }
+
+    public ArrayList<ResourceType> getExtra_shelves_types() {
+        return extra_shelves_types;
+    }
+
     public void setBuffer(ArrayList<ResourceType> buffer) {
         this.buffer = buffer;
     }
 
-    public void setStrongbox(HashMap<ResourceType, Integer> strongbox) {
+    public void setStrongbox(Map<ResourceType, Integer> strongbox) {
         this.strongbox = strongbox;
     }
 

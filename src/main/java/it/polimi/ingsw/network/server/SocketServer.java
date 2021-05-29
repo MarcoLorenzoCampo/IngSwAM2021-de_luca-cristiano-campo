@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 
@@ -88,6 +89,10 @@ public class SocketServer implements Runnable {
      * @param message: message sent by the client.
      */
     public void onMessage(Message message) {
+        if(message.getMessageType() == PossibleMessages.GAME_SIZE) {
+            server.sizeHasBeenSet();
+        }
+
         server.onMessage(message);
     }
 

@@ -333,10 +333,15 @@ public class CLI extends ViewObservable implements IView {
                 case ("CHECK_CARDS") : printAvailableCards(lightweightModel.getReducedAvailableCards()); break;
                 case ("CHECK_LEADERS") : showLeaderCards(lightweightModel.getLeaderCards()); break;
                 case ("CHECK_PRODUCTIONS") : printProductionBoard(lightweightModel.getProductionBoard()); break;
+                case ("CHECK_INVENTORY") :
+                    printWarehouse(lightweightModel.getShelves(), lightweightModel.getExtra_shelves_types());
+                    printStrongbox(lightweightModel.getStrongbox());
+                    break;
             }
 
         } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP") || output.equals("CHECK_MARKET")
-                || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS") || output.equals("CHECK_PRODUCTIONS"));
+                || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS") || output.equals("CHECK_PRODUCTIONS")
+                || output.equals("CHECK_INVENTORY"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
@@ -460,7 +465,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showWinMatch(String winner) {
-        out.println(winner + " won!");
+        out.println(winner);
 
         System.exit(0);
     }
@@ -528,7 +533,7 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printStrongbox(HashMap<ResourceType, Integer> strongbox) {
+    public void printStrongbox(Map<ResourceType, Integer> strongbox) {
         lightweightModel.setStrongbox(strongbox);
         out.println("STRONGBOX: " + ColorCLI.ANSI_BLUE.escape() + "\n" + GraphicalResourceConstants.shield + ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.SHIELD) +
                 "\n" + ColorCLI.ANSI_YELLOW.escape() + GraphicalResourceConstants.coin + ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.COIN) +
@@ -539,6 +544,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void printWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras) {
+        lightweightModel.setWarehouse(shelves, extras);
         GraphicalWarehouse graphicalWarehouse = new GraphicalWarehouse(shelves, extras);
     }
 

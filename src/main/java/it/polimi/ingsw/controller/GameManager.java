@@ -26,7 +26,6 @@ import java.util.*;
  */
 public final class GameManager implements Observer {
 
-    private Server server;
     private final IGame currentGame;
     private final ActionManager actionManager;
     private ILobbyManager lobbyManager;
@@ -86,14 +85,6 @@ public final class GameManager implements Observer {
 
     public ILobbyManager getLobbyManager() {
         return lobbyManager;
-    }
-
-    public void setServer(Server server) {
-        this.server = server;
-    }
-
-    public Server getServer() {
-        return server;
     }
 
     /**
@@ -185,7 +176,6 @@ public final class GameManager implements Observer {
                         currentGame.setCurrentState(PossibleGameStates.SETUP);
                     }
                     firstTurn = false;
-                    server.sizeHasBeenSet();
                 }
                 break;
 
@@ -619,8 +609,10 @@ public final class GameManager implements Observer {
         switch (currentGame.getCurrentState().getGameState()) {
 
             case SETUP_LEADER:
-                lobbyManager.randomizedLeadersSetup(disconnected.getName());
-                Server.LOGGER.info("Random '" + currentPlayer + "' leaders set.");
+                if(disconnected.getName().equals(currentPlayer)) {
+                    lobbyManager.randomizedLeadersSetup(disconnected.getName());
+                    Server.LOGGER.info("Random '" + currentPlayer + "' leaders set.");
+                }
                 break;
 
             case SETUP_RESOURCES:

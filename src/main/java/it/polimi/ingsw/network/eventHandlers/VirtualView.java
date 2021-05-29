@@ -13,6 +13,7 @@ import it.polimi.ingsw.network.views.IView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Hides network classes and methods from the controller.The controller interacts woith the virtual view
@@ -143,8 +144,8 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void printStrongbox(HashMap<ResourceType, Integer> strongbox) {
-
+    public void printStrongbox(Map<ResourceType, Integer> strongbox) {
+        clientHandler.sendMessage(new StrongboxMessage(strongbox));
     }
 
     @Override
