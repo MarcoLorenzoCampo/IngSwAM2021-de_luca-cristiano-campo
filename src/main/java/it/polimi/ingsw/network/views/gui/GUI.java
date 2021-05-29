@@ -22,6 +22,7 @@ public class GUI extends ViewObservable implements IView, ActionListener {
     LightweightModel lightweightModel;
     private boolean isOnline;
 
+    private SetupPopUp setupPopUp;
 
     private PlayerNumberPopUp playerNumberPopUp;
     private OnlineLoginPopUp onlineLoginPopUp;
@@ -85,6 +86,11 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void showGenericString(String genericMessage) {
+        // {
+        //    Thread.sleep(2000);
+        //} catch (InterruptedException e) {
+        //    e.printStackTrace();
+        //}
         messagePopUp.changeMessage(genericMessage);
         System.out.println(genericMessage);
     }
