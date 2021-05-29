@@ -693,17 +693,20 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         if(currentPlayer.getPlayerState().isConnected()) {
             for(RealPlayer realPlayer1 : realPlayerList) {
 
-                ArrayList<EffectType> effectTypes = new ArrayList<>();
-                for(LeaderCard l : realPlayer1.getOwnedLeaderCards()) {
-                    effectTypes.add(l.getEffectType());
-                }
+                if(!realPlayer1.getName().equals(currentPlayer.getName())) {
 
-                viewsByNickname.get(currentPlayer.getName()).getPeek(
-                        realPlayer1.getName(),
-                        realPlayer1.getPlayerBoard().getFaithTrack().getFaithMarker(),
-                        realPlayer1.getPlayerBoard().getInventoryManager().getInventory(),
-                        effectTypes
-                );
+                    ArrayList<EffectType> effectTypes = new ArrayList<>();
+                    for (LeaderCard l : realPlayer1.getOwnedLeaderCards()) {
+                        effectTypes.add(l.getEffectType());
+                    }
+
+                    viewsByNickname.get(currentPlayer.getName()).getPeek(
+                            realPlayer1.getName(),
+                            realPlayer1.getPlayerBoard().getFaithTrack().getFaithMarker(),
+                            realPlayer1.getPlayerBoard().getInventoryManager().getInventory(),
+                            effectTypes
+                    );
+                }
             }
         }
     }
