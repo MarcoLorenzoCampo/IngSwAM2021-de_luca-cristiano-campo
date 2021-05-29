@@ -73,13 +73,8 @@ public class MiniGui  {
         System.out.println("ONLINE");
         this.frame.dispose();
         GUI guiView = new GUI(true);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                OnlineClientManager OnlineClientManager = new OnlineClientManager(guiView);
-                guiView.addObserver(OnlineClientManager);
-            }
-        });
+        OnlineClientManager OnlineClientManager = new OnlineClientManager(guiView);
+        guiView.addObserver(OnlineClientManager);
     }
 
     //addicon("production"+productioncard.getid()+".png")

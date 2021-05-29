@@ -199,7 +199,13 @@ public class Client extends Observable implements IClient {
 
         } else {
             MiniGui miniGui = new MiniGui();
-            miniGui.initializeGame();
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    miniGui.initializeGame();
+                }
+            });
+
         }
     }
 }
