@@ -5,7 +5,6 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
@@ -306,6 +305,7 @@ public class CLI extends ViewObservable implements IView {
     public void currentTurn(String message) {
         out.println(message);
 
+        boolean found = false;
         String cmd = "";
         String[] cmdMembers;
         String output;
@@ -327,21 +327,49 @@ public class CLI extends ViewObservable implements IView {
 
             output = CommandParser.parseCmd(cmdMembers);
 
+            if(cmdMembers[0].equals("PEEK") && cmdMembers.length == 2) {
+
+                for(LightweightPlayerState enemyState : lightweightModel.getPlayerStates()) {
+                    if(enemyState.getNickname().equals(cmdMembers[1])) {
+
+                        out.println("\nShowing " + enemyState.getNickname() + "'s leader cards:");
+                        showGenericString(enemyState.getLeaderCards().toString());
+
+                        out.println("\nShowing " + enemyState.getNickname() + "'s inventory:");
+                        printInventory(enemyState.getInventory());
+
+                        out.println("\nShowing " + enemyState.getNickname() + "'s faith track info:");
+                        showGenericString("Position: " + enemyState.getReducedFaithTrackInfo());
+
+                        found = true;
+                    }
+                }
+                if(!found) {
+                    out.println("\nThere's no player by that name!");
+                }
+                output = "PEEKED";
+            }
+
             switch (output) {
-                case ("HELP") : printPossibleActions(); break;
-                case ("CHECK_MARKET") :  out.println(lightweightModel.getReducedResourceMarket()); break;
-                case ("CHECK_CARDS") : printAvailableCards(lightweightModel.getReducedAvailableCards()); break;
-                case ("CHECK_LEADERS") : showLeaderCards(lightweightModel.getLeaderCards()); break;
-                case ("CHECK_PRODUCTIONS") : printProductionBoard(lightweightModel.getProductionBoard()); break;
+                case ("HELP") : printPossibleActions();
+                    break;
+                case ("CHECK_MARKET") : out.println(lightweightModel.getReducedResourceMarket());
+                    break;
+                case ("CHECK_CARDS") : printAvailableCards(lightweightModel.getReducedAvailableCards());
+                    break;
+                case ("CHECK_LEADERS") : showLeaderCards(lightweightModel.getLeaderCards());
+                    break;
+                case ("CHECK_PRODUCTIONS") : printProductionBoard(lightweightModel.getProductionBoard());
+                    break;
                 case ("CHECK_INVENTORY") :
-                    printWarehouse(lightweightModel.getShelves(), lightweightModel.getExtra_shelves_types());
                     printStrongbox(lightweightModel.getStrongbox());
+                    printWarehouse(lightweightModel.getShelves(), lightweightModel.getExtra_shelves_types());
                     break;
             }
 
         } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP") || output.equals("CHECK_MARKET")
                 || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS") || output.equals("CHECK_PRODUCTIONS")
-                || output.equals("CHECK_INVENTORY"));
+                || output.equals("CHECK_INVENTORY") || output.equals("PEEKED"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
@@ -524,7 +552,6 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void printBuffer(ArrayList<ResourceType> buffer) {
-        lightweightModel.setBuffer(buffer);
         out.println("Buffer:");
         for (ResourceType iterator : buffer) {
             out.print(iterator + " ");
@@ -570,7 +597,6 @@ public class CLI extends ViewObservable implements IView {
                 out.println("EXTRA PRODUCTION CARDS\n");
                 printLeaders(active_extra_prod);
             }
-
     }
 
     @Override
@@ -584,6 +610,49 @@ public class CLI extends ViewObservable implements IView {
             out.println(iterator);
         }
         out.println();
+    }
+
+    @Override
+    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
+
+        LightweightPlayerState playerState;
+        //If no player with that nickname is registered in the lightweight model it's added.
+        if(lightweightModel.getPlayerStateByName(name) == null) {
+            playerState = new LightweightPlayerState(name);
+            lightweightModel.getPlayerStates().add(playerState);
+
+        } else {
+            playerState = lightweightModel.getPlayerStateByName(name);
+        }
+
+        playerState.setReducedFaithTrackInfo(faithPosition);
+        playerState.setInventory(inventory);
+        playerState.setLeaderCards(cards);
+    }
+
+    /**
+     * Prints a reduced version of a player's inventory.
+     */
+    @Override
+    public void printInventory(Map<ResourceType, Integer> inventory) {
+
+        for (Map.Entry<ResourceType, Integer> entry : inventory.entrySet()) {
+            switch (entry.getKey()) {
+                case STONE:
+                    out.println(ColorCLI.ANSI_WHITE.escape() + "STONE  " + ColorCLI.getRESET() + ": " + entry.getValue());
+                    break;
+                case SERVANT:
+                    out.println(ColorCLI.ANSI_PURPLE.escape() + "SERVANT" + ColorCLI.getRESET() + ": " + entry.getValue());
+                    break;
+                case COIN:
+                    out.println(ColorCLI.ANSI_YELLOW.escape() + "COIN   " + ColorCLI.getRESET() + ": " + entry.getValue());
+                    break;
+                case SHIELD:
+                    out.println(ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.getRESET() + ": " + entry.getValue());
+                    break;
+                default: break;
+            }
+        }
     }
 
     @Override
@@ -670,6 +739,8 @@ public class CLI extends ViewObservable implements IView {
     public void printFaithTrack(FaithTrack faithTrack) {
 
         out.println("\nUpdated faith track:");
+
+        lightweightModel.setFaithTrack(faithTrack);
 
         GraphicalFaithTrack graphicalFaithTrack = new GraphicalFaithTrack(faithTrack);
         graphicalFaithTrack.draw();

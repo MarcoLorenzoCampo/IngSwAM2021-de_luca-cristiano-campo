@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
@@ -199,6 +200,8 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                     .setCurrentPlayer(realPlayerList.get(newCurrentIndex));
 
             gameManager.setCurrentPlayer(nowPlaying);
+
+            forwardPlayerUpdates();
 
             broadcastToAllExceptCurrent("Now playing: " + nowPlaying, nowPlaying);
             gameManager.onStartTurn();
@@ -532,6 +535,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             case END_GAME:
                 if(!endGame) {
                     Server.LOGGER.info("Last round started.");
+                    broadcastGenericMessage("End game started by: " + gameManager.getCurrentPlayer());
                     endGame = true;
                 }
                 break;
@@ -677,5 +681,33 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         disconnected.setupLeaderCard(n1);
         disconnected.setupLeaderCard(n2);
+    }
+
+    /**
+     * Method to forward each player an updated reduced version of each enemy to be accessed as local information.
+     */
+    private void forwardPlayerUpdates() {
+
+        RealPlayer currentPlayer = realPlayerList.get(getPlayerIndexByNickname(gameManager.getCurrentPlayer()));
+
+        if(currentPlayer.getPlayerState().isConnected()) {
+            for(RealPlayer realPlayer1 : realPlayerList) {
+
+                if(!realPlayer1.getName().equals(currentPlayer.getName())) {
+
+                    ArrayList<EffectType> effectTypes = new ArrayList<>();
+                    for (LeaderCard l : realPlayer1.getOwnedLeaderCards()) {
+                        effectTypes.add(l.getEffectType());
+                    }
+
+                    viewsByNickname.get(currentPlayer.getName()).getPeek(
+                            realPlayer1.getName(),
+                            realPlayer1.getPlayerBoard().getFaithTrack().getFaithMarker(),
+                            realPlayer1.getPlayerBoard().getInventoryManager().getInventory(),
+                            effectTypes
+                    );
+                }
+            }
+        }
     }
 }

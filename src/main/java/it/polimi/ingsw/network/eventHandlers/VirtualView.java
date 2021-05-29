@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.eventHandlers;
 
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
@@ -140,6 +141,29 @@ public class VirtualView implements IView, Observer {
 
     @Override
     public void printBuffer(ArrayList<ResourceType> buffer) {
+
+    }
+
+    /**
+     * Method to send a reduced String only version of an enemy status.
+     *
+     * @param name: name of the player whose info are being sent.
+     * @param faithPosition: position on the faith track.
+     * @param inventory: reduced inventory of owned resources.
+     * @param cards: leader cards owned.
+     */
+    @Override
+    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
+        clientHandler.sendMessage(new PeekUpdateMessage(name, faithPosition, inventory, cards));
+    }
+
+    /**
+     * Prints a reduced version of a player's inventory.
+     *
+     * @param inventory:
+     */
+    @Override
+    public void printInventory(Map<ResourceType, Integer> inventory) {
 
     }
 

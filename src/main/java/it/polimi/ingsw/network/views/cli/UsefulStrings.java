@@ -49,11 +49,11 @@ public class UsefulStrings {
                          "                                                                                                         \n" +
                          "                                                                                                         ";
 
-    private static final String greetings = "\n---------------------------------------------------------------------------------------------------------" +
-            "\n\nWelcome to Masters Of Renaissance! This Version was implemented by:" +
-                    "\nthe almighty Marco Lorenzo Campo , Alessandro De Luca and Mario Cristiano." +
-                    "\nHope you enjoy <3 !" +
-            "\n\n---------------------------------------------------------------------------------------------------------";
+    private static final String greetings = "\n‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗" +
+            "\n\n     Welcome to Masters Of Renaissance! This Version was implemented by:" +
+                    "\n     the almighty Marco Lorenzo Campo , Alessandro De Luca and Mario Cristiano." +
+                    "\n     Hope you enjoy <3 !" +
+            "\n\n‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗";
 
     private static final String disgracefulEnding =
                         ".-.-. .-.-. .-.-. .-.-. .-.-.  \n" +
@@ -62,19 +62,19 @@ public class UsefulStrings {
                         "                               ";
 
     private static final String whatToDo =
-            "\n\n-------------------------------------------------------------------------------------------------------------" +
-                    "\nHere's a complete list of the accepted commands:\n" +
+            "\n\n‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗" +
+                    "\n\nHere's a complete list of the accepted commands:\n" +
                     "\n - 'DISCARD_LEADER <int>': Discards one of your leader cards (Requires a valid card index);" +
                     "\n - 'ACTIVATE_LEADER <int>': Places one of your leader cards (Requires a valid card index);" +
                     "\n - 'GET_RESOURCES <int>': Gets resources from the market (Requires and index form 0 to 6);" +
                     "\n - 'BUY_CARD <int>': Buys an available card (Requires a valid card index and a valid production slot index);" +
-                    "\n - 'ACTIVATE_BASE_PRODUCTION <ResourceType> <ResourceType> <ResourceType>': " +
-                    "\n     Activates the base production (asks you 2 input resources and 1 output resource);" +
+                    "\n - 'ACTIVATE_BASE_PRODUCTION <ResourceType> <ResourceType> <ResourceType>': Activates the base production (INPUT, INPUT -> OUTPUT);" +
                     "\n - 'CARD_PRODUCTION': " +
                     "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies;" +
                     "\n - 'CHECK_MARKET': For an updated ResourceMarket;" +
                     "\n - 'CHECK_CARDS': For an updated ProductionCardsMarket;" +
                     "\n - 'CHECK_LEADERS': For an updated LeaderCards list;" +
                     "\n - 'CHECK_PRODUCTIONS': For an updated ProductionBoard;" +
-                    "\n-------------------------------------------------------------------------------------------------------------\n\n";
+                    "\n - 'CHECK_INVENTORY': To get an updated version of your STRONGBOX and WAREHOUSE;" +
+                    "\n\n‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗\n\n";
 }

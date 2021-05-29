@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.views;
 
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
@@ -140,6 +141,16 @@ public interface IView {
      * @param buffer: list of resource types in buffer
      */
     void printBuffer(ArrayList<ResourceType> buffer);
+
+    /**
+     * Method to send a reduced String only version of an enemy status.
+     */
+    void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards);
+
+    /**
+     * Prints a reduced version of a player's inventory.
+     */
+    void printInventory(Map<ResourceType, Integer> inventory);
 
     /**
      * Prints the strongbox

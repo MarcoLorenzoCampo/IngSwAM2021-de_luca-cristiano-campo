@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.views.gui;
 
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
@@ -48,6 +49,18 @@ public class GUI extends ViewObservable implements IView, ActionListener {
         }
     }
 
+    @Override
+    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
+
+    }
+
+    /**
+     * Prints a reduced version of a player's inventory.
+     */
+    @Override
+    public void printInventory(Map<ResourceType, Integer> inventory) {
+
+    }
 
     @Override
     public void askNickname() {

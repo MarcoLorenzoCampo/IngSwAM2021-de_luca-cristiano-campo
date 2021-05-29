@@ -180,6 +180,16 @@ public class OnlineClientManager implements ViewObserver, Observer {
                     viewUpdater.execute(() -> view.showError(e.getErrorMessage()));
                     break;
 
+                case PEEK_MESSAGE:
+                    PeekUpdateMessage p = (PeekUpdateMessage) message;
+                    viewUpdater.execute(() -> view.getPeek(
+                            p.getName(),
+                            p.getFaithPosition(),
+                            p.getInventory(),
+                            p.getCards()
+                    ));
+                    break;
+
                 default:
                     break;
             }

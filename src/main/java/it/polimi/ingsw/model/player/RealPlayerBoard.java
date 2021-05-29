@@ -58,7 +58,11 @@ public class RealPlayerBoard extends Observable {
         actionToPerform.isValid();
     }
 
-    public void increaseBoughCardsCount() throws EndGameException {
+    /**
+     * Method to increase the number of bought cards, when the max number gets reached then
+     * the observers gets notified and the end game procedure is started.
+     */
+    public void increaseBoughCardsCount() {
         boughtCardsNumber++;
         if(boughtCardsNumber == PlayingGame.getGameInstance().getMaxCardsBought())
             notifyObserver(new EndGameMessage());

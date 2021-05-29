@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.views.cli;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
@@ -21,18 +22,18 @@ public class LightweightModel {
     private String reducedResourceMarket;
     private List<ProductionCard> availableCards;
     private List<LightweightPlayerState> playerStates;
-    private ArrayList<ResourceType> buffer;
     private Map<ResourceType, Integer> strongbox;
     private ArrayList<ResourceType> shelves;
     private ArrayList<ResourceType> extra_shelves_types;
     private List<LeaderCard> leaderCards;
     private HashMap<Integer, ProductionCard> productionBoard;
+    private FaithTrack faithTrack;
 
     public LightweightModel() {
-        this.allProductions =  ProductionCardsParser.parseProductionDeck();
+        this.faithTrack = new FaithTrack();
+        this.allProductions = ProductionCardsParser.parseProductionDeck();
         this.playerStates = new ArrayList<>();
         this.productionBoard = new HashMap<>();
-        this.buffer = new ArrayList<>();
         this.shelves = new ArrayList<>();
         this.strongbox = new HashMap<>();
         this.availableCards = new ArrayList<>();
@@ -46,6 +47,14 @@ public class LightweightModel {
 
     public void addToPlayerState(String nickname) {
         
+    }
+
+    public void setFaithTrack(FaithTrack faithTrack) {
+        this.faithTrack = faithTrack;
+    }
+
+    public List<LightweightPlayerState> getPlayerStates() {
+        return playerStates;
     }
 
     public void setLeaderCards(List<LeaderCard> leaderCards) {
@@ -76,17 +85,6 @@ public class LightweightModel {
         return productionBoard;
     }
 
-    public String getPlayerStateByNickname(String nickname) {
-
-        for(LightweightPlayerState playerState : playerStates) {
-            if(playerState.getNickname().equals(nickname)) {
-                return playerState.peekStatus();
-            }
-        }
-
-        return null;
-    }
-
     public Map<ResourceType, Integer> getStrongbox() {
         return strongbox;
     }
@@ -99,10 +97,6 @@ public class LightweightModel {
         return extra_shelves_types;
     }
 
-    public void setBuffer(ArrayList<ResourceType> buffer) {
-        this.buffer = buffer;
-    }
-
     public void setStrongbox(Map<ResourceType, Integer> strongbox) {
         this.strongbox = strongbox;
     }
@@ -110,6 +104,15 @@ public class LightweightModel {
     public void setWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras) {
         this.shelves = shelves;
         this.extra_shelves_types = extras;
+    }
+
+    public LightweightPlayerState getPlayerStateByName(String nickname) {
+        for(LightweightPlayerState l : playerStates) {
+            if(l.getNickname().equals(nickname)) {
+                return l;
+            }
+        }
+        return null;
     }
 
     public void setProductionBoard(HashMap<Integer, ProductionCard> productions) {
