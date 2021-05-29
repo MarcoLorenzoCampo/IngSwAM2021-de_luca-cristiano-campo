@@ -532,6 +532,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             case END_GAME:
                 if(!endGame) {
                     Server.LOGGER.info("Last round started.");
+                    broadcastGenericMessage("End game started by: " + gameManager.getCurrentPlayer());
                     endGame = true;
                 }
                 break;

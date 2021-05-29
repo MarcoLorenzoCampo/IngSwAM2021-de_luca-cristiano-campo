@@ -36,6 +36,9 @@ public final class CommandParser {
 
             case (2) :
                 switch(cmdMembers[0]) {
+                    case("PEEK") :
+                        return "PEEK_PLAYER";
+
                     case("DISCARD_LEADER") :
                         try {
                             Integer.parseInt(cmdMembers[1]);

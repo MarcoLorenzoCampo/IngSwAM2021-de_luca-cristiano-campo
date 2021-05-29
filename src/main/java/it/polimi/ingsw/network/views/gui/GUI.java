@@ -47,6 +47,18 @@ public class GUI extends ViewObservable implements IView, ActionListener {
         }
     }
 
+    @Override
+    public void getPeek(String name, String faithInfo, Map<ResourceType, Integer> inventory, List<LeaderCard> cards) {
+
+    }
+
+    /**
+     * Prints a reduced version of a player's inventory.
+     */
+    @Override
+    public void printInventory(Map<ResourceType, Integer> inventory) {
+
+    }
 
     @Override
     public void askNickname() {

@@ -142,6 +142,16 @@ public interface IView {
     void printBuffer(ArrayList<ResourceType> buffer);
 
     /**
+     * Method to send a reduced String only version of an enemy status.
+     */
+    void getPeek(String name, String faithInfo, Map<ResourceType, Integer> inventory, List<LeaderCard> cards);
+
+    /**
+     * Prints a reduced version of a player's inventory.
+     */
+    void printInventory(Map<ResourceType, Integer> inventory);
+
+    /**
      * Prints the strongbox
      * @param strongbox: map with the strongbox inventory
      */
