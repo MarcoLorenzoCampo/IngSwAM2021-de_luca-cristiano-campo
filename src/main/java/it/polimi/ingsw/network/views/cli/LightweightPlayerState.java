@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.views.cli;
 
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
@@ -17,15 +18,15 @@ public class LightweightPlayerState {
 
     private final String nickname;
     private Map<ResourceType, Integer> inventory;
-    private String reducedFaithTrackInfo;
-    private List<LeaderCard> leaderCards;
+    private int faithPosition;
+    private List<EffectType> leaderCards;
     private HashMap<Integer, ProductionCard> productionBoard;
 
     public LightweightPlayerState(String nickname) {
         this.nickname = nickname;
         this.productionBoard = new HashMap<>();
         this.leaderCards = new ArrayList<>();
-        this.reducedFaithTrackInfo = "";
+        this.faithPosition = 0;
         this.inventory = new HashMap<>();
     }
 
@@ -37,19 +38,19 @@ public class LightweightPlayerState {
         this.inventory = inventory;
     }
 
-    public String getReducedFaithTrackInfo() {
-        return reducedFaithTrackInfo;
+    public int getReducedFaithTrackInfo() {
+        return faithPosition;
     }
 
-    public void setReducedFaithTrackInfo(String reducedFaithTrackInfo) {
-        this.reducedFaithTrackInfo = reducedFaithTrackInfo;
+    public void setReducedFaithTrackInfo(int faithPosition) {
+        this.faithPosition = faithPosition;
     }
 
-    public List<LeaderCard> getLeaderCards() {
+    public List<EffectType> getLeaderCards() {
         return leaderCards;
     }
 
-    public void setLeaderCards(List<LeaderCard> leaderCards) {
+    public void setLeaderCards(List<EffectType> leaderCards) {
         this.leaderCards = leaderCards;
     }
 

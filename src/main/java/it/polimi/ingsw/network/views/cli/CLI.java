@@ -333,13 +333,13 @@ public class CLI extends ViewObservable implements IView {
                     if(enemyState.getNickname().equals(cmdMembers[1])) {
 
                         out.println("\nShowing " + enemyState.getNickname() + "'s leader cards:");
-                        showLeaderCards(enemyState.getLeaderCards());
+                        showGenericString(enemyState.getLeaderCards().toString());
 
                         out.println("\nShowing " + enemyState.getNickname() + "'s inventory:");
                         printInventory(enemyState.getInventory());
 
                         out.println("\nShowing " + enemyState.getNickname() + "'s faith track info:");
-                        showGenericString(enemyState.getReducedFaithTrackInfo());
+                        showGenericString("Position: " + enemyState.getReducedFaithTrackInfo());
 
                         found = true;
                     }
@@ -347,6 +347,7 @@ public class CLI extends ViewObservable implements IView {
                 if(!found) {
                     out.println("\nThere's no player by that name!");
                 }
+                output = "PEEKED";
             }
 
             switch (output) {
@@ -368,7 +369,7 @@ public class CLI extends ViewObservable implements IView {
 
         } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP") || output.equals("CHECK_MARKET")
                 || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS") || output.equals("CHECK_PRODUCTIONS")
-                || output.equals("CHECK_INVENTORY"));
+                || output.equals("CHECK_INVENTORY") || output.equals("PEEKED"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
@@ -612,7 +613,7 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void getPeek(String name, String faithInfo, Map<ResourceType, Integer> inventory, List<LeaderCard> cards) {
+    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
 
         LightweightPlayerState playerState;
         //If no player with that nickname is registered in the lightweight model it's added.
@@ -624,7 +625,7 @@ public class CLI extends ViewObservable implements IView {
             playerState = lightweightModel.getPlayerStateByName(name);
         }
 
-        playerState.setReducedFaithTrackInfo(faithInfo);
+        playerState.setReducedFaithTrackInfo(faithPosition);
         playerState.setInventory(inventory);
         playerState.setLeaderCards(cards);
     }
@@ -635,6 +636,23 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printInventory(Map<ResourceType, Integer> inventory) {
 
+        for (Map.Entry<ResourceType, Integer> entry : inventory.entrySet()) {
+            switch (entry.getKey()) {
+                case STONE:
+                    out.println(ColorCLI.ANSI_WHITE.escape() + "STONE  " + ColorCLI.getRESET() + ": " + entry.getValue());
+                    break;
+                case SERVANT:
+                    out.println(ColorCLI.ANSI_PURPLE.escape() + "SERVANT" + ColorCLI.getRESET() + ": " + entry.getValue());
+                    break;
+                case COIN:
+                    out.println(ColorCLI.ANSI_YELLOW.escape() + "COIN   " + ColorCLI.getRESET() + ": " + entry.getValue());
+                    break;
+                case SHIELD:
+                    out.println(ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.getRESET() + ": " + entry.getValue());
+                    break;
+                default: break;
+            }
+        }
     }
 
     @Override
