@@ -119,11 +119,11 @@ it/polimi/ingsw/network/messages/playerMessages/ExecuteProductionMessage.class
 it/polimi/ingsw/network/views/cli/graphical/GraphicalExtraInventoryLeaderCard.class
 it/polimi/ingsw/controller/GameManager.class
 it/polimi/ingsw/network/server/ClientHandler.class
-it/polimi/ingsw/network/views/gui/SetupPopUp.class
 it/polimi/ingsw/actions/Action.class
 it/polimi/ingsw/exceptions/InvalidProductionSlotException.class
 it/polimi/ingsw/network/messages/playerMessages/ExtraProductionMessage.class
 it/polimi/ingsw/network/messages/playerMessages/SetupResourceAnswer.class
+it/polimi/ingsw/network/client/OfflineClient.class
 it/polimi/ingsw/model/warehouse/Shelf.class
 it/polimi/ingsw/model/utilities/BaseProduction.class
 it/polimi/ingsw/model/strongbox/Strongbox.class

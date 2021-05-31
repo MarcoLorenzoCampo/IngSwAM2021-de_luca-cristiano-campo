@@ -90,7 +90,7 @@ public class CLI extends ViewObservable implements IView {
                 port = Integer.parseInt(readLine());
             } catch (NumberFormatException | InputMismatchException e) {
                 out.println("This in not number!");
-                clearCLI();
+                //clearCLI();
             }
 
         } while(!NetworkInfoValidator.isPortValid(port));
@@ -116,7 +116,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void askNickname() {
-        clearCLI();
+        //clearCLI();
 
         out.println("\nWhat nickname would you like to use? ");
         out.print(">>> ");
@@ -132,7 +132,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void askPlayerNumber() {
-        clearCLI();
+        //clearCLI();
 
         if(isOffline) {
             notifyObserver(o -> o.onUpdateNumberOfPlayers(1));
@@ -167,7 +167,7 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void showLoginOutput(boolean connectionSuccess, boolean nicknameAccepted, boolean reconnected) {
 
-        clearCLI();
+        //clearCLI();
 
         if(connectionSuccess && nicknameAccepted && !reconnected) {
             out.println("Operation successful! You're now logged in.");
@@ -200,7 +200,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void askReplacementResource(ResourceType r1, ResourceType r2) {
-        clearCLI();
+        //clearCLI();
 
         out.println("You just bought resources from the market." +
                 "It appears you have a choice though." +
@@ -260,7 +260,6 @@ public class CLI extends ViewObservable implements IView {
             } catch (NumberFormatException | ExecutionException e) {
                 out.println("This is not a number!");
             }
-
 
             if(d1 != d2) {
                 if (d2 <= 3 && d2 >= 0) {
@@ -365,11 +364,13 @@ public class CLI extends ViewObservable implements IView {
                     printStrongbox(lightweightModel.getStrongbox());
                     printWarehouse(lightweightModel.getShelves(), lightweightModel.getExtra_shelves_types());
                     break;
+                case ("CHECK_TRACK") : printFaithTrack(lightweightModel.getFaithTrack());
+                    break;
             }
 
         } while (output.equals("UNKNOWN_COMMAND") || output.equals("HELP") || output.equals("CHECK_MARKET")
                 || output.equals("CHECK_CARDS") || output.equals("CHECK_LEADERS") || output.equals("CHECK_PRODUCTIONS")
-                || output.equals("CHECK_INVENTORY") || output.equals("PEEKED"));
+                || output.equals("CHECK_INVENTORY") || output.equals("PEEKED") || output.equals("CHECK_TRACK"));
 
         switch(CommandParser.parseCmd(cmdMembers)) {
 
@@ -579,9 +580,11 @@ public class CLI extends ViewObservable implements IView {
     public void printProductionBoard(HashMap<Integer,ProductionCard> productionBoard) {
         lightweightModel.setProductionBoard(productionBoard);
 
-        out.println("BASE PRODUCTION\n");
-        out.println(" UNDEFINED + UNDEFINED --> UNDEFINED\n");
-        out.println("PRODUCTION CARDS\n");
+        out.println("\nAvailable productions:\n");
+
+        out.println(ColorCLI.ANSI_BLUE.escape() + "BASE PRODUCTION\n" + ColorCLI.getRESET());
+        out.println(" ? + ? ⇉ ?\n");
+        out.println(ColorCLI.ANSI_BLUE.escape() + "PRODUCTION CARDS\n" + ColorCLI.getRESET());
 
         for (Map.Entry<Integer, ProductionCard> iterator:productionBoard.entrySet()) {
             if(iterator.getValue() == null) out.println("EMPTY\n");

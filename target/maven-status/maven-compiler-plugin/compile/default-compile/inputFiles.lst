@@ -82,6 +82,7 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/CLI.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/UsefulStrings.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/player/Visitor.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/client/OfflineClient.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/parsers/ResourceMarketParser.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/FaithResource.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/playerMessages/PingMessage.java
@@ -171,7 +172,6 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/DevelopmentTag.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/market/leaderCards/LeaderCard.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/NicknamePopUp.java
-/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/SetupPopUp.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/controller/ILobbyManager.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/GUI.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/eventHandlers/Observer.java

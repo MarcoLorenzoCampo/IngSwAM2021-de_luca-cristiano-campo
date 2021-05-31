@@ -45,10 +45,6 @@ public class LightweightModel {
         productionBoard.put(2, null);
     }
 
-    public void addToPlayerState(String nickname) {
-        
-    }
-
     public void setFaithTrack(FaithTrack faithTrack) {
         this.faithTrack = faithTrack;
     }
@@ -63,6 +59,10 @@ public class LightweightModel {
 
     public void setReducedResourceMarket(String reducedResourceMarket) {
         this.reducedResourceMarket = reducedResourceMarket;
+    }
+
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
     }
 
     public List<LeaderCard> getLeaderCards() {
