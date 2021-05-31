@@ -392,8 +392,8 @@ public class GraphicalFaithTrackTile {
 
     private void initColorFaithTrackTile(){
         colorFaithTrackTile.put(0, ColorCLI.ANSI_BRIGHT_WHITE);
-        colorFaithTrackTile.put(1, ColorCLI.ANSI_YELLOW);
-        colorFaithTrackTile.put(2, ColorCLI.ANSI_BRIGHT_RED);
+        colorFaithTrackTile.put(1, ColorCLI.ANSI_BRIGHT_YELLOW);
+        colorFaithTrackTile.put(2, ColorCLI.ANSI_YELLOW);
         colorFaithTrackTile.put(3, ColorCLI.ANSI_RED);
     }
 
