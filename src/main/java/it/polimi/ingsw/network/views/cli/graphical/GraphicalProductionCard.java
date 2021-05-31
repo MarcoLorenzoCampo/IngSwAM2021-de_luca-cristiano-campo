@@ -1,7 +1,5 @@
 package it.polimi.ingsw.network.views.cli.graphical;
 
-
-
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.enumerations.ResourceType;
@@ -22,8 +20,6 @@ public class GraphicalProductionCard {
     private static final int MAX_HORIZ_TILES = 12; //cols.
 
     private ProductionCard productionCard;
-
-
 
     private String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
     private int index;
@@ -52,13 +48,9 @@ public class GraphicalProductionCard {
     private Integer requirementsOutputQuantity2;
     private Integer requirementsOutputQuantity3;
 
-
     private Map<Level, Integer> cardLevel = new HashMap<>();
     private Map<Color, ColorCLI> cardColor = new HashMap<>();
     private Map<ResourceType, ColorCLI> colorRequirementsType = new HashMap<>();
-
-
-
 
     public GraphicalProductionCard(ProductionCard productionCard, Integer i) {
         initCardRequirementsType();
@@ -67,7 +59,6 @@ public class GraphicalProductionCard {
         this.productionCard = productionCard;
         loadAvailableCard(i);
     }
-
 
     private void borderBuilding(ColorCLI color) {
 

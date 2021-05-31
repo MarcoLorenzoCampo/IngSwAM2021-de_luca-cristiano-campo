@@ -11,10 +11,7 @@ import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.utilities.CommandParser;
 import it.polimi.ingsw.network.views.cli.constants.GraphicalResourceConstants;
-import it.polimi.ingsw.network.views.cli.graphical.GraphicalFaithTrack;
-import it.polimi.ingsw.network.views.cli.graphical.GraphicalLeaderCards;
-import it.polimi.ingsw.network.views.cli.graphical.GraphicalProductionCardsMarket;
-import it.polimi.ingsw.network.views.cli.graphical.GraphicalWarehouse;
+import it.polimi.ingsw.network.views.cli.graphical.*;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -328,20 +325,25 @@ public class CLI extends ViewObservable implements IView {
 
             if(cmdMembers[0].equals("PEEK") && cmdMembers.length == 2) {
 
-                for(LightweightPlayerState enemyState : lightweightModel.getPlayerStates()) {
-                    if(enemyState.getNickname().equals(cmdMembers[1])) {
+                if(!cmdMembers[1].equals(nickname)) {
+                    for (LightweightPlayerState enemyState : lightweightModel.getPlayerStates()) {
+                        if (enemyState.getNickname().equals(cmdMembers[1])) {
 
-                        out.println("\nShowing " + enemyState.getNickname() + "'s leader cards:");
-                        showGenericString(enemyState.getLeaderCards().toString());
+                            out.println("\nShowing " + enemyState.getNickname() + "'s leader cards:");
+                            showGenericString(enemyState.getLeaderCards().toString());
 
-                        out.println("\nShowing " + enemyState.getNickname() + "'s inventory:");
-                        printInventory(enemyState.getInventory());
+                            out.println("\nShowing " + enemyState.getNickname() + "'s inventory:");
+                            printInventory(enemyState.getInventory());
 
-                        out.println("\nShowing " + enemyState.getNickname() + "'s faith track info:");
-                        showGenericString("Position: " + enemyState.getReducedFaithTrackInfo());
+                            out.println("\nShowing " + enemyState.getNickname() + "'s faith track info:");
+                            showGenericString("Position: " + enemyState.getReducedFaithTrackInfo());
 
-                        found = true;
+                            found = true;
+                        }
                     }
+                } else {
+                    out.println("\nYou can't peek on yourself! Chose a different player.");
+                    found = true;
                 }
                 if(!found) {
                     out.println("\nThere's no player by that name!");
@@ -563,10 +565,14 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printStrongbox(Map<ResourceType, Integer> strongbox) {
         lightweightModel.setStrongbox(strongbox);
-        out.println("STRONGBOX: " + ColorCLI.ANSI_BLUE.escape() + "\n" + GraphicalResourceConstants.shield + ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.SHIELD) +
-                "\n" + ColorCLI.ANSI_YELLOW.escape() + GraphicalResourceConstants.coin + ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.COIN) +
-                "\n" + ColorCLI.ANSI_WHITE.escape() + GraphicalResourceConstants.stone + ColorCLI.getRESET() + " = " + strongbox.get(STONE) +
-                "\n" + ColorCLI.ANSI_PURPLE.escape() + GraphicalResourceConstants.servant+ ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.SERVANT));
+        out.println("STRONGBOX: " + ColorCLI.ANSI_BLUE.escape() +
+                "\n" + GraphicalResourceConstants.shield + ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.SHIELD) +
+                "\n" + ColorCLI.ANSI_YELLOW.escape()
+                    + GraphicalResourceConstants.coin + ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.COIN) +
+                "\n" + ColorCLI.ANSI_WHITE.escape()
+                    + GraphicalResourceConstants.stone + ColorCLI.getRESET() + " = " + strongbox.get(STONE) +
+                "\n" + ColorCLI.ANSI_PURPLE.escape()
+                    + GraphicalResourceConstants.servant+ ColorCLI.getRESET() + " = " + strongbox.get(ResourceType.SERVANT));
         out.println();
     }
 
@@ -578,6 +584,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void printProductionBoard(HashMap<Integer,ProductionCard> productionBoard) {
+
         lightweightModel.setProductionBoard(productionBoard);
 
         out.println("\nAvailable productions:\n");
@@ -591,16 +598,16 @@ public class CLI extends ViewObservable implements IView {
             else out.println(iterator.getValue().reduce()+"\n");
         }
 
-            List<LeaderCard> active_extra_prod=
-            lightweightModel.getLeaderCards()
-                    .stream()
-                    .filter(leaderCard -> leaderCard.getEffectType().equals(EffectType.EXTRA_PRODUCTION))
-                    .filter(LeaderCard::isActive)
-                    .collect(Collectors.toList());
-            if(active_extra_prod.size()>0){
-                out.println("EXTRA PRODUCTION CARDS\n");
-                printLeaders(active_extra_prod);
-            }
+        List<LeaderCard> active_extra_prod=
+        lightweightModel.getLeaderCards()
+                .stream()
+                .filter(leaderCard -> leaderCard.getEffectType().equals(EffectType.EXTRA_PRODUCTION))
+                .filter(LeaderCard::isActive)
+                .collect(Collectors.toList());
+        if(active_extra_prod.size()>0){
+            out.println("EXTRA PRODUCTION CARDS\n");
+            printLeaders(active_extra_prod);
+        }
     }
 
     @Override
@@ -620,8 +627,10 @@ public class CLI extends ViewObservable implements IView {
     public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
 
         LightweightPlayerState playerState;
+
         //If no player with that nickname is registered in the lightweight model it's added.
         if(lightweightModel.getPlayerStateByName(name) == null) {
+
             playerState = new LightweightPlayerState(name);
             lightweightModel.getPlayerStates().add(playerState);
 
@@ -654,7 +663,8 @@ public class CLI extends ViewObservable implements IView {
                 case SHIELD:
                     out.println(ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.getRESET() + ": " + entry.getValue());
                     break;
-                default: break;
+                default:
+                    break;
             }
         }
     }

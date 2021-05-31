@@ -697,7 +697,7 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
                     ArrayList<EffectType> effectTypes = new ArrayList<>();
                     for (LeaderCard l : realPlayer1.getOwnedLeaderCards()) {
-                        effectTypes.add(l.getEffectType());
+                        if(l.isActive()) effectTypes.add(l.getEffectType());
                     }
 
                     viewsByNickname.get(currentPlayer.getName()).getPeek(
