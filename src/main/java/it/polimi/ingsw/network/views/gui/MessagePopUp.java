@@ -22,6 +22,7 @@ public class MessagePopUp extends JFrame {
         showed.setHorizontalAlignment(SwingConstants.CENTER);
         showed.setVerticalAlignment(SwingConstants.CENTER);
         this.add(showed);
+        this.setVisible(true);
     }
 
     public void changeMessage(String newMessage){
