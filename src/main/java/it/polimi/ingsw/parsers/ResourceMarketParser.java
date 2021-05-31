@@ -2,8 +2,10 @@ package it.polimi.ingsw.parsers;
 
 import com.google.gson.Gson;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public final class ResourceMarketParser {
 
@@ -12,16 +14,13 @@ public final class ResourceMarketParser {
      */
     public static int[] parseResourceMarketDimensions() {
 
-        FileReader reader = null;
-        String configPath = "src/main/resources/resourceBoard_dimensions.json";
+        Reader reader;
+        String configPath = "/resourceBoard_dimensions.json";
         Gson resourceBoardConfigReader = new Gson();
 
-        try {
-            reader = new FileReader(configPath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        assert reader != null;
+        reader = new InputStreamReader(Objects.requireNonNull(ResourceMarketParser.class.getResourceAsStream(configPath)),
+                StandardCharsets.UTF_8);
+
         return resourceBoardConfigReader.fromJson(reader, int[].class);
     }
 
@@ -30,16 +29,13 @@ public final class ResourceMarketParser {
      */
     public static String[] parseResourceMarketContent() {
 
-        FileReader reader = null;
-        String resourcesPath = "src/main/resources/given_resources.json";
+        Reader reader;
+        String resourcesPath = "/given_resources.json";
         Gson resourceBoardConfigReader = new Gson();
 
-        try {
-            reader = new FileReader(resourcesPath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        assert reader != null;
+        reader = new InputStreamReader(Objects.requireNonNull(ResourceMarketParser.class.getResourceAsStream(resourcesPath)),
+                StandardCharsets.UTF_8);
+
         return resourceBoardConfigReader.fromJson(reader, String[].class);
     }
 }

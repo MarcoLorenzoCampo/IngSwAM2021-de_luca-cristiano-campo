@@ -5,10 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.market.ProductionCard;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 public final class ProductionCardsParser {
 
@@ -19,16 +19,13 @@ public final class ProductionCardsParser {
      */
     public static List<ProductionCard> parseProductionDeck() {
 
-        String productionCardsPath = "src/main/resources/production_cards_deck.json";
-        BufferedReader bufferedReader = null;
-        try {
-            bufferedReader = new BufferedReader(new FileReader(productionCardsPath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        String productionCardsPath = "/production_cards_deck.json";
+        Reader reader;
 
-        assert bufferedReader != null;
-        JsonArray json = new Gson().fromJson(bufferedReader, JsonArray.class);
+        reader = new InputStreamReader(Objects.requireNonNull(ProductionCardsParser.class.getResourceAsStream(productionCardsPath)),
+                StandardCharsets.UTF_8);
+
+        JsonArray json = new Gson().fromJson(reader, JsonArray.class);
             return new Gson().fromJson(String.valueOf(json), new TypeToken<List<ProductionCard>>() {
             }.getType());
     }
