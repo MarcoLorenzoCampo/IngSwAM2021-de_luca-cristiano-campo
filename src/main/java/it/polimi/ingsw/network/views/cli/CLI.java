@@ -363,9 +363,13 @@ public class CLI extends ViewObservable implements IView {
                 case ("CHECK_PRODUCTIONS") : printProductionBoard(lightweightModel.getProductionBoard());
                     break;
                 case ("CHECK_INVENTORY") :
-                    printStrongbox(lightweightModel.getStrongbox());
-                    printWarehouse(lightweightModel.getShelves(), lightweightModel.getExtra_shelves_types());
-                    break;
+                    if(lightweightModel.getShelves().size() == 0) {
+                        out.println("\nYour inventory is empty!\n");
+                    } else {
+                        printStrongbox(lightweightModel.getStrongbox());
+                        printWarehouse(lightweightModel.getShelves(), lightweightModel.getExtra_shelves_types());
+                    }
+                        break;
                 case ("CHECK_TRACK") : printFaithTrack(lightweightModel.getFaithTrack());
                     break;
             }
