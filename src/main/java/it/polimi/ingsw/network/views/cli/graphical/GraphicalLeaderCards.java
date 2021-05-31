@@ -11,8 +11,8 @@ public class GraphicalLeaderCards {
 
     private static final int MAX_VERT_TILES = 8; //rows.
     private static final int MAX_HORIZ_TILES = 12 ; //columns.
-    private String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES * 5];
-    private List<LeaderCard> leaderCards;
+    private final String[][] cells = new String[MAX_VERT_TILES][MAX_HORIZ_TILES * 5];
+    private final List<LeaderCard> leaderCards;
 
     public GraphicalLeaderCards(List<LeaderCard> leaderCards) {
         this.leaderCards = leaderCards;

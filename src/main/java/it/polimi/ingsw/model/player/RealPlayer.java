@@ -18,6 +18,7 @@ import it.polimi.ingsw.network.messages.serverMessages.DiscardedResourceMessage;
 import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 import it.polimi.ingsw.network.messages.serverMessages.LeaderCardMessage;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +80,9 @@ public class RealPlayer extends Observable implements Visitor {
     public void discardLeaderCard(int leaderToDiscard) {
         ownedLeaderCards.remove(leaderToDiscard);
 
-        notifyObserver(new LeaderCardMessage(ownedLeaderCards));
+        if(ownedLeaderCards.size() != 0) {
+            notifyObserver(new LeaderCardMessage(ownedLeaderCards));
+        }
     }
 
     /**
