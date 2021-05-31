@@ -13,9 +13,11 @@ import it.polimi.ingsw.network.views.cli.LightweightModel;
 import it.polimi.ingsw.network.views.cli.UsefulStrings;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class GUI extends ViewObservable implements IView, ActionListener {
@@ -25,14 +27,17 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     private SetupPopUp setupPopUp;
 
+    private JFrame setupFrame;
+
     private PlayerNumberPopUp playerNumberPopUp;
-    private OnlineLoginPopUp onlineLoginPopUp;
+
     private NicknamePopUp nicknamePopUp;
     private MessagePopUp messagePopUp;
 
     public GUI(boolean isOnline){
+        setupFrame = new JFrame();
+        setupFrame.setPreferredSize(new Dimension(500,430));
         lightweightModel = new LightweightModel();
-        onlineLoginPopUp = new OnlineLoginPopUp(this);
         nicknamePopUp = new NicknamePopUp(this);
         playerNumberPopUp = new PlayerNumberPopUp(this);
         messagePopUp = new MessagePopUp(" ");
@@ -43,7 +48,12 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     private void startGUI() {
         if(isOnline){
-            onlineLoginPopUp.setVisible(true);
+            OnlineLoginPopUp onlineLoginPopUp = new OnlineLoginPopUp(this);
+            onlineLoginPopUp.getSubmit().addActionListener(e -> {
+
+            });
+            setupFrame.setContentPane(new OnlineLoginPopUp(this));
+            setupFrame.validate();
         } else {
             askNickname();
         }
@@ -64,10 +74,7 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void askNickname() {
-        onlineLoginPopUp.setContentPane(nicknamePopUp.getContentPane());
-        onlineLoginPopUp.validate();
-        onlineLoginPopUp.setVisible(true);
-        //nicknamePopUp.setVisible(true);
+
     }
 
     @Override
@@ -76,9 +83,7 @@ public class GUI extends ViewObservable implements IView, ActionListener {
             notifyObserver(o -> o.onUpdateNumberOfPlayers(1));
 
         } else {
-            onlineLoginPopUp.setContentPane(playerNumberPopUp.getContentPane());
-            onlineLoginPopUp.validate();
-            //playerNumberPopUp.setVisible(true);
+
         }
     }
 
@@ -238,11 +243,11 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals(onlineLoginPopUp.getSubmit())){
+        if(e.getSource().equals(setupFrame.getContentPane().getSubmit())){
             int socket = Integer.parseInt(onlineLoginPopUp.getSocket_input().getText());
             String ip = onlineLoginPopUp.getIp_input().getText();
             if(NetworkInfoValidator.isIPAddressValid(ip) && NetworkInfoValidator.isPortValid(socket)){
-                onlineLoginPopUp.dispose();
+                //onlineLoginPopUp.dispose();
                 notifyObserver(o -> o.onServerInfoUpdate(socket, ip));
             } else {
                 JFrame error = new JFrame();
