@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ResourcesPopUp extends JFrame implements ActionListener {
+public class ResourcesPopUp extends JPanel implements ActionListener {
     private JPanel mainPanel;
     private JPanel titlePanel;
     private JLabel title;
@@ -27,14 +27,8 @@ public class ResourcesPopUp extends JFrame implements ActionListener {
     private JButton DELETEButton;
     private int number;
 
-    public ResourcesPopUp(GUI gui, int number){
-        super("SETUP RESOURCES");
-
-
+    public ResourcesPopUp( int number){
         this.number = number;
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.setContentPane(mainPanel);
-
         title.setText("YOU HAVE " + number + " RESOURCES TO PICK");
 
         STONEButton.setFocusable(false);
@@ -61,11 +55,15 @@ public class ResourcesPopUp extends JFrame implements ActionListener {
         if(number<2){
             secondRow.setVisible(false);
         }
-        this.pack();
+        mainPanel.setVisible(true);
     }
 
     public int getNumber() {
         return number;
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
 
     public JTextField getTextField1() {
@@ -75,11 +73,6 @@ public class ResourcesPopUp extends JFrame implements ActionListener {
     public JTextField getTextField2() {
         return textField2;
     }
-
-    //public static void main(String[] args) {
-    //    ResourcesPopUp prova = new ResourcesPopUp(new GUI(true), 2);
-    //    prova.setVisible(true);
-    //}
 
 
     public JButton getSUBMITButton() {

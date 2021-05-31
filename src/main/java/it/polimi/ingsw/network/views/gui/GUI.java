@@ -13,35 +13,233 @@ import it.polimi.ingsw.network.views.cli.LightweightModel;
 import it.polimi.ingsw.network.views.cli.UsefulStrings;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class GUI extends ViewObservable implements IView, ActionListener {
 
     LightweightModel lightweightModel;
     private boolean isOnline;
+    JFrame setupFrame;
+    private ArrayList<JPanel> setup;
 
-    private PlayerNumberPopUp playerNumberPopUp;
-    private OnlineLoginPopUp onlineLoginPopUp;
-    private NicknamePopUp nicknamePopUp;
     private MessagePopUp messagePopUp;
 
     public GUI(boolean isOnline){
         lightweightModel = new LightweightModel();
-        onlineLoginPopUp = new OnlineLoginPopUp(this);
-        nicknamePopUp = new NicknamePopUp(this);
-        playerNumberPopUp = new PlayerNumberPopUp(this);
         messagePopUp = new MessagePopUp(" ");
-
+        setupFrame = new JFrame();
+        setup = new ArrayList<>();
         this.isOnline = isOnline;
+
+        initializeSetupFrame();
+        initializeSetupPanels();
+
         startGUI();
+    }
+
+    private void initializeSetupPanels() {
+        setup.add(onlineLoginPopUp());
+        setup.add(nicknamePopUp());
+        setup.add(playerNumberPopUp());
+    }
+
+    private JPanel resourcesPopUp(int quantity) {
+        ResourcesPopUp resourcesPopUp = new ResourcesPopUp(quantity);
+        resourcesPopUp.getSUBMITButton().addActionListener(e ->{
+            LinkedList<ResourceType> send = new LinkedList<>();
+            if(!resourcesPopUp.getTextField1().getText().isEmpty() && resourcesPopUp.getNumber()==2){
+                send.add(ResourceType.valueOf(resourcesPopUp.getTextField1().getText()));
+                send.add(ResourceType.valueOf(resourcesPopUp.getTextField2().getText()));
+                System.out.println(resourcesPopUp.getTextField1().getText()+" "+resourcesPopUp.getTextField2().getText());
+                notifyObserver(o -> o.onUpdateSetupResource(send));
+            }
+            else if(!resourcesPopUp.getTextField1().getText().isEmpty() && resourcesPopUp.getNumber()==1){
+                send.add(ResourceType.valueOf(resourcesPopUp.getTextField1().getText()));
+                System.out.println(resourcesPopUp.getTextField1().getText()+" "+resourcesPopUp.getTextField2().getText());
+                notifyObserver(o -> o.onUpdateSetupResource(send));
+
+            }
+        });
+        return resourcesPopUp.getMainPanel();
+    }
+
+    private JPanel playerNumberPopUp() {
+        JPanel playerNumberPopUp = new JPanel();
+        playerNumberPopUp.setLayout(new BorderLayout(5, 20));
+
+        JLabel numberOfPlayers = new JLabel("Select the number of players");
+        numberOfPlayers.setHorizontalAlignment(SwingConstants.CENTER);
+        numberOfPlayers.setVerticalAlignment(SwingConstants.TOP);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setSize(420,120);
+
+        JButton one = new JButton("1");
+        one.setSize(105,60);
+        one.setFocusable(false);
+        one.addActionListener(e -> {
+            notifyObserver(o -> o.onUpdateNumberOfPlayers(1));
+            setupFrame.dispose();
+        });
+
+        JButton two = new JButton("2");
+        two.setSize(105,60);
+        two.setFocusable(false);
+        two.addActionListener(e -> {
+            notifyObserver(o -> o.onUpdateNumberOfPlayers(2));
+            setupFrame.dispose();
+        });
+
+        JButton three = new JButton("3");
+        three.setSize(105,60);
+        three.setFocusable(false);
+        three.addActionListener(e -> {
+            notifyObserver(o -> o.onUpdateNumberOfPlayers(3));
+            setupFrame.dispose();
+        });
+
+        JButton four = new JButton("4");
+        four.setSize(105,60);
+        four.setFocusable(false);
+        four.addActionListener(e -> {
+            notifyObserver(o -> o.onUpdateNumberOfPlayers(4));
+            setupFrame.dispose();
+        });
+
+
+        buttonPanel.add(one);
+        buttonPanel.add(two);
+        buttonPanel.add(three);
+        buttonPanel.add(four);
+
+        playerNumberPopUp.add(numberOfPlayers);
+        playerNumberPopUp.add(buttonPanel, BorderLayout.SOUTH);
+
+        return playerNumberPopUp;
+    }
+
+    private JPanel onlineLoginPopUp() {
+        JPanel onlineLoginPopUp = new JPanel();
+        onlineLoginPopUp.setLayout(new BorderLayout(5, 20));
+
+        JPanel title = new JPanel();
+
+        JPanel central = new JPanel();
+        central.setLayout(new BorderLayout(5, 30));
+        JPanel upperCentral = new JPanel();
+        JPanel lowerCentral = new JPanel();
+        JPanel bottom = new JPanel();
+
+
+        JLabel title_1 = new JLabel("<html>INSERT SOCKET PORT NUMBER AND IP ADDRESS<br>DEFAULT IS: <br><br>SOCKET = 2200<BR>IP = 0.0.0.0</html>");
+        title.setLayout(new FlowLayout());
+        title.add(title_1);
+
+
+        upperCentral.setLayout(new FlowLayout());
+        JLabel socketPort = new JLabel("Socket Port :");
+        JTextField socket_input = new JTextField();
+        socket_input.setPreferredSize(new Dimension(200, 30));
+        upperCentral.add(socketPort);
+        upperCentral.add(socket_input);
+
+
+        lowerCentral.setLayout(new FlowLayout());
+        JLabel ipAddress = new JLabel("IP address :");
+        JTextField ip_input = new JTextField();
+        ip_input.setPreferredSize(new Dimension(200, 30));
+        lowerCentral.add(ipAddress);
+        lowerCentral.add(ip_input);
+
+        bottom.setLayout(new FlowLayout());
+        JButton submit = new JButton();
+        submit.setText("SUBMIT");
+        submit.setFocusable(false);
+        submit.setBounds(160,200,100,30);
+        submit.addActionListener(e -> {
+            int socket = Integer.parseInt(socket_input.getText());
+            String ip = ip_input.getText();
+            if(NetworkInfoValidator.isIPAddressValid(ip) && NetworkInfoValidator.isPortValid(socket)){
+                notifyObserver(o -> o.onServerInfoUpdate(socket, ip));
+            } else {
+                JFrame error = new JFrame();
+                error.setSize(400,400);
+                JLabel error_message = new JLabel("INPUT NON CORRETTO, RIPROVARE");
+                error_message.setVerticalAlignment(SwingConstants.CENTER);
+                error_message.setHorizontalAlignment(SwingConstants.CENTER);
+                error.add(error_message);
+                error.setVisible(true);
+            }
+        });
+        bottom.add(submit);
+
+        socket_input.setText("2200");
+        ip_input.setText("0.0.0.0");
+        central.add(upperCentral,BorderLayout.NORTH);
+        central.add(lowerCentral,BorderLayout.CENTER);
+        onlineLoginPopUp.add(title, BorderLayout.NORTH);
+        onlineLoginPopUp.add(central, BorderLayout.CENTER);
+        onlineLoginPopUp.add(bottom, BorderLayout.SOUTH);
+
+        return onlineLoginPopUp;
+    }
+
+    private JPanel nicknamePopUp() {
+        JPanel nicknamePopUp = new JPanel();
+        nicknamePopUp.setLayout(new BorderLayout(5, 20));
+
+        JPanel north = new JPanel();
+        north.setLayout(new FlowLayout());
+
+        JPanel center = new JPanel();
+        center.setLayout(new FlowLayout());
+
+        JPanel south = new JPanel();
+        south.setLayout(new FlowLayout());
+
+
+        JLabel title = new JLabel("<html>CHOOSE A USERNAME</html>");
+        JLabel username = new JLabel("Username :");
+        JTextField input = new JTextField();
+        input.setPreferredSize(new Dimension(200, 30));
+
+        JButton submit = new JButton("SUBMIT");
+        submit.setFocusable(false);
+        submit.addActionListener(e -> {
+            notifyObserver(o -> o.onUpdateNickname(input.getText()));
+            setupFrame.dispose();
+        });
+
+        north.add(title);
+        center.add(username);
+        center.add(input);
+        south.add(submit);
+
+        nicknamePopUp.add(north, BorderLayout.NORTH);
+        nicknamePopUp.add(center, BorderLayout.CENTER);
+        nicknamePopUp.add(south, BorderLayout.SOUTH);
+        return nicknamePopUp;
+    }
+
+    private void initializeSetupFrame() {
+        setupFrame.setSize(new Dimension(500,500));
+        setupFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setupFrame.setTitle("SETUP");
     }
 
     private void startGUI() {
         if(isOnline){
-            onlineLoginPopUp.setVisible(true);
+            setupFrame.setContentPane(onlineLoginPopUp());
+            setupFrame.pack();
+            setupFrame.revalidate();
+            setupFrame.repaint();
+            setupFrame.getContentPane().setVisible(true);
+            setupFrame.setVisible(true);
         } else {
             askNickname();
         }
@@ -62,10 +260,10 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void askNickname() {
-        onlineLoginPopUp.setContentPane(nicknamePopUp.getContentPane());
-        onlineLoginPopUp.validate();
-        onlineLoginPopUp.setVisible(true);
-        //nicknamePopUp.setVisible(true);
+        setupFrame.getContentPane().removeAll();
+        setupFrame.setContentPane(setup.get(1));
+        setupFrame.validate();
+        setupFrame.repaint();
     }
 
     @Override
@@ -74,9 +272,11 @@ public class GUI extends ViewObservable implements IView, ActionListener {
             notifyObserver(o -> o.onUpdateNumberOfPlayers(1));
 
         } else {
-            onlineLoginPopUp.setContentPane(playerNumberPopUp.getContentPane());
-            onlineLoginPopUp.validate();
-            //playerNumberPopUp.setVisible(true);
+            setupFrame.getContentPane().removeAll();
+            setupFrame.setContentPane(setup.get(2));
+            setupFrame.revalidate();
+            setupFrame.repaint();
+            setupFrame.setVisible(true);
         }
     }
 
@@ -144,24 +344,11 @@ public class GUI extends ViewObservable implements IView, ActionListener {
     @Override
     public void askSetupResource(int number) throws ExecutionException {
         if(number!=0) {
-            ResourcesPopUp resourcesPopUp = new ResourcesPopUp(this, number);
-            resourcesPopUp.setVisible(true);
-            resourcesPopUp.getSUBMITButton().addActionListener(e ->{
-                LinkedList<ResourceType> send = new LinkedList<>();
-                if(!resourcesPopUp.getTextField1().getText().isEmpty() && resourcesPopUp.getNumber()==2){
-                    send.add(ResourceType.valueOf(resourcesPopUp.getTextField1().getText()));
-                    send.add(ResourceType.valueOf(resourcesPopUp.getTextField2().getText()));
-                    System.out.println(resourcesPopUp.getTextField1().getText()+" "+resourcesPopUp.getTextField2().getText());
-                    notifyObserver(o -> o.onUpdateSetupResource(send));
-                    resourcesPopUp.dispose();
-                }
-                else if(!resourcesPopUp.getTextField1().getText().isEmpty() && resourcesPopUp.getNumber()==1){
-                    send.add(ResourceType.valueOf(resourcesPopUp.getTextField1().getText()));
-                    System.out.println(resourcesPopUp.getTextField1().getText()+" "+resourcesPopUp.getTextField2().getText());
-                    notifyObserver(o -> o.onUpdateSetupResource(send));
-                    resourcesPopUp.dispose();
-                }
-            });
+            setupFrame.getContentPane().removeAll();
+            setupFrame.setContentPane(resourcesPopUp(number));
+            setupFrame.revalidate();
+            setupFrame.repaint();
+            setupFrame.setVisible(true);
         }
         else {
             messagePopUp.changeMessage("The first player doesn't get to pick any resource!");
@@ -231,48 +418,5 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals(onlineLoginPopUp.getSubmit())){
-            int socket = Integer.parseInt(onlineLoginPopUp.getSocket_input().getText());
-            String ip = onlineLoginPopUp.getIp_input().getText();
-            if(NetworkInfoValidator.isIPAddressValid(ip) && NetworkInfoValidator.isPortValid(socket)){
-                onlineLoginPopUp.dispose();
-                notifyObserver(o -> o.onServerInfoUpdate(socket, ip));
-            } else {
-                JFrame error = new JFrame();
-                error.setSize(400,400);
-                JLabel error_message = new JLabel("INPUT NON CORRETTO, RIPROVARE");
-                error_message.setVerticalAlignment(SwingConstants.CENTER);
-                error_message.setHorizontalAlignment(SwingConstants.CENTER);
-                error.add(error_message);
-                error.setVisible(true);
-            }
-        }
-
-        if(e.getSource().equals(nicknamePopUp.getSubmit())){
-            String nickname = nicknamePopUp.getUsername().getText();
-            notifyObserver(o -> o.onUpdateNickname(nickname));
-            nicknamePopUp.dispose();
-        }
-
-        if(e.getSource().equals(playerNumberPopUp.getOne())){
-            notifyObserver(o -> o.onUpdateNumberOfPlayers(1));
-            playerNumberPopUp.dispose();
-        }
-
-        if(e.getSource().equals(playerNumberPopUp.getTwo())){
-            notifyObserver(o -> o.onUpdateNumberOfPlayers(2));
-            playerNumberPopUp.dispose();
-        }
-
-        if(e.getSource().equals(playerNumberPopUp.getThree())){
-            notifyObserver(o -> o.onUpdateNumberOfPlayers(3));
-            playerNumberPopUp.dispose();
-        }
-
-        if(e.getSource().equals(playerNumberPopUp.getFour())){
-            notifyObserver(o -> o.onUpdateNumberOfPlayers(4));
-            playerNumberPopUp.dispose();
-        }
-
     }
 }
