@@ -64,7 +64,10 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void askNickname() {
-        nicknamePopUp.setVisible(true);
+        onlineLoginPopUp.setContentPane(nicknamePopUp.getContentPane());
+        onlineLoginPopUp.validate();
+        onlineLoginPopUp.setVisible(true);
+        //nicknamePopUp.setVisible(true);
     }
 
     @Override
@@ -73,7 +76,9 @@ public class GUI extends ViewObservable implements IView, ActionListener {
             notifyObserver(o -> o.onUpdateNumberOfPlayers(1));
 
         } else {
-            playerNumberPopUp.setVisible(true);
+            onlineLoginPopUp.setContentPane(playerNumberPopUp.getContentPane());
+            onlineLoginPopUp.validate();
+            //playerNumberPopUp.setVisible(true);
         }
     }
 
