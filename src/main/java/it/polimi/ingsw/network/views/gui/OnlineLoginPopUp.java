@@ -1,19 +1,15 @@
 package it.polimi.ingsw.network.views.gui;
 
-import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class OnlineLoginPopUp extends JPanel {
+public class OnlineLoginPopUp extends JFrame {
 
     private  JTextField ip_input;
     private JTextField socket_input;
     private JButton submit;
-    private GUI gui;
 
     public OnlineLoginPopUp (GUI gui){
-        this.gui = gui;
         this.setLayout(new BorderLayout(5, 30));
 
         JPanel title = new JPanel();
@@ -61,9 +57,7 @@ public class OnlineLoginPopUp extends JPanel {
         central.add(lowerCentral, BorderLayout.CENTER);
         this.add(central, BorderLayout.CENTER);
         this.add(bottom, BorderLayout.SOUTH);
-        this.setVisible(true);
     }
-
 
     public JButton getSubmit() {
         return submit;

@@ -23,8 +23,6 @@ public class GUI extends ViewObservable implements IView, ActionListener {
     LightweightModel lightweightModel;
     private boolean isOnline;
 
-    private SetupPopUp setupPopUp;
-
     private PlayerNumberPopUp playerNumberPopUp;
     private OnlineLoginPopUp onlineLoginPopUp;
     private NicknamePopUp nicknamePopUp;
@@ -64,7 +62,10 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void askNickname() {
-        nicknamePopUp.setVisible(true);
+        onlineLoginPopUp.setContentPane(nicknamePopUp.getContentPane());
+        onlineLoginPopUp.validate();
+        onlineLoginPopUp.setVisible(true);
+        //nicknamePopUp.setVisible(true);
     }
 
     @Override
@@ -73,7 +74,9 @@ public class GUI extends ViewObservable implements IView, ActionListener {
             notifyObserver(o -> o.onUpdateNumberOfPlayers(1));
 
         } else {
-            playerNumberPopUp.setVisible(true);
+            onlineLoginPopUp.setContentPane(playerNumberPopUp.getContentPane());
+            onlineLoginPopUp.validate();
+            //playerNumberPopUp.setVisible(true);
         }
     }
 
@@ -99,11 +102,6 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void showGenericString(String genericMessage) {
-        // {
-        //    Thread.sleep(2000);
-        //} catch (InterruptedException e) {
-        //    e.printStackTrace();
-        //}
         messagePopUp.changeMessage(genericMessage);
         System.out.println(genericMessage);
     }
