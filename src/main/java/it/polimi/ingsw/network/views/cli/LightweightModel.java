@@ -21,7 +21,7 @@ public class LightweightModel {
     private List<ProductionCard> allProductions;
     private String reducedResourceMarket;
     private List<ProductionCard> availableCards;
-    private List<LightweightPlayerState> playerStates;
+    private final List<LightweightPlayerState> playerStates;
     private Map<ResourceType, Integer> strongbox;
     private ArrayList<ResourceType> shelves;
     private ArrayList<ResourceType> extra_shelves_types;

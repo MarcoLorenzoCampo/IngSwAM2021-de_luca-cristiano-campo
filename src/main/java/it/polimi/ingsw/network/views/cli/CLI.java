@@ -44,7 +44,7 @@ public class CLI extends ViewObservable implements IView {
      * Clears the terminal.
      */
     public static void clearCLI() {
-        System.out.print("\033[H\033[2J");
+        System.out.print("");
         System.out.flush();
     }
 
@@ -493,7 +493,7 @@ public class CLI extends ViewObservable implements IView {
 
     @Override
     public void showWinMatch(String winner) {
-        out.println(winner);
+        out.println(winner + " won!\n");
 
         System.exit(0);
     }
@@ -578,6 +578,7 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printProductionBoard(HashMap<Integer,ProductionCard> productionBoard) {
         lightweightModel.setProductionBoard(productionBoard);
+
         out.println("BASE PRODUCTION\n");
         out.println(" UNDEFINED + UNDEFINED --> UNDEFINED\n");
         out.println("PRODUCTION CARDS\n");

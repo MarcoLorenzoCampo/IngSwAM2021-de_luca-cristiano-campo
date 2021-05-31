@@ -174,6 +174,7 @@ public class OfflineClientManager implements ViewObserver, Observer {
             }
         }
     }
+
     private HashMap<Integer, ProductionCard> deserializeProductionBoard(HashMap<Integer, Integer> productionSlots){
         HashMap<Integer, ProductionCard> deserialized = new HashMap<>();
         for (Map.Entry<Integer,Integer> iterator: productionSlots.entrySet()) {
