@@ -62,5 +62,7 @@ public enum PossibleMessages {
     //Notification message sent by the model to the controller
     VATICAN_REPORT_NOTIFICATION,
     DISCARDED_RESOURCE,
-    END_GAME
+    END_GAME,
+    NO_MORE_CARDS,
+    BOUGHT_7_CARDS,
 }

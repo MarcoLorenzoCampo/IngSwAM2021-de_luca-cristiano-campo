@@ -456,6 +456,7 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                 break;
 
             case DISCARDED_RESOURCE:
+                broadcastGenericMessage(gameManager.getCurrentPlayer() + " discarded a resource, everyone moves!");
                 for(RealPlayer realPlayer : realPlayerList) {
                     if(realPlayer.getPlayerState().isConnected()
                         && !realPlayer.getName().equals(gameManager.getCurrentPlayer())) {
@@ -469,6 +470,14 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                     Server.LOGGER.info("Last round started.");
                     broadcastGenericMessage("End game started by: " + gameManager.getCurrentPlayer());
                     endGame = true;
+                }
+                break;
+
+            case BOUGHT_7_CARDS:
+                if(!endGame) {
+                    endGame = true;
+                    Server.LOGGER.info("Last round started.");
+                    broadcastGenericMessage("End game started by: " + gameManager.getCurrentPlayer());
                 }
                 break;
 

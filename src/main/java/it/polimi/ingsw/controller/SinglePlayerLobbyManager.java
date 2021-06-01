@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
+import it.polimi.ingsw.model.faithtrack.PopeTile;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
@@ -14,6 +15,7 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,7 +65,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     public void setPlayingOrder() {
         realPlayerList.get(0).setFirstToPlay();
 
-        playerVV.showGenericString("\nYou'll move first, Lorenzo second.");
+        playerVV.showGenericString("\nGame is starting! Good luck :)");
 
         currentGame.setCurrentPlayer(realPlayerList.get(0));
         gameManager.setCurrentPlayer(realPlayerList.get(0).getName());
@@ -94,10 +96,10 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
         List<LeaderCard> leaderCards = LeaderCardsDeckBuilder.deckBuilder();
 
         realPlayerList.get(0).setOwnedLeaderCards(
-                leaderCards
+                new LinkedList<>(leaderCards
                         .stream()
                         .limit(4)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList())));
     }
 
     @Override
@@ -195,29 +197,48 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
                 int rangeToCheck = v.getRange();
 
                 FaithTrack ft = realPlayerList.get(0).getPlayerBoard().getFaithTrack();
+                FaithTrack ftl = lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack();
 
                 if(!ft.isPopeTile(ft.getFaithMarker())) {
                     if (ft.getFaithMarker() < (popeTileIndex - rangeToCheck)) {
                         ft.setPopeTileInactive(popeTileIndex);
                     }
                 }
+
+                if(!ftl.isPopeTile(ftl.getFaithMarker())) {
+                    ftl.setPopeTileInactive(popeTileIndex);
+                }
                 break;
 
             case DISCARDED_RESOURCE:
+                playerVV.showGenericString("\nYou discarded a resource, Lorenzo moves!");
                 lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().increaseFaithMarker();
                 break;
 
+            //Faith track only
             case END_GAME:
-                String winner;
+                FaithTrack playerFt = realPlayerList.get(0).getPlayerBoard().getFaithTrack();
+                FaithTrack lorenzoFt = lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack();
 
-                if(lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().getFaithMarker() == 24
-                    || currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().size() == 11) {
-                    winner = "Lorenzo";
-                    playerVV.showWinMatch(winner);
+                if(playerFt.isLastTile()) {
+                    playerVV.showGenericString("\nYou reached the end of the faith track!");
+                    playerVV.showWinMatch("You");
                 }
-                if(realPlayerList.get(0).getPlayerBoard().getFaithTrack().getFaithMarker() == 24) {
 
+                if(lorenzoFt.isLastTile()) {
+                    playerVV.showGenericString("\nLorenzo reached the end of the faith track!");
+                    playerVV.showWinMatch("Lorenzo");
                 }
+                break;
+
+            case NO_MORE_CARDS:
+                playerVV.showGenericString("\nLorenzo discarded a whole sub-deck!");
+                playerVV.showWinMatch("Lorenzo");
+                break;
+
+            case BOUGHT_7_CARDS:
+                playerVV.showGenericString("\nYou bought your 7th card!");
+                playerVV.showWinMatch("You");
                 break;
 
             default: //Ignore any other message

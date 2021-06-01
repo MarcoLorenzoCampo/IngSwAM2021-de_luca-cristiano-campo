@@ -155,6 +155,7 @@ it/polimi/ingsw/actions/Visitable.class
 it/polimi/ingsw/model/faithtrack/SimpleTile.class
 it/polimi/ingsw/network/views/cli/graphical/GraphicalToken.class
 it/polimi/ingsw/network/views/cli/graphical/GraphicalProuctionCardBoard.class
+it/polimi/ingsw/controller/SinglePlayerLobbyManager$1.class
 it/polimi/ingsw/enumerations/PossibleGameStates.class
 it/polimi/ingsw/model/faithtrack/FaithTrack.class
 it/polimi/ingsw/network/server/SocketServer.class
