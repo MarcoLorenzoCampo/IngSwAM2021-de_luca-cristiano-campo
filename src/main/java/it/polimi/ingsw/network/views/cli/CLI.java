@@ -508,9 +508,12 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printLeaders(List<LeaderCard> leaderCards) {
 
-        GraphicalLeaderCards graphicalLeaderCards = new GraphicalLeaderCards(leaderCards);
-        graphicalLeaderCards.draw();
-        out.println();
+        if(leaderCards.size() != 0) {
+            GraphicalLeaderCards graphicalLeaderCards = new GraphicalLeaderCards(leaderCards);
+            graphicalLeaderCards.draw();
+        } else {
+            out.println("\nYou don't have any extra production leader card!");
+        }
     /*
         for (LeaderCard iterator: leaderCards) {
 
@@ -675,8 +678,7 @@ public class CLI extends ViewObservable implements IView {
                 case SHIELD:
                     out.println(ColorCLI.ANSI_BLUE.escape() + "SHIELD " + ColorCLI.getRESET() + ": " + entry.getValue());
                     break;
-                default:
-                    break;
+                default: break;
             }
         }
     }

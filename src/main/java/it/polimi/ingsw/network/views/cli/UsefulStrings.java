@@ -47,7 +47,7 @@ public class UsefulStrings {
                     "\n - 'CHECK_PRODUCTIONS': For an updated version of your ProductionBoard;" +
                     "\n - 'CHECK_INVENTORY': To get an updated version of your STRONGBOX and WAREHOUSE;" +
                     "\n - 'CHECK_TRACK': To get and updated version of your faith track." +
-                    "\n - 'PEEK_<enemy nickname>': Checks on one of your enemies. " +
+                    "\n - 'PEEK <enemy nickname>': Checks on one of your enemies. " +
                     "\n               What you can see: Active Leaders, Faith Track position, their total resources owned.;" +
                     "\n\n‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗\n\n";
 
