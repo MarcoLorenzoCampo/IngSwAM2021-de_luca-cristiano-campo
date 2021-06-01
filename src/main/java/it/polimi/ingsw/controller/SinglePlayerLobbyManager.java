@@ -2,6 +2,8 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
+import it.polimi.ingsw.exceptions.EndGameException;
+import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
@@ -11,6 +13,8 @@ import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
+import it.polimi.ingsw.network.server.Server;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -122,7 +126,9 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
 
         realPlayerList.get(0).addObserver(vv);
 
-        lorenzo.getFaithTrack().addObserver(vv);
+        lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().addObserver(vv);
+
+        lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().addObserver(this);
 
         lorenzo.getLorenzoPlayerBoard().addObserver(vv);
 
@@ -152,11 +158,6 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     }
 
     @Override
-    public int getNumberOfTurns() {
-        return numberOfTurns;
-    }
-
-    @Override
     public int getLobbySize() {
         return 1;
     }
@@ -172,10 +173,8 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     @Override
     public void broadCastWinMessage(String message) {
         playerVV.showWinMatch(message);
-    }
 
-    @Override
-    public void broadCastMatchInfo() {
+        gameManager.resetFSM();
     }
 
     @Override
@@ -193,5 +192,43 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     }
 
     @Override
-    public void update(Message message) { }
+    public void update(Message message) {
+        switch(message.getMessageType()) {
+            case VATICAN_REPORT_NOTIFICATION:
+
+                VaticanReportNotification v = (VaticanReportNotification) message;
+
+                int popeTileIndex = v.getPopeTileIndex();
+                int rangeToCheck = v.getRange();
+
+                FaithTrack ft = realPlayerList.get(0).getPlayerBoard().getFaithTrack();
+
+                if(!ft.isPopeTile(ft.getFaithMarker())) {
+                    if (ft.getFaithMarker() < (popeTileIndex - rangeToCheck)) {
+                        ft.setPopeTileInactive(popeTileIndex);
+                    }
+                }
+                break;
+
+            case DISCARDED_RESOURCE:
+                lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().increaseFaithMarker();
+                break;
+
+            case END_GAME:
+                String winner = null;
+
+                if(lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().getFaithMarker() == 24
+                    || currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().size() == 11) {
+                    winner = "Lorenzo";
+                    playerVV.showWinMatch(winner);
+                }
+                if(realPlayerList.get(0).getPlayerBoard().getFaithTrack().getFaithMarker() == 24) {
+
+                }
+                break;
+
+            default: //Ignore any other message
+                break;
+        }
+    }
 }

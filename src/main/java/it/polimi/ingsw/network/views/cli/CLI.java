@@ -593,13 +593,21 @@ public class CLI extends ViewObservable implements IView {
 
         out.println("\nAvailable productions:\n");
 
-        out.println(ColorCLI.ANSI_BLUE.escape() + "BASE PRODUCTION\n" + ColorCLI.getRESET());
-        out.println(" ? + ? ⇉ ?\n");
-        out.println(ColorCLI.ANSI_BLUE.escape() + "PRODUCTION CARDS\n" + ColorCLI.getRESET());
+        out.println(ColorCLI.ANSI_BLUE.escape() + "-- BASE PRODUCTION --\n" + ColorCLI.getRESET());
+        out.println(" ❔ + ❔ --\uD83E\uDC02 ❔\n");
+        out.println(ColorCLI.ANSI_BLUE.escape() + "-- PRODUCTION CARDS --" + ColorCLI.getRESET());
+
+        GraphicalProductionCard g;
 
         for (Map.Entry<Integer, ProductionCard> iterator:productionBoard.entrySet()) {
-            if(iterator.getValue() == null) out.println("EMPTY\n");
-            else out.println(iterator.getValue().reduce()+"\n");
+
+            if(iterator.getValue() == null) {
+                out.println("EMPTY\n");
+            } else {
+                g = new GraphicalProductionCard(iterator.getValue());
+                g.drawOneProductionCard();
+                out.println();
+            }
         }
 
         List<LeaderCard> active_extra_prod=

@@ -11,6 +11,7 @@ import java.util.Collections;
  * Lorenzo's playerBoard, used to perform his signature actions.
  */
 public class LorenzoPlayerBoard extends Observable {
+
     private final FaithTrack lorenzoFaithTrack;
     private final LorenzoTokenPile lorenzoTokenPile;
 
@@ -35,10 +36,6 @@ public class LorenzoPlayerBoard extends Observable {
         for(int i=0; i<moves; i++) {
             lorenzoFaithTrack.increaseFaithMarker();
         }
-    }
-
-    public FaithTrack getFaithTrack() {
-        return lorenzoFaithTrack;
     }
 
     public void shuffleTokens() {

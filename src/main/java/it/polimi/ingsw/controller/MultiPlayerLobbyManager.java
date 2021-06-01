@@ -22,7 +22,7 @@ import static it.polimi.ingsw.network.server.Server.LOGGER;
 /**
  * Class to manage players and turns in a multiplayer game.
  */
-public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
+public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
     /**
      * Lobby dimension set by the first client to connect.
@@ -266,11 +266,6 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             }
     }
 
-
-    public int getNumberOfTurns() {
-        return numberOfTurns;
-    }
-
     @Override
     public int getLobbySize() {
         return lobbySize;
@@ -309,14 +304,6 @@ public final class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                 .forEach(vv -> vv.showWinMatch(winner));
 
         gameManager.resetFSM();
-    }
-
-    @Override
-    public void broadCastMatchInfo() {
-        for(String playingName : getPlayingNames()) {
-
-            viewsByNickname.get(playingName).showMatchInfo(getPlayingNames());
-        }
     }
 
     @Override
