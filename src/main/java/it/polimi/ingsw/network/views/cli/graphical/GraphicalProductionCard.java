@@ -344,6 +344,15 @@ public class GraphicalProductionCard {
         colorRequirementsType.put(ResourceType.UNDEFINED, ColorCLI.ANSI_BRIGHT_WHITE);
     }
 
+    public void drawOneProductionCard() {
+        for (int r = 0; r < MAX_VERT_TILES; r++) {
+            System.out.println();
+            for (int c = 0; c < MAX_HORIZ_TILES; c++) {
+                System.out.print(cells[r][c]);
+            }
+        }
+    }
+
     public static int getMaxVertTiles() {
         return MAX_VERT_TILES;
     }
