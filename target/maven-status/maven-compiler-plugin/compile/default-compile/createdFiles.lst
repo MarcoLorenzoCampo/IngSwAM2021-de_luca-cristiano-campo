@@ -52,6 +52,7 @@ it/polimi/ingsw/parsers/CommandLineParser.class
 it/polimi/ingsw/network/messages/playerMessages/PingMessage.class
 it/polimi/ingsw/model/utilities/DevelopmentTag.class
 it/polimi/ingsw/network/views/cli/CLI.class
+it/polimi/ingsw/network/messages/serverMessages/Bought7CardsMessage.class
 it/polimi/ingsw/actions/ActivateExtraProductionAction.class
 it/polimi/ingsw/actions/PlaceLeaderAction.class
 it/polimi/ingsw/actions/DepositAction.class
@@ -151,6 +152,7 @@ it/polimi/ingsw/network/messages/serverMessages/FaithTrackMessage.class
 it/polimi/ingsw/model/market/leaderCards/DiscountLeaderCard.class
 it/polimi/ingsw/network/messages/serverMessages/LobbySizeRequest.class
 it/polimi/ingsw/network/eventHandlers/VirtualView.class
+it/polimi/ingsw/network/messages/serverMessages/NoMoreCardsMessage.class
 it/polimi/ingsw/actions/Visitable.class
 it/polimi/ingsw/model/faithtrack/SimpleTile.class
 it/polimi/ingsw/network/views/cli/graphical/GraphicalToken.class

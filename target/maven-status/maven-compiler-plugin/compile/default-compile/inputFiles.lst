@@ -90,6 +90,7 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/DiscardedResourceMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/utilities/CommandParser.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/graphical/GraphicalLegend.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/Bought7CardsMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/constants/LevelConstants.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/exceptions/InvalidGameStateException.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/eventHandlers/VirtualView.java
@@ -151,6 +152,7 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/player/PlayerState.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/actions/ActivateProductionAction.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/enumerations/Constants.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/NoMoreCardsMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/playerMessages/ExtraProductionMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/productionBoard/ProductionSlot.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/InputReadingChore.java
