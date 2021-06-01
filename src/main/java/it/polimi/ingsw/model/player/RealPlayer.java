@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.market.ProductionCardMarket;
 import it.polimi.ingsw.model.market.ResourceMarket;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
+import it.polimi.ingsw.model.utilities.Reducible;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.DiscardedResourceMessage;
@@ -409,5 +410,58 @@ public class RealPlayer extends Observable implements Visitor {
 
     private boolean finalProductionValidator() {
         return playerBoard.getProductionBoard().validateFinalProduction(playerBoard.getInventoryManager());
+    }
+
+    public void getPeek() {
+
+    }
+
+    /**
+     * @return reduced version of owned leader cards.
+     */
+    public List<EffectType> reduceLeaders() {
+        List<EffectType> e = new ArrayList<>();
+
+        for(LeaderCard l : ownedLeaderCards) {
+            if(l.isActive()) {
+                e.add(l.getEffectType());
+            }
+        }
+        return e;
+    }
+
+    /**
+     * @return position on the faith track
+     */
+    public int getFaithPosition() {
+        return playerBoard.getFaithTrack().getFaithMarker();
+    }
+
+    /**
+     * @return inventory from inventory manager
+     */
+    public Map<ResourceType, Integer> getInventory() {
+        return playerBoard.getInventoryManager().getInventory();
+    }
+
+    /**
+     * Increments the value of the faith marker.
+     */
+    public void moveFaith() {
+        playerBoard.getFaithTrack().increaseFaithMarker();
+    }
+
+    /**
+     * Method to assign a random material resource to a player if he gets disconnected during the setup phase.
+     */
+    public void assignRandomResource() {
+        try {
+            playerBoard
+                .getInventoryManager()
+                .getWarehouse()
+                .addResource(ResourceType.randomizedMaterialResource());
+        } catch (DiscardResourceException ignored) {
+            //shouldn't happen.
+        }
     }
 }

@@ -1,8 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.enumerations.EffectType;
-import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
@@ -38,7 +35,7 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
      * Integer to track the progression of the turns and keep track of the playing order.
      * auxIndex is used to store temporary positions in the player list.
      */
-    private int numberOfTurns, auxIndex;
+    private int auxIndex;
 
     /**
      * List of all player, both connected and disconnected.
@@ -54,7 +51,6 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
     public MultiPlayerLobbyManager(GameManager gameManager) {
         this.realPlayerList = new LinkedList<>();
-        numberOfTurns = 0;
         auxIndex = 0;
         this.gameManager = gameManager;
         viewsByNickname= new HashMap<>();
@@ -155,7 +151,6 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void setNextTurn() {
 
-        numberOfTurns++;
         auxIndex++;
 
         int newCurrentIndex = auxIndex % realPlayerList.size();
@@ -235,32 +230,21 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             switch(i) {
                 case 0:
                     viewsByNickname.get(current).askSetupResource(0);
-
                     break;
 
                 case 1:
-
                     viewsByNickname.get(current).askSetupResource(1);
                     break;
+
                 case 2:
-
                     viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource(1);
-
-                    realPlayerList.get(i)
-                            .getPlayerBoard()
-                            .getFaithTrack()
-                            .increaseFaithMarker();
+                    realPlayerList.get(i).moveFaith();
                     break;
 
                 case 3:
-
                     viewsByNickname.get(realPlayerList.get(i).getName()).askSetupResource(2);
-
                     for(int j=0; j<2; j++) {
-                        realPlayerList.get(i)
-                                .getPlayerBoard()
-                                .getFaithTrack()
-                                .increaseFaithMarker();
+                        realPlayerList.get(i).moveFaith();
                     }
                     break;
             }
@@ -339,50 +323,12 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
             //If the game is started, then he needs to be set as "disconnected".
             if (gameStarted) {
-
-                playerToDisconnect.getPlayerState().disconnect();
-
-                removeObserver(nicknameToDisconnect);
-                viewsByNickname.remove(nicknameToDisconnect);
-                gameManager.getVirtualViewLog().remove(nicknameToDisconnect);
-
-                //Fixes the fsm to end every action that is being made by the player who got disconnected.
-                gameManager.prepareForNextTurn(playerToDisconnect);
-
-                //If he was playing when he got disconnected, then his turn needs to be skipped.
-                if(nicknameToDisconnect.equals(gameManager.getCurrentGame().getCurrentPlayer().getName())) {
-
-                    gameManager.getLobbyManager().broadcastGenericMessage(nicknameToDisconnect
-                            + " was removed from the game.");
-
-                    LOGGER.info("Removed " + nicknameToDisconnect + " from the game.");
-
-                    setNextTurn();
-                }
-
-                if(realPlayerList.stream().filter(p -> p.getPlayerState().isConnected()).count() == 1) {
-
-                    String lastOnline = realPlayerList
-                            .stream()
-                            .filter(p -> p.getPlayerState().isConnected())
-                            .collect(Collectors.toList()).get(0).getName();
-
-                    broadCastWinMessage(lastOnline);
-                }
-
-                if(realPlayerList.stream().noneMatch(p -> p.getPlayerState().isConnected())) {
-                    gameManager.endGame("No more players connected!");
-                }
+                gameStartedDisconnection(playerToDisconnect, nicknameToDisconnect);
             }
 
             //If the game wasn't started yet, then he will be removed completely from the game.
             if (!gameStarted) {
-
-                realPlayerList.removeIf(realPlayer -> realPlayer.getName().equals(nicknameToDisconnect));
-                viewsByNickname.remove(nicknameToDisconnect);
-                broadcastGenericMessage(nicknameToDisconnect + " was removed from the game.");
-                LOGGER.info("Removed " + nicknameToDisconnect + " from setup phase.");
-                broadcastGenericMessage("\n["+ (lobbySize-realPlayerList.size()) + " players left]");
+                gameNotStartedDisconnection(nicknameToDisconnect);
             }
         } else {
             LOGGER.info(() -> "Removed a client before the login phase.");
@@ -419,7 +365,6 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
 
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
-
 
         realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
 
@@ -468,7 +413,7 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     }
 
     /**
-     * Helper method to find a player in the player list by using his nicknae.
+     * Helper method to find a player in the player list by using his nickname.
      * @param nickname: name to find
      * @return: index of said nickname.
      */
@@ -513,8 +458,8 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             case DISCARDED_RESOURCE:
                 for(RealPlayer realPlayer : realPlayerList) {
                     if(realPlayer.getPlayerState().isConnected()
-                    && !realPlayer.getName().equals(gameManager.getCurrentPlayer())) {
-                        realPlayer.getPlayerBoard().getFaithTrack().increaseFaithMarker();
+                        && !realPlayer.getName().equals(gameManager.getCurrentPlayer())) {
+                        realPlayer.moveFaith();
                     }
                 }
                 break;
@@ -591,58 +536,20 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         switch(getPlayerIndexByNickname(disconnectedNickname)) {
 
             case 1:
-                try {
-                    disconnected
-                            .getPlayerBoard()
-                            .getInventoryManager()
-                            .getWarehouse()
-                            .addResource(ResourceType.randomizedMaterialResource());
-
-                } catch (DiscardResourceException e) {
-                    LOGGER.severe("Critical error!");
-                    //Should never happen
-                }
+                disconnected.assignRandomResource();
                 break;
 
             case 2:
                 for(int i=0; i<2; i++) {
-                    try {
-                        disconnected
-                                .getPlayerBoard()
-                                .getInventoryManager()
-                                .getWarehouse()
-                                .addResource(ResourceType.randomizedMaterialResource());
-
-                    } catch (DiscardResourceException e) {
-                        LOGGER.severe("Critical error!");
-                        //Should never happen
-                    }
+                    disconnected.assignRandomResource();
                 }
-
-                disconnected
-                        .getPlayerBoard()
-                        .getFaithTrack()
-                        .increaseFaithMarker();
+                disconnected.moveFaith();
                 break;
 
             case 3:
                 for(int i=0; i<2; i++) {
-                    try {
-                        disconnected
-                                .getPlayerBoard()
-                                .getInventoryManager()
-                                .getWarehouse()
-                                .addResource(ResourceType.randomizedMaterialResource());
-
-                    } catch (DiscardResourceException e) {
-                        LOGGER.severe("Critical error!");
-                        //Should never happen
-                    }
-
-                    disconnected
-                            .getPlayerBoard()
-                            .getFaithTrack()
-                            .increaseFaithMarker();
+                    disconnected.assignRandomResource();
+                    disconnected.moveFaith();
                 }
                 break;
 
@@ -682,19 +589,68 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
                 if(!realPlayer1.getName().equals(currentPlayer.getName())) {
 
-                    ArrayList<EffectType> effectTypes = new ArrayList<>();
-                    for (LeaderCard l : realPlayer1.getOwnedLeaderCards()) {
-                        if(l.isActive()) effectTypes.add(l.getEffectType());
-                    }
-
                     viewsByNickname.get(currentPlayer.getName()).getPeek(
                             realPlayer1.getName(),
-                            realPlayer1.getPlayerBoard().getFaithTrack().getFaithMarker(),
-                            realPlayer1.getPlayerBoard().getInventoryManager().getInventory(),
-                            effectTypes
+                            realPlayer1.getFaithPosition(),
+                            realPlayer1.getInventory(),
+                            realPlayer1.reduceLeaders()
                     );
                 }
             }
         }
+    }
+
+    /**
+     * Handles a disconnection when the game is already started.
+     * @param playerToDisconnect: player to remove.
+     * @param nicknameToDisconnect: nickname to remove.
+     */
+    private void gameStartedDisconnection(RealPlayer playerToDisconnect, String nicknameToDisconnect) {
+
+        playerToDisconnect.getPlayerState().disconnect();
+
+        removeObserver(nicknameToDisconnect);
+        viewsByNickname.remove(nicknameToDisconnect);
+        gameManager.getVirtualViewLog().remove(nicknameToDisconnect);
+
+        //Fixes the fsm to end every action that is being made by the player who got disconnected.
+        gameManager.prepareForNextTurn(playerToDisconnect);
+
+        //If he was playing when he got disconnected, then his turn needs to be skipped.
+        if(nicknameToDisconnect.equals(gameManager.getCurrentGame().getCurrentPlayer().getName())) {
+
+            gameManager.getLobbyManager().broadcastGenericMessage(nicknameToDisconnect
+                    + " was removed from the game.");
+
+            LOGGER.info("Removed " + nicknameToDisconnect + " from the game.");
+
+            setNextTurn();
+        }
+
+        if(realPlayerList.stream().filter(p -> p.getPlayerState().isConnected()).count() == 1) {
+
+            String lastOnline = realPlayerList
+                    .stream()
+                    .filter(p -> p.getPlayerState().isConnected())
+                    .collect(Collectors.toList()).get(0).getName();
+
+            broadCastWinMessage(lastOnline);
+        }
+
+        if(realPlayerList.stream().noneMatch(p -> p.getPlayerState().isConnected())) {
+            gameManager.endGame("No more players connected!");
+        }
+    }
+
+    /**
+     * Handles disconnection when the game isn't started yet.
+     * @param nicknameToDisconnect: name to disconnect.
+     */
+    private void gameNotStartedDisconnection(String nicknameToDisconnect) {
+        realPlayerList.removeIf(realPlayer -> realPlayer.getName().equals(nicknameToDisconnect));
+        viewsByNickname.remove(nicknameToDisconnect);
+        broadcastGenericMessage(nicknameToDisconnect + " was removed from the game.");
+        LOGGER.info("Removed " + nicknameToDisconnect + " from setup phase.");
+        broadcastGenericMessage("\n["+ (lobbySize-realPlayerList.size()) + " players left]");
     }
 }

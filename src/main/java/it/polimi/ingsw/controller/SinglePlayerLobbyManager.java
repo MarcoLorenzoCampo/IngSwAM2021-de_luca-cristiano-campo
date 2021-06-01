@@ -1,8 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.actions.LorenzoAction;
-import it.polimi.ingsw.enumerations.PossibleGameStates;
-import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
@@ -14,10 +12,8 @@ import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
-import it.polimi.ingsw.network.server.Server;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +22,6 @@ import java.util.stream.Collectors;
  */
 public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
 
-    private int numberOfTurns;
     private final IGame currentGame;
     private final List<RealPlayer> realPlayerList;
     private final LorenzoPlayer lorenzo;
@@ -38,7 +33,6 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
         this.currentGame = PlayingGame.getGameInstance();
         lorenzo = new LorenzoPlayer();
         realPlayerList = new ArrayList<>();
-        numberOfTurns = 0;
         this.gameManager = gameManager;
     }
 
@@ -84,7 +78,6 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
      */
     @Override
     public void setNextTurn() {
-        numberOfTurns++;
 
         playerVV.showGenericString("Lorenzo's turn now.");
 
@@ -215,7 +208,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
                 break;
 
             case END_GAME:
-                String winner = null;
+                String winner;
 
                 if(lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().getFaithMarker() == 24
                     || currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().size() == 11) {

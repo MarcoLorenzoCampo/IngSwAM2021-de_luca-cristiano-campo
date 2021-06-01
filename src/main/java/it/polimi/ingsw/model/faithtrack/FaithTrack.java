@@ -20,7 +20,7 @@ public class FaithTrack extends Observable implements Serializable {
     private static final long serialVersionUID = 7136541748211952620L;
 
     private final List<Tile> faithTrack = new ArrayList<>();
-    private int finalPoints = 0;
+    private int finalPoints;
     private int faithMarker;
     private int currentFavorPoints;
     public Map<Integer, Integer> cardVaticanSpace = new HashMap<>();
@@ -30,7 +30,7 @@ public class FaithTrack extends Observable implements Serializable {
     private final Map<Integer, Integer> ranges = new HashMap<>();
 
     public FaithTrack() {
-        this.faithMarker=22;
+        this.faithMarker=0;
         this.currentFavorPoints=0;
         this.finalPoints=0;
         initFaithTrack();

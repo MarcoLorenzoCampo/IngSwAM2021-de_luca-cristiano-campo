@@ -94,17 +94,13 @@ public class Client extends Observable implements IClient {
                 try {
                     message = (Message) input.readObject();
                     //Client.clientLogger.info("Received: " + message);
-                } catch (EOFException e) {
+                } catch (IOException e) {
                     //Client.clientLogger.info("Stream error.");
                     view.showError("Dropped connection from the server!");
                     disconnect();
                     serverListener.shutdownNow();
-                } catch (IOException  e) {
-                    view.showError("Dropped connection from the server!");
-                    //Client.clientLogger.info("Connection lost with the server.");
-                    disconnect();
-                    serverListener.shutdownNow();
-                } catch (ClassNotFoundException e) {
+                }//Client.clientLogger.info("Connection lost with the server.");
+                catch (ClassNotFoundException e) {
                     Client.clientLogger.info("Unexpected object.");
                     disconnect();
                     serverListener.shutdownNow();
