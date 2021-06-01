@@ -30,19 +30,15 @@ public class GraphicalProductionCard {
     private ResourceType requirementsType2;
     private Integer requirementsQuantity1;
     private Integer requirementsQuantity2;
-    private ResourceType requirementsInputType;
     private ResourceType requirementsInputType1;
     private ResourceType requirementsInputType2;
-    private ResourceType requirementsInputType3;
     private ResourceType requirementsOutputType;
     private ResourceType requirementsOutputType1;
     private ResourceType requirementsOutputType2;
     private ResourceType requirementsOutputType3;
 
-    private Integer requirementsInputQuantity;
     private Integer requirementsInputQuantity1;
     private Integer requirementsInputQuantity2;
-    private Integer requirementsInputQuantity3;
     private Integer requirementsOutputQuantity;
     private Integer requirementsOutputQuantity1;
     private Integer requirementsOutputQuantity2;
@@ -57,7 +53,16 @@ public class GraphicalProductionCard {
         initColorLevel();
         initCardLevel();
         this.productionCard = productionCard;
-        loadAvailableCard(i);
+        loadAvailableCard();
+        loadIndexCard(i);
+    }
+
+    public GraphicalProductionCard(ProductionCard productionCard){
+        initCardRequirementsType();
+        initColorLevel();
+        initCardLevel();
+        this.productionCard = productionCard;
+        loadAvailableCard();
     }
 
     private void borderBuilding(ColorCLI color) {
@@ -86,7 +91,7 @@ public class GraphicalProductionCard {
 
     }
 
-    private void loadAvailableCard(Integer i){
+    private void loadAvailableCard(){
 
         this.color = this.cardColor.get(this.productionCard.getColor());
         borderBuilding(this.color);
@@ -169,6 +174,9 @@ public class GraphicalProductionCard {
             insertingOutputResourcesCard(this.requirementsOutputQuantity1, colorResource1, this.requirementsOutputQuantity2, colorResource2, this.requirementsOutputQuantity3, colorResource3);
         }
 
+    }
+
+    private void loadIndexCard(Integer i){
         this.index = i;
         if(this.index < 10) {
             insertingIndex(index);
@@ -179,7 +187,6 @@ public class GraphicalProductionCard {
         else{
             insertingIndex11();
         }
-
 
     }
 
