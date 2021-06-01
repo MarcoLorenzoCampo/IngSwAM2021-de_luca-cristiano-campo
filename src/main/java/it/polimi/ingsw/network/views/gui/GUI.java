@@ -6,11 +6,9 @@ import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
-import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.network.views.cli.LightweightModel;
-import it.polimi.ingsw.network.views.cli.UsefulStrings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +24,7 @@ public class GUI extends ViewObservable implements IView, ActionListener {
     private boolean isOnline;
     JFrame setupFrame;
     private ArrayList<JPanel> setup;
+    private ArrayList<JPanel> leaderPanels;
 
     private MessagePopUp messagePopUp;
 
@@ -34,6 +33,7 @@ public class GUI extends ViewObservable implements IView, ActionListener {
         messagePopUp = new MessagePopUp(" ");
         setupFrame = new JFrame();
         setup = new ArrayList<>();
+        leaderPanels = new ArrayList<>();
         this.isOnline = isOnline;
 
         initializeSetupFrame();
@@ -318,13 +318,34 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void askToDiscard() throws ExecutionException {
-
+        setupFrame.getContentPane().removeAll();
+        setupFrame.setContentPane(leaderPanels.get(0));
+        setupFrame.revalidate();
+        setupFrame.repaint();
+        setupFrame.setVisible(true);
     }
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
+        if(leaderPanels.isEmpty()){
+            SetupLeaderPopUp setupLeaderPopUp = new SetupLeaderPopUp(cards);
+            setupLeaderPopUp.getSubmit_button().addActionListener(e -> {
+                ArrayList<Integer> selected = new ArrayList<>();
+                for (int i = 0; i < setupLeaderPopUp.getCheckBoxes().length; i++) {
+                    if(setupLeaderPopUp.getCheckBoxes()[i].isSelected()) selected.add(i);
+                }
+                notifyObserver(o -> o.onUpdateSetupLeaders(selected.get(0), selected.get(1)));
+                setupFrame.dispose();
+            });
+            leaderPanels.add(new SetupLeaderPopUp(cards));
+        }
+        else{
 
+            //leaderPanels.get(1) = normal show leaders;
+        }
     }
+
+
 
     @Override
     public void showError(String errorMessage) {
