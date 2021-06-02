@@ -229,13 +229,13 @@
 		"id": 8,
 		"requirements": [
 			{
-				"type": "SHIELD",
+				"type": "SERVANT",
 				"quantity": 3
 			}
 		],
 		"inputResources": [
 			{
-				"type": "SHIELD",
+				"type": "COIN",
 				"quantity": 2
 			}
 		],
@@ -268,7 +268,7 @@
 		"inputResources": [
 			{
 				"type": "SHIELD",
-				"quantity": 1
+				"quantity": 2
 			}
 		],
 		"outputResources": [
@@ -404,11 +404,11 @@
 		"inputResources": [
 			{
 				"type": "SHIELD",
-				"quantity": 2
+				"quantity": 1
 			},
 			{
 				"type": "STONE",
-				"quantity": 2
+				"quantity": 1
 			}
 		],
 		"outputResources": [
@@ -444,7 +444,7 @@
 			},
 			{
 				"type": "SERVANT",
-				"quantity": 2
+				"quantity": 1
 			}
 		],
 		"outputResources": [
@@ -725,7 +725,7 @@
 		"id": 24,
 		"requirements": [
 			{
-				"type": "STONE",
+				"type": "SHIELD",
 				"quantity": 5
 			}
 		],
@@ -989,7 +989,7 @@
 	},
 	{
 		"level": "THREE",
-		"color": "GREEN",
+		"color": "YELLOW",
 		"id": 33,
 		"requirements": [
 			{
@@ -1017,7 +1017,7 @@
 	},
 	{
 		"level": "THREE",
-		"color": "GREEN",
+		"color": "PURPLE",
 		"id": 34,
 		"requirements": [
 			{
@@ -1028,7 +1028,7 @@
 		"inputResources": [
 			{
 				"type": "STONE",
-				"quantity": 3
+				"quantity": 2
 			}
 		],
 		"outputResources": [
@@ -1045,7 +1045,7 @@
 	},
 	{
 		"level": "THREE",
-		"color": "GREEN",
+		"color": "BLUE",
 		"id": 35,
 		"requirements": [
 			{
@@ -1062,7 +1062,7 @@
 		"outputResources": [
 			{
 				"type": "SHIELD",
-				"quantity": 2
+				"quantity": 3
 			},
 			{
 				"type": "FAITH",
@@ -1197,7 +1197,7 @@
 		"id": 39,
 		"requirements": [
 			{
-				"type": "STONE",
+				"type": "SHIELD",
 				"quantity": 5
 			},
 			{
