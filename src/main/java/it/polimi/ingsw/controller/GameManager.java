@@ -580,7 +580,7 @@ public final class GameManager implements Observer {
                 break;
 
             case PLAYING:
-                currentView.currentTurn("\n Choose an action to perform.");
+                currentView.currentTurn("\nChoose an action to perform.");
                 break;
 
             case CHANGE_COLOR:
@@ -592,7 +592,7 @@ public final class GameManager implements Observer {
                 break;
 
             case BUY_CARD:
-                currentView.currentTurn("\n The card is yours! Time to pay now");
+                currentView.currentTurn("\nThe card is yours! Time to pay now");
                 break;
 
             case ACTIVATE_PRODUCTION:
@@ -600,14 +600,14 @@ public final class GameManager implements Observer {
                 break;
 
             case REMOVE:
-                currentView.currentTurn("\n The production was successful! Please remove the needed resources");
+                currentView.currentTurn("\nThe production was successful! Please remove the needed resources");
                 break;
 
             case MAIN_ACTION_DONE:
-                currentView.currentTurn("\n Main action performed you can place/discard leaders or peek on other players.");
+                currentView.currentTurn("\nMain action performed you can place/discard leaders or peek on other players.");
                 break;
 
-            default: currentView.currentTurn("\n Your command cannot be processed now, please try a different one");
+            default: currentView.currentTurn("\nYour command cannot be processed now, please try a different one");
         }
     }
 

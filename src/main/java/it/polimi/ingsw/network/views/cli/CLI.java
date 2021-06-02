@@ -329,11 +329,15 @@ public class CLI extends ViewObservable implements IView {
                     for (LightweightPlayerState enemyState : lightweightModel.getPlayerStates()) {
                         if (enemyState.getNickname().equals(cmdMembers[1])) {
 
-                            out.println("\nShowing " + enemyState.getNickname() + "'s leader cards:");
-                            showGenericString(enemyState.getLeaderCards().toString());
+                            if(enemyState.getLeaderCards() != null) {
+                                out.println("\nShowing " + enemyState.getNickname() + "'s leader cards:");
+                                showGenericString(enemyState.getLeaderCards().toString());
+                            }
 
-                            out.println("\nShowing " + enemyState.getNickname() + "'s inventory:");
-                            printInventory(enemyState.getInventory());
+                            if(enemyState.getInventory() != null) {
+                                out.println("\nShowing " + enemyState.getNickname() + "'s inventory:");
+                                printInventory(enemyState.getInventory());
+                            }
 
                             out.println("\nShowing " + enemyState.getNickname() + "'s faith track info:");
                             showGenericString("Position: " + enemyState.getReducedFaithTrackInfo());

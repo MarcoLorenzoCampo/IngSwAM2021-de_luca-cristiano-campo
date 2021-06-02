@@ -30,7 +30,7 @@ public class FaithTrack extends Observable implements Serializable {
     private final Map<Integer, Integer> ranges = new HashMap<>();
 
     public FaithTrack() {
-        this.faithMarker=7;
+        this.faithMarker=0;
         this.currentFavorPoints=0;
         this.finalPoints=0;
         initFaithTrack();
@@ -84,12 +84,40 @@ public class FaithTrack extends Observable implements Serializable {
      * it eventually takes favor points;
      * it eventually activates vatican reports.
      */
-    public void increaseFaithMarker(){
+    public void increaseFaithMarker() {
 
         this.faithMarker++;
 
         //Notify all observers, but only the clients will get an updated version.
         notifyObserver(new FaithTrackMessage(this));
+
+        if(faithMarker == 24) notifyObserver(new EndGameMessage());
+
+        if(isPopeTile(faithMarker)) {
+
+            PopeTile currentTile = (PopeTile) this.faithTrack.get(faithMarker);
+
+            if(currentTile.getIsActive()) {
+
+                pickFavorPoints(currentTile);
+
+                ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
+
+                //Notifying the controller he needs to start a vatican report session.
+                notifyObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
+            }
+        }
+    }
+
+    /**
+     * Method to use if lorenzo increases his position on the faith track. Sends a specific enemy updated
+     * to the player.
+     */
+    public void lorenzoIncreasesFaithMarker() {
+        this.faithMarker++;
+
+        //Notify all observers, but only the clients will get an updated version.
+        notifyObserver(new GenericMessageFromServer("Lorenzo's position: " + faithMarker + "\n"));
 
         if(faithMarker == 24) notifyObserver(new EndGameMessage());
 

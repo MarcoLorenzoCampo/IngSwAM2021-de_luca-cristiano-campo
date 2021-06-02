@@ -50,6 +50,7 @@ public class UsefulStrings {
                     "\n - 'CHECK_TRACK': To get and updated version of your faith track." +
                     "\n - 'PEEK <enemy nickname>': Checks on one of your enemies." +
                     "\n               What you can see: Active Leaders, Faith Track position, their total resources owned." +
+                    "\n - 'PEEK Lorenzo': Works in single player only. Shows Lorenzo's faith track position." +
                     "\n\n‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗\n\n";
 
     public static String getLogo() {

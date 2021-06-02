@@ -6,7 +6,6 @@ import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.AvailableCardsMessage;
-import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 import it.polimi.ingsw.network.messages.serverMessages.NoMoreCardsMessage;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
@@ -112,7 +111,7 @@ public class ProductionCardMarket extends Observable {
             }
         }
 
-        if(availableCards.size() == 11) {
+        if(colorNotAvailable()) {
             notifyObserver(new NoMoreCardsMessage());
         }
         notifyObserver(new AvailableCardsMessage(availableCards));
@@ -145,5 +144,13 @@ public class ProductionCardMarket extends Observable {
                 .stream()
                 .sorted(Comparator.comparing(ProductionCard::getLevel))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Method to check if the single player end game conditions are matched.
+     * @return: boolean to check if the game has to be ended.
+     */
+    private boolean colorNotAvailable() {
+        return availableCards.stream().count() != 4;
     }
 }

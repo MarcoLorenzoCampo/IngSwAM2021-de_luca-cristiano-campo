@@ -2,9 +2,6 @@ package it.polimi.ingsw.model.token;
 
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
-import it.polimi.ingsw.model.utilities.Reducible;
-
-import java.io.Serializable;
 
 public class TokenMove extends AbstractToken {
 
@@ -33,7 +30,7 @@ public class TokenMove extends AbstractToken {
         for(int i=0; i<moves; i++) {
             lorenzo.getLorenzoPlayerBoard()
                     .getLorenzoFaithTrack()
-                    .increaseFaithMarker();
+                    .lorenzoIncreasesFaithMarker();
         }
 
         if(shuffle) {
@@ -56,7 +53,7 @@ public class TokenMove extends AbstractToken {
         String reducedToken = "\n----------------------------------------------" +
                 "\nLorenzo played a 'Move' token:" +
                 "\nLorenzo moves: " + moves + " times!"
-                + "\n\n----------------------------------------------\n";
+                + "\n----------------------------------------------\n";
 
         if(shuffle) {
             reducedToken = reducedToken.concat("\nLorenzo shuffled his token deck!");
