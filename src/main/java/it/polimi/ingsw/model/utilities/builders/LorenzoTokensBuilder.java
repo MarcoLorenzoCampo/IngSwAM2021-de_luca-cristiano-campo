@@ -24,7 +24,7 @@ public final class LorenzoTokensBuilder {
         builtList.add(new TokenDiscard(Color.YELLOW, game));
         builtList.add(new TokenMove(game));
 
-        Collections.shuffle(builtList);
+        //Collections.shuffle(builtList);
         return builtList;
     }
 }

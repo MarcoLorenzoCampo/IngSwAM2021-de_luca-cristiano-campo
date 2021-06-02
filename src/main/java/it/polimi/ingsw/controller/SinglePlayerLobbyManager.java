@@ -217,7 +217,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
 
             case DISCARDED_RESOURCE:
                 playerVV.showGenericString("\nYou discarded a resource, Lorenzo moves!");
-                lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().increaseFaithMarker();
+                lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().lorenzoIncreasesFaithMarker();
                 break;
 
             //Faith track only
