@@ -29,14 +29,6 @@ public class CardMarket extends JPanel {
         }
         
         createCardMarket(available);
-        row_1[0].setLayout( new BorderLayout());
-        JLabel label = new JLabel("0");
-        label.setFont(new Font("serif", Font.PLAIN, 30));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        row_1[0].add(label, BorderLayout.SOUTH);
-        row_1[0].add(new ProductionPanel(images[0]),BorderLayout.CENTER);
-
-
         addRow(row_1);
         addRow(row_2);
         addRow(row_3);
@@ -71,7 +63,7 @@ public class CardMarket extends JPanel {
         }
 
         for (ProductionCard iterator_two: two) {
-            switch(iterator_two.getColor()){
+            switch (iterator_two.getColor()) {
                 case GREEN:
                     fillSlot(available, row_2[0], iterator_two);
                     break;
@@ -85,24 +77,25 @@ public class CardMarket extends JPanel {
                     fillSlot(available, row_2[3], iterator_two);
                     break;
             }
+        }
 
-            for (ProductionCard iterator_three : three) {
-                switch(iterator_three.getColor()){
-                    case GREEN:
-                        fillSlot(available, row_3[0], iterator_three);
-                        break;
-                    case BLUE:
-                        fillSlot(available, row_3[1], iterator_three);
-                        break;
-                    case YELLOW:
-                        fillSlot(available, row_3[2], iterator_three);
-                        break;
-                    case PURPLE:
-                        fillSlot(available, row_3[3], iterator_three);
-                        break;
-                }
+        for (ProductionCard iterator_three : three) {
+            switch(iterator_three.getColor()){
+                case GREEN:
+                    fillSlot(available, row_3[0], iterator_three);
+                    break;
+                case BLUE:
+                    fillSlot(available, row_3[1], iterator_three);
+                    break;
+                case YELLOW:
+                    fillSlot(available, row_3[2], iterator_three);
+                    break;
+                case PURPLE:
+                    fillSlot(available, row_3[3], iterator_three);
+                    break;
             }
         }
+
     }
 
     private void fillSlot(List<ProductionCard> available, JPanel slot, ProductionCard iterator) {

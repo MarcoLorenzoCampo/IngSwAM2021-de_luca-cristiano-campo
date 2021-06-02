@@ -29,13 +29,14 @@ public class Executor {
        sent.add(available.get(22));
        sent.add(available.get(23));
        sent.add(available.get(24));
+       sent.add(available.get(40));
+       sent.add(available.get(41));
        sent.add(available.get(42));
        sent.add(available.get(43));
-       sent.add(available.get(44));
-       sent.add(available.get(45));
         System.out.println("Created GUI on EDT? "+
                 SwingUtilities.isEventDispatchThread());
         JFrame f = new JFrame();
+        //f.setContentPane(new ProductionPanel(21));
         f.setContentPane(new CardMarket(sent));
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
