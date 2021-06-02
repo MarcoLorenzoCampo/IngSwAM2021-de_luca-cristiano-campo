@@ -33,7 +33,7 @@ public class CLI extends ViewObservable implements IView {
     private final boolean isOffline;
 
     /**
-     * Light and read only copy of the udated model.
+     * Light and read only copy of the updated model.
      */
     private final LightweightModel lightweightModel;
 
@@ -330,7 +330,7 @@ public class CLI extends ViewObservable implements IView {
                         if (enemyState.getNickname().equals(cmdMembers[1])) {
 
                             if(enemyState.getLeaderCards() != null) {
-                                out.println("\nShowing " + enemyState.getNickname() + "'s leader cards:");
+                                out.println("\nShowing " + enemyState.getNickname() + "'s active leader cards:");
                                 showGenericString(enemyState.getLeaderCards().toString());
                             }
 

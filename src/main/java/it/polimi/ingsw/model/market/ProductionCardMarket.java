@@ -11,6 +11,7 @@ import it.polimi.ingsw.parsers.ProductionCardsParser;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static it.polimi.ingsw.enumerations.Level.*;
 
@@ -69,12 +70,12 @@ public class ProductionCardMarket extends Observable {
         availableCards.remove(boughtCard);
 
         //getting a new card from the deck with matching color and level
-        playableProductionCards.
-                stream().
-                filter(c -> c.getColor().equals(boughtCard.getColor())).
-                filter(c -> c.getLevel().equals(boughtCard.getLevel())).
-                findFirst().
-                ifPresent(availableCards::add);
+        playableProductionCards
+                .stream()
+                .filter(c -> c.getColor().equals(boughtCard.getColor()))
+                .filter(c -> c.getLevel().equals(boughtCard.getLevel()))
+                .findFirst()
+                .ifPresent(availableCards::add);
     }
 
     /**
@@ -140,10 +141,34 @@ public class ProductionCardMarket extends Observable {
      * Method to sort the available cards by level when one is removed/replaced.
      */
     private void sortAvailableCardsByLevel() {
-        availableCards = availableCards
+
+        List<ProductionCard> level1 = availableCards
+                .stream()
+                .filter(p -> p.getLevel().equals(ONE))
+                .sorted(Comparator.comparing((ProductionCard::getColor)))
+                .collect(Collectors.toList());
+
+        List<ProductionCard> level2 = availableCards
+                .stream()
+                .filter(p -> p.getLevel().equals(TWO))
+                .sorted(Comparator.comparing((ProductionCard::getColor)))
+                .collect(Collectors.toList());
+
+        List<ProductionCard> level3 = availableCards
+                .stream()
+                .filter(p -> p.getLevel().equals(THREE))
+                .sorted(Comparator.comparing((ProductionCard::getColor)))
+                .collect(Collectors.toList());
+
+        availableCards = Stream.concat(level1.stream(), level2.stream()).collect(Collectors.toList());
+        availableCards = Stream.concat(availableCards.stream(), level3.stream()).collect(Collectors.toList());
+
+        /*availableCards = availableCards
                 .stream()
                 .sorted(Comparator.comparing(ProductionCard::getLevel))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+
+        //SORT BY COLOR AS WELL
     }
 
     /**
@@ -151,6 +176,18 @@ public class ProductionCardMarket extends Observable {
      * @return: boolean to check if the game has to be ended.
      */
     private boolean colorNotAvailable() {
-        return availableCards.stream().count() != 4;
+        boolean green = false;
+        boolean blue = false;
+        boolean yellow = false;
+        boolean purple = false;
+
+        for(ProductionCard p : availableCards) {
+            if(p.getColor().equals(Color.GREEN)) green = true;
+            else if(p.getColor().equals(Color.BLUE)) blue = true;
+            else if(p.getColor().equals(Color.PURPLE)) purple = true;
+            else if(p.getColor().equals(Color.YELLOW)) yellow = true;
+        }
+
+        return !(green && blue && yellow && purple);
     }
 }

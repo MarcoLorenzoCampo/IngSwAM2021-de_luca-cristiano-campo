@@ -33,9 +33,6 @@ public class LorenzoPlayerBoard extends Observable {
     }
 
     public void lorenzoMoves(int moves) {
-        for(int i=0; i<moves; i++) {
-            lorenzoFaithTrack.increaseFaithMarker();
-        }
     }
 
     public void shuffleTokens() {
