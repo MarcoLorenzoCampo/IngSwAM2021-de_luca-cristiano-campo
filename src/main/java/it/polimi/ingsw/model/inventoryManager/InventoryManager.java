@@ -108,7 +108,6 @@ public class InventoryManager extends Observable {
         notifyObserver(messageUpdate());
     }
 
-
     public void customExchange(int index, ResourceType type){
         if(exchange.contains(type)) {
             buffer.get(index).setResourceType(type);
@@ -124,7 +123,6 @@ public class InventoryManager extends Observable {
         discount.add(effect);
     }
 
-
     /**
      *
      * @param effect -- possible type in which a undefined resource can turn once obtained from the market
@@ -133,7 +131,6 @@ public class InventoryManager extends Observable {
     public void addExchangeLeader (ResourceType effect){
         exchange.add(effect);
     }
-
 
     /**
      *
@@ -203,7 +200,6 @@ public class InventoryManager extends Observable {
         }
     }
 
-
     /**
      *
      * @param priceOneResource -- type and quantity of resource to be removed from warehouse
@@ -229,7 +225,7 @@ public class InventoryManager extends Observable {
         for (ResourceType iterator : temp.keySet()){
             inventory.put(iterator, temp.get(iterator));
         }
-        notifyObserver(new StrongboxMessage((HashMap<ResourceType, Integer>) strongbox.getInventory()));
+        notifyObserver(new StrongboxMessage(strongbox.getInventory()));
         notifyObserver(new WarehouseMessage(warehouse));
     }
 

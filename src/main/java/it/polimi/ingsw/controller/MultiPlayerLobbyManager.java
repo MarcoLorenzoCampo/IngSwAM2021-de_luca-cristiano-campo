@@ -354,27 +354,21 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     @Override
     public void setObserver(String nickname, VirtualView virtualView) {
 
-        realPlayerList.get(getPlayerIndexByNickname(nickname)).addObserver(this);
-
-        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
-
-        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(this);
-
-        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().addObserver(this);
-
-        gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
-
-        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
-
+        //Player observes himself.
         realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(virtualView);
-
         realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(virtualView);
-
         realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getProductionBoard().addObserver(virtualView);
-
         realPlayerList.get(getPlayerIndexByNickname(nickname)).addObserver(virtualView);
 
+        //Player observes the model.
+        gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(virtualView);
+        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
 
+        //Lobby manager observes the player.
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).addObserver(this);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(this);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().addObserver(this);
     }
 
     /**
@@ -589,7 +583,8 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
     /**
      * Method to forward each player an updated reduced version of each enemy to be accessed as local information.
      */
-    private void forwardPlayerUpdates() {
+    @Override
+    public void forwardPlayerUpdates() {
 
         RealPlayer currentPlayer = realPlayerList.get(getPlayerIndexByNickname(gameManager.getCurrentPlayer()));
 

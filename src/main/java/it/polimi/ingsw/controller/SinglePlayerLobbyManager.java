@@ -105,40 +105,43 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     @Override
     public void setObserver(String nickname, VirtualView vv) {
 
-        realPlayerList.get(0).getPlayerBoard().getFaithTrack().addObserver(this);
-
-        realPlayerList.get(0).getPlayerBoard().getInventoryManager().addObserver(this);
-
-        gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(vv);
-
-        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(vv);
-
+        //Player observes himself.
         realPlayerList.get(0).getPlayerBoard().getInventoryManager().addObserver(vv);
-
+        realPlayerList.get(0).addObserver(vv);
+        realPlayerList.get(0).getPlayerBoard().getProductionBoard().addObserver(vv);
         realPlayerList.get(0).getPlayerBoard().getFaithTrack().addObserver(vv);
 
-        realPlayerList.get(0).getPlayerBoard().getProductionBoard().addObserver(vv);
+        //Player observes the model.
+        gameManager.getCurrentGame().getGameBoard().getResourceMarket().addObserver(vv);
+        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(vv);
 
-        realPlayerList.get(0).addObserver(vv);
-
+        //Player observes Lorenzo.
         lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().addObserver(vv);
+        lorenzo.getLorenzoPlayerBoard().addObserver(vv);
+        lorenzo.getLorenzoPlayerBoard().getLorenzoTokenPile().addObserver(vv);
 
+        //Lobby manager observes the player.
+        realPlayerList.get(0).getPlayerBoard().getFaithTrack().addObserver(this);
+        realPlayerList.get(0).getPlayerBoard().getInventoryManager().addObserver(this);
+        realPlayerList.get(0).getPlayerBoard().addObserver(this);
+        realPlayerList.get(0).addObserver(this);
+
+        //Lobby manager observes Lorenzo.
         lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().addObserver(this);
 
-        lorenzo.getLorenzoPlayerBoard().addObserver(vv);
-
-        lorenzo.getLorenzoPlayerBoard().getLorenzoTokenPile().addObserver(vv);
+        //Lobby manager observes the model.
+        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(this);
     }
 
     @Override
     public void showStartingUpdates() {
 
-        playerVV.printResourceMarket(PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getResourceBoard(),
-                PlayingGame.getGameInstance().getGameBoard().getResourceMarket().getExtraMarble());
+        playerVV.printResourceMarket(gameManager.getCurrentGame().getGameBoard().getResourceMarket().getResourceBoard(),
+                gameManager.getCurrentGame().getGameBoard().getResourceMarket().getExtraMarble());
 
-        playerVV.printAvailableCards(PlayingGame.getGameInstance().getGameBoard().getProductionCardMarket().getAvailableCards());
+        playerVV.printAvailableCards(gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().getAvailableCards());
 
-        playerVV.printFaithTrack(PlayingGame.getGameInstance().getCurrentPlayer().getPlayerBoard().getFaithTrack());
+        playerVV.printFaithTrack(gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getFaithTrack());
     }
 
     @Override
@@ -232,17 +235,24 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
                 break;
 
             case NO_MORE_CARDS:
-                playerVV.showGenericString("\nLorenzo discarded a whole sub-deck!");
+                playerVV.showGenericString("\nLorenzo discarded a whole sub-deck!" +
+                        "\nYour score: " + realPlayerList.get(0).computeTotalVictoryPoints());
                 playerVV.showWinMatch("Lorenzo");
                 break;
 
             case BOUGHT_7_CARDS:
-                playerVV.showGenericString("\nYou bought your 7th card!");
+                playerVV.showGenericString("\nYou bought your 7th card!" +
+                        "\nYour score: " + realPlayerList.get(0).computeTotalVictoryPoints());
                 playerVV.showWinMatch("You");
                 break;
 
             default: //Ignore any other message
                 break;
         }
+    }
+
+    @Override
+    public void forwardPlayerUpdates() {
+
     }
 }

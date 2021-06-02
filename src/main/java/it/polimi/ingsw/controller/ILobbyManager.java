@@ -27,4 +27,5 @@ public interface ILobbyManager {
     void showStartingUpdates();
     void randomizedResourcesSetup(String disconnectedNickname);
     void randomizedLeadersSetup(String disconnectedNickname);
+    void forwardPlayerUpdates();
 }

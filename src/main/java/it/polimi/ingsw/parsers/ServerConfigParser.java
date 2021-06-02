@@ -15,9 +15,8 @@ public final class ServerConfigParser {
     public static ServerConfigPOJO readServerConfig() {
 
         Gson gson = new Gson();
-        Reader reader;
 
-        reader = new InputStreamReader(Objects.requireNonNull(ServerConfigParser.class.getResourceAsStream(serverConfigPath)),
+        Reader reader = new InputStreamReader(Objects.requireNonNull(ServerConfigParser.class.getResourceAsStream(serverConfigPath)),
                 StandardCharsets.UTF_8);
 
         return gson.fromJson(reader, ServerConfigPOJO.class);

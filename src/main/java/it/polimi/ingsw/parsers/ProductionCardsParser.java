@@ -20,14 +20,13 @@ public final class ProductionCardsParser {
     public static List<ProductionCard> parseProductionDeck() {
 
         String productionCardsPath = "/production_cards_deck.json";
-        Reader reader;
 
-        reader = new InputStreamReader(Objects.requireNonNull(ProductionCardsParser.class.getResourceAsStream(productionCardsPath)),
+        Reader reader = new InputStreamReader(Objects.requireNonNull(ProductionCardsParser.class.getResourceAsStream(productionCardsPath)),
                 StandardCharsets.UTF_8);
 
         JsonArray json = new Gson().fromJson(reader, JsonArray.class);
-            return new Gson().fromJson(String.valueOf(json), new TypeToken<List<ProductionCard>>() {
-            }.getType());
+
+        return new Gson().fromJson(String.valueOf(json), new TypeToken<List<ProductionCard>>() {}.getType());
     }
 }
 
