@@ -149,4 +149,5 @@ public class SetupLeaderPopUp extends JPanel {
     public JCheckBox[] getCheckBoxes() {
         return checkBoxes;
     }
+
 }

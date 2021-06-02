@@ -20,9 +20,9 @@ import java.util.concurrent.ExecutionException;
 
 public class GUI extends ViewObservable implements IView, ActionListener {
 
-    LightweightModel lightweightModel;
+    private final LightweightModel lightweightModel;
     private boolean isOnline;
-    JFrame setupFrame;
+    private final JFrame setupFrame;
     private ArrayList<JPanel> setup;
     private ArrayList<JPanel> leaderPanels;
 
@@ -57,11 +57,13 @@ public class GUI extends ViewObservable implements IView, ActionListener {
                 send.add(ResourceType.valueOf(resourcesPopUp.getTextField2().getText()));
                 System.out.println(resourcesPopUp.getTextField1().getText()+" "+resourcesPopUp.getTextField2().getText());
                 notifyObserver(o -> o.onUpdateSetupResource(send));
+                setupFrame.dispose();
             }
             else if(!resourcesPopUp.getTextField1().getText().isEmpty() && resourcesPopUp.getNumber()==1){
                 send.add(ResourceType.valueOf(resourcesPopUp.getTextField1().getText()));
                 System.out.println(resourcesPopUp.getTextField1().getText()+" "+resourcesPopUp.getTextField2().getText());
                 notifyObserver(o -> o.onUpdateSetupResource(send));
+                setupFrame.dispose();
 
             }
         });
@@ -227,7 +229,7 @@ public class GUI extends ViewObservable implements IView, ActionListener {
     }
 
     private void initializeSetupFrame() {
-        setupFrame.setSize(new Dimension(500,500));
+        setupFrame.setSize(800,800);
         setupFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setupFrame.setTitle("SETUP");
     }
@@ -328,16 +330,8 @@ public class GUI extends ViewObservable implements IView, ActionListener {
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
         if(leaderPanels.isEmpty()){
-            SetupLeaderPopUp setupLeaderPopUp = new SetupLeaderPopUp(cards);
-            setupLeaderPopUp.getSubmit_button().addActionListener(e -> {
-                ArrayList<Integer> selected = new ArrayList<>();
-                for (int i = 0; i < setupLeaderPopUp.getCheckBoxes().length; i++) {
-                    if(setupLeaderPopUp.getCheckBoxes()[i].isSelected()) selected.add(i);
-                }
-                notifyObserver(o -> o.onUpdateSetupLeaders(selected.get(0), selected.get(1)));
-                setupFrame.dispose();
-            });
-            leaderPanels.add(new SetupLeaderPopUp(cards));
+            JPanel setupLeaderPopUp = setupLeaderPopUp(cards);
+            leaderPanels.add(setupLeaderPopUp);
         }
         else{
 
@@ -345,6 +339,18 @@ public class GUI extends ViewObservable implements IView, ActionListener {
         }
     }
 
+    private JPanel setupLeaderPopUp(List<LeaderCard> available) {
+       SetupLeaderPopUp setupLeaderPopUp = new SetupLeaderPopUp(available);
+       setupLeaderPopUp.getSubmit_button().addActionListener(e->{
+           ArrayList<Integer> selected = new ArrayList<>();
+           for (int i = 0; i < setupLeaderPopUp.getCheckBoxes().length; i++) {
+               if(setupLeaderPopUp.getCheckBoxes()[i].isSelected()) selected.add(i);
+           }
+           notifyObserver(o -> o.onUpdateSetupLeaders(selected.get(0), selected.get(1)));
+           setupFrame.dispose();
+       });
+        return setupLeaderPopUp;
+    }
 
 
     @Override
