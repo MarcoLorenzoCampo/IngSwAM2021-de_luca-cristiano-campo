@@ -13,4 +13,11 @@ public class LorenzoPlayer {
     public LorenzoPlayerBoard getLorenzoPlayerBoard() {
         return lorenzoPlayerBoard;
     }
+
+    /**
+     * @return position on the faith track
+     */
+    public int getFaithPosition() {
+        return lorenzoPlayerBoard.getLorenzoFaithTrack().getFaithMarker();
+    }
 }

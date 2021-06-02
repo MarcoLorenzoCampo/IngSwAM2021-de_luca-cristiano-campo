@@ -81,6 +81,8 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     @Override
     public void setNextTurn() {
 
+        forwardPlayerUpdates();
+
         playerVV.showGenericString("Lorenzo's turn now.");
 
         lorenzo.getLorenzoPlayerBoard().getAction(new LorenzoAction(lorenzo));
@@ -254,5 +256,11 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     @Override
     public void forwardPlayerUpdates() {
 
+        playerVV.getPeek(
+                "Lorenzo",
+                lorenzo.getFaithPosition(),
+                null,
+                null
+        );
     }
 }
