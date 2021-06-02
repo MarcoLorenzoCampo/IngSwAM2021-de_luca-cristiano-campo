@@ -17,16 +17,15 @@ public interface ILobbyManager {
     void setNextTurn();
     void giveLeaderCards();
     List<RealPlayer> getRealPlayerList();
-    int getNumberOfTurns();
     int getLobbySize();
     void reconnectPlayer(String nickname, VirtualView vv);
     void broadcastGenericMessage(String message);
     void broadCastWinMessage(String message);
-    void broadCastMatchInfo();
     int turnOfPlayer(String current);
     void disconnectPlayer(String nicknameToDisconnect);
     void setObserver(String nickname, VirtualView vv);
     void showStartingUpdates();
     void randomizedResourcesSetup(String disconnectedNickname);
     void randomizedLeadersSetup(String disconnectedNickname);
+    void forwardPlayerUpdates();
 }

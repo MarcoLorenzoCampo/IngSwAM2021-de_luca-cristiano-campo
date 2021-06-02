@@ -14,11 +14,10 @@ public final class ResourceMarketParser {
      */
     public static int[] parseResourceMarketDimensions() {
 
-        Reader reader;
         String configPath = "/resourceBoard_dimensions.json";
         Gson resourceBoardConfigReader = new Gson();
 
-        reader = new InputStreamReader(Objects.requireNonNull(ResourceMarketParser.class.getResourceAsStream(configPath)),
+        Reader reader = new InputStreamReader(Objects.requireNonNull(ResourceMarketParser.class.getResourceAsStream(configPath)),
                 StandardCharsets.UTF_8);
 
         return resourceBoardConfigReader.fromJson(reader, int[].class);

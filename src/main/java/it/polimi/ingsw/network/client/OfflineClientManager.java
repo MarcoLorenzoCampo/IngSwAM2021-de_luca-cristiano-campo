@@ -43,6 +43,8 @@ public class OfflineClientManager implements ViewObserver, Observer {
      */
     private String nickname;
 
+    private IClient client;
+
     private final List<ProductionCard> allProductionCards;
 
     /**
@@ -56,6 +58,8 @@ public class OfflineClientManager implements ViewObserver, Observer {
         this.view = view;
         this.allProductionCards = ProductionCardsParser.parseProductionDeck();
         viewUpdater = Executors.newSingleThreadExecutor();
+
+        client = new OfflineClient();
     }
 
     @Override
@@ -265,7 +269,6 @@ public class OfflineClientManager implements ViewObserver, Observer {
         }
         return deserialized;
     }
-
 
     /**
      * Sends a connection request to the server's IP and port.

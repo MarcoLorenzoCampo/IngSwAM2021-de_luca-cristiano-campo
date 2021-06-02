@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.PlayerState;
 import it.polimi.ingsw.model.player.RealPlayer;
+import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
@@ -134,119 +135,19 @@ public final class GameManager implements Observer {
     public void onMessage(Message message) {
         switch (currentGame.getCurrentState().getGameState()) {
             case SETUP:
-
-                //it's the first turn and a nickname request is sent by the client.
-                if (firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)) {
-
-                    //The client isn't logged in yet. He needs to send a lobby size message.
-                    currentGame.setCurrentState(PossibleGameStates.SETUP_SIZE);
-
-                    // the first turn has passed, adding all new players
-                } else if (!firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)) {
-                    lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
-
-                    //if the last player is logged, the game can finally start its setup phase
-                    if (lobbyManager.getRealPlayerList().size() == lobbyManager.getLobbySize()) {
-                        setGameStarted();
-                        currentGame.setCurrentState(PossibleGameStates.SETUP_RESOURCES);
-                        lobbyManager.setPlayingOrder();
-                    }
-                }
+                onSetup(message);
                 break;
 
-
             case SETUP_SIZE:
-                if (message.getMessageType().equals(PossibleMessages.GAME_SIZE) && firstTurn) {
-                    OneIntMessage oneIntMessage = (OneIntMessage) message;
-                    if (oneIntMessage.getIndex() == 1) {
-
-                        //creates a new single player lobby
-                        setLobbyManager("singlePlayer");
-                        lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
-                        lobbyManager.setPlayingOrder();
-                        currentGame.setCurrentState(PossibleGameStates.SETUP_LEADER);
-                        onStartTurn();
-                    } else {
-
-                        //creates a new multi player lobby manager.
-                        setLobbyManager("multiPlayer");
-                        MultiPlayerLobbyManager currentLobby = (MultiPlayerLobbyManager) lobbyManager;
-                        currentLobby.setLobbySize(oneIntMessage.getIndex());
-                        lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
-                        currentGame.setCurrentState(PossibleGameStates.SETUP);
-                    }
-                    firstTurn = false;
-                }
+                onSetupSize(message);
                 break;
 
             case SETUP_RESOURCES:
-                if (message.getMessageType().equals(PossibleMessages.SETUP_RESOURCES) && message.getSenderUsername().equals(currentPlayer)) {
-                    SetupResourceAnswer setupResourceAnswer = (SetupResourceAnswer) message;
-                    int listSize = setupResourceAnswer.getResourcesToSet();
-
-                    if (listSize > 0) {
-
-                        LinkedList<Resource> obtained = ResourceBuilder.build((LinkedList<ResourceType>) setupResourceAnswer.getResourceTypes());
-
-                        for (Resource iterator : obtained) {
-                                iterator.deposit(currentGame.getCurrentPlayer().getPlayerBoard());
-                                actionManager
-                                        .onReceiveAction( new DepositAction(0, message.getSenderUsername(), currentGame) );
-                        }
-                    }
-                    if ((lobbyManager.turnOfPlayer(currentPlayer)+1) == lobbyManager.getLobbySize()) {
-                        currentGame.setCurrentState(PossibleGameStates.SETUP_LEADER);
-                    }
-                    lobbyManager.setNextTurn();
-                }
+                onSetupResources(message);
                 break;
 
             case SETUP_LEADER:
-
-                if(message.getMessageType().equals(PossibleMessages.SETUP_LEADERS)) {
-
-                    DiscardTwoLeaders d = (DiscardTwoLeaders) message;
-
-                    int l1 = d.getL1();
-                    int l2 = d.getL2();
-
-                    if(l1 > l2){
-
-                        //actionManager
-                        //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
-                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame) );
-                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
-                    } else {
-
-                        //actionManager
-                        //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
-
-                        //actionManager
-                        //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
-                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame) );
-                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
-                    }
-
-                    if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)) {
-                        currentGame.setCurrentState(PossibleGameStates.PLAYING);
-
-
-                        //Before the game starts, if a player got disconnected before discarding 2 leaders,
-                        // they get randomly selected and discarded.
-                        for(RealPlayer realPlayer : lobbyManager.getRealPlayerList()) {
-                            if(!realPlayer.getPlayerState().isConnected() &&
-                                realPlayer.getOwnedLeaderCards().size() == 4) {
-
-                                lobbyManager.randomizedLeadersSetup(realPlayer.getName());
-                            }
-                        }
-                    }
-
-                    currentPlayerState.setSetUpPhase(false);
-                    lobbyManager.setNextTurn();
-                }
+                onSetupLeader(message);
                 break;
 
             case PLAYING:
@@ -351,185 +252,314 @@ public final class GameManager implements Observer {
                 onStartTurn();
                 break;
 
-
             case BUY_CARD:
-                if(message.getSenderUsername().equals(currentPlayer)) {
-
-                    ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved();
-
-
-
-                    if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
-                        SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
-                        currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
-                        currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
-                    }
-
-                    else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
-                        SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
-                        currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
-                        currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
-                    }
-
-                    if(toBeRemoved.isEmpty())
-                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
-
-                    onStartTurn();
-                }
+                onBuyCard(message);
                 break;
 
-
             case CHANGE_COLOR:
-                if(message.getSenderUsername().equals(currentPlayer)){
-
-                    if(message.getMessageType().equals(PossibleMessages.RESOURCE)){
-                        ExchangeResourceMessage colorChange = (ExchangeResourceMessage) message;
-                        currentGame.getCurrentPlayer().visit(new ChangeMarbleAction(colorChange.getSenderUsername(),
-                                                colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new ChangeMarbleAction(colorChange.getSenderUsername(),
-                        //                colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
-                    }
-
-                    if(currentPlayerState.CanDeposit()){
-                        currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
-                    }
-                    onStartTurn();
-                }
+                onChangeColor(message);
                 break;
 
             case DEPOSIT:
-                if(message.getSenderUsername().equals(currentPlayer)){
-                    if(message.getMessageType().equals(PossibleMessages.DEPOSIT)){
-                        OneIntMessage deposit = (OneIntMessage) message;
-                        //actionManager
-                        //        .onReceiveAction(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
-                        currentGame.getCurrentPlayer().visit(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
-                        if(currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().isEmpty()){
-                            currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
-                        }
-
-                    }
-                }
-                onStartTurn();
+                onDeposit(message);
                 break;
 
             case ACTIVATE_PRODUCTION:
-                if(message.getSenderUsername().equals(currentPlayer)) {
-                        if(message.getMessageType().equals(PossibleMessages.ACTIVATE_PRODUCTION)) {
-                            OneIntMessage activate_prod = (OneIntMessage) message;
-                            currentGame.getCurrentPlayer().visit(new ActivateProductionAction(activate_prod.getSenderUsername(),
-                                                    activate_prod.getIndex(), currentGame));
-                            //actionManager
-                            //        .onReceiveAction(new ActivateProductionAction(activate_prod.getSenderUsername(),
-                            //                activate_prod.getIndex(), currentGame));
-                        }
-
-                        else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)) {
-                            BaseProductionMessage base_prod = (BaseProductionMessage) message;
-                            //actionManager
-                            //        .onReceiveAction(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
-                            //                base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
-                            currentGame.getCurrentPlayer().visit(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
-                                                    base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
-                        }
-
-                        else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
-                            ExtraProductionMessage extra_prod = (ExtraProductionMessage) message;
-                            currentGame.getCurrentPlayer().visit(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
-                                    extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
-                            //actionManager
-                            //        .onReceiveAction(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
-                            //                extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
-                        }
-                        else if(message.getMessageType().equals(PossibleMessages.EXECUTE_PRODUCTION)){
-                            currentGame.getCurrentPlayer().visit(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
-                            //actionManager
-                            //        .onReceiveAction(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
-                            if(currentGame.getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()){
-                                currentGame.setCurrentState(PossibleGameStates.REMOVE);
-                            } else {
-                                currentGame.setCurrentState(PossibleGameStates.PLAYING);
-                            }
-                        }
-                        onStartTurn();
-                }
+                onActivateProduction(message);
                 break;
 
-
-
             case REMOVE:
-                if(message.getSenderUsername().equals(currentPlayer)) {
-
-                    ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources();
-
-                    //if (toBeRemoved.isEmpty()){
-                    //    currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
-                    //    onStartTurn();
-                    //}
-
-                    if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
-                        SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
-                        currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
-                        currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
-
-                    }
-
-                    else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
-                        SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
-                        currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
-                        currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
-
-                    }
-
-                    if (toBeRemoved.isEmpty()){
-                        currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
-
-                    }
-                    onStartTurn();
-                }
-
+                onRemove(message);
                 break;
 
             case MAIN_ACTION_DONE:
-                if(message.getSenderUsername().equals(currentPlayer)){
-                    if(message.getMessageType().equals(PossibleMessages.END_TURN)){
-                        currentGame.getCurrentPlayer().visit(new EndTurnAction(message.getSenderUsername(), currentGame));
-                        //currentPlayerState.endTurnReset();
-                        currentGame.setCurrentState(PossibleGameStates.PLAYING);
-                        lobbyManager.setNextTurn();
-                    }
-
-                    else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
-                            && currentPlayerState.getHasPlaceableLeaders()
-                            && !currentPlayerState.getGetHasPlacedLeaders()){
-                        OneIntMessage discard = (OneIntMessage) message;
-                        currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
-                        onStartTurn();
-                    }
-
-                    else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
-                            && currentPlayerState.getHasPlaceableLeaders()
-                            && !currentPlayerState.getGetHasPlacedLeaders()){
-                        OneIntMessage activate = (OneIntMessage) message;
-                        currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
-                        onStartTurn();
-                    }
-                    else onStartTurn();
-                }
+                onMainActionDone(message);
                 break;
+        }
+    }
+
+    private void onSetup(Message message) {
+        //it's the first turn and a nickname request is sent by the client.
+        if (firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)) {
+
+            //The client isn't logged in yet. He needs to send a lobby size message.
+            currentGame.setCurrentState(PossibleGameStates.SETUP_SIZE);
+
+            // the first turn has passed, adding all new players
+        } else if (!firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)) {
+            lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
+
+            //if the last player is logged, the game can finally start its setup phase
+            if (lobbyManager.getRealPlayerList().size() == lobbyManager.getLobbySize()) {
+                setGameStarted();
+                currentGame.setCurrentState(PossibleGameStates.SETUP_RESOURCES);
+                lobbyManager.setPlayingOrder();
+            }
+        }
+    }
+
+    private void onSetupSize(Message message) {
+        if (message.getMessageType().equals(PossibleMessages.GAME_SIZE) && firstTurn) {
+            OneIntMessage oneIntMessage = (OneIntMessage) message;
+            if (oneIntMessage.getIndex() == 1) {
+
+                //creates a new single player lobby
+                setLobbyManager("singlePlayer");
+                lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
+                lobbyManager.setPlayingOrder();
+                currentGame.setCurrentState(PossibleGameStates.SETUP_LEADER);
+                onStartTurn();
+            } else {
+
+                //creates a new multi player lobby manager.
+                setLobbyManager("multiPlayer");
+                MultiPlayerLobbyManager currentLobby = (MultiPlayerLobbyManager) lobbyManager;
+                currentLobby.setLobbySize(oneIntMessage.getIndex());
+                lobbyManager.addNewPlayer(message.getSenderUsername(), virtualViewLog.get(message.getSenderUsername()));
+                currentGame.setCurrentState(PossibleGameStates.SETUP);
+            }
+            firstTurn = false;
+        }
+    }
+
+    private void onSetupResources(Message message) {
+        if (message.getMessageType().equals(PossibleMessages.SETUP_RESOURCES) && message.getSenderUsername().equals(currentPlayer)) {
+            SetupResourceAnswer setupResourceAnswer = (SetupResourceAnswer) message;
+            int listSize = setupResourceAnswer.getResourcesToSet();
+
+            if (listSize > 0) {
+
+                LinkedList<Resource> obtained = ResourceBuilder.build((LinkedList<ResourceType>) setupResourceAnswer.getResourceTypes());
+
+                for (Resource iterator : obtained) {
+                    iterator.deposit(currentGame.getCurrentPlayer().getPlayerBoard());
+                    actionManager
+                            .onReceiveAction( new DepositAction(0, message.getSenderUsername(), currentGame) );
+                }
+            }
+            if ((lobbyManager.turnOfPlayer(currentPlayer)+1) == lobbyManager.getLobbySize()) {
+                currentGame.setCurrentState(PossibleGameStates.SETUP_LEADER);
+            }
+            lobbyManager.setNextTurn();
+        }
+    }
+
+    private void onSetupLeader(Message message) {
+        if(message.getMessageType().equals(PossibleMessages.SETUP_LEADERS)) {
+
+            DiscardTwoLeaders d = (DiscardTwoLeaders) message;
+
+            int l1 = d.getL1();
+            int l2 = d.getL2();
+
+            if(l1 > l2){
+
+                //actionManager
+                //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
+                //actionManager
+                //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+                currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame) );
+                currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+            } else {
+
+                //actionManager
+                //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+
+                //actionManager
+                //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
+                currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame) );
+                currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
+            }
+
+            if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)) {
+                currentGame.setCurrentState(PossibleGameStates.PLAYING);
+
+
+                //Before the game starts, if a player got disconnected before discarding 2 leaders,
+                // they get randomly selected and discarded.
+                for(RealPlayer realPlayer : lobbyManager.getRealPlayerList()) {
+                    if(!realPlayer.getPlayerState().isConnected() &&
+                            realPlayer.getOwnedLeaderCards().size() == 4) {
+
+                        lobbyManager.randomizedLeadersSetup(realPlayer.getName());
+                    }
+                }
+            }
+
+            currentPlayerState.setSetUpPhase(false);
+            lobbyManager.setNextTurn();
+        }
+    }
+
+    private void onActivateProduction(Message message) {
+        if(message.getSenderUsername().equals(currentPlayer)) {
+            if(message.getMessageType().equals(PossibleMessages.ACTIVATE_PRODUCTION)) {
+                OneIntMessage activate_prod = (OneIntMessage) message;
+                currentGame.getCurrentPlayer().visit(new ActivateProductionAction(activate_prod.getSenderUsername(),
+                        activate_prod.getIndex(), currentGame));
+                //actionManager
+                //        .onReceiveAction(new ActivateProductionAction(activate_prod.getSenderUsername(),
+                //                activate_prod.getIndex(), currentGame));
+            }
+
+            else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)) {
+                BaseProductionMessage base_prod = (BaseProductionMessage) message;
+                //actionManager
+                //        .onReceiveAction(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
+                //                base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
+                currentGame.getCurrentPlayer().visit(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
+                        base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
+            }
+
+            else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
+                ExtraProductionMessage extra_prod = (ExtraProductionMessage) message;
+                currentGame.getCurrentPlayer().visit(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
+                        extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
+                //actionManager
+                //        .onReceiveAction(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
+                //                extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
+            }
+            else if(message.getMessageType().equals(PossibleMessages.EXECUTE_PRODUCTION)){
+                currentGame.getCurrentPlayer().visit(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
+                //actionManager
+                //        .onReceiveAction(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
+                if(currentGame.getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()){
+                    currentGame.setCurrentState(PossibleGameStates.REMOVE);
+                } else {
+                    currentGame.setCurrentState(PossibleGameStates.PLAYING);
+                }
+            }
+            onStartTurn();
+        }
+    }
+
+    private void onBuyCard(Message message) {
+        if(message.getSenderUsername().equals(currentPlayer)) {
+
+            ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved();
+
+            if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
+                SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
+                currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
+                //actionManager
+                //        .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
+                currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
+            }
+
+            else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
+                SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
+                currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
+                //actionManager
+                //        .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
+                currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
+            }
+
+            if(toBeRemoved.isEmpty())
+                currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
+            onStartTurn();
+        }
+    }
+
+    private void onChangeColor(Message message) {
+        if(message.getSenderUsername().equals(currentPlayer)){
+
+            if(message.getMessageType().equals(PossibleMessages.RESOURCE)){
+                ExchangeResourceMessage colorChange = (ExchangeResourceMessage) message;
+                currentGame.getCurrentPlayer().visit(new ChangeMarbleAction(colorChange.getSenderUsername(),
+                        colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
+                //actionManager
+                //        .onReceiveAction(new ChangeMarbleAction(colorChange.getSenderUsername(),
+                //                colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
+            }
+
+            if(currentPlayerState.CanDeposit()){
+                currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
+            }
+            onStartTurn();
+        }
+    }
+
+    private void onDeposit(Message message) {
+        if(message.getSenderUsername().equals(currentPlayer)){
+            if(message.getMessageType().equals(PossibleMessages.DEPOSIT)){
+                OneIntMessage deposit = (OneIntMessage) message;
+                //actionManager
+                //        .onReceiveAction(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
+                currentGame.getCurrentPlayer().visit(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
+                if(currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().isEmpty()){
+                    currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+                }
+            }
+        }
+        onStartTurn();
+    }
+
+    private void onRemove(Message message) {
+        if(message.getSenderUsername().equals(currentPlayer)) {
+
+            ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources();
+
+            //if (toBeRemoved.isEmpty()){
+            //    currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+            //    onStartTurn();
+            //}
+
+            if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
+                SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
+                currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
+                //actionManager
+                //        .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
+                currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
+
+            }
+
+            else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
+                SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
+                currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
+                //actionManager
+                //        .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
+                currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
+
+            }
+
+            if (toBeRemoved.isEmpty()){
+                currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+
+            }
+            onStartTurn();
+        }
+    }
+
+    private void onMainActionDone(Message message) {
+        if(message.getSenderUsername().equals(currentPlayer)){
+            if(message.getMessageType().equals(PossibleMessages.END_TURN)){
+                currentGame.getCurrentPlayer().visit(new EndTurnAction(message.getSenderUsername(), currentGame));
+                //currentPlayerState.endTurnReset();
+                currentGame.setCurrentState(PossibleGameStates.PLAYING);
+                lobbyManager.setNextTurn();
+            }
+
+            else if(message.getMessageType().equals(PossibleMessages.DISCARD_LEADER)
+                    && currentPlayerState.getHasPlaceableLeaders()
+                    && !currentPlayerState.getGetHasPlacedLeaders()){
+                OneIntMessage discard = (OneIntMessage) message;
+                currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
+                //actionManager
+                //        .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
+                onStartTurn();
+            }
+
+            else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
+                    && currentPlayerState.getHasPlaceableLeaders()
+                    && !currentPlayerState.getGetHasPlacedLeaders()){
+                OneIntMessage activate = (OneIntMessage) message;
+                currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
+                //actionManager
+                //        .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
+                onStartTurn();
+            }
+            else onStartTurn();
         }
     }
 

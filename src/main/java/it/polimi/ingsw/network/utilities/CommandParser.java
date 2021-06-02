@@ -30,6 +30,8 @@ public final class CommandParser {
                         return "CHECK_PRODUCTIONS";
                     case("CHECK_INVENTORY") :
                         return "CHECK_INVENTORY";
+                    case("CHECK_TRACK") :
+                        return "CHECK_TRACK";
 
                     default : return "UNKNOWN_COMMAND";
                 }

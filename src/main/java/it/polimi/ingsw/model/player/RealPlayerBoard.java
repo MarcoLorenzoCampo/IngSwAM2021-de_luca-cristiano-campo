@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.productionBoard.ProductionBoard;
 import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.network.messages.serverMessages.Bought7CardsMessage;
 import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 
 /**
@@ -64,8 +65,9 @@ public class RealPlayerBoard extends Observable {
      */
     public void increaseBoughCardsCount() {
         boughtCardsNumber++;
-        if(boughtCardsNumber == PlayingGame.getGameInstance().getMaxCardsBought())
-            notifyObserver(new EndGameMessage());
+        if(boughtCardsNumber == PlayingGame.getGameInstance().getMaxCardsBought()) {
+            notifyObserver(new Bought7CardsMessage());
+        }
     }
 
     public FaithTrack getFaithTrack() {

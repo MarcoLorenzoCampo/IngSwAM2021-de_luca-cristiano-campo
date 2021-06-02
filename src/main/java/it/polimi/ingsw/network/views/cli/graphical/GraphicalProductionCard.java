@@ -1,7 +1,5 @@
 package it.polimi.ingsw.network.views.cli.graphical;
 
-
-
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.enumerations.ResourceType;
@@ -23,8 +21,6 @@ public class GraphicalProductionCard {
 
     private ProductionCard productionCard;
 
-
-
     private String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
     private int index;
     private int level;
@@ -34,40 +30,40 @@ public class GraphicalProductionCard {
     private ResourceType requirementsType2;
     private Integer requirementsQuantity1;
     private Integer requirementsQuantity2;
-    private ResourceType requirementsInputType;
     private ResourceType requirementsInputType1;
     private ResourceType requirementsInputType2;
-    private ResourceType requirementsInputType3;
     private ResourceType requirementsOutputType;
     private ResourceType requirementsOutputType1;
     private ResourceType requirementsOutputType2;
     private ResourceType requirementsOutputType3;
 
-    private Integer requirementsInputQuantity;
     private Integer requirementsInputQuantity1;
     private Integer requirementsInputQuantity2;
-    private Integer requirementsInputQuantity3;
     private Integer requirementsOutputQuantity;
     private Integer requirementsOutputQuantity1;
     private Integer requirementsOutputQuantity2;
     private Integer requirementsOutputQuantity3;
 
-
     private Map<Level, Integer> cardLevel = new HashMap<>();
     private Map<Color, ColorCLI> cardColor = new HashMap<>();
     private Map<ResourceType, ColorCLI> colorRequirementsType = new HashMap<>();
-
-
-
 
     public GraphicalProductionCard(ProductionCard productionCard, Integer i) {
         initCardRequirementsType();
         initColorLevel();
         initCardLevel();
         this.productionCard = productionCard;
-        loadAvailableCard(i);
+        loadAvailableCard();
+        loadIndexCard(i);
     }
 
+    public GraphicalProductionCard(ProductionCard productionCard){
+        initCardRequirementsType();
+        initColorLevel();
+        initCardLevel();
+        this.productionCard = productionCard;
+        loadAvailableCard();
+    }
 
     private void borderBuilding(ColorCLI color) {
 
@@ -95,7 +91,7 @@ public class GraphicalProductionCard {
 
     }
 
-    private void loadAvailableCard(Integer i){
+    private void loadAvailableCard(){
 
         this.color = this.cardColor.get(this.productionCard.getColor());
         borderBuilding(this.color);
@@ -178,6 +174,9 @@ public class GraphicalProductionCard {
             insertingOutputResourcesCard(this.requirementsOutputQuantity1, colorResource1, this.requirementsOutputQuantity2, colorResource2, this.requirementsOutputQuantity3, colorResource3);
         }
 
+    }
+
+    private void loadIndexCard(Integer i){
         this.index = i;
         if(this.index < 10) {
             insertingIndex(index);
@@ -188,7 +187,6 @@ public class GraphicalProductionCard {
         else{
             insertingIndex11();
         }
-
 
     }
 
@@ -351,6 +349,15 @@ public class GraphicalProductionCard {
         colorRequirementsType.put(ResourceType.STONE, ColorCLI.ANSI_WHITE);
         colorRequirementsType.put(ResourceType.FAITH, ColorCLI.ANSI_RED);
         colorRequirementsType.put(ResourceType.UNDEFINED, ColorCLI.ANSI_BRIGHT_WHITE);
+    }
+
+    public void drawOneProductionCard() {
+        for (int r = 0; r < MAX_VERT_TILES; r++) {
+            System.out.println();
+            for (int c = 0; c < MAX_HORIZ_TILES; c++) {
+                System.out.print(cells[r][c]);
+            }
+        }
     }
 
     public static int getMaxVertTiles() {

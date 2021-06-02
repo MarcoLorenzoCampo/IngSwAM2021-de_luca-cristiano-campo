@@ -20,7 +20,7 @@ public class FaithTrack extends Observable implements Serializable {
     private static final long serialVersionUID = 7136541748211952620L;
 
     private final List<Tile> faithTrack = new ArrayList<>();
-    private int finalPoints = 0;
+    private int finalPoints;
     private int faithMarker;
     private int currentFavorPoints;
     public Map<Integer, Integer> cardVaticanSpace = new HashMap<>();
@@ -30,7 +30,7 @@ public class FaithTrack extends Observable implements Serializable {
     private final Map<Integer, Integer> ranges = new HashMap<>();
 
     public FaithTrack() {
-        this.faithMarker=0;
+        this.faithMarker=7;
         this.currentFavorPoints=0;
         this.finalPoints=0;
         initFaithTrack();
@@ -87,10 +87,11 @@ public class FaithTrack extends Observable implements Serializable {
     public void increaseFaithMarker(){
 
         this.faithMarker++;
-        if(faithMarker == 24) notifyObserver(new EndGameMessage());
 
         //Notify all observers, but only the clients will get an updated version.
         notifyObserver(new FaithTrackMessage(this));
+
+        if(faithMarker == 24) notifyObserver(new EndGameMessage());
 
         if(isPopeTile(faithMarker)) {
 
@@ -127,14 +128,21 @@ public class FaithTrack extends Observable implements Serializable {
         return faithTrack.get(this.faithMarker).getCheckpoint();
     }
 
-    //updating favor points
+    /**
+     * Gives a player due faith track points and disables the pope tile.
+     * @param popeT: pope tile
+     * @return: current vatican score of the player
+     */
     public int pickFavorPoints(PopeTile popeT){
         int indexVaticanSpace = popeT.getVaticanSpace();
         int points = this.cardVaticanSpace.get(indexVaticanSpace);
         currentFavorPoints += points;
 
         notifyObserver(new GenericMessageFromServer("You gained: " + points +
-                " points from the latest vatican report!" + "\nYour vatican score is: " + currentFavorPoints + "\n"));
+                " points from the latest vatican report!" +
+                "\nYour vatican score is: " + currentFavorPoints + "\n"));
+
+        popeT.setIsActive(false);
 
         return currentFavorPoints;
     }
@@ -188,5 +196,9 @@ public class FaithTrack extends Observable implements Serializable {
 
     public int getFinalPoints() {
         return finalPoints;
+    }
+
+    public boolean isLastTile() {
+        return faithMarker == 24;
     }
 }
