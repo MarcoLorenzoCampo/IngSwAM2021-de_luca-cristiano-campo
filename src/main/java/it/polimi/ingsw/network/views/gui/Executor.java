@@ -36,7 +36,6 @@ public class Executor {
         System.out.println("Created GUI on EDT? "+
                 SwingUtilities.isEventDispatchThread());
         JFrame f = new JFrame();
-        //f.setContentPane(new ProductionPanel(21));
         f.setContentPane(new CardMarket(sent));
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
