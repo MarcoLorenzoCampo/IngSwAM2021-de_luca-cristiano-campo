@@ -197,19 +197,12 @@ public class RealPlayer extends Observable implements Visitor {
         && !playerState.getHasBoughCard()
         && productionCardRequirementsValidator(action.getBoughtCard())
         && productionSlotValidator(action.getDestinationSlot(), action.getBoughtCard())) {
-            try {
-                productionCardMarket.buyCard(action.getBoughtCard());
-                action.getBoughtCard().placeCard(action.getDestinationSlot(), action.getBoughtCard(), playerBoard.getProductionBoard());
-                playerState.setToBeRemoved(action.getBoughtCard().getRequirements());
-                playerState.performedExclusiveAction();
-                playerBoard.increaseBoughCardsCount();
-                if(ownedLeaderCards.size()==7){
-                    notifyObserver(new EndGameMessage());
-                }
-            } catch (EndGameException e) {
-                e.printStackTrace();
-                //send notification
-            }
+
+            productionCardMarket.buyCard(action.getBoughtCard());
+            action.getBoughtCard().placeCard(action.getDestinationSlot(), action.getBoughtCard(), playerBoard.getProductionBoard());
+            playerState.setToBeRemoved(action.getBoughtCard().getRequirements());
+            playerState.performedExclusiveAction();
+            playerBoard.increaseBoughCardsCount();
         }
     }
 

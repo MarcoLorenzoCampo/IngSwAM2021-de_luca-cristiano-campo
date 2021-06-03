@@ -11,7 +11,6 @@ import it.polimi.ingsw.model.utilities.DevelopmentTag;
  */
 public class DiscountLeaderCard extends LeaderCard {
 
-
     private static final long serialVersionUID = -8365324304831942993L;
 
     /**

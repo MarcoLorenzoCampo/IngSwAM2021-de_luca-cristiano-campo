@@ -22,6 +22,20 @@ public final class LeaderCardsDeckBuilder {
 
         List<LeaderCard> leaderCardsDeck = new LinkedList<>();
 
+        leaderCardsDeck.add(new MarbleExchangeLeaderCard(
+                5,
+                EffectType.MARBLE_EXCHANGE,
+                new DevelopmentTag[] {new DevelopmentTag(2, Color.PURPLE, Level.ANY),
+                        new DevelopmentTag(1, Color.GREEN, Level.ANY)},
+                ResourceType.COIN
+        ));
+        leaderCardsDeck.add(new MarbleExchangeLeaderCard(
+                5,
+                EffectType.MARBLE_EXCHANGE,
+                new DevelopmentTag[] {new DevelopmentTag(2, Color.BLUE, Level.ANY),
+                        new DevelopmentTag(1, Color.YELLOW, Level.ANY)},
+                ResourceType.STONE
+        ));
         leaderCardsDeck.add(new ExtraInventoryLeaderCard(
                 3,
                 EffectType.EXTRA_INVENTORY,
@@ -117,20 +131,6 @@ public final class LeaderCardsDeckBuilder {
         leaderCardsDeck.add(new MarbleExchangeLeaderCard(
                 5,
                 EffectType.MARBLE_EXCHANGE,
-                new DevelopmentTag[] {new DevelopmentTag(2, Color.PURPLE, Level.ANY),
-                        new DevelopmentTag(1, Color.GREEN, Level.ANY)},
-                ResourceType.COIN
-        ));
-        leaderCardsDeck.add(new MarbleExchangeLeaderCard(
-                5,
-                EffectType.MARBLE_EXCHANGE,
-                new DevelopmentTag[] {new DevelopmentTag(2, Color.BLUE, Level.ANY),
-                        new DevelopmentTag(1, Color.YELLOW, Level.ANY)},
-                ResourceType.STONE
-        ));
-        leaderCardsDeck.add(new MarbleExchangeLeaderCard(
-                5,
-                EffectType.MARBLE_EXCHANGE,
                 new DevelopmentTag[] {new DevelopmentTag(2, Color.GREEN, Level.ANY),
                         new DevelopmentTag(1, Color.PURPLE, Level.ANY)},
                 ResourceType.SHIELD
@@ -143,7 +143,7 @@ public final class LeaderCardsDeckBuilder {
                 ResourceType.SERVANT
         ));
 
-        Collections.shuffle(leaderCardsDeck);
+        //Collections.shuffle(leaderCardsDeck);
         return leaderCardsDeck;
     }
 }
