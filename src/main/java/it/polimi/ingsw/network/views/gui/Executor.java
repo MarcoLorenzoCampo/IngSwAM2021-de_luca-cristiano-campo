@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.views.gui;
 
+import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.utilities.Resource;
@@ -51,7 +52,7 @@ public class Executor {
         content.add(new ResourceMarketPanel(resourceBoard, extraMarble));
         content.add(new CardMarketPanel(sent));
 
-
+        ArrayList<EffectType> cards = new ArrayList<>();
         HashMap<ResourceType, Integer> inventory = new HashMap<>();
         inventory.put(ResourceType.COIN, 1);
         inventory.put(ResourceType.STONE, 1);
@@ -59,8 +60,8 @@ public class Executor {
         inventory.put(ResourceType.SERVANT, 100);
 
         JFrame f = new JFrame();
-        f.setContentPane(content);
-        //f.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,null));
+        //f.setContentPane(content);
+        f.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         f.pack();

@@ -29,24 +29,72 @@ public class EnemyPlayerPanel extends JPanel {
 
         this.setLayout(new GridLayout(2,1,0,10));
         JPanel upper = new JPanel();
-        upper.setLayout(new GridLayout(1,2,10,10));
-        upper.add(new JLabel("Username: "+this.name));
-        upper.add(new JLabel("Faithtrack position: "+String.valueOf(this.faith)));
         this.add(upper);
 
         JPanel lower = new JPanel();
         lower.setLayout(new GridLayout(1,2,10,5));
-        JPanel rosso = new JPanel();
-        rosso.setBackground(Color.red);
+        lower.add(new StrongBoxPanel(inventory));
 
-        HashMap<ResourceType, Integer> inventory_2 = new HashMap<>();
-        inventory_2.put(ResourceType.COIN, 1);
-        inventory_2.put(ResourceType.STONE, 1);
-        inventory_2.put(ResourceType.SHIELD, 100);
-        inventory_2.put(ResourceType.SERVANT, 100);
-        lower.add(new StrongBoxPanel(inventory_2));
-        lower.add(rosso);
+        JPanel leader_panel = new JPanel();
+        leader_panel.setLayout(new FlowLayout());
+        Font font = new Font("Monaco", Font.PLAIN, 40);
+        if(!cards.isEmpty()){
+            for (EffectType iterator:cards) {
+                JLabel label = new JLabel();
+                label.setFont(font);
+                label.setText(String.valueOf(iterator));
+                leader_panel.add(label);
+            }
+        }
+        lower.add(leader_panel);
         this.add(lower);
     }
 
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        drawUpperPart(g);
+        drawLeaders(g);
+    }
+
+    private void drawUpperPart(Graphics g){
+        int width = this.getWidth()/2;
+        int height = this.getHeight()/2;
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setFont(new Font("Monaco", Font.PLAIN, width/11));
+        g.drawString("Username: "+String.valueOf(this.name),2*width/11, height/2);
+        g.drawString("Faithtrack: "+String.valueOf(this.faith), width+2*width/11,height/2);
+
+    }
+
+
+    private void drawLeaders(Graphics g){
+
+        ClassLoader cl = this.getClass().getClassLoader();
+        String[] item = {
+                "./front/reduced_leader_production_servant",
+                "./front/reduced_leader_inventory_servant"
+        };
+        int x = this.getWidth()/2;
+        int y = this.getHeight()/2;
+
+        int height=this.getHeight()/4;
+        x += (x-2.5*height)/2;
+        for (int i = 0; i < item.length; i++) {
+            InputStream url = cl.getResourceAsStream(item[i]+".jpg");
+            BufferedImage img = null;
+            try {
+                img = ImageIO.read(url);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+
+            g.drawImage(img, x, y, (int) ((2.5)*height), height, null);
+            y+=height;
+        }
+
+
+    }
 }
