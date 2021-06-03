@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.views.cli.graphical;
 
 import it.polimi.ingsw.enumerations.Color;
+import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.network.views.cli.LightweightModel;
 
@@ -27,8 +28,6 @@ public class GraphicalProductionCardsMarket {
         int ll = 0;
         int mm = 0;
         int pp = 0;
-
-        int kk = 0;
 
         lightweightModel.setReducedAvailableCards(productionCards);
 
@@ -60,7 +59,7 @@ public class GraphicalProductionCardsMarket {
 
         for (int i = 0; i < productionCards.size(); i++ ) {
             GraphicalProductionCard graphicalProductionCard = new GraphicalProductionCard(productionCards.get(i), i);
-            if(kk<48) {
+            if(productionCards.get(i).getLevel() == Level.ONE) {
                 if(productionCards.get(i).getColor() == Color.GREEN) {
                     for (int j = 0; j < graphicalProductionCard.getMaxVertTiles(); j++) {
                         for (int k = 0; k < graphicalProductionCard.getMaxHorizTiles(); k++) {
@@ -90,7 +89,7 @@ public class GraphicalProductionCardsMarket {
                     }
                 }
             }
-            else if ( kk>=48 && kk <96) {
+            else if ( productionCards.get(i).getLevel() == Level.TWO) {
                 if(productionCards.get(i).getColor() == Color.GREEN) {
                     for (int j = 0; j < graphicalProductionCard.getMaxVertTiles(); j++) {
                         for (int k = 0; k < graphicalProductionCard.getMaxHorizTiles(); k++) {
@@ -150,7 +149,6 @@ public class GraphicalProductionCardsMarket {
                     }
                 }
             }
-            kk = kk + 12;
         }
 
 
