@@ -82,6 +82,13 @@ public class GraphicalMarbleExchangeLeaderCard {
         cells[1][5] =  "[";
         cells[1][6] = "]" + ColorCLI.getRESET();
 
+        if(this.leaderCard.isActive()){
+            cells[1][9] = ColorCLI.ANSI_GREEN.escape() + "A" + ColorCLI.getRESET();
+        }
+        else{
+            cells[1][9] = ColorCLI.ANSI_RED.escape() + "N" + ColorCLI.getRESET();
+        }
+
         cells[3][6] = "" + this.victoryPoints;
 
 
