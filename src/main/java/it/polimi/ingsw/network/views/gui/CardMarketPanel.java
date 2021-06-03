@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CardMarket extends JPanel {
+public class CardMarketPanel extends JPanel {
     JPanel[] row_1 = new JPanel[4];
     JPanel[] row_2 = new JPanel[4];
     JPanel[] row_3 = new JPanel[4];
     ArrayList<JButton> buttons = new ArrayList<>();
 
 
-    public CardMarket(List<ProductionCard> available){
+    public CardMarketPanel(List<ProductionCard> available){
         this.setLayout(new GridLayout(3,4,10,10));
         for (int i = 0; i < 4; i++) {
             row_1[i] = new JPanel();

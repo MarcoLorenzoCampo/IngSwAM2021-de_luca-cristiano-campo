@@ -2,15 +2,14 @@ package it.polimi.ingsw.network.views.gui;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.builders.ResourceBoardBuilder;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 import it.polimi.ingsw.parsers.ResourceMarketParser;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 public class Executor {
@@ -23,7 +22,7 @@ public class Executor {
     }
 
     private static void createAndShowGUI() {
-    /*
+
        List<ProductionCard> available = ProductionCardsParser.parseProductionDeck();
        List<ProductionCard> sent = new ArrayList<>();
        sent.add(available.get(0));
@@ -39,7 +38,6 @@ public class Executor {
        sent.add(available.get(42));
        sent.add(available.get(43));
 
-    */
         int [] dimensions = ResourceMarketParser.parseResourceMarketDimensions();
         String[] jsonResources = ResourceMarketParser.parseResourceMarketContent();
         Collections.shuffle(Arrays.asList(jsonResources));
@@ -47,15 +45,27 @@ public class Executor {
         ResourceType[][] resourceBoard = ResourceBoardBuilder.build(dimensions, jsonResources);
         System.out.println("Created GUI on EDT? "+
                 SwingUtilities.isEventDispatchThread());
+
+        JPanel content = new JPanel();
+        content.setLayout(new GridLayout(1,2,5,5));
+        content.add(new ResourceMarketPanel(resourceBoard, extraMarble));
+        content.add(new CardMarketPanel(sent));
+
+
+        HashMap<ResourceType, Integer> inventory = new HashMap<>();
+        inventory.put(ResourceType.COIN, 1);
+        inventory.put(ResourceType.STONE, 1);
+        inventory.put(ResourceType.SHIELD, 100);
+        inventory.put(ResourceType.SERVANT, 100);
+
         JFrame f = new JFrame();
-        //f.setContentPane(new CardMarket(sent));
-        f.setContentPane(new ResourceMarket(resourceBoard, extraMarble));
-        //f.setContentPane(new ProvaPanel());
+        f.setContentPane(content);
+        //f.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,null));
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         f.pack();
-        //f.setSize(screenSize.width,screenSize.height);
-        f.setSize(600,500);
+        f.setSize(screenSize.width,screenSize.height);
+        f.setSize(800,400);
         f.repaint();
         f.setVisible(true);
     }

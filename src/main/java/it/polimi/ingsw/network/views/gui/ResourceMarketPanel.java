@@ -6,14 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class ResourceMarket extends JPanel {
+public class ResourceMarketPanel extends JPanel {
     ResourceType[][] resourceBoard;
     ResourceType extraMarble;
 
-    public ResourceMarket(ResourceType[][] resourceBoard, ResourceType extraMarble){
+    public ResourceMarketPanel(ResourceType[][] resourceBoard, ResourceType extraMarble){
         this.resourceBoard = resourceBoard;
         this.extraMarble = extraMarble;
-
     }
 
     @Override
