@@ -11,13 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CardMarket extends JPanel {
-    String[] images = new String[]{
-            "production_0","production_1","production_2","production_3",
-            "production_4", "production_5","production_6","production_7",
-            "production_8","production_9", "production_10", "production_11"};
     JPanel[] row_1 = new JPanel[4];
     JPanel[] row_2 = new JPanel[4];
     JPanel[] row_3 = new JPanel[4];
+    ArrayList<JButton> buttons = new ArrayList<>();
 
 
     public CardMarket(List<ProductionCard> available){
@@ -26,6 +23,12 @@ public class CardMarket extends JPanel {
             row_1[i] = new JPanel();
             row_2[i] = new JPanel();
             row_3[i] = new JPanel();
+        }
+
+        for (int i = 0; i < 12; i++) {
+            buttons.add(new JButton());
+            buttons.get(i).setFocusable(false);
+            buttons.get(i).setText(String.valueOf(i));
         }
         
         createCardMarket(available);
@@ -100,10 +103,7 @@ public class CardMarket extends JPanel {
 
     private void fillSlot(List<ProductionCard> available, JPanel slot, ProductionCard iterator) {
         slot.setLayout( new BorderLayout());
-        JLabel label = new JLabel(String.valueOf(available.indexOf(iterator)));
-        label.setFont(new Font("serif", Font.PLAIN, 30));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        slot.add(label, BorderLayout.SOUTH);
+        slot.add(buttons.get(available.indexOf(iterator)),BorderLayout.SOUTH);
         slot.add(new ProductionPanel(iterator.getId()),BorderLayout.CENTER);
     }
 
@@ -113,4 +113,7 @@ public class CardMarket extends JPanel {
         }
     }
 
+    public ArrayList<JButton> getButtons() {
+        return buttons;
+    }
 }
