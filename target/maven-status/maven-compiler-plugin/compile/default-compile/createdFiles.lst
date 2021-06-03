@@ -11,6 +11,7 @@ it/polimi/ingsw/model/utilities/builders/LorenzoTokensBuilder.class
 it/polimi/ingsw/network/views/cli/graphical/GraphicalProductionCard.class
 it/polimi/ingsw/model/faithtrack/Tile.class
 it/polimi/ingsw/model/warehouse/Warehouse.class
+it/polimi/ingsw/network/views/cli/graphical/GraphicalProductionCardBoard.class
 it/polimi/ingsw/network/messages/serverMessages/SetupLeaderRequest.class
 it/polimi/ingsw/network/views/cli/graphical/GraphicalLegend.class
 it/polimi/ingsw/network/views/cli/constants/LevelConstants.class
@@ -34,12 +35,15 @@ it/polimi/ingsw/enumerations/PossibleMessages.class
 it/polimi/ingsw/controller/ILobbyManager.class
 it/polimi/ingsw/network/messages/playerMessages/PeekMessage.class
 it/polimi/ingsw/enumerations/Level.class
+it/polimi/ingsw/network/views/gui/Executor$1.class
 it/polimi/ingsw/actions/GetResourceFromMarketAction.class
 it/polimi/ingsw/exceptions/EndTurnException.class
 it/polimi/ingsw/exceptions/BuyCardFromMarketException.class
 it/polimi/ingsw/model/inventoryManager/InventoryManager.class
+it/polimi/ingsw/network/views/gui/ProductionPanel.class
 it/polimi/ingsw/controller/ActionManager.class
 it/polimi/ingsw/network/messages/playerMessages/TwoIntMessage.class
+it/polimi/ingsw/network/views/gui/CardMarket$1.class
 it/polimi/ingsw/actions/RearrangeInventoryAction.class
 it/polimi/ingsw/network/messages/serverMessages/ResourceMarketMessage.class
 it/polimi/ingsw/exceptions/NoMatchingRequisitesException.class
@@ -63,7 +67,6 @@ it/polimi/ingsw/model/utilities/builders/ResourceBoardBuilder.class
 it/polimi/ingsw/exceptions/CannotRemoveResourceException.class
 it/polimi/ingsw/parsers/ServerConfigParser.class
 it/polimi/ingsw/network/messages/serverMessages/ErrorMessage.class
-it/polimi/ingsw/network/views/gui/NicknamePopUp.class
 it/polimi/ingsw/actions/DiscardLeaderCardAction.class
 it/polimi/ingsw/model/market/ProductionCardMarket.class
 it/polimi/ingsw/network/views/cli/MiniCli.class
@@ -81,8 +84,8 @@ it/polimi/ingsw/model/market/leaderCards/MarbleExchangeLeaderCard.class
 it/polimi/ingsw/parsers/ProductionCardsParser.class
 it/polimi/ingsw/enumerations/Constants.class
 it/polimi/ingsw/network/messages/serverMessages/LoginOutcomeMessage.class
-it/polimi/ingsw/network/views/gui/PlayerNumberPopUp.class
 it/polimi/ingsw/model/market/ProductionCardMarket$1.class
+it/polimi/ingsw/network/views/gui/LeaderPanel$1.class
 it/polimi/ingsw/exceptions/GetResourceFromMarketException.class
 it/polimi/ingsw/actions/ActivateBaseProductionAction.class
 it/polimi/ingsw/model/market/leaderCards/ExtraProductionLeaderCard.class
@@ -111,6 +114,7 @@ it/polimi/ingsw/network/eventHandlers/ViewObservable.class
 it/polimi/ingsw/model/player/LorenzoPlayer.class
 it/polimi/ingsw/network/utilities/CommandParser.class
 it/polimi/ingsw/network/messages/serverMessages/WarehouseMessage.class
+it/polimi/ingsw/network/views/gui/SetupLeaderPopUp.class
 it/polimi/ingsw/network/messages/serverMessages/BufferMessage.class
 it/polimi/ingsw/network/views/cli/graphical/GraphicalFaithTrackTile.class
 it/polimi/ingsw/model/utilities/MaterialResource.class
@@ -134,11 +138,13 @@ it/polimi/ingsw/network/views/cli/graphical/GraphicalLeaderCards.class
 it/polimi/ingsw/network/client/OnlineClientManager.class
 it/polimi/ingsw/network/messages/serverMessages/ChosenProductionMessage.class
 it/polimi/ingsw/model/player/RealPlayer.class
+it/polimi/ingsw/network/views/gui/Executor.class
 it/polimi/ingsw/network/messages/playerMessages/ChosenResourceMessage.class
 it/polimi/ingsw/network/messages/serverMessages/YourTurnMessage.class
 it/polimi/ingsw/network/views/cli/graphical/GraphicalWarehouse.class
 it/polimi/ingsw/network/views/cli/graphical/GraphicalMarbleExchangeLeaderCard.class
 it/polimi/ingsw/model/game/IGame.class
+it/polimi/ingsw/network/views/gui/CardMarket.class
 it/polimi/ingsw/enumerations/Color.class
 it/polimi/ingsw/exceptions/LeaderCardException.class
 it/polimi/ingsw/model/token/TokenMove.class
@@ -156,8 +162,8 @@ it/polimi/ingsw/network/messages/serverMessages/NoMoreCardsMessage.class
 it/polimi/ingsw/actions/Visitable.class
 it/polimi/ingsw/model/faithtrack/SimpleTile.class
 it/polimi/ingsw/network/views/cli/graphical/GraphicalToken.class
-it/polimi/ingsw/network/views/cli/graphical/GraphicalProuctionCardBoard.class
 it/polimi/ingsw/controller/SinglePlayerLobbyManager$1.class
+it/polimi/ingsw/network/views/gui/LeaderPanel.class
 it/polimi/ingsw/enumerations/PossibleGameStates.class
 it/polimi/ingsw/model/faithtrack/FaithTrack.class
 it/polimi/ingsw/network/server/SocketServer.class
@@ -165,7 +171,6 @@ it/polimi/ingsw/network/views/cli/graphical/GraphicalProductionCardsMarket.class
 it/polimi/ingsw/network/eventHandlers/Observer.class
 it/polimi/ingsw/actions/ExecuteProductionAction.class
 it/polimi/ingsw/model/market/leaderCards/LeaderCard.class
-it/polimi/ingsw/network/views/gui/OnlineLoginPopUp.class
 it/polimi/ingsw/network/messages/serverMessages/WinMessage.class
 it/polimi/ingsw/parsers/ProductionCardsParser$1.class
 it/polimi/ingsw/model/player/LorenzoPlayerBoard.class
