@@ -77,6 +77,13 @@ public class GraphicalExtraProductionLeaderCard {
         cells[1][3] = ":";
         cells[1][4] = "]" + ColorCLI.getRESET();
 
+        if(this.leaderCard.isActive()){
+            cells[1][9] = ColorCLI.ANSI_GREEN.escape() + "A" + ColorCLI.getRESET();
+        }
+        else{
+            cells[1][9] = ColorCLI.ANSI_RED.escape() + "N" + ColorCLI.getRESET();
+        }
+
 
         cells[3][6] = "" + this.victoryPoints;
 
