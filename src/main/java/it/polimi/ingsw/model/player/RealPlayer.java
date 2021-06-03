@@ -5,18 +5,15 @@ import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
-import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.ProductionCardMarket;
 import it.polimi.ingsw.model.market.ResourceMarket;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
-import it.polimi.ingsw.model.utilities.Reducible;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.DiscardedResourceMessage;
-import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 import it.polimi.ingsw.network.messages.serverMessages.LeaderCardMessage;
 
 import java.util.ArrayList;
@@ -199,7 +196,11 @@ public class RealPlayer extends Observable implements Visitor {
 
             productionCardMarket.buyCard(action.getBoughtCard());
             action.getBoughtCard().placeCard(action.getDestinationSlot(), action.getBoughtCard(), playerBoard.getProductionBoard());
-            playerBoard.getInventoryManager().setToBeRemoved(action.getBoughtCard().getRequirements());
+
+            ArrayList<ResourceTag> toBeRemoved = action.getBoughtCard().getRequirements();
+            playerBoard.getInventoryManager().applyDiscount(toBeRemoved);
+
+            playerBoard.getInventoryManager().setToBeRemoved(toBeRemoved);
             playerState.performedExclusiveAction();
             playerBoard.increaseBoughCardsCount();
         }

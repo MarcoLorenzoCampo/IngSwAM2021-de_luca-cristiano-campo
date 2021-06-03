@@ -15,6 +15,5 @@ public enum PossibleGameStates {
     MAIN_ACTION_DONE,
     NEXT_TURN,
     GAME_STARTED,
-    WAIT_FOR_INPUT,
     REMOVE;
 }

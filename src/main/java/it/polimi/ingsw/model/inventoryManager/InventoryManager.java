@@ -170,8 +170,8 @@ public class InventoryManager extends Observable {
      *                 this list considers all the productions as a whole, thus having one price list
      *                 containing the sum of all single prices
      */
-    public void discountPrice(List<ResourceTag> price){
-        if(discount.size() != 0){
+    public List<ResourceTag> applyDiscount(List<ResourceTag> price){
+        if(discount.size() != 0) {
             for (ResourceTag iterator : price) {
                 for (ResourceType discountIterator: discount) {
                     if(iterator.getType().equals(discountIterator)){
@@ -180,6 +180,7 @@ public class InventoryManager extends Observable {
                 }
             }
         }
+        return price;
     }
 
     /**
