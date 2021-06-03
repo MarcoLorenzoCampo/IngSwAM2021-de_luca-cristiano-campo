@@ -134,7 +134,7 @@ public final class CommandParser {
                             return "\nInvalid output resource.";
                         }
                         if(o1.equals(ResourceType.FAITH) || o1.equals(ResourceType.UNDEFINED)) {
-                            return "\nFaith can't be obtained this way.";
+                            return "\nPick a valid resource!\n";
                         }
                         return "ACTIVATE_EXTRA_PRODUCTION";
 

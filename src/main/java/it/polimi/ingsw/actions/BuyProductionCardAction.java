@@ -68,12 +68,12 @@ public class BuyProductionCardAction extends Action {
         runAction();
     }
 
-    private void runAction() throws EndGameException {
+    private void runAction() {
         this.game.getGameBoard()
                 .getProductionCardMarket()
                 .buyCard(boughtCard);
 
-        game.getCurrentPlayer().getPlayerState().setToBeRemoved(boughtCard.getRequirements());
+        game.getCurrentPlayer().getPlayerBoard().getInventoryManager().setToBeRemoved(boughtCard.getRequirements());
         boughtCard.placeCard(destinationSlot, boughtCard, game.getCurrentPlayer().getPlayerBoard().getProductionBoard());
 
         this.game.getCurrentPlayer()

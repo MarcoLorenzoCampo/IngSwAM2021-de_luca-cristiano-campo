@@ -16,7 +16,6 @@ public class PlaceLeaderAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.PLACE_LEADER_CARD;
 
-
     private final int leaderToActivate;
 
     private final IGame game;

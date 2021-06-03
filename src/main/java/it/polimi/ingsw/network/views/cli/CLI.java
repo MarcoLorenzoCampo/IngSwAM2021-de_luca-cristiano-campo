@@ -590,7 +590,7 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void printWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras) {
         lightweightModel.setWarehouse(shelves, extras);
-        GraphicalWarehouse graphicalWarehouse = new GraphicalWarehouse(shelves, extras);
+        new GraphicalWarehouse(shelves, extras);
     }
 
     @Override
@@ -624,9 +624,11 @@ public class CLI extends ViewObservable implements IView {
                 .filter(LeaderCard::isActive)
                 .collect(Collectors.toList());
         if(active_extra_prod.size()>0){
-            out.println("EXTRA PRODUCTION CARDS\n");
+            out.println(ColorCLI.ANSI_BLUE.escape() + "-- EXTRA PRODUCTION CARDS --" + ColorCLI.ANSI_BLUE.escape() + "\n");
+            out.println(ColorCLI.getRESET());
             printLeaders(active_extra_prod);
         }
+        out.println();
     }
 
     @Override

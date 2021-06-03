@@ -28,6 +28,8 @@ public class InventoryManager extends Observable {
     private final ArrayList<ResourceType> exchange;
     private final ArrayList<ResourceType> discount;
 
+    private ArrayList<ResourceTag> toBeRemoved;
+
     public InventoryManager(){
         buffer = new ArrayList<>();
         warehouse = new Warehouse();
@@ -47,31 +49,25 @@ public class InventoryManager extends Observable {
         discount =new ArrayList<>();
     }
 
-
     public ArrayList<MaterialResource> getBuffer() {
         return buffer;
     }
-
 
     public Warehouse getWarehouse() {
         return warehouse;
     }
 
-
     public Strongbox getStrongbox() {
         return strongbox;
     }
-
 
     public ArrayList<ResourceType> getExchange() {
         return exchange;
     }
 
-
     public ArrayList<ResourceType> getDiscount() {
         return discount;
     }
-
 
     public Map<ResourceType, Integer> getInventory() {
         return inventory;
@@ -142,7 +138,6 @@ public class InventoryManager extends Observable {
         notifyObserver(messageUpdate());
     }
 
-
     /**
      *
      * @param index -- places resource buffer[index] into warehouse
@@ -156,7 +151,6 @@ public class InventoryManager extends Observable {
         updateInventory();
     }
 
-
     /**
      *
      *
@@ -169,7 +163,6 @@ public class InventoryManager extends Observable {
         buffer.clear();
         updateInventory();
     }
-
 
     /**
      *
@@ -188,7 +181,6 @@ public class InventoryManager extends Observable {
             }
         }
     }
-
 
     /**
      *
@@ -229,9 +221,7 @@ public class InventoryManager extends Observable {
         notifyObserver(new WarehouseMessage(warehouse));
     }
 
-
     /**
-     *
      * @param priceOneResource -- type and quantity of resource to be removed from strongbox
      * @throws CannotRemoveResourceException -- thrown when strongbox couldn't remove all the quantity sated in
      *                                          priceOneResource
@@ -274,5 +264,13 @@ public class InventoryManager extends Observable {
                 } catch (CannotRemoveResourceException ignored) { }
             }
         }
+    }
+
+    public ArrayList<ResourceTag> getToBeRemoved() {
+        return toBeRemoved;
+    }
+
+    public void setToBeRemoved(ArrayList<ResourceTag> toBeRemoved) {
+        this.toBeRemoved = toBeRemoved;
     }
 }

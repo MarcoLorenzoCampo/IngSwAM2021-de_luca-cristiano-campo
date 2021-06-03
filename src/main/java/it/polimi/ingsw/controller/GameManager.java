@@ -436,14 +436,14 @@ public final class GameManager implements Observer {
     private void onBuyCard(Message message) {
         if(message.getSenderUsername().equals(currentPlayer)) {
 
-            ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved();
+            ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getToBeRemoved();
 
             if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                 SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
                 currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
                 //actionManager
                 //        .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
-                currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
+                currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getToBeRemoved().remove(toBeRemoved.get(0));
             }
 
             else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
@@ -451,7 +451,7 @@ public final class GameManager implements Observer {
                 currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
                 //actionManager
                 //        .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
-                currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
+                currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getToBeRemoved().remove(toBeRemoved.get(0));
             }
 
             if(toBeRemoved.isEmpty())
@@ -596,7 +596,7 @@ public final class GameManager implements Observer {
                 break;
 
             case ACTIVATE_PRODUCTION:
-                currentView.currentTurn("\nAdding productions to your final production,when you are ready execute them");
+                currentView.currentTurn("\nAdding productions to your final production! Type 'EXECUTE' to start.");
                 break;
 
             case REMOVE:
@@ -670,8 +670,8 @@ public final class GameManager implements Observer {
 
             //The card is bought (because validated) and resources are removed.
             case BUY_CARD:
-                disconnected.getPlayerBoard().getInventoryManager().defaultRemove(disconnected.getPlayerState().getToBeRemoved());
-                disconnected.getPlayerState().getToBeRemoved().clear();
+                disconnected.getPlayerBoard().getInventoryManager().defaultRemove(disconnected.getPlayerBoard().getInventoryManager().getToBeRemoved());
+                disconnected.getPlayerBoard().getInventoryManager().getToBeRemoved().clear();
                 disconnected.getPlayerState().endTurnReset();
 
                 currentGame.setCurrentState(PossibleGameStates.PLAYING);

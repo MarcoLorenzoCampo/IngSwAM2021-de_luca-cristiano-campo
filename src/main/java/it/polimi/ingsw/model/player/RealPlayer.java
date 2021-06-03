@@ -103,7 +103,6 @@ public class RealPlayer extends Observable implements Visitor {
         this.ownedLeaderCards = ownedLeaderCards;
     }
 
-
     public void setFirstToPlay() {
         this.firstToPlay = true;
     }
@@ -200,7 +199,7 @@ public class RealPlayer extends Observable implements Visitor {
 
             productionCardMarket.buyCard(action.getBoughtCard());
             action.getBoughtCard().placeCard(action.getDestinationSlot(), action.getBoughtCard(), playerBoard.getProductionBoard());
-            playerState.setToBeRemoved(action.getBoughtCard().getRequirements());
+            playerBoard.getInventoryManager().setToBeRemoved(action.getBoughtCard().getRequirements());
             playerState.performedExclusiveAction();
             playerBoard.increaseBoughCardsCount();
         }
@@ -214,11 +213,11 @@ public class RealPlayer extends Observable implements Visitor {
             playerBoard.getInventoryManager().customExchange(action.getIndex(),action.getColor());
 
             playerState
-                    .setCanDeposit(playerBoard
-                            .getInventoryManager()
-                            .getBuffer()
-                            .stream()
-                            .anyMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
+                .setCanDeposit(playerBoard
+                    .getInventoryManager()
+                    .getBuffer()
+                    .stream()
+                    .anyMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
         }
         //notify
     }

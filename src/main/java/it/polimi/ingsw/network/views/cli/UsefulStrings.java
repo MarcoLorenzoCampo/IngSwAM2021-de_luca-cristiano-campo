@@ -41,7 +41,8 @@ public class UsefulStrings {
                     "\n - 'BUY_CARD <int> <int>': Buys an available card (Requires card index and production slot index)." +
                     "\n - 'ACTIVATE_BASE_PRODUCTION <ResourceType> <ResourceType> <ResourceType>': Activates the base production." +
                     "\n - 'ACTIVATE_PRODUCTION <int>': Activates a production card (Requires a production slot index)." +
-                    "\n - 'ACTIVATE_EXTRA_PRODUCTION <int>': Activates a leader production (Requires the correct index)." +
+                    "\n - 'ACTIVATE_EXTRA_PRODUCTION <int> <ResourceType>': Activates a leader production " +
+                    "                (Requires the index of the extra production to activate an a preferred output resource)." +
                     "\n - 'CHECK_MARKET': For an updated version of the ResourceMarket." +
                     "\n - 'CHECK_CARDS': For an updated version of the ProductionCardsMarket." +
                     "\n - 'CHECK_LEADERS': For an updated list of your LeaderCards." +
