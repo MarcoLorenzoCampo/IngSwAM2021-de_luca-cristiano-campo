@@ -248,9 +248,11 @@ public class RealPlayer extends Observable implements Visitor {
                 setupLeaderCard(action.getLeaderToDiscard());
             }
             else{
-                discardLeaderCard(action.getLeaderToDiscard());
-                playerBoard.getFaithTrack().increaseFaithMarker();
-                playerState.placedLeader();
+                if(!ownedLeaderCards.get(action.getLeaderToDiscard()).isActive()) {
+                    discardLeaderCard(action.getLeaderToDiscard());
+                    playerBoard.getFaithTrack().increaseFaithMarker();
+                    playerState.placedLeader();
+                }
             }
         }
     }
@@ -295,8 +297,6 @@ public class RealPlayer extends Observable implements Visitor {
             notifyObserver(new LeaderCardMessage(ownedLeaderCards));
         }
     }
-
-
 
     @Override
     public void visit(RemoveResourcesAction action) {
