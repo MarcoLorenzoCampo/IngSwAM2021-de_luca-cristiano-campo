@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.views.gui;
 
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.builders.ResourceBoardBuilder;
@@ -59,9 +60,12 @@ public class Executor {
         inventory.put(ResourceType.SHIELD, 100);
         inventory.put(ResourceType.SERVANT, 100);
 
+        FaithTrack track = new FaithTrack();
+
         JFrame f = new JFrame();
         //f.setContentPane(content);
-        f.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
+        //f.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
+        f.setContentPane(new FaithTrackPanel(track));
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         f.pack();

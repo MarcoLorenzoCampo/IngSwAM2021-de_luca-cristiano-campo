@@ -36,7 +36,7 @@ public class ProductionCardMarket extends Observable {
      */
     public ProductionCardMarket() {
         playableProductionCards = ProductionCardsParser.parseProductionDeck();
-        Collections.shuffle(playableProductionCards);
+        //Collections.shuffle(playableProductionCards);
         setAvailableCards();
     }
 
