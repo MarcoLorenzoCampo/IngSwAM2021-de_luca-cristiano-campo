@@ -107,13 +107,13 @@ public class ResourceMarketPanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(5));
         g2d.setPaint(Color.RED);
-        g2d.drawLine(x+10,y+this.getHeight()/10,x+this.getWidth()/6,y+this.getHeight()/10);
+        g2d.drawLine(x+10,y+this.getHeight()/10,x+this.getWidth()/12,y+this.getHeight()/10);
         int[] x_coordinates = {x,x+10,x+10};
         int[] y_coordinates = {y+this.getHeight()/10,y+this.getHeight()/10+10,y+this.getHeight()/10-10};
         g2d.fillPolygon(x_coordinates,y_coordinates, 3);
 
         g2d.setFont(new Font("Monaco", Font.PLAIN, this.getHeight()/5));
-        g2d.drawString(String.valueOf(number),x+this.getWidth()/6+1, y+this.getHeight()/5-10);
+        g2d.drawString(String.valueOf(number),x+this.getWidth()/12+1, y+this.getHeight()/5-10);
     }
 
     private void DrawVerticalArrow(Graphics g, int x, int y){

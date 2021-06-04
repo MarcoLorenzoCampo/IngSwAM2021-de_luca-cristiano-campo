@@ -27,6 +27,7 @@ public class Executor {
 
        List<ProductionCard> available = ProductionCardsParser.parseProductionDeck();
        List<ProductionCard> sent = new ArrayList<>();
+
        sent.add(available.get(0));
        sent.add(available.get(1));
        sent.add(available.get(2));
@@ -50,8 +51,7 @@ public class Executor {
 
         JPanel content = new JPanel();
         content.setLayout(new GridLayout(1,2,5,5));
-        content.add(new ResourceMarketPanel(resourceBoard, extraMarble));
-        content.add(new CardMarketPanel(sent));
+
 
         ArrayList<EffectType> cards = new ArrayList<>();
         HashMap<ResourceType, Integer> inventory = new HashMap<>();
@@ -62,17 +62,84 @@ public class Executor {
 
         FaithTrack track = new FaithTrack();
 
+
+        ArrayList<ResourceType> warehouse = new ArrayList<>();
+        warehouse.add(ResourceType.UNDEFINED);
+
+        warehouse.add(ResourceType.STONE);
+        warehouse.add(ResourceType.UNDEFINED);
+
+        warehouse.add(ResourceType.COIN);
+        warehouse.add(ResourceType.COIN);
+        warehouse.add(ResourceType.COIN);
+
+        warehouse.add(ResourceType.SHIELD);
+        warehouse.add(ResourceType.UNDEFINED);
+
+        warehouse.add(ResourceType.SERVANT);
+        warehouse.add(ResourceType.SERVANT);
+
+        ArrayList<ResourceType> extra = new ArrayList<>();
+        extra.add(ResourceType.SHIELD);
+        extra.add(ResourceType.SERVANT);
+
+        JFrame a = new JFrame();
+        JFrame e = new JFrame();
         JFrame f = new JFrame();
-        //f.setContentPane(content);
-        //f.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
-        f.setContentPane(new FaithTrackPanel(track));
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JFrame g = new JFrame();
+        JFrame h = new JFrame();
+        JFrame i = new JFrame();
+        JFrame l = new JFrame();
+
+
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //f.setSize(screenSize.width,screenSize.height);
+        a.setContentPane(new WarehousePanel(warehouse, extra));
+        e.setContentPane(new CardMarketPanel(sent));
+        f.setContentPane(new FaithTrackPanel(track));
+        g.setContentPane(new ResourceMarketPanel(resourceBoard, extraMarble));
+        h.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
+        i.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
+        l.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
+
+
+        a.pack();
+        a.setSize(700,700);
+        a.repaint();
+        a.setVisible(true);
+        /*
+        e.pack();
+        e.setSize(800,400);
+        e.repaint();
+        e.setVisible(true);
+
         f.pack();
-        f.setSize(screenSize.width,screenSize.height);
         f.setSize(800,400);
         f.repaint();
         f.setVisible(true);
+
+        g.pack();
+        g.setSize(800,400);
+        g.repaint();
+        g.setVisible(true);
+
+        h.pack();
+        h.setSize(800,400);
+        h.repaint();
+        h.setVisible(true);
+
+        i.pack();
+        i.setSize(800,400);
+        i.repaint();
+        i.setVisible(true);
+
+        l.pack();
+        l.setSize(800,400);
+        l.repaint();
+        l.setVisible(true);
+
+         */
     }
 
 
