@@ -453,12 +453,10 @@ public class CLI extends ViewObservable implements IView {
     @Override
     public void turnEnded(String message) {
         showGenericString(message);
-
-        //disable player input
     }
 
     @Override
-    public void askSetupResource(int number) throws ExecutionException {
+    public void askSetupResource(int number) {
 
         LinkedList<ResourceType> finalPicked = new LinkedList<>();
 
@@ -478,6 +476,8 @@ public class CLI extends ViewObservable implements IView {
                 picked = ResourceType.valueOf(readLine());
             } catch (IllegalArgumentException e) {
                 out.println("\nInvalid resource!");
+            } catch (ExecutionException e) {
+                out.println("\nInput error!");
             }
 
             if(picked != null && (picked.equals(ResourceType.SERVANT) || picked.equals(ResourceType.COIN)

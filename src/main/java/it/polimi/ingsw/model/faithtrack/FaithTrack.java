@@ -30,7 +30,7 @@ public class FaithTrack extends Observable implements Serializable {
     private final Map<Integer, Integer> ranges = new HashMap<>();
 
     public FaithTrack() {
-        this.faithMarker=0;
+        this.faithMarker=7;
         this.currentFavorPoints=0;
         this.finalPoints=0;
         initFaithTrack();
@@ -78,6 +78,18 @@ public class FaithTrack extends Observable implements Serializable {
         checkpoints.add(20);
     }
 
+    public void checkVaticanCondition(int popeTileIndex) {
+        PopeTile popeTile = (PopeTile) faithTrack.get(popeTileIndex);
+        int range = ranges.get(popeTileIndex);
+
+        if(faithMarker <= (popeTileIndex - range)) {
+            setPopeTileInactive(popeTileIndex);
+        } else {
+            pickFavorPoints(popeTile);
+        }
+    }
+
+
     /**
      * it checks the type of tile;
      * if the player is the first to enter in a Vatican space, the player makes it inactive
@@ -98,8 +110,6 @@ public class FaithTrack extends Observable implements Serializable {
             PopeTile currentTile = (PopeTile) this.faithTrack.get(faithMarker);
 
             if(currentTile.getIsActive()) {
-
-                pickFavorPoints(currentTile);
 
                 ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
 
@@ -126,8 +136,6 @@ public class FaithTrack extends Observable implements Serializable {
             PopeTile currentTile = (PopeTile) this.faithTrack.get(faithMarker);
 
             if(currentTile.getIsActive()) {
-
-                pickFavorPoints(currentTile);
 
                 ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
 

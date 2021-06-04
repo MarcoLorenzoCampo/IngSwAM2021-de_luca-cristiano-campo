@@ -19,9 +19,9 @@ public class GraphicalProductionCard {
     private static final int MAX_VERT_TILES = 12; //rows.
     private static final int MAX_HORIZ_TILES = 12; //cols.
 
-    private ProductionCard productionCard;
+    private final ProductionCard productionCard;
 
-    private String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
+    private String[][] cells = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
     private int index;
     private int level;
     private ColorCLI color;
@@ -30,13 +30,13 @@ public class GraphicalProductionCard {
     private ResourceType requirementsType2;
     private Integer requirementsQuantity1;
     private Integer requirementsQuantity2;
+    private Integer requirementsQuantity3;
     private ResourceType requirementsInputType1;
     private ResourceType requirementsInputType2;
     private ResourceType requirementsOutputType;
     private ResourceType requirementsOutputType1;
     private ResourceType requirementsOutputType2;
     private ResourceType requirementsOutputType3;
-
     private Integer requirementsInputQuantity1;
     private Integer requirementsInputQuantity2;
     private Integer requirementsOutputQuantity;
@@ -114,12 +114,21 @@ public class GraphicalProductionCard {
         }
 
         ArrayList<ResourceTag> resourceTagRequirements = this.productionCard.getRequirements();
-        if(resourceTagRequirements.size()==1){
+
+        for (ResourceTag resourceTag : resourceTagRequirements) {
+            this.requirementsInputQuantity1 = resourceTag.getQuantity();
+            this.requirementsInputType1 = resourceTag.getType();
+            ColorCLI colorResource = this.colorRequirementsType.get(this.requirementsInputType1);
+            insertingInputResourcesCard(this.requirementsInputQuantity1, colorResource);
+        }
+
+        if(resourceTagRequirements.size()==1) {
             this.requirementsQuantity1 = resourceTagRequirements.get(0).getQuantity();
             this.requirementsType1 = resourceTagRequirements.get(0).getType();
             ColorCLI colorResource = this.colorRequirementsType.get(this.requirementsType1);
-            insertingRequirementsCard(this.requirementsQuantity1, colorResource); }
-        else{
+            insertingRequirementsCard(this.requirementsQuantity1, colorResource);
+        }
+        else {
             this.requirementsQuantity1 = resourceTagRequirements.get(0).getQuantity();
             this.requirementsType1 = resourceTagRequirements.get(0).getType();
             ColorCLI colorResource1 = this.colorRequirementsType.get(this.requirementsType1);
@@ -130,6 +139,7 @@ public class GraphicalProductionCard {
         }
 
         ArrayList<ResourceTag> resourceTagInputResource = productionCard.getInputResources();
+
         if(resourceTagInputResource.size() == 1){
             this.requirementsInputQuantity1 = resourceTagInputResource.get(0).getQuantity();
             this.requirementsInputType1 = resourceTagInputResource.get(0).getType();
@@ -145,8 +155,8 @@ public class GraphicalProductionCard {
             insertingInputResourcesCard(this.requirementsInputQuantity1, colorResource1, this.requirementsInputQuantity2, colorResource2);
         }
 
-
         ArrayList<ResourceTag> resourceTagOutputResource = productionCard.getOutputResources();
+
         if(resourceTagOutputResource.size() == 1){
             this.requirementsOutputQuantity = resourceTagOutputResource.get(0).getQuantity();
             this.requirementsOutputType = resourceTagOutputResource.get(0).getType();
@@ -173,7 +183,6 @@ public class GraphicalProductionCard {
             ColorCLI colorResource3 = this.colorRequirementsType.get(this.requirementsOutputType3);
             insertingOutputResourcesCard(this.requirementsOutputQuantity1, colorResource1, this.requirementsOutputQuantity2, colorResource2, this.requirementsOutputQuantity3, colorResource3);
         }
-
     }
 
     private void loadIndexCard(Integer i){

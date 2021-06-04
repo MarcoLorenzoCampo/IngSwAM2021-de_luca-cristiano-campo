@@ -467,13 +467,13 @@ public final class GameManager implements Observer {
             if(message.getMessageType().equals(PossibleMessages.RESOURCE)){
                 ExchangeResourceMessage colorChange = (ExchangeResourceMessage) message;
                 currentGame.getCurrentPlayer().visit(new ChangeMarbleAction(colorChange.getSenderUsername(),
-                        colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
+                        colorChange.getExchangeWithThis(), colorChange.getIndex(), currentGame));
                 //actionManager
                 //        .onReceiveAction(new ChangeMarbleAction(colorChange.getSenderUsername(),
                 //                colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
             }
 
-            if(currentPlayerState.CanDeposit()){
+            if(currentPlayerState.CanDeposit()) {
                 currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
             }
             onStartTurn();
@@ -600,7 +600,7 @@ public final class GameManager implements Observer {
                 break;
 
             case REMOVE:
-                currentView.currentTurn("\nThe production was successful! Please remove the needed resources");
+                currentView.currentTurn("\nThe production was successful! Type 'REMOVE' followed by the source.");
                 break;
 
             case MAIN_ACTION_DONE:

@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.inventoryManager;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.strongbox.Strongbox;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
@@ -89,17 +90,21 @@ public class InventoryManager extends Observable {
      * method invoked before deciding which marble to place first, if the exchange list is empty or contains
      * only one type then all white marbles are either deleted or changed
      */
-    public void whiteMarblesExchange(){
+    public void whiteMarblesExchange() {
         if (exchange.isEmpty()){
             buffer = (ArrayList<MaterialResource>) buffer.stream()
                     .filter(materialResource -> !materialResource.getResourceType().equals(ResourceType.UNDEFINED))
                     .collect(Collectors.toList());
         }
 
-        else if (exchange.size()==1){
+        else if (exchange.size() == 1) {
             for (MaterialResource iterator : buffer) {
                 if(iterator.getResourceType().equals(ResourceType.UNDEFINED)) iterator.setResourceType(exchange.get(0));
             }
+        }
+
+        else if(exchange.size() == 2) {
+
         }
         notifyObserver(messageUpdate());
     }
@@ -126,6 +131,9 @@ public class InventoryManager extends Observable {
      */
     public void addExchangeLeader (ResourceType effect){
         exchange.add(effect);
+        if(exchange.size() == 2) {
+            PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().setHasTwoExchange(true);
+        }
     }
 
     /**

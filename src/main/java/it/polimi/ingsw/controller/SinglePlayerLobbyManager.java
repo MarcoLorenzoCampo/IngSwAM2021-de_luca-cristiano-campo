@@ -199,19 +199,21 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
                 VaticanReportNotification v = (VaticanReportNotification) message;
 
                 int popeTileIndex = v.getPopeTileIndex();
-                int rangeToCheck = v.getRange();
 
+                //Player's faith track.
                 FaithTrack ft = realPlayerList.get(0).getPlayerBoard().getFaithTrack();
+                //Lorenzo's faith track.
                 FaithTrack ftl = lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack();
 
-                if(!ft.isPopeTile(ft.getFaithMarker())) {
-                    if (ft.getFaithMarker() < (popeTileIndex - rangeToCheck)) {
-                        ft.setPopeTileInactive(popeTileIndex);
-                    }
-                }
+                //If the player started the vatican report.
+                if(ft.isPopeTile(ft.getFaithMarker())) {
+                    ftl.checkVaticanCondition(popeTileIndex);
 
-                if(!ftl.isPopeTile(ftl.getFaithMarker())) {
-                    ftl.setPopeTileInactive(popeTileIndex);
+                } else {
+                    //If lorenzo started the vatican report.
+                    if(ftl.isPopeTile(ftl.getFaithMarker())) {
+                        ft.checkVaticanCondition(popeTileIndex);
+                    }
                 }
                 break;
 
