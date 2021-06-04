@@ -434,17 +434,13 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
                 VaticanReportNotification v = (VaticanReportNotification) message;
 
                 int popeTileIndex = v.getPopeTileIndex();
-                int rangeToCheck = v.getRange();
 
                 for(RealPlayer realPlayer : realPlayerList) {
 
                     if(realPlayer.getPlayerState().isConnected() && !realPlayer.getName().equals(gameManager.getCurrentPlayer())) {
                         FaithTrack ft = realPlayer.getPlayerBoard().getFaithTrack();
 
-                        //If the players' position is before a vatican section, then he won't get the points.
-                        if (ft.getFaithMarker() < (popeTileIndex - rangeToCheck)) {
-                            ft.setPopeTileInactive(popeTileIndex);
-                        }
+                        ft.checkVaticanCondition(popeTileIndex);
                     }
                 }
                 break;
@@ -495,11 +491,12 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
 
         vv.printLeaders(realPlayerList.get(getPlayerIndexByNickname(nickname)).getOwnedLeaderCards());
 
-        //send buffer, strongbox, warehouse.
+        //NEED TO SEND WAREHOUSE AND PRODUCTIONS
+
+        //vv.printProductionBoard
+        //vv.printWarehouse
 
         vv.printBuffer(new ArrayList<>());
-
-        //vv.printWarehouse(realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().getWarehouse());
 
         vv.printStrongbox(realPlayerList.get(getPlayerIndexByNickname(nickname))
                 .getPlayerBoard().getInventoryManager().getStrongbox().getInventory());

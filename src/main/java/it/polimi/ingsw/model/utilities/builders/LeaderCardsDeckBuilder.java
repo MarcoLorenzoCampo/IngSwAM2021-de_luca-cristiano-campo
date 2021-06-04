@@ -25,19 +25,19 @@ public final class LeaderCardsDeckBuilder {
         leaderCardsDeck.add(new MarbleExchangeLeaderCard(
                 5,
                 EffectType.MARBLE_EXCHANGE,
-                /*new DevelopmentTag[] {new DevelopmentTag(2, Color.GREEN, Level.ANY),
-                        new DevelopmentTag(1, Color.PURPLE, Level.ANY)},*/
-                new DevelopmentTag[] {new DevelopmentTag(0, Color.GREEN, Level.ANY),
-                        new DevelopmentTag(0, Color.PURPLE, Level.ANY)},
+                new DevelopmentTag[] {new DevelopmentTag(2, Color.GREEN, Level.ANY),
+                        new DevelopmentTag(1, Color.PURPLE, Level.ANY)},
+                /*new DevelopmentTag[] {new DevelopmentTag(0, Color.GREEN, Level.ANY),
+                        new DevelopmentTag(0, Color.PURPLE, Level.ANY)},*/
                 ResourceType.SHIELD
         ));
         leaderCardsDeck.add(new MarbleExchangeLeaderCard(
                 5,
                 EffectType.MARBLE_EXCHANGE,
-                /*new DevelopmentTag[] {new DevelopmentTag(2, Color.PURPLE, Level.ANY),
-                        new DevelopmentTag(1, Color.GREEN, Level.ANY)},*/
-                new DevelopmentTag[] {new DevelopmentTag(0, Color.PURPLE, Level.ANY),
-                        new DevelopmentTag(0, Color.GREEN, Level.ANY)},
+                new DevelopmentTag[] {new DevelopmentTag(2, Color.PURPLE, Level.ANY),
+                        new DevelopmentTag(1, Color.GREEN, Level.ANY)},
+                /*new DevelopmentTag[] {new DevelopmentTag(0, Color.PURPLE, Level.ANY),
+                        new DevelopmentTag(0, Color.GREEN, Level.ANY)},*/
                 ResourceType.COIN
         ));
         leaderCardsDeck.add(new MarbleExchangeLeaderCard(
@@ -58,19 +58,19 @@ public final class LeaderCardsDeckBuilder {
         leaderCardsDeck.add(new DiscountLeaderCard(
                 2,
                 EffectType.DISCOUNT,
-                /*new DevelopmentTag[] {new DevelopmentTag(1, Color.YELLOW, Level.ANY),
-                        new DevelopmentTag(1, Color.PURPLE, Level.ANY)},*/
-                new DevelopmentTag[] {new DevelopmentTag(0, Color.YELLOW, Level.ANY),
-                        new DevelopmentTag(0, Color.PURPLE, Level.ANY)},
+                new DevelopmentTag[] {new DevelopmentTag(1, Color.YELLOW, Level.ANY),
+                        new DevelopmentTag(1, Color.PURPLE, Level.ANY)},
+                /*new DevelopmentTag[] {new DevelopmentTag(0, Color.YELLOW, Level.ANY),
+                        new DevelopmentTag(0, Color.PURPLE, Level.ANY)},*/
                 ResourceType.COIN
         ));
         leaderCardsDeck.add(new DiscountLeaderCard(
                 2,
                 EffectType.DISCOUNT,
-                /*new DevelopmentTag[] {new DevelopmentTag(1, Color.GREEN, Level.ANY),
-                        new DevelopmentTag(1, Color.BLUE, Level.ANY)},*/
-                new DevelopmentTag[] {new DevelopmentTag(0, Color.GREEN, Level.ANY),
-                        new DevelopmentTag(0, Color.BLUE, Level.ANY)},
+                new DevelopmentTag[] {new DevelopmentTag(1, Color.GREEN, Level.ANY),
+                        new DevelopmentTag(1, Color.BLUE, Level.ANY)},
+                /*new DevelopmentTag[] {new DevelopmentTag(0, Color.GREEN, Level.ANY),
+                        new DevelopmentTag(0, Color.BLUE, Level.ANY)},*/
                 ResourceType.STONE
         ));
         leaderCardsDeck.add(new DiscountLeaderCard(
@@ -154,7 +154,7 @@ public final class LeaderCardsDeckBuilder {
                 ResourceType.STONE
         ));
 
-        //Collections.shuffle(leaderCardsDeck);
+        Collections.shuffle(leaderCardsDeck);
         return leaderCardsDeck;
     }
 }

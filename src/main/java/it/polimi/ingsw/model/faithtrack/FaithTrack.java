@@ -30,7 +30,7 @@ public class FaithTrack extends Observable implements Serializable {
     private final Map<Integer, Integer> ranges = new HashMap<>();
 
     public FaithTrack() {
-        this.faithMarker=7;
+        this.faithMarker=0;
         this.currentFavorPoints=0;
         this.finalPoints=0;
         initFaithTrack();
