@@ -2,38 +2,6 @@
 	{
 		"level": "ONE",
 		"color": "GREEN",
-		"id": 6,
-		"requirements": [
-			{
-				"type": "SHIELD",
-				"quantity": 1
-			},
-			{
-				"type": "SERVANT",
-				"quantity": 1
-			},
-			{
-				"type": "STONE",
-				"quantity": 1
-			}
-		],
-		"inputResources": [
-			{
-				"type": "STONE",
-				"quantity": 1
-			}
-		],
-		"outputResources": [
-			{
-				"type": "SERVANT",
-				"quantity": 1
-			}
-		],
-		"victoryPoints": 2
-	},
-	{
-		"level": "ONE",
-		"color": "GREEN",
 		"id": 0,
 		"requirements": [
 			{
@@ -186,6 +154,38 @@
 		"outputResources": [
 			{
 				"type": "SHIELD",
+				"quantity": 1
+			}
+		],
+		"victoryPoints": 2
+	},
+	{
+		"level": "ONE",
+		"color": "GREEN",
+		"id": 6,
+		"requirements": [
+			{
+				"type": "SHIELD",
+				"quantity": 1
+			},
+			{
+				"type": "SERVANT",
+				"quantity": 1
+			},
+			{
+				"type": "STONE",
+				"quantity": 1
+			}
+		],
+		"inputResources": [
+			{
+				"type": "STONE",
+				"quantity": 1
+			}
+		],
+		"outputResources": [
+			{
+				"type": "SERVANT",
 				"quantity": 1
 			}
 		],
