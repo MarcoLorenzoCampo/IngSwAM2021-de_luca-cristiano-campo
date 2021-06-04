@@ -19,15 +19,16 @@ public class GraphicalProductionCard {
     private static final int MAX_VERT_TILES = 12; //rows.
     private static final int MAX_HORIZ_TILES = 12; //cols.
 
-    private final ProductionCard productionCard;
+    private ProductionCard productionCard;
 
-    private String[][] cells = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
+    private String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
     private int index;
     private int level;
     private ColorCLI color;
     private int victoryPoints;
     private ResourceType requirementsType1;
     private ResourceType requirementsType2;
+    private ResourceType requirementsType3;
     private Integer requirementsQuantity1;
     private Integer requirementsQuantity2;
     private Integer requirementsQuantity3;
@@ -37,6 +38,7 @@ public class GraphicalProductionCard {
     private ResourceType requirementsOutputType1;
     private ResourceType requirementsOutputType2;
     private ResourceType requirementsOutputType3;
+
     private Integer requirementsInputQuantity1;
     private Integer requirementsInputQuantity2;
     private Integer requirementsOutputQuantity;
@@ -114,21 +116,12 @@ public class GraphicalProductionCard {
         }
 
         ArrayList<ResourceTag> resourceTagRequirements = this.productionCard.getRequirements();
-
-        for (ResourceTag resourceTag : resourceTagRequirements) {
-            this.requirementsInputQuantity1 = resourceTag.getQuantity();
-            this.requirementsInputType1 = resourceTag.getType();
-            ColorCLI colorResource = this.colorRequirementsType.get(this.requirementsInputType1);
-            insertingInputResourcesCard(this.requirementsInputQuantity1, colorResource);
-        }
-
-        if(resourceTagRequirements.size()==1) {
+        if(resourceTagRequirements.size()==1){
             this.requirementsQuantity1 = resourceTagRequirements.get(0).getQuantity();
             this.requirementsType1 = resourceTagRequirements.get(0).getType();
             ColorCLI colorResource = this.colorRequirementsType.get(this.requirementsType1);
-            insertingRequirementsCard(this.requirementsQuantity1, colorResource);
-        }
-        else {
+            insertingRequirementsCard(this.requirementsQuantity1, colorResource); }
+        else if(resourceTagRequirements.size()==2){
             this.requirementsQuantity1 = resourceTagRequirements.get(0).getQuantity();
             this.requirementsType1 = resourceTagRequirements.get(0).getType();
             ColorCLI colorResource1 = this.colorRequirementsType.get(this.requirementsType1);
@@ -137,9 +130,20 @@ public class GraphicalProductionCard {
             ColorCLI colorResource2 = this.colorRequirementsType.get(this.requirementsType2);
             insertingRequirementsCard(this.requirementsQuantity1, colorResource1, this.requirementsQuantity2, colorResource2);
         }
+        else{
+            this.requirementsQuantity1 = resourceTagRequirements.get(0).getQuantity();
+            this.requirementsType1 = resourceTagRequirements.get(0).getType();
+            ColorCLI colorResource1 = this.colorRequirementsType.get(this.requirementsType1);
+            this.requirementsQuantity2 = resourceTagRequirements.get(1).getQuantity();
+            this.requirementsType2 = resourceTagRequirements.get(1).getType();
+            ColorCLI colorResource2 = this.colorRequirementsType.get(this.requirementsType2);
+            this.requirementsQuantity3 = resourceTagRequirements.get(2).getQuantity();
+            this.requirementsType3 = resourceTagRequirements.get(2).getType();
+            ColorCLI colorResource3 = this.colorRequirementsType.get(this.requirementsType3);
+            insertingRequirementsCard(this.requirementsQuantity1, colorResource1, this.requirementsQuantity2, colorResource2, this.requirementsQuantity3, colorResource3);
+        }
 
         ArrayList<ResourceTag> resourceTagInputResource = productionCard.getInputResources();
-
         if(resourceTagInputResource.size() == 1){
             this.requirementsInputQuantity1 = resourceTagInputResource.get(0).getQuantity();
             this.requirementsInputType1 = resourceTagInputResource.get(0).getType();
@@ -155,8 +159,8 @@ public class GraphicalProductionCard {
             insertingInputResourcesCard(this.requirementsInputQuantity1, colorResource1, this.requirementsInputQuantity2, colorResource2);
         }
 
-        ArrayList<ResourceTag> resourceTagOutputResource = productionCard.getOutputResources();
 
+        ArrayList<ResourceTag> resourceTagOutputResource = productionCard.getOutputResources();
         if(resourceTagOutputResource.size() == 1){
             this.requirementsOutputQuantity = resourceTagOutputResource.get(0).getQuantity();
             this.requirementsOutputType = resourceTagOutputResource.get(0).getType();
@@ -183,6 +187,7 @@ public class GraphicalProductionCard {
             ColorCLI colorResource3 = this.colorRequirementsType.get(this.requirementsOutputType3);
             insertingOutputResourcesCard(this.requirementsOutputQuantity1, colorResource1, this.requirementsOutputQuantity2, colorResource2, this.requirementsOutputQuantity3, colorResource3);
         }
+
     }
 
     private void loadIndexCard(Integer i){
@@ -222,111 +227,125 @@ public class GraphicalProductionCard {
         cells[2][8] = colorResource2.escape() + "@" + ColorCLI.getRESET();
     }
 
+    private void insertingRequirementsCard(Integer graphicalQuantity1, ColorCLI colorResource1,Integer graphicalQuantity2, ColorCLI colorResource2, Integer graphicalQuantity3, ColorCLI colorResource3){
+        cells[1][1] = "P";
+        cells[1][2] = "R";
+        cells[1][3] = "I";
+        cells[1][4] = "C";
+        cells[1][5] = "E";
+        cells[1][7] = "" + graphicalQuantity1;
+        cells[1][8] = colorResource1.escape() + "@" + ColorCLI.getRESET();
+        cells[2][7] = "" + graphicalQuantity2;
+        cells[2][8] = colorResource2.escape() + "@" + ColorCLI.getRESET();
+        cells[3][7] = "" + graphicalQuantity3;
+        cells[3][8] = colorResource3.escape() + "@" + ColorCLI.getRESET();
+    }
+
     private void insertingInputResourcesCard(Integer graphicalQuantity, ColorCLI colorResource){
-        cells[4][2] = "" + graphicalQuantity;// + "->";
-        cells[4][3] = colorResource.escape() + "@" + ColorCLI.getRESET();
+        cells[5][2] = "" + graphicalQuantity;// + "->";
+        cells[5][3] = colorResource.escape() + "@" + ColorCLI.getRESET();
     }
 
     private void insertingOutputResourcesCard(Integer graphicalQuantity, ColorCLI colorResource){
-        cells[4][7] = "" + graphicalQuantity;
-        cells[4][8] = colorResource.escape() + "@" + ColorCLI.getRESET();
+        cells[5][7] = "" + graphicalQuantity;
+        cells[5][8] = colorResource.escape() + "@" + ColorCLI.getRESET();
     }
 
     private void insertingInputResourcesCard(Integer graphicalQuantity1, ColorCLI colorResource1, Integer graphicalQuantity2, ColorCLI colorResource2){
 
-        cells[4][2] = "" + graphicalQuantity1;
-        cells[4][3] = colorResource1.escape() + "@" + ColorCLI.getRESET();
-        cells[5][2] = "" + graphicalQuantity2;
-        cells[5][3] = colorResource2.escape() + "@" + ColorCLI.getRESET();
+        cells[5][2] = "" + graphicalQuantity1;
+        cells[5][3] = colorResource1.escape() + "@" + ColorCLI.getRESET();
+        cells[6][2] = "" + graphicalQuantity2;
+        cells[6][3] = colorResource2.escape() + "@" + ColorCLI.getRESET();
 
     }
 
     private void insertingOutputResourcesCard(Integer graphicalQuantity1, ColorCLI colorResource1, Integer graphicalQuantity2, ColorCLI colorResource2){
-        cells[4][7] = "" + graphicalQuantity1;
-        cells[4][8] = colorResource1.escape() + "@" + ColorCLI.getRESET();
-        cells[5][7] = "" + graphicalQuantity2;
-        cells[5][8] = colorResource2.escape() + "@" + ColorCLI.getRESET();
+        cells[5][7] = "" + graphicalQuantity1;
+        cells[5][8] = colorResource1.escape() + "@" + ColorCLI.getRESET();
+        cells[6][7] = "" + graphicalQuantity2;
+        cells[6][8] = colorResource2.escape() + "@" + ColorCLI.getRESET();
     }
 
     private void insertingOutputResourcesCard(Integer graphicalQuantity1, ColorCLI colorResource1, Integer graphicalQuantity2, ColorCLI colorResource2, Integer graphicalQuantity3, ColorCLI colorResource3){
-        cells[4][7] = "" + graphicalQuantity1;
-        cells[4][8] = colorResource1.escape() + "@" + ColorCLI.getRESET();
-        cells[5][7] = "" + graphicalQuantity2;
-        cells[5][8] = colorResource2.escape() + "@" + ColorCLI.getRESET();
-        cells[6][7] = "" + graphicalQuantity3;
-        cells[6][8] = colorResource3.escape() + "@" + ColorCLI.getRESET();
+        cells[5][7] = "" + graphicalQuantity1;
+        cells[5][8] = colorResource1.escape() + "@" + ColorCLI.getRESET();
+        cells[6][7] = "" + graphicalQuantity2;
+        cells[6][8] = colorResource2.escape() + "@" + ColorCLI.getRESET();
+        cells[7][7] = "" + graphicalQuantity3;
+        cells[7][8] = colorResource3.escape() + "@" + ColorCLI.getRESET();
     }
 
     private void insertingIndex(Integer index){
-        cells[7][1] = "I";
-        cells[7][2] = "N";
-        cells[7][3] = "D";
-        cells[7][4] = "E";
-        cells[7][5] = "X";
-        cells[7][7] = "" + index;
+        cells[8][1] = "I";
+        cells[8][2] = "N";
+        cells[8][3] = "D";
+        cells[8][4] = "E";
+        cells[8][5] = "X";
+        cells[8][7] = "" + index;
     }
 
     private void insertingIndex10(){
-        cells[7][1] = "I";
-        cells[7][2] = "N";
-        cells[7][3] = "D";
-        cells[7][4] = "E";
-        cells[7][5] = "X";
-        cells[7][7] = "1";
-        cells[7][8] = "0";
+        cells[8][1] = "I";
+        cells[8][2] = "N";
+        cells[8][3] = "D";
+        cells[8][4] = "E";
+        cells[8][5] = "X";
+        cells[8][7] = "1";
+        cells[8][8] = "0";
     }
 
     private void insertingIndex11(){
-        cells[7][1] = "I";
-        cells[7][2] = "N";
-        cells[7][3] = "D";
-        cells[7][4] = "E";
-        cells[7][5] = "X";
-        cells[7][7] = "1";
-        cells[7][8] = "1";
+        cells[8][1] = "I";
+        cells[8][2] = "N";
+        cells[8][3] = "D";
+        cells[8][4] = "E";
+        cells[8][5] = "X";
+        cells[8][7] = "1";
+        cells[8][8] = "1";
     }
 
     private void insertingVictoryPointsCard(Integer victoryPoints){
-        cells[8][1] = "P";
-        cells[8][2] = "O";
-        cells[8][3] = "I";
-        cells[8][4] = "N";
-        cells[8][5] = "T";
-        cells[8][6] = "S";
-        cells[8][8] = "" + victoryPoints;
+        cells[9][1] = "P";
+        cells[9][2] = "O";
+        cells[9][3] = "I";
+        cells[9][4] = "N";
+        cells[9][5] = "T";
+        cells[9][6] = "S";
+        cells[9][8] = "" + victoryPoints;
     }
 
     private void insertingVictoryPointsCard10(){
-        cells[8][1] = "P";
-        cells[8][2] = "O";
-        cells[8][3] = "I";
-        cells[8][4] = "N";
-        cells[8][5] = "T";
-        cells[8][6] = "S";
-        cells[8][8] = "1";
-        cells[8][9] = "0";
+        cells[9][1] = "P";
+        cells[9][2] = "O";
+        cells[9][3] = "I";
+        cells[9][4] = "N";
+        cells[9][5] = "T";
+        cells[9][6] = "S";
+        cells[9][8] = "1";
+        cells[9][9] = "0";
     }
 
     private void insertingVictoryPointsCard11(){
-        cells[8][1] = "P";
-        cells[8][2] = "O";
-        cells[8][3] = "I";
-        cells[8][4] = "N";
-        cells[8][5] = "T";
-        cells[8][6] = "S";
-        cells[8][8] = "1";
-        cells[8][9] = "1";
+        cells[9][1] = "P";
+        cells[9][2] = "O";
+        cells[9][3] = "I";
+        cells[9][4] = "N";
+        cells[9][5] = "T";
+        cells[9][6] = "S";
+        cells[9][8] = "1";
+        cells[9][9] = "1";
     }
 
     private void insertingVictoryPointsCard12(){
-        cells[8][1] = "P";
-        cells[8][2] = "O";
-        cells[8][3] = "I";
-        cells[8][4] = "N";
-        cells[8][5] = "T";
-        cells[8][6] = "S";
-        cells[8][8] = "1";
-        cells[8][9] = "2";
+        cells[9][1] = "P";
+        cells[9][2] = "O";
+        cells[9][3] = "I";
+        cells[9][4] = "N";
+        cells[9][5] = "T";
+        cells[9][6] = "S";
+        cells[9][8] = "1";
+        cells[9][9] = "2";
     }
 
     private void insertingLevelCard(Integer level){
