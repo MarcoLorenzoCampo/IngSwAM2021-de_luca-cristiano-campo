@@ -55,7 +55,7 @@ public class FaithTrackPanel extends JPanel {
                 g2d.fillRect(x,y,width,width);
             }
 
-            if(i>=19 && i<=24){
+            if(i>=19){
                 g2d.setPaint(Color.red);
                 g2d.fillRect(x,y,width,width);
             }
