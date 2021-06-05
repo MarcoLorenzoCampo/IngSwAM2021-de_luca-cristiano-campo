@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.PlayerState;
 import it.polimi.ingsw.model.player.RealPlayer;
-import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
@@ -19,13 +18,16 @@ import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.network.views.IView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Class to manage the entire playing game. It has instances of the currentGame, LobbyManager,
  * ActionManager.
  */
-public final class GameManager implements Observer {
+public final class GameManager {
 
     private final IGame currentGame;
     private final ActionManager actionManager;
@@ -609,15 +611,6 @@ public final class GameManager implements Observer {
 
             default: currentView.currentTurn("\nYour command cannot be processed now, please try a different one");
         }
-    }
-
-    /**
-     * Sends specific update messages depending on what part of the model has been updated.
-     * @param message: model update message.
-     */
-    @Override
-    public void update (Message message){
-
     }
 
     /**

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
+import it.polimi.ingsw.network.eventHandlers.ControllerObserver;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
@@ -19,7 +20,7 @@ import static it.polimi.ingsw.network.server.Server.LOGGER;
 /**
  * Class to manage players and turns in a multiplayer game.
  */
-public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
+public class MultiPlayerLobbyManager implements ControllerObserver, ILobbyManager {
 
     /**
      * Lobby dimension set by the first client to connect.
@@ -365,10 +366,9 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(virtualView);
 
         //Lobby manager observes the player.
-        realPlayerList.get(getPlayerIndexByNickname(nickname)).addObserver(this);
-        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getFaithTrack().addObserver(this);
-        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getInventoryManager().addObserver(this);
-        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().addObserver(this);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).addControllerObserver(this);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().getFaithTrack().addControllerObserver(this);
+        realPlayerList.get(getPlayerIndexByNickname(nickname)).getPlayerBoard().addControllerObserver(this);
     }
 
     /**
@@ -425,7 +425,7 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
      * The lobby manager observes each player's faith track and warehouse, registering events.
      * @param message: controller notification.
      */
-    @Override
+    /*@Override
     public void update(Message message) {
 
         switch(message.getMessageType()) {
@@ -474,7 +474,7 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
             default: //Ignore any other message
                 break;
         }
-    }
+    }*/
 
     /**
      * Method to send the stored data of a reconnected player.
@@ -653,5 +653,55 @@ public class MultiPlayerLobbyManager implements Observer, ILobbyManager {
         broadcastGenericMessage(nicknameToDisconnect + " was removed from the game.");
         LOGGER.info("Removed " + nicknameToDisconnect + " from setup phase.");
         broadcastGenericMessage("\n["+ (lobbySize-realPlayerList.size()) + " players left]");
+    }
+
+    @Override
+    public void controllerUpdate(Message message) {
+        switch(message.getMessageType()) {
+            case VATICAN_REPORT_NOTIFICATION:
+
+                VaticanReportNotification v = (VaticanReportNotification) message;
+
+                int popeTileIndex = v.getPopeTileIndex();
+
+                for(RealPlayer realPlayer : realPlayerList) {
+
+                    if(realPlayer.getPlayerState().isConnected()) {
+                        FaithTrack ft = realPlayer.getPlayerBoard().getFaithTrack();
+
+                        ft.checkVaticanCondition(popeTileIndex);
+                    }
+                }
+                break;
+
+            case DISCARDED_RESOURCE:
+                broadcastGenericMessage(gameManager.getCurrentPlayer() + " discarded a resource, everyone moves!");
+                for(RealPlayer realPlayer : realPlayerList) {
+                    if(realPlayer.getPlayerState().isConnected()
+                            && !realPlayer.getName().equals(gameManager.getCurrentPlayer())) {
+                        realPlayer.moveFaith();
+                    }
+                }
+                break;
+
+            case END_GAME:
+                if(!endGame) {
+                    Server.LOGGER.info("Last round started.");
+                    broadcastGenericMessage("End game started by: " + gameManager.getCurrentPlayer());
+                    endGame = true;
+                }
+                break;
+
+            case BOUGHT_7_CARDS:
+                if(!endGame) {
+                    endGame = true;
+                    Server.LOGGER.info("Last round started.");
+                    broadcastGenericMessage("End game started by: " + gameManager.getCurrentPlayer());
+                }
+                break;
+
+            default: //Ignore any other message
+                break;
+        }
     }
 }

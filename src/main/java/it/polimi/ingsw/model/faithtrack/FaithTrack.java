@@ -103,7 +103,7 @@ public class FaithTrack extends Observable implements Serializable {
         //Notify all observers, but only the clients will get an updated version.
         notifyObserver(new FaithTrackMessage(this));
 
-        if(faithMarker == 24) notifyObserver(new EndGameMessage());
+        if(faithMarker == 24) notifyControllerObserver(new EndGameMessage());
 
         if(isPopeTile(faithMarker)) {
 
@@ -114,7 +114,7 @@ public class FaithTrack extends Observable implements Serializable {
                 ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
 
                 //Notifying the controller he needs to start a vatican report session.
-                notifyObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
+                notifyControllerObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
             }
         }
     }
@@ -129,7 +129,7 @@ public class FaithTrack extends Observable implements Serializable {
         //Notify all observers, but only the clients will get an updated version.
         notifyObserver(new GenericMessageFromServer("Lorenzo's position: " + faithMarker + "\n"));
 
-        if(faithMarker == 24) notifyObserver(new EndGameMessage());
+        if(faithMarker == 24) notifyControllerObserver(new EndGameMessage());
 
         if(isPopeTile(faithMarker)) {
 
@@ -140,7 +140,7 @@ public class FaithTrack extends Observable implements Serializable {
                 ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
 
                 //Notifying the controller he needs to start a vatican report session.
-                notifyObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
+                notifyControllerObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
             }
         }
     }

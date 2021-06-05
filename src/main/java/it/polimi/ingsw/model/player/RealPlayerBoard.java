@@ -66,7 +66,7 @@ public class RealPlayerBoard extends Observable {
     public void increaseBoughCardsCount() {
         boughtCardsNumber++;
         if(boughtCardsNumber == PlayingGame.getGameInstance().getMaxCardsBought()) {
-            notifyObserver(new Bought7CardsMessage());
+            notifyControllerObserver(new Bought7CardsMessage());
         }
     }
 

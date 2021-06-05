@@ -108,7 +108,7 @@ public class ProductionCardMarket extends Observable {
         }
 
         if(colorNotAvailable()) {
-            notifyObserver(new NoMoreCardsMessage());
+            notifyControllerObserver(new NoMoreCardsMessage());
         }
         notifyObserver(new AvailableCardsMessage(availableCards));
     }

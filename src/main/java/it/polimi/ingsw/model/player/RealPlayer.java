@@ -231,7 +231,7 @@ public class RealPlayer extends Observable implements Visitor {
                 playerBoard.getInventoryManager().addResourceToWarehouse(action.getIndex());
 
             } catch (DiscardResourceException exception) {
-                notifyObserver(new DiscardedResourceMessage());
+                notifyControllerObserver(new DiscardedResourceMessage());
                 playerBoard.getInventoryManager().removeFromBuffer(action.getIndex());
                 //notify game of penalty
             }
