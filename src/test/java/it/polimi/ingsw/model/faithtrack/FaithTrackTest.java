@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.faithtrack;
 
 import it.polimi.ingsw.enumerations.Constants;
+import net.bytebuddy.build.ToStringPlugin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ class FaithTrackTest {
      * Testing basic faith track methods.
      */
     @BeforeEach
-    void init(){
+    void init() {
         faithTrack = new FaithTrack();
     }
 
@@ -29,40 +30,6 @@ class FaithTrackTest {
         assertNotNull(faithTrack);
     }
 
-    @Disabled
-    @Test
-    void increaseFaithMarkerTest(){
-        //Arrange
-        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(8);
-
-        //Act
-        faithTrack.setFaithMarker(7);
-        faithTrack.increaseFaithMarker();
-        int currentFavorPoints = 2;
-        int currentMarkerPosition = 8;
-
-        assertEquals(currentFavorPoints, faithTrack.getCurrentFavorPoints());
-        assertFalse(t1.getIsActive());
-        assertEquals(currentMarkerPosition, faithTrack.getFaithMarker());
-    }
-
-    @Disabled
-    @Test
-    void increaseFaithMarker2Test(){
-        //Arrange
-        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(8);
-
-        //Act
-        faithTrack.setFaithMarker(7);
-        faithTrack.increaseFaithMarker();
-        int currentFavorPoints = 2;
-        int currentMarkerPosition = 8;
-
-        //Assert
-        assertEquals(currentFavorPoints, faithTrack.getCurrentFavorPoints());
-        assertFalse(t1.getIsActive());
-        assertEquals(currentMarkerPosition, faithTrack.getFaithMarker());
-    }
 
     @Test
     void increaseFaithMarker3Test() {
@@ -251,8 +218,87 @@ class FaithTrackTest {
 
         //Assert
         assertEquals(faithTrack.getFinalPoints(), 14);
-
     }
 
+    @Test
+    void lorenzoIncreasesPosition() {
 
+        //Arrange
+        PopeTile pt;
+        faithTrack.setFaithMarker(7);
+
+        //Act
+        faithTrack.lorenzoIncreasesFaithMarker();
+        pt = (PopeTile) faithTrack.getFaithTrack().get(faithTrack.getFaithMarker());
+        //Assert
+        assertAll(
+                () -> assertFalse(pt.isActive)
+        );
+    }
+
+    @Test
+    void increaseFaithTest() {
+        //Arrange
+        PopeTile pt;
+        faithTrack.setFaithMarker(7);
+
+        //Act
+        faithTrack.increaseFaithMarker();
+        pt = (PopeTile) faithTrack.getFaithTrack().get(faithTrack.getFaithMarker());
+        //Assert
+        assertAll(
+                () -> assertFalse(pt.isActive)
+        );
+    }
+
+    @Test
+    void vaticanConditionsTest() {
+        //Arrange
+        faithTrack.setFaithMarker(7);
+
+        //Act
+        faithTrack.increaseFaithMarker();
+        faithTrack.checkVaticanCondition(8);
+
+        //Assert
+        assertAll(
+                () -> assertEquals(2, faithTrack.getCurrentFavorPoints())
+        );
+    }
+
+    @Test
+    void vaticanConditionsNotMatchedTest() {
+        //Arrange
+        faithTrack.setFaithMarker(7);
+        PopeTile pt = (PopeTile) faithTrack.getFaithTrack().get(8);
+
+        //Act
+        faithTrack.increaseFaithMarker();
+        faithTrack.setFaithMarker(0);
+        faithTrack.checkVaticanCondition(8);
+
+        //Assert
+        assertAll(
+                () -> assertEquals(0, faithTrack.getCurrentFavorPoints())
+        );
+    }
+
+    @Test
+    void lastTile() {
+        //Arrange
+        faithTrack.setFaithMarker(24);
+        assertTrue(faithTrack.isLastTile());
+    }
+
+    @Test
+    void setTileCheckpoint() {
+        //Arrange
+        Tile tile = new Tile(0, 0, 0);
+
+        //Act
+        tile.setIndex(100);
+
+        //Assert
+        assertEquals(tile.getIndex(), 100);
+    }
 }

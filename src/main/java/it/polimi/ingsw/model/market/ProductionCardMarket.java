@@ -129,7 +129,7 @@ public class ProductionCardMarket extends Observable {
                 }
             }
         }
-        throw new NullPointerException();
+        return ANY;
     }
 
     /**

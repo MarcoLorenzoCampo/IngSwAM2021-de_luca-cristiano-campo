@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class Tile implements Serializable {
     private static final long serialVersionUID = -1082270924910375418L;
     private int index;
-    private int vaticanSpace;
-    private int checkpoint;
+    private final int vaticanSpace;
+    private final int checkpoint;
 
     /**
      * @param index:        there are 24 tiles;
@@ -30,15 +30,7 @@ public class Tile implements Serializable {
         return vaticanSpace;
     }
 
-    public void setVaticanSpace(int vaticanSpace) {
-        this.vaticanSpace = vaticanSpace;
-    }
-
     public int getCheckpoint() {
         return checkpoint;
-    }
-
-    public void setCheckpoint(int checkpoint) {
-        this.checkpoint = checkpoint;
     }
 }

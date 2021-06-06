@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model.market;
 
+import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.RealPlayer;
+import it.polimi.ingsw.model.player.RealPlayerBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +12,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResourceMarketTest {
-/*
+
     private ResourceMarket resourceMarket;
 
     @BeforeEach
@@ -39,10 +41,10 @@ class ResourceMarketTest {
         //Assert
         assertAll(
                 () -> assertThrows(IndexOutOfBoundsException.class,
-                        () -> resourceMarket.pickResources(positiveBoundBreaker)),
+                        () -> resourceMarket.pickResources(positiveBoundBreaker, new RealPlayerBoard("test"))),
 
                 () -> assertThrows(IndexOutOfBoundsException.class,
-                        () -> resourceMarket.pickResources(negativeBoundBreaker))
+                        () -> resourceMarket.pickResources(negativeBoundBreaker, new RealPlayerBoard("test")))
         );
     }
 
@@ -60,11 +62,14 @@ class ResourceMarketTest {
         //Assert
         assertAll(
                 () -> assertDoesNotThrow(
-                        () -> resourceMarket.pickResources(acceptedBoundColumn)),
+                        () -> resourceMarket.pickResources(acceptedBoundColumn, new RealPlayerBoard("test"))),
                 () -> assertDoesNotThrow(
-                        () -> resourceMarket.pickResources(acceptedBoundRow))
+                        () -> resourceMarket.pickResources(acceptedBoundRow, new RealPlayerBoard("test")))
         );
     }
 
- */
+    @Test
+    void getExtraMarbleTest() {
+        assertInstanceOf(ResourceType.class, resourceMarket.getExtraMarble());
+    }
 }

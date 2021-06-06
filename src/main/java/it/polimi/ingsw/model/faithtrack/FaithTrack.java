@@ -103,7 +103,7 @@ public class FaithTrack extends Observable implements Serializable {
         //Notify all observers, but only the clients will get an updated version.
         notifyObserver(new FaithTrackMessage(this));
 
-        if(faithMarker == 24) notifyControllerObserver(new EndGameMessage());
+        if(isLastTile()) notifyControllerObserver(new EndGameMessage());
 
         if(isPopeTile(faithMarker)) {
 
@@ -129,7 +129,7 @@ public class FaithTrack extends Observable implements Serializable {
         //Notify all observers, but only the clients will get an updated version.
         notifyObserver(new GenericMessageFromServer("Lorenzo's position: " + faithMarker + "\n"));
 
-        if(faithMarker == 24) notifyControllerObserver(new EndGameMessage());
+        if(isLastTile()) notifyControllerObserver(new EndGameMessage());
 
         if(isPopeTile(faithMarker)) {
 
