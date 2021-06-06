@@ -65,13 +65,13 @@ public class Executor {
 
 
         ArrayList<ResourceType> warehouse = new ArrayList<>();
-        warehouse.add(ResourceType.UNDEFINED);
+        warehouse.add(ResourceType.SERVANT);
 
         warehouse.add(ResourceType.STONE);
         warehouse.add(ResourceType.UNDEFINED);
 
-        warehouse.add(ResourceType.COIN);
-        warehouse.add(ResourceType.COIN);
+        warehouse.add(ResourceType.UNDEFINED);
+        warehouse.add(ResourceType.UNDEFINED);
         warehouse.add(ResourceType.COIN);
 
         warehouse.add(ResourceType.SHIELD);
@@ -96,7 +96,8 @@ public class Executor {
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //f.setSize(screenSize.width,screenSize.height);
-        a.setContentPane(new WarehousePanel(warehouse, extra));
+        WarehousePanel warehousePanel = new WarehousePanel(warehouse, extra);
+        a.setContentPane(warehousePanel);
         e.setContentPane(new CardMarketPanel(sent));
         f.setContentPane(new FaithTrackPanel(track));
         ResourceMarketPanel marketPanel = new ResourceMarketPanel(resourceBoard, extraMarble);
@@ -104,12 +105,12 @@ public class Executor {
         h.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
 
 
-/*
+
         a.pack();
-        a.setSize(700,700);
+        a.setSize(250,450);
         a.repaint();
         a.setVisible(true);
-
+/*
         e.pack();
         e.setSize(700,900);
         e.repaint();
@@ -119,12 +120,12 @@ public class Executor {
         f.setSize(screenSize.width, screenSize.width/15);
         f.repaint();
         f.setVisible(true);
- */
+
         g.pack();
         g.setSize(440,500);
         g.repaint();
         g.setVisible(true);
-/*
+
         h.pack();
         h.setSize(800,400);
         h.repaint();
@@ -133,20 +134,39 @@ public class Executor {
  */
 
 
+
+
         ResourceType[] extraMarble_1 = {ResourceType.FAITH, ResourceType.SHIELD, ResourceType.UNDEFINED,
         ResourceType.COIN, ResourceType.STONE, ResourceType.SERVANT};
+
+        ArrayList<ResourceType> warehouse_1 = new ArrayList<>();
+        warehouse_1.add(ResourceType.SHIELD);
+
+        warehouse_1.add(ResourceType.STONE);
+        warehouse_1.add(ResourceType.STONE);
+
+        warehouse_1.add(ResourceType.SERVANT);
+        warehouse_1.add(ResourceType.SERVANT);
+        warehouse_1.add(ResourceType.SERVANT);
+
+        warehouse_1.add(ResourceType.SHIELD);
+        warehouse_1.add(ResourceType.UNDEFINED);
+
+
+        ArrayList<ResourceType> extra_1 = new ArrayList<>();
+        extra_1.add(ResourceType.SHIELD);
+
 
         JFrame prova = new JFrame();
         JButton test = new JButton();
         test.addActionListener(e_1 ->
-
         {
-            marketPanel.updateMarket(resourceBoard,extraMarble_1[1]);
+            warehousePanel.updateWarehousePanel(warehouse_1, extra_1);
 
         });
 
         prova.add(test);
-        //prova.setVisible(true);
+        prova.setVisible(true);
 
 
 

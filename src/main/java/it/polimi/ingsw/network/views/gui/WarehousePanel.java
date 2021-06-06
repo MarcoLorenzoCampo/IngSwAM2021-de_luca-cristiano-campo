@@ -18,7 +18,7 @@ public class WarehousePanel extends JPanel {
             "./punchboard/shield.png",
             "./punchboard/servant.png",
             "./punchboard/stone.png",
-            "./punchboard/interrogativo.png"
+
     };
 
 
@@ -29,63 +29,84 @@ public class WarehousePanel extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        DrawWarehouse(g);
+        int width = this.getWidth()/5;
+        int height = this.getHeight()/9;
+        paintBackground(g);
+        DrawWarehouse(g, width, height);
     }
 
-    private void DrawWarehouse(Graphics g) {
-        int width = this.getWidth()/7;
-        int height = this.getHeight()/7;
-        int x=3*width;
-        int y=height/2;
+    private void DrawWarehouse(Graphics g, int width, int height) {
+
+        int x=5*width/2;
+        int y=4*height/3;
+
         int quantity=1;
         int[] shelf_start = {0,1,3};
         for (int shelf: shelf_start) {
             DrawShelf(g, x, y,width, height, shelf, quantity);
             quantity++;
-            x -= width;
-            y += height;
+            x -= width/2;
+            y += 17*height/10;
         }
-            y +=height/2;
-            x+= width;
+        y-= height/3;
         for (ResourceType iterator : extras) {
             DrawExtraShelf(g, x, y,width, height, 2* extras.indexOf(iterator)+6, 2, iterator);
-            y += 3/2*height;
+            y += height;
         }
+    }
+
+    private void paintBackground(Graphics g) {
+        ClassLoader cl = this.getClass().getClassLoader();
+        InputStream url = cl.getResourceAsStream("./punchboard/warehouse.png");
+                BufferedImage img= null;
+        try {
+            img = ImageIO.read(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        g.drawImage(img, 0,0, this.getWidth(),this.getHeight(), null);
     }
 
     private  void DrawShelf(Graphics g, int x, int y,int width, int height, int shelf, int quantity){
         ClassLoader cl = this.getClass().getClassLoader();
         String item = "";
-
+        boolean print = true;
         for (int i = 0; i < quantity; i++) {
                 switch (shelves.get(shelf+i)) {
                     case COIN:
+                        print = true;
                         item = resources[0];
                         break;
                     case SHIELD:
+                        print = true;
                         item = resources[1];
                         break;
                     case SERVANT:
+                        print = true;
                         item = resources[2];
                         break;
                     case STONE:
+                        print = true;
                         item = resources[3];
                         break;
                     case UNDEFINED:
-                        item = resources[4];
+                        print = false;
                         break;
-                }
-                InputStream url = cl.getResourceAsStream(item);
-                BufferedImage img = null;
-                try {
-                    img = ImageIO.read(url);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                }
 
-                g.drawImage(img, x, y, width, height, null);
-                x+= 2*width;
+                }
+                if (print) {
+                    InputStream url = cl.getResourceAsStream(item);
+                    BufferedImage img = null;
+                    try {
+                        img = ImageIO.read(url);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    g.drawImage(img, x, y, width, height, null);
+                }
+                x+=width;
             }
         }
 
@@ -94,32 +115,42 @@ public class WarehousePanel extends JPanel {
             ClassLoader cl = this.getClass().getClassLoader();
             String item = "";
 
-
+            boolean print = true;
             switch (extra_type){
                 case COIN:
+                    print = true;
                     item = resources[0];
                     break;
                 case SHIELD:
+                    print = true;
                     item = resources[1];
                     break;
                 case SERVANT:
+                    print = true;
                     item = resources[2];
                     break;
                 case STONE:
+                    print = true;
                     item = resources[3];
                     break;
+                case UNDEFINED:
+                    print = false;
+                    break;
             }
-            InputStream url = cl.getResourceAsStream(item);
-            BufferedImage img = null;
-            try {
-                img = ImageIO.read(url);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
+            if (print) {
+                InputStream url = cl.getResourceAsStream(item);
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                g.drawImage(img, x, y, width, height, null);
             }
-            g.drawImage(img, x, y, width, height, null);
-            x+=width+width/2;
+            x+=6*width/5;
             float dash1[] = {10.0f};
+            g.setPaint(Color.RED);
             g.setStroke(new BasicStroke(3,
                     BasicStroke.CAP_BUTT,
                     BasicStroke.JOIN_MITER,
@@ -127,44 +158,47 @@ public class WarehousePanel extends JPanel {
             g.drawLine(x,y,x,y+height);
 
 
-
-
-
-
-
-
-
-
-            x+=width/2;
+            x+=width/5;
             for (int i = 0; i < quantity; i++) {
                 switch (shelves.get(shelf+i)) {
                     case COIN:
+                        print = true;
                         item = resources[0];
                         break;
                     case SHIELD:
+                        print = true;
                         item = resources[1];
                         break;
                     case SERVANT:
+                        print = true;
                         item = resources[2];
                         break;
                     case STONE:
+                        print = true;
                         item = resources[3];
                         break;
                     case UNDEFINED:
-                        item = resources[4];
+                        print = false;
                         break;
                 }
-                url = cl.getResourceAsStream(item);
-                img = null;
-                try {
-                    img = ImageIO.read(url);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
+                if (print) {
+                    InputStream url = cl.getResourceAsStream(item);
+                    BufferedImage img = null;
+                    try {
+                        img = ImageIO.read(url);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    g.drawImage(img, x, y, width, height, null);
                 }
-
-                g.drawImage(img, x, y, width, height, null);
-                x+= 2*width;
+                x+=4*width/3;
             }
         }
+
+    public void updateWarehousePanel(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras){
+        this.shelves = shelves;
+        this.extras = extras;
+        this.repaint();
+    }
 }
