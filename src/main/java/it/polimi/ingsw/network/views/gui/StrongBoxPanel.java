@@ -68,6 +68,7 @@ public class StrongBoxPanel extends JPanel {
     private void DrawNumber(Graphics g, int x, int y, int number) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(5));
+        //QUI DISEGNA L'UGUALE
         g2d.drawLine(x+10,y+this.getHeight()/10+5,x+this.getWidth()/10, y+this.getHeight()/10+5);
         g2d.drawLine(x+10,y+this.getHeight()/10+20,x+this.getWidth()/10, y+this.getHeight()/10+20);
         g2d.setFont(new Font("Monaco", Font.PLAIN, this.getHeight()/5));

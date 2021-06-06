@@ -2,13 +2,18 @@ package it.polimi.ingsw.network.views.gui;
 
 import it.polimi.ingsw.enumerations.ResourceType;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 public class ResourceMarketPanel extends JPanel {
     ResourceType[][] resourceBoard;
     ResourceType extraMarble;
+    String path = "./punchboard/marble_";
 
     public ResourceMarketPanel(ResourceType[][] resourceBoard, ResourceType extraMarble){
         this.resourceBoard = resourceBoard;
@@ -17,9 +22,18 @@ public class ResourceMarketPanel extends JPanel {
 
     @Override
     public void paint(Graphics g) {
+        int width = this.getWidth()/9;
+        int height = this.getHeight()/10;
+        paintBackground(g);
+        paintMarket(g,width, height);
+        paintExtraMarble(g, width, height);
+
+
+
+
+        /*
         int x = 10;
         int y = 0;
-        DrawFirstLine(g, x, y);
         y +=this.getHeight()/5-25;
         DrawVerticalArrow(g,x,y);
         y +=this.getHeight()/5;
@@ -27,106 +41,109 @@ public class ResourceMarketPanel extends JPanel {
             DrawMarketLine(g, i, x, y);
             y += this.getHeight()/5+10;
         }
+
+         */
     }
 
+    private void paintExtraMarble(Graphics g, int width, int height) {
+        int x = 3*width/2;
+        int y = 5*height+height/2;
 
-    private void DrawMarketLine(Graphics g, int index, int x, int y){
-        Color purple = new Color (128,0,128);
-        Graphics2D g2d = (Graphics2D) g;
-        for (int i = 0; i < 4; i++) {
-            switch (resourceBoard[index][i]){
-                case COIN:
-                    g2d.setPaint(Color.yellow);
-                    break;
-                case SHIELD:
-                    g2d.setPaint(Color.blue);
-                    break;
-                case SERVANT:
-                    g2d.setPaint(purple);
-                    break;
-                case STONE:
-                    g2d.setPaint(Color.gray);
-                    break;
-                case FAITH:
-                    g2d.setPaint(Color.red);
-                    break;
-                case UNDEFINED:
-                    g2d.setPaint(Color.white);
-                    break;
+        ClassLoader cl = this.getClass().getClassLoader();
+        String item = "";
+        switch (extraMarble){
+            case COIN:
+                item = "yellow";
+                break;
+            case SHIELD:
+                item = "blue";
+                break;
+            case SERVANT:
+                item = "purple";
+                break;
+            case STONE:
+                item = "grey";
+                break;
+            case FAITH:
+                item = "red";
+                break;
+
+            case UNDEFINED:
+                item = "white";
+                break;
+        }
+        InputStream url = cl.getResourceAsStream(path+item+".png");
+        BufferedImage img= null;
+        try {
+            img = ImageIO.read(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        g.drawImage(img, x,y, width,height, null);
+    }
+
+    private void paintMarket(Graphics g, int width, int height) {
+        int x = 5*width/2;
+        int y = 2*height+height/3;
+        ClassLoader cl = this.getClass().getClassLoader();
+        String item = "";
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                switch (resourceBoard[i][j]){
+                    case COIN:
+                        item = "yellow";
+                        break;
+                    case SHIELD:
+                        item = "blue";
+                        break;
+                    case SERVANT:
+                        item = "purple";
+                        break;
+                    case STONE:
+                        item = "grey";
+                        break;
+                    case FAITH:
+                        item = "red";
+                        break;
+
+                    case UNDEFINED:
+                        item = "white";
+                        break;
+                }
+                InputStream url = cl.getResourceAsStream(path+item+".png");
+                BufferedImage img= null;
+                try {
+                    img = ImageIO.read(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                g.drawImage(img, x,y, width,height, null);
+                x+=this.getWidth()/8;
             }
-            g2d.fillOval(x,y,this.getWidth()/6,this.getHeight()/5);
-            g2d.setPaint(Color.BLACK);
-            g2d.setStroke(new BasicStroke(3));
-            g2d.drawOval(x,y,this.getWidth()/6,this.getHeight()/5);
-            x += (this.getWidth()/6+10);
+            x = 5*width/2;
+            y += height;
         }
-        DrawHorizontalArrow(g,x, y,index+4);
 
     }
 
-
-    private void DrawFirstLine(Graphics g, int x, int y){
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setPaint(Color.RED);
-        g2d.setFont(new Font("Monaco", Font.PLAIN, this.getHeight()/5));
-        for (int i = 0; i < 4; i++) {
-            g2d.drawString(String.valueOf(i),x + this.getWidth()/24, y+this.getHeight()/5-10);
-            x+=this.getWidth()/6+10;
+    private void paintBackground(Graphics g) {
+        ClassLoader cl = this.getClass().getClassLoader();
+        InputStream url = cl.getResourceAsStream("./punchboard/market.jpg");
+        BufferedImage img= null;
+        try {
+            img = ImageIO.read(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
         }
-
-        Color purple = new Color (128,0,128);
-        for (int i = 0; i < 4; i++) {
-            switch (extraMarble) {
-                case COIN:
-                    g2d.setPaint(Color.yellow);
-                    break;
-                case SHIELD:
-                    g2d.setPaint(Color.blue);
-                    break;
-                case SERVANT:
-                    g2d.setPaint(purple);
-                    break;
-                case STONE:
-                    g2d.setPaint(Color.gray);
-                    break;
-                case FAITH:
-                    g2d.setPaint(Color.red);
-                    break;
-                case UNDEFINED:
-                    g2d.setPaint(Color.white);
-                    break;
-            }
-            g2d.fillOval(x+20, y+20, this.getWidth() / 6, this.getHeight() / 5);
-            g2d.setPaint(Color.BLACK);
-            g2d.setStroke(new BasicStroke(3));
-            g2d.drawOval(x+20, y+20, this.getWidth() / 6, this.getHeight() / 5);
-        }
+        g.drawImage(img, 0,0, this.getWidth(),this.getHeight(), null);
     }
 
-    private  void DrawHorizontalArrow(Graphics g, int x, int y, int number){
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(5));
-        g2d.setPaint(Color.RED);
-        g2d.drawLine(x+10,y+this.getHeight()/10,x+this.getWidth()/12,y+this.getHeight()/10);
-        int[] x_coordinates = {x,x+10,x+10};
-        int[] y_coordinates = {y+this.getHeight()/10,y+this.getHeight()/10+10,y+this.getHeight()/10-10};
-        g2d.fillPolygon(x_coordinates,y_coordinates, 3);
-
-        g2d.setFont(new Font("Monaco", Font.PLAIN, this.getHeight()/5));
-        g2d.drawString(String.valueOf(number),x+this.getWidth()/12+1, y+this.getHeight()/5-10);
+    public void updateMarket(ResourceType[][] resourceBoard,ResourceType extraMarble){
+        this.resourceBoard = resourceBoard;
+        this.extraMarble = extraMarble;
+        this.repaint();
     }
-
-    private void DrawVerticalArrow(Graphics g, int x, int y){
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(5));
-        g2d.setPaint(Color.RED);
-        for (int i = 0; i < 4; i++) {
-            g2d.drawLine(x+this.getWidth()/12,y+20,x+this.getWidth()/12,y+this.getHeight()/5-15);
-            int[] x_coordinates = {x+this.getWidth()/12-10,x+this.getWidth()/12,x+this.getWidth()/12+10};
-            int[] y_coordinates = {y+this.getHeight()/5-15,y+this.getHeight()/5-5,y+this.getHeight()/5-15};
-            g2d.fillPolygon(x_coordinates,y_coordinates, 3);
-            x += this.getWidth()/6+10;
-        }
-    }
-
 }

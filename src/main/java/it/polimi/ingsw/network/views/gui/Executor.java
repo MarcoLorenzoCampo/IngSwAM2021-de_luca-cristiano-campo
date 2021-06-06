@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Executor {
     public static void main(String[] args) {
@@ -98,48 +99,58 @@ public class Executor {
         a.setContentPane(new WarehousePanel(warehouse, extra));
         e.setContentPane(new CardMarketPanel(sent));
         f.setContentPane(new FaithTrackPanel(track));
-        g.setContentPane(new ResourceMarketPanel(resourceBoard, extraMarble));
+        ResourceMarketPanel marketPanel = new ResourceMarketPanel(resourceBoard, extraMarble);
+        g.setContentPane(marketPanel);
         h.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
-        i.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
-        l.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
 
 
+/*
         a.pack();
         a.setSize(700,700);
         a.repaint();
         a.setVisible(true);
-        /*
+
         e.pack();
-        e.setSize(800,400);
+        e.setSize(700,900);
         e.repaint();
         e.setVisible(true);
 
         f.pack();
-        f.setSize(800,400);
+        f.setSize(screenSize.width, screenSize.width/15);
         f.repaint();
         f.setVisible(true);
-
+ */
         g.pack();
-        g.setSize(800,400);
+        g.setSize(440,500);
         g.repaint();
         g.setVisible(true);
-
+/*
         h.pack();
         h.setSize(800,400);
         h.repaint();
         h.setVisible(true);
 
-        i.pack();
-        i.setSize(800,400);
-        i.repaint();
-        i.setVisible(true);
+ */
 
-        l.pack();
-        l.setSize(800,400);
-        l.repaint();
-        l.setVisible(true);
 
-         */
+        ResourceType[] extraMarble_1 = {ResourceType.FAITH, ResourceType.SHIELD, ResourceType.UNDEFINED,
+        ResourceType.COIN, ResourceType.STONE, ResourceType.SERVANT};
+
+        JFrame prova = new JFrame();
+        JButton test = new JButton();
+        test.addActionListener(e_1 ->
+
+        {
+            marketPanel.updateMarket(resourceBoard,extraMarble_1[1]);
+
+        });
+
+        prova.add(test);
+        //prova.setVisible(true);
+
+
+
+
     }
 
 

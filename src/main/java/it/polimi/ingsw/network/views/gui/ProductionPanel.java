@@ -13,6 +13,7 @@ public class ProductionPanel extends JPanel {
         this.path="./front/";
         this.path = path.concat(card_name);
     }
+
     public ProductionPanel(int index){
         path= new StringBuilder().append("./front/production_").append(index).toString();
     }
