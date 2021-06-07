@@ -62,6 +62,7 @@ public class Executor {
         inventory.put(ResourceType.SERVANT, 100);
 
         FaithTrack track = new FaithTrack();
+        //track.setFaithMarker(3);
 
 
         ArrayList<ResourceType> warehouse = new ArrayList<>();
@@ -105,72 +106,37 @@ public class Executor {
         h.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
 
 
+        JFrame mainframe = new JFrame();
+        FaithTrackPanel faithTrackPanel = new FaithTrackPanel(track);
+        mainframe.setSize(screenSize.width, screenSize.height);
 
-        a.pack();
-        a.setSize(250,450);
-        a.repaint();
-        a.setVisible(true);
+
+        faithTrackPanel.setPreferredSize(new Dimension(screenSize.width/2, screenSize.height/4));
 /*
-        e.pack();
-        e.setSize(700,900);
-        e.repaint();
-        e.setVisible(true);
+        JPanel prova = new JPanel();
+        prova.setSize(new Dimension(500, 500));
+        prova.setBorder(BorderFactory.createEmptyBorder(0,0,0, screenSize.width/8));
+        prova.setBackground(Color.RED);
+        mainframe.add(prova, BorderLayout.WEST);
 
-        f.pack();
-        f.setSize(screenSize.width, screenSize.width/15);
-        f.repaint();
-        f.setVisible(true);
 
-        g.pack();
-        g.setSize(440,500);
-        g.repaint();
-        g.setVisible(true);
+        JPanel center = new JPanel();
+        center.setLayout(new BorderLayout());
+        center.add(faithTrackPanel, BorderLayout.NORTH);
 
-        h.pack();
-        h.setSize(800,400);
-        h.repaint();
-        h.setVisible(true);
+        mainframe.add(center);
+        mainframe.setVisible(true);
+
 
  */
-
-
-
-
-        ResourceType[] extraMarble_1 = {ResourceType.FAITH, ResourceType.SHIELD, ResourceType.UNDEFINED,
-        ResourceType.COIN, ResourceType.STONE, ResourceType.SERVANT};
-
-        ArrayList<ResourceType> warehouse_1 = new ArrayList<>();
-        warehouse_1.add(ResourceType.SHIELD);
-
-        warehouse_1.add(ResourceType.STONE);
-        warehouse_1.add(ResourceType.STONE);
-
-        warehouse_1.add(ResourceType.SERVANT);
-        warehouse_1.add(ResourceType.SERVANT);
-        warehouse_1.add(ResourceType.SERVANT);
-
-        warehouse_1.add(ResourceType.SHIELD);
-        warehouse_1.add(ResourceType.UNDEFINED);
-
-
-        ArrayList<ResourceType> extra_1 = new ArrayList<>();
-        extra_1.add(ResourceType.SHIELD);
-
-
-        JFrame prova = new JFrame();
-        JButton test = new JButton();
-        test.addActionListener(e_1 ->
-        {
-            warehousePanel.updateWarehousePanel(warehouse_1, extra_1);
-
-        });
-
-        prova.add(test);
-        prova.setVisible(true);
-
-
-
-
+        HashMap<Integer, ProductionCard> prod = new HashMap<>();
+        prod.put(0,available.get(0));
+        prod.put(1, available.get(1));
+        prod.put(2, available.get(2));
+        JFrame s = new JFrame();
+        s.setContentPane(new ProductionBoardPanel(prod));
+        s.setSize(1407,589);
+        s.setVisible(true);
     }
 
 

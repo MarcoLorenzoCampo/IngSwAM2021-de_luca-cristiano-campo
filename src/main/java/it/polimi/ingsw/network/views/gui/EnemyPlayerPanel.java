@@ -64,6 +64,18 @@ public class EnemyPlayerPanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setFont(new Font("Monaco", Font.PLAIN, width/11));
         g.drawString("Username: "+String.valueOf(this.name),2*width/11, height/2);
+
+
+        ClassLoader cl = this.getClass().getClassLoader();
+        InputStream url = cl.getResourceAsStream("./punchboard/enemy_faith.png");
+                BufferedImage img= null;
+        try {
+            img = ImageIO.read(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        g.drawImage(img, width+2*width/11,height/4, this.getWidth()/8,height/4, null);
         g.drawString("Faithtrack: "+String.valueOf(this.faith), width+2*width/11,height/2);
 
     }
