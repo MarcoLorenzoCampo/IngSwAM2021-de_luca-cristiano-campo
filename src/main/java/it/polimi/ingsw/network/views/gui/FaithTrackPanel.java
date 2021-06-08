@@ -13,9 +13,12 @@ import java.util.ArrayList;
 
 public class FaithTrackPanel extends JPanel {
     FaithTrack faithTrack;
+
+    public FaithTrackPanel(){
+        faithTrack = null;
+    }
     public FaithTrackPanel(FaithTrack track){
         this.faithTrack = track;
-
     }
 
     @Override
@@ -23,35 +26,37 @@ public class FaithTrackPanel extends JPanel {
         int width = this.getWidth()/26;
         int height = this.getHeight()/5;
         DrawFaithTrack(g);
-        DrawFaithMarker(g, faithTrack.getFaithMarker(), width, height);
-        switch(faithTrack.getCurrentFavorPoints()){
-            case 2:
-                DrawPopeFavor(g, 2, width, height);
-                break;
-            case 3:
-                DrawPopeFavor(g, 3, width, height);
-                break;
-            case 4:
-                DrawPopeFavor(g, 4, width, height);
-                break;
-            case 5:
-                DrawPopeFavor(g, 2, width, height);
-                DrawPopeFavor(g, 3, width, height);
-                break;
-            case 6:
-                DrawPopeFavor(g, 2, width, height);
-                DrawPopeFavor(g, 4, width, height);
-                break;
-            case 7:
-                DrawPopeFavor(g, 3, width, height);
-                DrawPopeFavor(g, 4, width, height);
-                break;
-            case 9:
-                DrawPopeFavor(g, 2, width, height);
-                DrawPopeFavor(g, 3, width, height);
-                DrawPopeFavor(g, 4, width, height);
-                break;
+        if(faithTrack!=null){
+            DrawFaithMarker(g, faithTrack.getFaithMarker(), width, height);
+            switch(faithTrack.getCurrentFavorPoints()){
+                case 2:
+                    DrawPopeFavor(g, 2, width, height);
+                    break;
+                case 3:
+                    DrawPopeFavor(g, 3, width, height);
+                    break;
+                case 4:
+                    DrawPopeFavor(g, 4, width, height);
+                    break;
+                case 5:
+                    DrawPopeFavor(g, 2, width, height);
+                    DrawPopeFavor(g, 3, width, height);
+                    break;
+                case 6:
+                    DrawPopeFavor(g, 2, width, height);
+                    DrawPopeFavor(g, 4, width, height);
+                    break;
+                case 7:
+                    DrawPopeFavor(g, 3, width, height);
+                    DrawPopeFavor(g, 4, width, height);
+                    break;
+                case 9:
+                    DrawPopeFavor(g, 2, width, height);
+                    DrawPopeFavor(g, 3, width, height);
+                    DrawPopeFavor(g, 4, width, height);
+                    break;
 
+            }
         }
     }
 

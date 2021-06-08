@@ -38,13 +38,18 @@ public class WarehousePanel extends JPanel {
         this.add(button, BorderLayout.SOUTH);
     }
 
+    public WarehousePanel() {
+        shelves = new ArrayList<>();
+        extras = new ArrayList<>();
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         int width = this.getWidth()/5;
         int height = this.getHeight()/9;
         paintBackground(g);
-        DrawWarehouse(g, width, height);
+        if(!shelves.isEmpty()) DrawWarehouse(g, width, height);
     }
 
     private void DrawWarehouse(Graphics g, int width, int height) {

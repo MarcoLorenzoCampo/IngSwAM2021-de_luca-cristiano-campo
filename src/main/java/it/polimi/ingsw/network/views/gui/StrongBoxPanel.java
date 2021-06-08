@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 public class StrongBoxPanel extends JPanel {
@@ -30,13 +31,17 @@ public class StrongBoxPanel extends JPanel {
         this.add(button, BorderLayout.SOUTH);
     }
 
+    public StrongBoxPanel() {
+        inventory = new HashMap<>();
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         int width = this.getWidth()/10;
         int height = this.getHeight()/10;
         DrawStrongbox(g);
-        DrawInventory(g, width, height);
+        if(!inventory.isEmpty()) DrawInventory(g, width, height);
     }
 
     private void DrawStrongbox(Graphics g) {

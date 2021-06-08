@@ -46,6 +46,34 @@ public class CardMarketPanel extends JPanel {
         addRow(row_3);
     }
 
+    public CardMarketPanel() {
+        this.setBackground(new Color(146,123,91));
+        this.setLayout(new GridLayout(3,4,10,10));
+        for (int i = 0; i < 4; i++) {
+            row_1[i] = new JPanel();
+            row_2[i] = new JPanel();
+            row_3[i] = new JPanel();
+        }
+
+        for (int i = 0; i < 12; i++) {
+            buttons.add(new JButton());
+            buttons.get(i).setFocusable(false);
+            buttons.get(i).setText(String.valueOf(i));
+        }
+
+        for (int i = 0; i < 4; i++) {
+            row_1[i].setOpaque(false);
+            row_2[i].setOpaque(false);
+            row_3[i].setOpaque(false);
+        }
+
+
+
+        addRow(row_1);
+        addRow(row_2);
+        addRow(row_3);
+    }
+
     private void createCardMarket(List<ProductionCard> available) {
         ArrayList<ProductionCard> one = (ArrayList<ProductionCard>) available.stream()
                 .filter(productionCard -> productionCard.getLevel().equals(Level.ONE))

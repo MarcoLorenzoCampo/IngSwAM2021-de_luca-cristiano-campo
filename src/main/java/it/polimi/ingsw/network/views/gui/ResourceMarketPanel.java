@@ -36,14 +36,36 @@ public class ResourceMarketPanel extends JPanel {
         this.extraMarble = extraMarble;
     }
 
+    public ResourceMarketPanel() {
+        arrows = new JButton[7];
+        this.setLayout(new BorderLayout());
+
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new GridLayout(1,6,0,10));
+        buttons.setOpaque(false);
+
+
+        for (int i = 0; i < 7; i++) {
+            arrows[i] = new JButton(String.valueOf(i));
+            arrows[i].setFocusable(false);
+            buttons.add(arrows[i]);
+        }
+
+        this.add(buttons, BorderLayout.SOUTH);
+        this.resourceBoard = null;
+        this.extraMarble = null;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         int width = this.getWidth()/9;
         int height = this.getHeight()/10;
         paintBackground(g);
-        paintMarket(g,width, height);
-        paintExtraMarble(g, width, height);
+        if(resourceBoard!=null && extraMarble!=null){
+            paintMarket(g,width, height);
+            paintExtraMarble(g, width, height);
+        }
     }
 
     private void paintExtraMarble(Graphics g, int width, int height) {

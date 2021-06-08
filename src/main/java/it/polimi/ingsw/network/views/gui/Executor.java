@@ -94,78 +94,25 @@ public class Executor {
         JFrame l = new JFrame();
 
 
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //f.setSize(screenSize.width,screenSize.height);
-        WarehousePanel warehousePanel = new WarehousePanel(warehouse, extra);
-        a.setContentPane(warehousePanel);
-        CardMarketPanel cardMarketPanel = new CardMarketPanel(sent);
-        e.setContentPane(cardMarketPanel);
-        f.setContentPane(new FaithTrackPanel(track));
-        ResourceMarketPanel marketPanel = new ResourceMarketPanel(resourceBoard, extraMarble);
-        g.setContentPane(marketPanel);
+        a.setContentPane(new WarehousePanel());
+        e.setContentPane( new CardMarketPanel());
+        f.setContentPane(new FaithTrackPanel());
+        g.setContentPane(new ResourceMarketPanel());
         h.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
 
+        a.setSize(800, 800);
+        e.setSize(800, 800);
+        f.setSize(800, 800);
+        g.setSize(800, 800);
+        h.setSize(800, 800);
 
-        JFrame mainframe = new JFrame();
-        FaithTrackPanel faithTrackPanel = new FaithTrackPanel(track);
-        mainframe.setSize(screenSize.width, screenSize.height);
-
-
-        faithTrackPanel.setPreferredSize(new Dimension(screenSize.width/2, screenSize.height/4));
-/*
-        JPanel prova = new JPanel();
-        prova.setSize(new Dimension(500, 500));
-        prova.setBorder(BorderFactory.createEmptyBorder(0,0,0, screenSize.width/8));
-        prova.setBackground(Color.RED);
-        mainframe.add(prova, BorderLayout.WEST);
+        //a.setVisible(true);
+        //e.setVisible(true);
+        //f.setVisible(true);
+        g.setVisible(true);
+        //h.setVisible(true);
 
 
-        JPanel center = new JPanel();
-        center.setLayout(new BorderLayout());
-        center.add(faithTrackPanel, BorderLayout.NORTH);
-
-        mainframe.add(center);
-        mainframe.setVisible(true);
-
-
- */
-        HashMap<Integer, ProductionCard> prod = new HashMap<>();
-        prod.put(0,available.get(0));
-        prod.put(1, available.get(1));
-        prod.put(2, available.get(2));
-        JFrame s = new JFrame();
-        ProductionBoardPanel productionBoardPanel = new ProductionBoardPanel(prod);
-        s.setContentPane(productionBoardPanel);
-
-        HashMap<Integer, ProductionCard> prod_1 = new HashMap<>();
-        prod_1.put(0,available.get(16));
-
-
-        HashMap<Integer, ProductionCard> prod_2 = new HashMap<>();
-        prod_2.put(0,available.get(40));
-
-
-        JFrame prova = new JFrame();
-        prova.setLayout(new FlowLayout());
-        JButton test = new JButton("1");
-
-        prova.setSize(500,500);
-
-
-        e.setSize(1407,589);
-        e.setVisible(true);
-
-        List<ProductionCard> sent_1 = new ArrayList<>();
-        sent_1.add(available.get(41));
-        sent_1.add(available.get(42));
-        sent_1.add(available.get(43));
-
-        test.addActionListener(e_1 -> {
-            cardMarketPanel.updateCardMarketPanel(sent_1);
-        });
-        prova.add(test);
-        prova.setVisible(true);
 
 
     }

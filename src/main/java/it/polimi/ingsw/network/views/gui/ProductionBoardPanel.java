@@ -26,6 +26,54 @@ public class ProductionBoardPanel extends JPanel {
     private JButton[] buttons = new JButton[7];
 
 
+    public ProductionBoardPanel(){
+        productionBoard = new HashMap<>();
+        extra_production = new ArrayList<>();
+        previous_productions = new HashMap<>();
+
+        JPanel button_panel = new JPanel();
+        button_panel.setLayout(new GridLayout(1,6, 0,50));
+        button_panel.setOpaque(false);
+
+        JPanel execute_panel = new JPanel();
+        execute_panel.setLayout(new FlowLayout());
+        execute_panel.setOpaque(false);
+
+
+
+        buttons[0] = new JButton("BASE PRODUCTION");
+        buttons[0].setFocusable(false);
+
+        buttons[1] = new JButton("PRODUCTION 0");
+        buttons[1].setFocusable(false);
+
+        buttons[2] = new JButton("PRODUCTION 1");
+        buttons[2].setFocusable(false);
+
+        buttons[3] = new JButton("PRODUCTION 2");
+        buttons[3].setFocusable(false);
+
+        buttons[4] = new JButton("EXTRA PRODUCTION 0");
+        buttons[4].setFocusable(false);
+
+
+        buttons[5] = new JButton("EXTRA PRODUCTION 1");
+        buttons[5].setFocusable(false);
+
+
+        buttons[6] = new JButton("EXECUTE");
+        buttons[6].setFocusable(false);
+
+
+        for (int i = 0; i < 6; i++) {
+            button_panel.add(buttons[i]);
+        }
+        execute_panel.add(buttons[6]);
+
+        this.add(button_panel, BorderLayout.NORTH);
+        this.add(execute_panel, BorderLayout.SOUTH);
+    }
+
     public ProductionBoardPanel(HashMap<Integer, ProductionCard> productionBoard){
         this.productionBoard = productionBoard;
         this.extra_production = new ArrayList<>();

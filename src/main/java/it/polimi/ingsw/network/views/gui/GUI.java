@@ -18,13 +18,26 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class GUI extends ViewObservable implements IView, ActionListener {
+public class GUI extends ViewObservable implements IView {
 
     private final LightweightModel lightweightModel;
     private boolean isOnline;
     private final JFrame setupFrame;
     private ArrayList<JPanel> setup;
     private ArrayList<JPanel> leaderPanels;
+
+
+    private final JFrame mainframe;
+
+    private final FaithTrackPanel faithTrackPanel;
+    private final ProductionBoardPanel productionBoardPanel;
+    private final WarehousePanel warehousePanel;
+    private final StrongBoxPanel strongBoxPanel;
+    //private final BufferPanel bufferPanel;
+    //private final FinalProductionPanel finalProductionPanel;
+
+    private final CardMarketPanel cardMarketPanel;
+    private final ResourceMarketPanel resourceMarketPanel;
 
     private MessagePopUp messagePopUp;
 
@@ -39,7 +52,25 @@ public class GUI extends ViewObservable implements IView, ActionListener {
         initializeSetupFrame();
         initializeSetupPanels();
 
+        faithTrackPanel = new FaithTrackPanel();
+        productionBoardPanel = new ProductionBoardPanel();
+        warehousePanel = new WarehousePanel();
+        strongBoxPanel = new StrongBoxPanel();
+
+        cardMarketPanel = new CardMarketPanel();
+        resourceMarketPanel = new ResourceMarketPanel();
+
+        mainframe = new JFrame();
+        initializeMainFrame();
         startGUI();
+    }
+
+    private void initializeMainFrame() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        mainframe.setSize(screenSize.width,screenSize.height);
+
+
+
     }
 
     private void initializeSetupPanels() {
@@ -334,7 +365,6 @@ public class GUI extends ViewObservable implements IView, ActionListener {
             leaderPanels.add(setupLeaderPopUp);
         }
         else{
-
             //leaderPanels.get(1) = normal show leaders;
         }
     }
@@ -395,17 +425,17 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void printResourceMarket(ResourceType[][] resourceMarket, ResourceType extraMarble) {
-
+        resourceMarketPanel.updateMarket(resourceMarket, extraMarble);
     }
 
     @Override
     public void printAvailableCards(List<ProductionCard> available) {
-
+        cardMarketPanel.updateCardMarketPanel(available);
     }
 
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
-
+        faithTrackPanel.updateFaithTrackPanel(faithTrack);
     }
 
     @Override
@@ -425,17 +455,19 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     @Override
     public void printStrongbox(Map<ResourceType, Integer> strongbox) {
-
+        strongBoxPanel.updateStrongboxPanel(strongbox);
     }
 
     @Override
     public void printWarehouse(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras) {
-
+        warehousePanel.updateWarehousePanel(shelves, extras);
     }
 
     @Override
     public void printProductionBoard(HashMap<Integer, ProductionCard> productionBoard) {
 
+        //DA MODIFICARE PER PRENDERE I LEADER
+        productionBoardPanel.updateProductionBoardPanel(productionBoard, new ArrayList<>());
     }
 
     @Override
@@ -443,7 +475,4 @@ public class GUI extends ViewObservable implements IView, ActionListener {
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    }
 }
