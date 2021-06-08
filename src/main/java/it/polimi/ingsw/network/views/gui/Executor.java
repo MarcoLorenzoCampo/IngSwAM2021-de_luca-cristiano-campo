@@ -99,7 +99,8 @@ public class Executor {
         //f.setSize(screenSize.width,screenSize.height);
         WarehousePanel warehousePanel = new WarehousePanel(warehouse, extra);
         a.setContentPane(warehousePanel);
-        e.setContentPane(new CardMarketPanel(sent));
+        CardMarketPanel cardMarketPanel = new CardMarketPanel(sent);
+        e.setContentPane(cardMarketPanel);
         f.setContentPane(new FaithTrackPanel(track));
         ResourceMarketPanel marketPanel = new ResourceMarketPanel(resourceBoard, extraMarble);
         g.setContentPane(marketPanel);
@@ -134,9 +135,39 @@ public class Executor {
         prod.put(1, available.get(1));
         prod.put(2, available.get(2));
         JFrame s = new JFrame();
-        s.setContentPane(new ProductionBoardPanel(prod));
-        s.setSize(1407,589);
-        s.setVisible(true);
+        ProductionBoardPanel productionBoardPanel = new ProductionBoardPanel(prod);
+        s.setContentPane(productionBoardPanel);
+
+        HashMap<Integer, ProductionCard> prod_1 = new HashMap<>();
+        prod_1.put(0,available.get(16));
+
+
+        HashMap<Integer, ProductionCard> prod_2 = new HashMap<>();
+        prod_2.put(0,available.get(40));
+
+
+        JFrame prova = new JFrame();
+        prova.setLayout(new FlowLayout());
+        JButton test = new JButton("1");
+
+        prova.setSize(500,500);
+
+
+        e.setSize(1407,589);
+        e.setVisible(true);
+
+        List<ProductionCard> sent_1 = new ArrayList<>();
+        sent_1.add(available.get(41));
+        sent_1.add(available.get(42));
+        sent_1.add(available.get(43));
+
+        test.addActionListener(e_1 -> {
+            cardMarketPanel.updateCardMarketPanel(sent_1);
+        });
+        prova.add(test);
+        prova.setVisible(true);
+
+
     }
 
 

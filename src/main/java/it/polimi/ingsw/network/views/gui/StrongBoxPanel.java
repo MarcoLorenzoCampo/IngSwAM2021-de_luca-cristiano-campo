@@ -13,13 +13,26 @@ import java.util.Map;
 public class StrongBoxPanel extends JPanel {
 
     private Map<ResourceType, Integer> inventory;
+    private JButton source_strongbox;
 
     public StrongBoxPanel(Map<ResourceType, Integer> inventory){
         this.inventory = inventory;
+        this.setLayout(new BorderLayout());
+
+        JPanel button = new JPanel();
+        button.setLayout(new FlowLayout());
+        button.setOpaque(false);
+
+        source_strongbox = new JButton("SOURCE STRONGBOX");
+        source_strongbox.setFocusable(false);
+        source_strongbox.setVisible(false);
+        button.add(source_strongbox);
+        this.add(button, BorderLayout.SOUTH);
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         int width = this.getWidth()/10;
         int height = this.getHeight()/10;
         DrawStrongbox(g);
@@ -107,4 +120,12 @@ public class StrongBoxPanel extends JPanel {
         g2d.drawString(String.valueOf(number),x+this.getWidth()/10+10,y+this.getHeight()/5-5);
     }
 
+    public void updateStrongboxPanel(Map<ResourceType, Integer> inventory){
+        this.inventory = inventory;
+        this.repaint();
+    }
+
+    public JButton getSource_strongbox() {
+        return source_strongbox;
+    }
 }

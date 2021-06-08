@@ -113,6 +113,15 @@ public class CardMarketPanel extends JPanel {
         }
     }
 
+    public void updateCardMarketPanel(List<ProductionCard> available){
+        createCardMarket(available);
+        addRow(row_1);
+        addRow(row_2);
+        addRow(row_3);
+        revalidate();
+        repaint();
+    }
+
     public ArrayList<JButton> getButtons() {
         return buttons;
     }

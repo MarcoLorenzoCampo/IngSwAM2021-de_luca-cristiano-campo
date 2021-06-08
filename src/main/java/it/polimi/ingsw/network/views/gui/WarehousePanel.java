@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class WarehousePanel extends JPanel {
+    JButton source_warehouse;
     ArrayList<ResourceType> shelves;
     ArrayList<ResourceType> extras;
     String[] resources = {
@@ -23,12 +24,23 @@ public class WarehousePanel extends JPanel {
 
 
     public WarehousePanel(ArrayList<ResourceType> shelves, ArrayList<ResourceType> extras){
+        this.setLayout(new BorderLayout());
+        JPanel button = new JPanel();
+        button.setLayout(new FlowLayout());
+        source_warehouse = new JButton("SOURCE WAREHOUSE");
+        source_warehouse.setFocusable(false);
+        button.setOpaque(false);
+
         this.shelves = shelves;
         this.extras = extras;
+
+        button.add(source_warehouse);
+        this.add(button, BorderLayout.SOUTH);
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         int width = this.getWidth()/5;
         int height = this.getHeight()/9;
         paintBackground(g);
@@ -200,5 +212,9 @@ public class WarehousePanel extends JPanel {
         this.shelves = shelves;
         this.extras = extras;
         this.repaint();
+    }
+
+    public JButton getSource_warehouse() {
+        return source_warehouse;
     }
 }
