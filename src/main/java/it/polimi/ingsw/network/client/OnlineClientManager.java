@@ -127,13 +127,14 @@ public class OnlineClientManager implements ViewObserver, Observer {
                 case SETUP_RESOURCES:
                     SetupResourcesRequest resourcesRequest = (SetupResourcesRequest) message;
                     viewUpdater.execute(() ->
-                    {
-                        try {
-                            view.askSetupResource(resourcesRequest.getNumberOfResources());
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
+                        {
+                            try {
+                                view.askSetupResource(resourcesRequest.getNumberOfResources());
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    });
+                    );
                     break;
 
                 case FINAL_PRODUCTION:

@@ -126,4 +126,12 @@ class ProductionCardMarketTest {
                 () -> assertNotNull(p1.getRequirements())
         );
     }
+
+    @Test
+    void removeEveryCardTest() {
+        while(productionCardMarket.getAvailableCards().size() != 0) {
+
+            productionCardMarket.getAvailableCards().remove(0);
+        }
+    }
 }

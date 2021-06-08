@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire/surefirebooter18216823126904587101.jar /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire 2021-06-02T01-04-58_728-jvmRun1 surefire9608656045813721566tmp surefire_012043151291869309316tmp"/>
+    <property name="sun.java.command" value="/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire/surefirebooter5601437489384338692.jar /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire 2021-06-04T14-15-01_406-jvmRun1 surefire15207899827625903012tmp surefire_015684545166974665442tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/test-classes:/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/classes:/home/marco/.m2/repository/org/junit/jupiter/junit-jupiter/5.8.0-M1/junit-jupiter-5.8.0-M1.jar:/home/marco/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.0-M1/junit-jupiter-api-5.8.0-M1.jar:/home/marco/.m2/repository/org/apiguardian/apiguardian-api/1.1.1/apiguardian-api-1.1.1.jar:/home/marco/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/marco/.m2/repository/org/junit/platform/junit-platform-commons/1.8.0-M1/junit-platform-commons-1.8.0-M1.jar:/home/marco/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.8.0-M1/junit-jupiter-params-5.8.0-M1.jar:/home/marco/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.8.0-M1/junit-jupiter-engine-5.8.0-M1.jar:/home/marco/.m2/repository/org/junit/platform/junit-platform-engine/1.8.0-M1/junit-platform-engine-1.8.0-M1.jar:/home/marco/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.4.20/kotlin-stdlib-jdk8-1.4.20.jar:/home/marco/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.4.20/kotlin-stdlib-1.4.20.jar:/home/marco/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.4.20/kotlin-stdlib-common-1.4.20.jar:/home/marco/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/home/marco/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.4.20/kotlin-stdlib-jdk7-1.4.20.jar:/home/marco/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:/home/marco/.m2/repository/org/mockito/mockito-core/3.8.0/mockito-core-3.8.0.jar:/home/marco/.m2/repository/net/bytebuddy/byte-buddy/1.10.20/byte-buddy-1.10.20.jar:/home/marco/.m2/repository/net/bytebuddy/byte-buddy-agent/1.10.20/byte-buddy-agent-1.10.20.jar:/home/marco/.m2/repository/org/objenesis/objenesis/3.1/objenesis-3.1.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -32,7 +32,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire/surefirebooter18216823126904587101.jar"/>
+    <property name="surefire.real.class.path" value="/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/target/surefire/surefirebooter5601437489384338692.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="11.0.11+9-Ubuntu-0ubuntu2.18.04"/>
     <property name="user.name" value="marco"/>
@@ -57,6 +57,6 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="parseResourceBoardDimensions" classname="it.polimi.ingsw.parsers.ResourceMarketParserTest" time="0"/>
+  <testcase name="parseResourceBoardDimensions" classname="it.polimi.ingsw.parsers.ResourceMarketParserTest" time="0.001"/>
   <testcase name="parseResourceBoardContent" classname="it.polimi.ingsw.parsers.ResourceMarketParserTest" time="0.001"/>
 </testsuite>

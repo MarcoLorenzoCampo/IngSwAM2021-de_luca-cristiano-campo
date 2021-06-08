@@ -12,7 +12,6 @@ public class RemoveResourcesAction extends Action {
     private final String source;
     private final ResourceTag toBeRemoved;
 
-
     private final IGame game;
 
     public RemoveResourcesAction(String actionSender, String source_message, ResourceTag toBeRemoved, IGame game) {
@@ -56,7 +55,7 @@ public class RemoveResourcesAction extends Action {
                 }
             }
         }
-        else{
+        else {
             try {
                 game.getCurrentPlayer()
                         .getPlayerBoard()

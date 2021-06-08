@@ -5,18 +5,15 @@ import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
-import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.ProductionCardMarket;
 import it.polimi.ingsw.model.market.ResourceMarket;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
-import it.polimi.ingsw.model.utilities.Reducible;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.DiscardedResourceMessage;
-import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 import it.polimi.ingsw.network.messages.serverMessages.LeaderCardMessage;
 
 import java.util.ArrayList;
@@ -102,7 +99,6 @@ public class RealPlayer extends Observable implements Visitor {
     public void setOwnedLeaderCards(List<LeaderCard> ownedLeaderCards) {
         this.ownedLeaderCards = ownedLeaderCards;
     }
-
 
     public void setFirstToPlay() {
         this.firstToPlay = true;
@@ -197,19 +193,16 @@ public class RealPlayer extends Observable implements Visitor {
         && !playerState.getHasBoughCard()
         && productionCardRequirementsValidator(action.getBoughtCard())
         && productionSlotValidator(action.getDestinationSlot(), action.getBoughtCard())) {
-            try {
-                productionCardMarket.buyCard(action.getBoughtCard());
-                action.getBoughtCard().placeCard(action.getDestinationSlot(), action.getBoughtCard(), playerBoard.getProductionBoard());
-                playerState.setToBeRemoved(action.getBoughtCard().getRequirements());
-                playerState.performedExclusiveAction();
-                playerBoard.increaseBoughCardsCount();
-                if(ownedLeaderCards.size()==7){
-                    notifyObserver(new EndGameMessage());
-                }
-            } catch (EndGameException e) {
-                e.printStackTrace();
-                //send notification
-            }
+
+            productionCardMarket.buyCard(action.getBoughtCard());
+            action.getBoughtCard().placeCard(action.getDestinationSlot(), action.getBoughtCard(), playerBoard.getProductionBoard());
+
+            ArrayList<ResourceTag> toBeRemoved = action.getBoughtCard().getRequirements();
+            playerBoard.getInventoryManager().applyDiscount(toBeRemoved);
+
+            playerBoard.getInventoryManager().setToBeRemoved(toBeRemoved);
+            playerState.performedExclusiveAction();
+            playerBoard.increaseBoughCardsCount();
         }
     }
 
@@ -221,11 +214,11 @@ public class RealPlayer extends Observable implements Visitor {
             playerBoard.getInventoryManager().customExchange(action.getIndex(),action.getColor());
 
             playerState
-                    .setCanDeposit(playerBoard
-                            .getInventoryManager()
-                            .getBuffer()
-                            .stream()
-                            .anyMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
+                .setCanDeposit(playerBoard
+                    .getInventoryManager()
+                    .getBuffer()
+                    .stream()
+                    .anyMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
         }
         //notify
     }
@@ -238,7 +231,7 @@ public class RealPlayer extends Observable implements Visitor {
                 playerBoard.getInventoryManager().addResourceToWarehouse(action.getIndex());
 
             } catch (DiscardResourceException exception) {
-                notifyObserver(new DiscardedResourceMessage());
+                notifyControllerObserver(new DiscardedResourceMessage());
                 playerBoard.getInventoryManager().removeFromBuffer(action.getIndex());
                 //notify game of penalty
             }
@@ -256,9 +249,11 @@ public class RealPlayer extends Observable implements Visitor {
                 setupLeaderCard(action.getLeaderToDiscard());
             }
             else{
-                discardLeaderCard(action.getLeaderToDiscard());
-                playerBoard.getFaithTrack().increaseFaithMarker();
-                playerState.placedLeader();
+                if(!ownedLeaderCards.get(action.getLeaderToDiscard()).isActive()) {
+                    discardLeaderCard(action.getLeaderToDiscard());
+                    playerBoard.getFaithTrack().increaseFaithMarker();
+                    playerState.placedLeader();
+                }
             }
         }
     }
@@ -303,8 +298,6 @@ public class RealPlayer extends Observable implements Visitor {
             notifyObserver(new LeaderCardMessage(ownedLeaderCards));
         }
     }
-
-
 
     @Override
     public void visit(RemoveResourcesAction action) {

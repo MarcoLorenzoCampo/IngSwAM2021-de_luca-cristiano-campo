@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.PlayerState;
 import it.polimi.ingsw.model.player.RealPlayer;
-import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
@@ -19,13 +18,16 @@ import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.network.views.IView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Class to manage the entire playing game. It has instances of the currentGame, LobbyManager,
  * ActionManager.
  */
-public final class GameManager implements Observer {
+public final class GameManager {
 
     private final IGame currentGame;
     private final ActionManager actionManager;
@@ -436,14 +438,14 @@ public final class GameManager implements Observer {
     private void onBuyCard(Message message) {
         if(message.getSenderUsername().equals(currentPlayer)) {
 
-            ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved();
+            ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getToBeRemoved();
 
             if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                 SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
                 currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
                 //actionManager
                 //        .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
-                currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
+                currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getToBeRemoved().remove(toBeRemoved.get(0));
             }
 
             else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
@@ -451,7 +453,7 @@ public final class GameManager implements Observer {
                 currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
                 //actionManager
                 //        .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
-                currentGame.getCurrentPlayer().getPlayerState().getToBeRemoved().remove(toBeRemoved.get(0));
+                currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getToBeRemoved().remove(toBeRemoved.get(0));
             }
 
             if(toBeRemoved.isEmpty())
@@ -467,13 +469,13 @@ public final class GameManager implements Observer {
             if(message.getMessageType().equals(PossibleMessages.RESOURCE)){
                 ExchangeResourceMessage colorChange = (ExchangeResourceMessage) message;
                 currentGame.getCurrentPlayer().visit(new ChangeMarbleAction(colorChange.getSenderUsername(),
-                        colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
+                        colorChange.getExchangeWithThis(), colorChange.getIndex(), currentGame));
                 //actionManager
                 //        .onReceiveAction(new ChangeMarbleAction(colorChange.getSenderUsername(),
                 //                colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
             }
 
-            if(currentPlayerState.CanDeposit()){
+            if(currentPlayerState.CanDeposit()) {
                 currentGame.setCurrentState(PossibleGameStates.DEPOSIT);
             }
             onStartTurn();
@@ -596,11 +598,11 @@ public final class GameManager implements Observer {
                 break;
 
             case ACTIVATE_PRODUCTION:
-                currentView.currentTurn("\nAdding productions to your final production,when you are ready execute them");
+                currentView.currentTurn("\nAdding productions to your final production! Type 'EXECUTE' to start.");
                 break;
 
             case REMOVE:
-                currentView.currentTurn("\nThe production was successful! Please remove the needed resources");
+                currentView.currentTurn("\nThe production was successful! Type 'REMOVE' followed by the source.");
                 break;
 
             case MAIN_ACTION_DONE:
@@ -609,15 +611,6 @@ public final class GameManager implements Observer {
 
             default: currentView.currentTurn("\nYour command cannot be processed now, please try a different one");
         }
-    }
-
-    /**
-     * Sends specific update messages depending on what part of the model has been updated.
-     * @param message: model update message.
-     */
-    @Override
-    public void update (Message message){
-
     }
 
     /**
@@ -670,8 +663,8 @@ public final class GameManager implements Observer {
 
             //The card is bought (because validated) and resources are removed.
             case BUY_CARD:
-                disconnected.getPlayerBoard().getInventoryManager().defaultRemove(disconnected.getPlayerState().getToBeRemoved());
-                disconnected.getPlayerState().getToBeRemoved().clear();
+                disconnected.getPlayerBoard().getInventoryManager().defaultRemove(disconnected.getPlayerBoard().getInventoryManager().getToBeRemoved());
+                disconnected.getPlayerBoard().getInventoryManager().getToBeRemoved().clear();
                 disconnected.getPlayerState().endTurnReset();
 
                 currentGame.setCurrentState(PossibleGameStates.PLAYING);

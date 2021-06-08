@@ -15,7 +15,7 @@ class LorenzoTokensBuilderTest {
     LorenzoTokenPile pileUnderTest;
 
     @BeforeEach
-    void setUp() throws FileNotFoundException {
+    void setUp() {
         pileUnderTest = new LorenzoTokenPile();
     }
 
@@ -23,7 +23,7 @@ class LorenzoTokensBuilderTest {
     void buildTest() {
         //Arrange
         int numberOfDiscards = 4;
-        int moves = 2;
+        int moves = 3;
         int foundDiscards = 0;
         int foundMoves = 0;
 

@@ -78,6 +78,18 @@ public class FaithTrack extends Observable implements Serializable {
         checkpoints.add(20);
     }
 
+    public void checkVaticanCondition(int popeTileIndex) {
+        PopeTile popeTile = (PopeTile) faithTrack.get(popeTileIndex);
+        int range = ranges.get(popeTileIndex);
+
+        if(faithMarker <= (popeTileIndex - range)) {
+            setPopeTileInactive(popeTileIndex);
+        } else {
+            pickFavorPoints(popeTile);
+        }
+    }
+
+
     /**
      * it checks the type of tile;
      * if the player is the first to enter in a Vatican space, the player makes it inactive
@@ -91,7 +103,7 @@ public class FaithTrack extends Observable implements Serializable {
         //Notify all observers, but only the clients will get an updated version.
         notifyObserver(new FaithTrackMessage(this));
 
-        if(faithMarker == 24) notifyObserver(new EndGameMessage());
+        if(isLastTile()) notifyControllerObserver(new EndGameMessage());
 
         if(isPopeTile(faithMarker)) {
 
@@ -99,12 +111,10 @@ public class FaithTrack extends Observable implements Serializable {
 
             if(currentTile.getIsActive()) {
 
-                pickFavorPoints(currentTile);
-
                 ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
 
                 //Notifying the controller he needs to start a vatican report session.
-                notifyObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
+                notifyControllerObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
             }
         }
     }
@@ -119,7 +129,7 @@ public class FaithTrack extends Observable implements Serializable {
         //Notify all observers, but only the clients will get an updated version.
         notifyObserver(new GenericMessageFromServer("Lorenzo's position: " + faithMarker + "\n"));
 
-        if(faithMarker == 24) notifyObserver(new EndGameMessage());
+        if(isLastTile()) notifyControllerObserver(new EndGameMessage());
 
         if(isPopeTile(faithMarker)) {
 
@@ -127,12 +137,10 @@ public class FaithTrack extends Observable implements Serializable {
 
             if(currentTile.getIsActive()) {
 
-                pickFavorPoints(currentTile);
-
                 ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
 
                 //Notifying the controller he needs to start a vatican report session.
-                notifyObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
+                notifyControllerObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
             }
         }
     }

@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
-import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.AvailableCardsMessage;
 import it.polimi.ingsw.network.messages.serverMessages.NoMoreCardsMessage;
@@ -58,7 +57,7 @@ public class ProductionCardMarket extends Observable {
                 .collect(Collectors.toMap(ProductionCard::key, color -> color, (f, s) -> f))
                 .values());
 
-        sortAvailableCardsByLevel();
+        sortAvailableCards();
     }
 
     /**
@@ -82,15 +81,11 @@ public class ProductionCardMarket extends Observable {
      * @param boughtCard: when a card is bought, it gets removed from the
      *                  base deck.
      */
-    public void buyCard(ProductionCard boughtCard) throws EndGameException {
+    public void buyCard(ProductionCard boughtCard) {
         playableProductionCards.remove(boughtCard);
         replaceBoughtCard(boughtCard);
-        //PlayingGame.getGameInstance()
-        //        .getCurrentPlayer()
-        //        .getPlayerBoard()
-        //        .increaseBoughCardsCount();
 
-        sortAvailableCardsByLevel();
+        sortAvailableCards();
 
         notifyObserver(new AvailableCardsMessage(availableCards));
     }
@@ -107,13 +102,13 @@ public class ProductionCardMarket extends Observable {
 
                 playableProductionCards.remove(iterator);
                 replaceBoughtCard(iterator);
-                sortAvailableCardsByLevel();
+                sortAvailableCards();
                 break;
             }
         }
 
         if(colorNotAvailable()) {
-            notifyObserver(new NoMoreCardsMessage());
+            notifyControllerObserver(new NoMoreCardsMessage());
         }
         notifyObserver(new AvailableCardsMessage(availableCards));
     }
@@ -134,13 +129,13 @@ public class ProductionCardMarket extends Observable {
                 }
             }
         }
-        throw new NullPointerException();
+        return ANY;
     }
 
     /**
-     * Method to sort the available cards by level when one is removed/replaced.
+     * Method to sort the available cards by level and color when one is removed/replaced.
      */
-    private void sortAvailableCardsByLevel() {
+    private void sortAvailableCards() {
 
         List<ProductionCard> level1 = availableCards
                 .stream()
@@ -162,13 +157,6 @@ public class ProductionCardMarket extends Observable {
 
         availableCards = Stream.concat(level1.stream(), level2.stream()).collect(Collectors.toList());
         availableCards = Stream.concat(availableCards.stream(), level3.stream()).collect(Collectors.toList());
-
-        /*availableCards = availableCards
-                .stream()
-                .sorted(Comparator.comparing(ProductionCard::getLevel))
-                .collect(Collectors.toList());*/
-
-        //SORT BY COLOR AS WELL
     }
 
     /**

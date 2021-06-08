@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.market.GameBoard;
 import it.polimi.ingsw.model.player.RealPlayer;
 
 /**
- * @author Marco Lorenzo Campo
  * Singleton class, only one multiplayer game instance is available in each game.
  */
 public class PlayingGame implements IGame {
@@ -25,6 +24,7 @@ public class PlayingGame implements IGame {
     public void setCurrentPlayer(RealPlayer currentRealPlayer) {
         this.currentPlayer = currentRealPlayer;
     }
+
     /**
      * @throws EndGameException telling the controller game is ending next turn
      */
@@ -73,5 +73,4 @@ public class PlayingGame implements IGame {
     public void setCurrentState(PossibleGameStates newState) {
         PlayingGame.currentState.setGameState(newState);
     }
-
 }

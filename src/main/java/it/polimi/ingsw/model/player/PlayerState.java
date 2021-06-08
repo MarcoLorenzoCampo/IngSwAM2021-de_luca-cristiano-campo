@@ -29,8 +29,6 @@ public class PlayerState {
 
     private boolean canDeposit;
 
-    private ArrayList<ResourceTag> toBeRemoved;
-
     public PlayerState() {
 
         SetUpPhase = true;
@@ -95,7 +93,6 @@ public class PlayerState {
 
     public void setHasTwoExchange(boolean twoExchange){ this.hasTwoExchange = twoExchange;}
 
-
     public boolean getHasPlaceableLeaders() {
         return hasPlaceableLeaders;
     }
@@ -121,13 +118,5 @@ public class PlayerState {
         getHasPlacedLeaders = false;
 
         canDeposit = false;
-    }
-
-    public ArrayList<ResourceTag> getToBeRemoved() {
-        return toBeRemoved;
-    }
-
-    public void setToBeRemoved(ArrayList<ResourceTag> toBeRemoved) {
-        this.toBeRemoved = toBeRemoved;
     }
 }

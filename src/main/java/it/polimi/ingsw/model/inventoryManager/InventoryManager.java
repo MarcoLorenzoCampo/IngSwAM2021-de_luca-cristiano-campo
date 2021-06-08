@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.inventoryManager;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.strongbox.Strongbox;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
@@ -28,6 +29,8 @@ public class InventoryManager extends Observable {
     private final ArrayList<ResourceType> exchange;
     private final ArrayList<ResourceType> discount;
 
+    private ArrayList<ResourceTag> toBeRemoved;
+
     public InventoryManager(){
         buffer = new ArrayList<>();
         warehouse = new Warehouse();
@@ -47,31 +50,25 @@ public class InventoryManager extends Observable {
         discount =new ArrayList<>();
     }
 
-
     public ArrayList<MaterialResource> getBuffer() {
         return buffer;
     }
-
 
     public Warehouse getWarehouse() {
         return warehouse;
     }
 
-
     public Strongbox getStrongbox() {
         return strongbox;
     }
-
 
     public ArrayList<ResourceType> getExchange() {
         return exchange;
     }
 
-
     public ArrayList<ResourceType> getDiscount() {
         return discount;
     }
-
 
     public Map<ResourceType, Integer> getInventory() {
         return inventory;
@@ -93,17 +90,21 @@ public class InventoryManager extends Observable {
      * method invoked before deciding which marble to place first, if the exchange list is empty or contains
      * only one type then all white marbles are either deleted or changed
      */
-    public void whiteMarblesExchange(){
+    public void whiteMarblesExchange() {
         if (exchange.isEmpty()){
             buffer = (ArrayList<MaterialResource>) buffer.stream()
                     .filter(materialResource -> !materialResource.getResourceType().equals(ResourceType.UNDEFINED))
                     .collect(Collectors.toList());
         }
 
-        else if (exchange.size()==1){
+        else if (exchange.size() == 1) {
             for (MaterialResource iterator : buffer) {
                 if(iterator.getResourceType().equals(ResourceType.UNDEFINED)) iterator.setResourceType(exchange.get(0));
             }
+        }
+
+        else if(exchange.size() == 2) {
+
         }
         notifyObserver(messageUpdate());
     }
@@ -130,6 +131,9 @@ public class InventoryManager extends Observable {
      */
     public void addExchangeLeader (ResourceType effect){
         exchange.add(effect);
+        if(exchange.size() == 2) {
+            PlayingGame.getGameInstance().getCurrentPlayer().getPlayerState().setHasTwoExchange(true);
+        }
     }
 
     /**
@@ -141,7 +145,6 @@ public class InventoryManager extends Observable {
         buffer.remove(buffer.get(index));
         notifyObserver(messageUpdate());
     }
-
 
     /**
      *
@@ -156,7 +159,6 @@ public class InventoryManager extends Observable {
         updateInventory();
     }
 
-
     /**
      *
      *
@@ -170,15 +172,14 @@ public class InventoryManager extends Observable {
         updateInventory();
     }
 
-
     /**
      *
      * @param price -- list of tags created when the player decides which productions to activate,
      *                 this list considers all the productions as a whole, thus having one price list
      *                 containing the sum of all single prices
      */
-    public void discountPrice(List<ResourceTag> price){
-        if(discount.size() != 0){
+    public List<ResourceTag> applyDiscount(List<ResourceTag> price){
+        if(discount.size() != 0) {
             for (ResourceTag iterator : price) {
                 for (ResourceType discountIterator: discount) {
                     if(iterator.getType().equals(discountIterator)){
@@ -187,8 +188,8 @@ public class InventoryManager extends Observable {
                 }
             }
         }
+        return price;
     }
-
 
     /**
      *
@@ -229,9 +230,7 @@ public class InventoryManager extends Observable {
         notifyObserver(new WarehouseMessage(warehouse));
     }
 
-
     /**
-     *
      * @param priceOneResource -- type and quantity of resource to be removed from strongbox
      * @throws CannotRemoveResourceException -- thrown when strongbox couldn't remove all the quantity sated in
      *                                          priceOneResource
@@ -274,5 +273,13 @@ public class InventoryManager extends Observable {
                 } catch (CannotRemoveResourceException ignored) { }
             }
         }
+    }
+
+    public ArrayList<ResourceTag> getToBeRemoved() {
+        return toBeRemoved;
+    }
+
+    public void setToBeRemoved(ArrayList<ResourceTag> toBeRemoved) {
+        this.toBeRemoved = toBeRemoved;
     }
 }

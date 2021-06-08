@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayingGameTest {
 
     @Mock
-    private IGame currentGame;
+    private PlayingGame currentGame;
 
     @BeforeEach
     void setUp() {
@@ -82,12 +82,24 @@ class PlayingGameTest {
 
         //Assert
         assertAll(
-                () -> assertNotNull(currentGame.getGameBoard()),
-                () -> assertTrue(currentGame.getGameBoard() instanceof GameBoard)
+                () -> assertNotNull(currentGame.getGameBoard())
         );
     }
 
+    @Test
+    void setGameStateTest() {
+        currentGame.setCurrentState(PossibleGameStates.PLAYING);
+
+        assertEquals(currentGame.getCurrentState().getGameState(), PossibleGameStates.PLAYING);
+    }
+
+    @Test
+    void getCardsMax() {
+        assertEquals(currentGame.getMaxCardsBought(), 7);
+    }
+
     void resetSingleton() {
+        PlayingGame.terminate();
         IGame game = PlayingGame.getGameInstance();
 
         game.setCurrentPlayer(null);

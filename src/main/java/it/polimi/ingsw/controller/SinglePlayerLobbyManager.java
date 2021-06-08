@@ -2,13 +2,13 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
-import it.polimi.ingsw.model.faithtrack.PopeTile;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
+import it.polimi.ingsw.network.eventHandlers.ControllerObserver;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Class to manage players and turns in a single player game.
  */
-public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
+public class SinglePlayerLobbyManager implements ILobbyManager, ControllerObserver {
 
     private final IGame currentGame;
     private final List<RealPlayer> realPlayerList;
@@ -123,16 +123,16 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
         lorenzo.getLorenzoPlayerBoard().getLorenzoTokenPile().addObserver(vv);
 
         //Lobby manager observes the player.
-        realPlayerList.get(0).getPlayerBoard().getFaithTrack().addObserver(this);
-        realPlayerList.get(0).getPlayerBoard().getInventoryManager().addObserver(this);
-        realPlayerList.get(0).getPlayerBoard().addObserver(this);
-        realPlayerList.get(0).addObserver(this);
+        realPlayerList.get(0).getPlayerBoard().getFaithTrack().addControllerObserver(this);
+        realPlayerList.get(0).getPlayerBoard().getInventoryManager().addControllerObserver(this);
+        realPlayerList.get(0).getPlayerBoard().addControllerObserver(this);
+        realPlayerList.get(0).addControllerObserver(this);
 
         //Lobby manager observes Lorenzo.
-        lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().addObserver(this);
+        lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack().addControllerObserver(this);
 
         //Lobby manager observes the model.
-        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addObserver(this);
+        gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().addControllerObserver(this);
     }
 
     @Override
@@ -192,26 +192,28 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
     }
 
     @Override
-    public void update(Message message) {
+    public void controllerUpdate(Message message) {
         switch(message.getMessageType()) {
             case VATICAN_REPORT_NOTIFICATION:
 
                 VaticanReportNotification v = (VaticanReportNotification) message;
 
                 int popeTileIndex = v.getPopeTileIndex();
-                int rangeToCheck = v.getRange();
 
+                //Player's faith track.
                 FaithTrack ft = realPlayerList.get(0).getPlayerBoard().getFaithTrack();
+                //Lorenzo's faith track.
                 FaithTrack ftl = lorenzo.getLorenzoPlayerBoard().getLorenzoFaithTrack();
 
-                if(!ft.isPopeTile(ft.getFaithMarker())) {
-                    if (ft.getFaithMarker() < (popeTileIndex - rangeToCheck)) {
-                        ft.setPopeTileInactive(popeTileIndex);
-                    }
-                }
+                //If the player started the vatican report.
+                if(ft.isPopeTile(ft.getFaithMarker())) {
+                    ftl.checkVaticanCondition(popeTileIndex);
 
-                if(!ftl.isPopeTile(ftl.getFaithMarker())) {
-                    ftl.setPopeTileInactive(popeTileIndex);
+                } else {
+                    //If lorenzo started the vatican report.
+                    if(ftl.isPopeTile(ftl.getFaithMarker())) {
+                        ft.checkVaticanCondition(popeTileIndex);
+                    }
                 }
                 break;
 
@@ -227,24 +229,26 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
 
                 if(playerFt.isLastTile()) {
                     playerVV.showGenericString("\nYou reached the end of the faith track!");
+                    endGameScore();
                     playerVV.showWinMatch("You");
                 }
 
                 if(lorenzoFt.isLastTile()) {
                     playerVV.showGenericString("\nLorenzo reached the end of the faith track!");
+                    endGameScore();
                     playerVV.showWinMatch("Lorenzo");
                 }
                 break;
 
             case NO_MORE_CARDS:
-                playerVV.showGenericString("\nLorenzo discarded a whole sub-deck!" +
-                        "\nYour score: " + realPlayerList.get(0).computeTotalVictoryPoints());
+                playerVV.showGenericString("\nLorenzo discarded a whole sub-deck!");
+                endGameScore();
                 playerVV.showWinMatch("Lorenzo");
                 break;
 
             case BOUGHT_7_CARDS:
-                playerVV.showGenericString("\nYou bought your 7th card!" +
-                        "\nYour score: " + realPlayerList.get(0).computeTotalVictoryPoints());
+                playerVV.showGenericString("\nYou bought your 7th card!");
+                endGameScore();
                 playerVV.showWinMatch("You");
                 break;
 
@@ -262,5 +266,13 @@ public class SinglePlayerLobbyManager implements ILobbyManager, Observer {
                 null,
                 null
         );
+    }
+
+    /**
+     * Method to compute the player's victory points.
+     */
+    private void endGameScore() {
+        playerVV.showGenericString("\nYour score: "
+                + realPlayerList.get(0).computeTotalVictoryPoints());
     }
 }

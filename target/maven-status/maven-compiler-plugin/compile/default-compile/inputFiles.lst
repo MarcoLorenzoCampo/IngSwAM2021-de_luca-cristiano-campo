@@ -13,7 +13,6 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/playerMessages/PeekMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/utilities/ServerConfigPOJO.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/player/LorenzoPlayer.java
-/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/PlayerNumberPopUp.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/exceptions/InvalidProductionSlotException.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/VaticanReportNotification.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/graphical/GraphicalProductionCardsMarket.java
@@ -35,11 +34,11 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/actions/BuyProductionCardAction.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/playerMessages/ExchangeResourceMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/game/GameState.java
-/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/graphical/GraphicalProuctionCardBoard.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/controller/MultiPlayerLobbyManager.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/builders/ResourceBoardBuilder.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/GameBoard.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/playerMessages/BaseProductionMessage.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/LeaderPanel.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/parsers/CommandLineParser.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/LeaderCardMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/SetupResourcesRequest.java
@@ -59,6 +58,7 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/PeekUpdateMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/controller/ActionValidator.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/graphical/GraphicalFaithTrackTile.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/SetupLeaderPopUp.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/graphical/GraphicalFaithTrack.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/exceptions/EndGameException.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/graphical/GraphicalDiscountLeaderCard.java
@@ -126,14 +126,16 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/YourTurnMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/warehouse/Shelf.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/token/LorenzoTokenPile.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/cli/graphical/GraphicalProductionCardBoard.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/ChosenProductionMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/client/IClient.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/EndGameMessage.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/Executor.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/playerMessages/SetupResourceAnswer.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/exceptions/GetResourceFromMarketException.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/CardMarket.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/game/IGame.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/MaterialResource.java
-/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/OnlineLoginPopUp.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/controller/GameManager.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/IView.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/exceptions/DiscardResourceException.java
@@ -152,6 +154,7 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/player/PlayerState.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/actions/ActivateProductionAction.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/enumerations/Constants.java
+/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/ProductionPanel.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/serverMessages/NoMoreCardsMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/messages/playerMessages/ExtraProductionMessage.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/productionBoard/ProductionSlot.java
@@ -173,7 +176,6 @@
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/controller/ActionManager.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/utilities/DevelopmentTag.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/model/market/leaderCards/LeaderCard.java
-/home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/NicknamePopUp.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/controller/ILobbyManager.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/views/gui/GUI.java
 /home/marco/IdeaProjects/ingswAM2021-de_luca-cristiano-campo/src/main/java/it/polimi/ingsw/network/eventHandlers/Observer.java

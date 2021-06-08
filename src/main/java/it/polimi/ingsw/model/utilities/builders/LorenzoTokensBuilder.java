@@ -17,12 +17,13 @@ public final class LorenzoTokensBuilder {
     public static ArrayList<AbstractToken> build() {
         ArrayList<AbstractToken> builtList = new ArrayList<>();
 
-        builtList.add(new TokenMove(2, game));
         builtList.add(new TokenDiscard(Color.PURPLE, game));
         builtList.add(new TokenDiscard(Color.BLUE, game));
         builtList.add(new TokenDiscard(Color.GREEN, game));
         builtList.add(new TokenDiscard(Color.YELLOW, game));
         builtList.add(new TokenMove(game));
+        builtList.add(new TokenMove(2, game));
+        builtList.add(new TokenMove(2, game));
 
         //Collections.shuffle(builtList);
         return builtList;
