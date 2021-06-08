@@ -18,6 +18,7 @@ public class CardMarketPanel extends JPanel {
 
 
     public CardMarketPanel(List<ProductionCard> available){
+        this.setBackground(new Color(146,123,91));
         this.setLayout(new GridLayout(3,4,10,10));
         for (int i = 0; i < 4; i++) {
             row_1[i] = new JPanel();
@@ -30,6 +31,14 @@ public class CardMarketPanel extends JPanel {
             buttons.get(i).setFocusable(false);
             buttons.get(i).setText(String.valueOf(i));
         }
+
+        for (int i = 0; i < 4; i++) {
+            row_1[i].setOpaque(false);
+            row_2[i].setOpaque(false);
+            row_3[i].setOpaque(false);
+        }
+
+
         
         createCardMarket(available);
         addRow(row_1);
@@ -41,9 +50,11 @@ public class CardMarketPanel extends JPanel {
         ArrayList<ProductionCard> one = (ArrayList<ProductionCard>) available.stream()
                 .filter(productionCard -> productionCard.getLevel().equals(Level.ONE))
                 .collect(Collectors.toList());
+
         ArrayList<ProductionCard> two= (ArrayList<ProductionCard>) available.stream()
                 .filter(productionCard -> productionCard.getLevel().equals(Level.TWO))
                 .collect(Collectors.toList());
+
         ArrayList<ProductionCard> three = (ArrayList<ProductionCard>) available.stream()
                 .filter(productionCard -> productionCard.getLevel().equals(Level.THREE))
                 .collect(Collectors.toList());
@@ -114,12 +125,25 @@ public class CardMarketPanel extends JPanel {
     }
 
     public void updateCardMarketPanel(List<ProductionCard> available){
+        for (JPanel iterator : row_1) {
+            clearSlot(iterator);
+        }
+        for (JPanel iterator : row_2) {
+            clearSlot(iterator);
+        }
+        for (JPanel iterator : row_3) {
+            clearSlot(iterator);
+        }
         createCardMarket(available);
         addRow(row_1);
         addRow(row_2);
         addRow(row_3);
         revalidate();
         repaint();
+    }
+
+    private void clearSlot(JPanel iterator) {
+        iterator.removeAll();
     }
 
     public ArrayList<JButton> getButtons() {
