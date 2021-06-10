@@ -163,7 +163,11 @@ public class ResourceMarketPanel extends JPanel {
         g.drawImage(img, 0,0, this.getWidth(),this.getHeight(), null);
     }
 
-    public void updateMarket(ResourceType[][] resourceBoard,ResourceType extraMarble){
+    public JButton[] getArrows() {
+        return arrows;
+    }
+
+    public void updateMarket(ResourceType[][] resourceBoard, ResourceType extraMarble){
         this.resourceBoard = resourceBoard;
         this.extraMarble = extraMarble;
         this.repaint();

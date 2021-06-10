@@ -26,13 +26,24 @@ public class StrongBoxPanel extends JPanel {
 
         source_strongbox = new JButton("SOURCE STRONGBOX");
         source_strongbox.setFocusable(false);
-        source_strongbox.setVisible(false);
+        source_strongbox.setVisible(true);
         button.add(source_strongbox);
         this.add(button, BorderLayout.SOUTH);
     }
 
     public StrongBoxPanel() {
         inventory = new HashMap<>();
+        this.setLayout(new BorderLayout());
+
+        JPanel button = new JPanel();
+        button.setLayout(new FlowLayout());
+        button.setOpaque(false);
+
+        source_strongbox = new JButton("SOURCE STRONGBOX");
+        source_strongbox.setFocusable(false);
+        source_strongbox.setVisible(true);
+        button.add(source_strongbox);
+        this.add(button, BorderLayout.SOUTH);
     }
 
     @Override

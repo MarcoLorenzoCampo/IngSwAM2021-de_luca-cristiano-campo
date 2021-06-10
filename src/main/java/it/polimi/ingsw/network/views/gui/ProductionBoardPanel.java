@@ -31,6 +31,8 @@ public class ProductionBoardPanel extends JPanel {
         extra_production = new ArrayList<>();
         previous_productions = new HashMap<>();
 
+        this.setLayout(new BorderLayout());
+
         JPanel button_panel = new JPanel();
         button_panel.setLayout(new GridLayout(1,6, 0,50));
         button_panel.setOpaque(false);
@@ -145,25 +147,29 @@ public class ProductionBoardPanel extends JPanel {
         ClassLoader cl = this.getClass().getClassLoader();
 
         for (Map.Entry<Integer, ArrayList<ProductionCard>> iterator : previous_productions.entrySet()) {
-            for (ProductionCard inner_iterator: iterator.getValue()) {
-                String item = production_path+String.valueOf(inner_iterator.getId());
-                if(inner_iterator.getId()<16) y=29*height/24;
-                else if (inner_iterator.getId()<32) y=height;
-                else y= height/2;
+            if(iterator.getValue()!=null) {
+                for (ProductionCard inner_iterator : iterator.getValue()) {
+                    if (inner_iterator != null) {
+                        String item = production_path + String.valueOf(inner_iterator.getId());
+                        if (inner_iterator.getId() < 16) y = 29 * height / 24;
+                        else if (inner_iterator.getId() < 32) y = height;
+                        else y = height / 2;
 
-                if(iterator.getKey()==0) x = 8*width/5;
-                else if (iterator.getKey()==1) x = 18*width/5;
-                else x = 28*width/5;
+                        if (iterator.getKey() == 0) x = 8 * width / 5;
+                        else if (iterator.getKey() == 1) x = 18 * width / 5;
+                        else x = 28 * width / 5;
 
-                InputStream url = cl.getResourceAsStream(item+".png");
-                BufferedImage img= null;
-                try {
-                    img = ImageIO.read(url);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
+                        InputStream url = cl.getResourceAsStream(item + ".png");
+                        BufferedImage img = null;
+                        try {
+                            img = ImageIO.read(url);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            return;
+                        }
+                        g.drawImage(img, x, y, 7 * width / 4, 21 * height / 8, null);
+                    }
                 }
-                g.drawImage(img, x,y, 7*width/4,21*height/8, null);
             }
         }
     }
@@ -216,19 +222,21 @@ public class ProductionBoardPanel extends JPanel {
         ClassLoader cl = this.getClass().getClassLoader();
 
         for (Map.Entry<Integer, ProductionCard> iterator : productionBoard.entrySet()) {
-            String item = production_path+String.valueOf(iterator.getValue().getId());
-            if(iterator.getValue().getId()<16) y=29*height/24;
-            else if (iterator.getValue().getId()<32) y=height;
-            else y= 19*height/24;
-            InputStream url = cl.getResourceAsStream(item+".png");
-            BufferedImage img= null;
-            try {
-                img = ImageIO.read(url);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
+            if(iterator.getValue()!=null) {
+                String item = production_path+String.valueOf(iterator.getValue().getId());
+                if (iterator.getValue().getId() < 16) y = 29 * height / 24;
+                else if (iterator.getValue().getId() < 32) y = height;
+                else y = 19 * height / 24;
+                InputStream url = cl.getResourceAsStream(item + ".png");
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                g.drawImage(img, x, y, 7 * width / 4, 21 * height / 8, null);
             }
-            g.drawImage(img, x,y, 7*width/4,21*height/8, null);
             x+= 2*width;
         }
 
@@ -247,8 +255,7 @@ public class ProductionBoardPanel extends JPanel {
         g.drawImage(img, 0,0, this.getWidth(),this.getHeight(), null);
     }
 
-    public void updateProductionBoardPanel(HashMap<Integer, ProductionCard> productionBoard,
-                                           ArrayList<LeaderCard> extra_production){
+    public void updateProductionBoardPanel(HashMap<Integer, ProductionCard> productionBoard){
         for (Map.Entry<Integer, ProductionCard> iterator : this.productionBoard.entrySet()) {
             if(previous_productions.containsKey(iterator.getKey())){
                 previous_productions.get(iterator.getKey()).add(iterator.getValue());
@@ -260,7 +267,15 @@ public class ProductionBoardPanel extends JPanel {
             }
         }
         this.productionBoard = productionBoard;
-        this.extra_production = extra_production;
+        this.repaint();
+    }
+
+    public void updateExtraProduction(ArrayList<LeaderCard> extra_production){
+        this.extra_production  =
+                (ArrayList<LeaderCard>) extra_production.stream()
+                        .filter(leaderCard -> leaderCard.getEffectType().equals(EffectType.EXTRA_PRODUCTION))
+                        .filter(LeaderCard::isActive)
+                        .collect(Collectors.toList());
         this.repaint();
     }
 

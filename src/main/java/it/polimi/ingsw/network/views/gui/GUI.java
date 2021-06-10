@@ -6,22 +6,22 @@ import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
+import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.views.IView;
-import it.polimi.ingsw.network.views.cli.LightweightModel;
+
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class GUI extends ViewObservable implements IView {
 
-    private final LightweightModel lightweightModel;
-    private boolean isOnline;
+
+    private final boolean isOnline;
     private final JFrame setupFrame;
     private ArrayList<JPanel> setup;
     private ArrayList<JPanel> leaderPanels;
@@ -33,44 +33,353 @@ public class GUI extends ViewObservable implements IView {
     private final ProductionBoardPanel productionBoardPanel;
     private final WarehousePanel warehousePanel;
     private final StrongBoxPanel strongBoxPanel;
-    //private final BufferPanel bufferPanel;
+    private final AvailableLeaderPanel availableLeaderPanel;
+    private final JButton[] actionButtons;
+    private final JFrame buttonsPopUp;
+    private final BufferPanel bufferPanel;
+    private final BaseProductionPanel baseProductionPanel;
+    private final JFrame productionPopUp;
     //private final FinalProductionPanel finalProductionPanel;
 
+
     private final CardMarketPanel cardMarketPanel;
+    private final JFrame buyCardPopUp;
+    private final BuyCardPanel[]  buyCardPanels;
     private final ResourceMarketPanel resourceMarketPanel;
 
-    private MessagePopUp messagePopUp;
+    private final MessagePopUp messagePopUp;
 
     public GUI(boolean isOnline){
-        lightweightModel = new LightweightModel();
         messagePopUp = new MessagePopUp(" ");
         setupFrame = new JFrame();
         setup = new ArrayList<>();
         leaderPanels = new ArrayList<>();
         this.isOnline = isOnline;
-
         initializeSetupFrame();
         initializeSetupPanels();
 
-        faithTrackPanel = new FaithTrackPanel();
-        productionBoardPanel = new ProductionBoardPanel();
-        warehousePanel = new WarehousePanel();
-        strongBoxPanel = new StrongBoxPanel();
+        actionButtons = new JButton[5];
+        buttonsPopUp = new JFrame();
+        setActionListeners();
 
+        faithTrackPanel = new FaithTrackPanel();
+
+        productionPopUp = new JFrame();
+        productionBoardPanel = new ProductionBoardPanel();
+        baseProductionPanel = new BaseProductionPanel();
+        setProductionButtons();
+
+        warehousePanel = new WarehousePanel();
+        setupSourceWarehouse();
+
+        strongBoxPanel = new StrongBoxPanel();
+        setupSourceStrongbox();
+
+        availableLeaderPanel = new AvailableLeaderPanel();
+
+        bufferPanel= new BufferPanel();
+        setBufferActionListener();
+
+
+        buyCardPopUp = new JFrame();
+        buyCardPopUp.setSize(500,500);
         cardMarketPanel = new CardMarketPanel();
+        buyCardPanels = new BuyCardPanel[12];
+        for (int i = 0; i < 12; i++) {
+            buyCardPanels[i] = new BuyCardPanel(i);
+        }
+        setCardMarketButtons();
+        setBuyCardButtons();
+
+
         resourceMarketPanel = new ResourceMarketPanel();
+        setArrowsActionListener();
+
 
         mainframe = new JFrame();
         initializeMainFrame();
         startGUI();
     }
 
+    private void setProductionButtons() {
+        baseProductionPanel.getSubmit().addActionListener(e -> {
+            ArrayList<ResourceType> production = baseProductionPanel.getProduction();
+            notifyObserver(o -> o.onUpdateBaseActivation(production.get(0), production.get(1), production.get(2)));
+            baseProductionPanel.resetProduction();
+            productionPopUp.dispose();
+        });
+
+        productionBoardPanel.getButtons()[0].addActionListener(e -> {
+            productionPopUp.setContentPane(baseProductionPanel);
+            productionPopUp.revalidate();
+            productionPopUp.repaint();
+            productionPopUp.setVisible(true);
+        });
+        productionBoardPanel.getButtons()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateActivateProductionCard(0)));
+        productionBoardPanel.getButtons()[2].addActionListener(e -> notifyObserver(o -> o.onUpdateActivateProductionCard(1)));
+        productionBoardPanel.getButtons()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateActivateProductionCard(2)));
+
+        productionBoardPanel.getButtons()[4].addActionListener(e -> {
+
+        });
+        productionBoardPanel.getButtons()[5].addActionListener(e -> {
+
+        });
+        productionBoardPanel.getButtons()[6].addActionListener(e -> notifyObserver(ViewObserver::onUpdateExecuteProduction));
+    }
+
+    private void setupSourceWarehouse() {
+        warehousePanel.getSource_warehouse().addActionListener(e -> notifyObserver(ViewObserver::onUpdateSourceWarehouse));
+    }
+
+    private void setupSourceStrongbox() {
+        strongBoxPanel.getSource_strongbox().addActionListener(e -> notifyObserver(ViewObserver::onUpdateSourceStrongBox));
+    }
+
+    private void setCardMarketButtons() {
+        ArrayList<JButton> cards = cardMarketPanel.getButtons();
+        cards.get(0).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[0]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+        });
+        cards.get(1).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[1]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+        });
+        cards.get(2).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[2]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(3).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[3]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(4).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[4]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(5).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[5]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(6).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[6]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(7).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[7]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(8).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[8]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(9).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[9]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(10).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[10]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(11).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[11]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+    }
+
+    private void setBuyCardButtons() {
+        for (BuyCardPanel iterator: buyCardPanels) {
+            JButton[] slots = iterator.getSlots();
+            for (int i = 0; i < slots.length; i++) {
+                int finalI = i;
+                slots[i].addActionListener(e -> {
+                    notifyObserver(o -> o.onUpdateBuyCard(iterator.getSelectedCard(), finalI));
+                    buyCardPopUp.dispose();
+                });
+            }
+        }
+    }
+
+    private void setBufferActionListener() {
+        JButton[] deposit = bufferPanel.getDeposit_buttons();
+        deposit[0].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(0)));
+        deposit[1].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(1)));
+        deposit[2].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(2)));
+        deposit[3].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(3)));
+    }
+
+    private void setActionListeners() {
+
+        for (int i = 0; i < 5; i++) {
+            actionButtons[i]= new JButton();
+            actionButtons[i].setFocusable(false);
+        }
+        actionButtons[0].setText("Card Market");
+        actionButtons[0].addActionListener(e -> {
+            buttonsPopUp.setContentPane(cardMarketPanel);
+            buttonsPopUp.pack();
+            buttonsPopUp.revalidate();
+            buttonsPopUp.setSize(400,600);
+            buttonsPopUp.setVisible(true);
+        });
+
+        actionButtons[1].setText("Resource Market");
+        actionButtons[1].addActionListener(e -> {
+            buttonsPopUp.setContentPane(resourceMarketPanel);
+            buttonsPopUp.pack();
+            buttonsPopUp.revalidate();
+            buttonsPopUp.setSize(400,448);
+            buttonsPopUp.setVisible(true);
+        });
+
+        actionButtons[2].setText("Enemies");
+        actionButtons[2].addActionListener(e -> {
+            buttonsPopUp.setContentPane(cardMarketPanel);
+            buttonsPopUp.pack();
+            buttonsPopUp.revalidate();
+            buttonsPopUp.setSize(800,1200);
+            buttonsPopUp.setVisible(true);
+        });
+
+        actionButtons[3].setText("Leaders");
+        actionButtons[3].addActionListener(e -> {
+            buttonsPopUp.setContentPane(cardMarketPanel);
+            buttonsPopUp.pack();
+            buttonsPopUp.revalidate();
+            buttonsPopUp.setSize(800,1200);
+            buttonsPopUp.setVisible(true);
+        });
+
+        actionButtons[4].setText("END TURN");
+        actionButtons[4].addActionListener(e -> notifyObserver(ViewObserver::onUpdateEndTurn));
+    }
+
+    private void setArrowsActionListener(){
+
+        JButton[] arrows = resourceMarketPanel.getArrows();
+        arrows[0].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(0)));
+        arrows[1].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(1)));
+        arrows[2].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(2)));
+        arrows[3].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(3)));
+        arrows[4].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(4)));
+        arrows[5].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(5)));
+        arrows[6].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(6)));
+
+    }
+
     private void initializeMainFrame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        mainframe.setSize(screenSize.width,screenSize.height);
+        mainframe.setSize(screenSize.width,screenSize.height-20);
+        mainframe.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 
+        int width = screenSize.width/35;
+        int height = (screenSize.height-20)/21;
 
+        createWestPanel(width, height, mainframe);
+        createEastPanel(width, height, mainframe);
+        createMiddlePanel(width, height, mainframe);
+
+
+       mainframe.repaint();
+       mainframe.setVisible(true);
+
+
+    }
+
+    private void createMiddlePanel(int width, int height, JFrame mainframe) {
+        JPanel middle = new JPanel();
+        middle.setLayout(new BorderLayout());
+
+        faithTrackPanel.setPreferredSize(new Dimension(width, 4*height));
+        productionBoardPanel.setPreferredSize(new Dimension(width, 12*height));
+
+        JPanel south = new JPanel();
+        south.setPreferredSize(new Dimension(width, 5*height));
+        south.setBackground(new Color(146, 123, 91));
+        south.setLayout(new GridLayout(1,2));
+        JPanel provvisorio = new JPanel();
+        provvisorio.setOpaque(false);
+        south.add(provvisorio);
+        south.add(bufferPanel);
+
+        middle.add(faithTrackPanel, BorderLayout.NORTH);
+        middle.add(productionBoardPanel, BorderLayout.CENTER);
+        middle.add(south, BorderLayout.SOUTH);
+
+        mainframe.add(middle);
+    }
+
+    private void createEastPanel(int width, int height, JFrame mainframe) {
+        JPanel east = new JPanel();
+        east.setPreferredSize(new Dimension(4*width, height));
+        east.setBackground(new Color(146, 123, 91));
+        east.setLayout(new BorderLayout());
+        JPanel north_east = new JPanel();
+        north_east.setBackground(new Color(198,160,98));
+        north_east.setPreferredSize(new Dimension(4*width, 4*height));
+
+        JPanel east_center = new JPanel();
+        east_center.setBackground(new Color(202,190,152));
+        east_center.setPreferredSize(new Dimension(4*width,12*height));
+        east_center.setLayout(new FlowLayout());
+        for (JButton iterator: actionButtons) {
+            east_center.add(iterator);
+        }
+
+        JPanel east_south = new JPanel();
+        east_south.setBackground(new Color(146, 123, 91));
+        east_south.setPreferredSize(new Dimension(4*width, 5*height));
+
+
+        JPanel messages = (JPanel) messagePopUp.getContentPane();
+        messages.setOpaque(false);
+        messages.setPreferredSize(new Dimension(4*width, 5*height));
+        east.add(north_east, BorderLayout.NORTH);
+        east.add(messages, BorderLayout.SOUTH);
+        east.add(east_center, BorderLayout.CENTER);
+
+
+        mainframe.add(east, BorderLayout.EAST);
+    }
+
+    private void createWestPanel(int width, int height, JFrame mainframe) {
+        JPanel west = new JPanel();
+        west.setPreferredSize(new Dimension(6*width, height));
+        west.setLayout(new BorderLayout());
+        JPanel west_empty = new JPanel();
+        west_empty.setBackground(new Color(198,160,98));
+        west_empty.setPreferredSize(new Dimension(5*width, 4*height));
+        west.add(west_empty, BorderLayout.NORTH);
+        warehousePanel.setPreferredSize(new Dimension(5*width,9*height));
+        west.add(warehousePanel, BorderLayout.CENTER);
+        strongBoxPanel.setPreferredSize(new Dimension(5*width, 5*height));
+        west.add(strongBoxPanel, BorderLayout.SOUTH);
+
+        mainframe.add(west, BorderLayout.WEST);
     }
 
     private void initializeSetupPanels() {
@@ -365,7 +674,8 @@ public class GUI extends ViewObservable implements IView {
             leaderPanels.add(setupLeaderPopUp);
         }
         else{
-            //leaderPanels.get(1) = normal show leaders;
+            availableLeaderPanel.updateAvailableLeaderPanel((ArrayList<LeaderCard>) cards);
+            productionBoardPanel.updateExtraProduction((ArrayList<LeaderCard>) cards);
         }
     }
 
@@ -409,7 +719,7 @@ public class GUI extends ViewObservable implements IView {
         }
         else {
             messagePopUp.changeMessage("The first player doesn't get to pick any resource!");
-            notifyObserver(o -> o.onUpdateSetupResource(new LinkedList<ResourceType>()));
+            notifyObserver(o -> o.onUpdateSetupResource(new LinkedList<>()));
         }
     }
 
@@ -436,6 +746,9 @@ public class GUI extends ViewObservable implements IView {
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
         faithTrackPanel.updateFaithTrackPanel(faithTrack);
+
+        mainframe.revalidate();
+        mainframe.repaint();
     }
 
     @Override
@@ -450,7 +763,7 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void printBuffer(ArrayList<ResourceType> buffer) {
-
+        bufferPanel.updateBufferPanel(buffer);
     }
 
     @Override
@@ -465,9 +778,7 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void printProductionBoard(HashMap<Integer, ProductionCard> productionBoard) {
-
-        //DA MODIFICARE PER PRENDERE I LEADER
-        productionBoardPanel.updateProductionBoardPanel(productionBoard, new ArrayList<>());
+        productionBoardPanel.updateProductionBoardPanel(productionBoard);
     }
 
     @Override

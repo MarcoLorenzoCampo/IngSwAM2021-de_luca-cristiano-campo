@@ -99,18 +99,23 @@ public class Executor {
         f.setContentPane(new FaithTrackPanel());
         g.setContentPane(new ResourceMarketPanel());
         h.setContentPane(new EnemyPlayerPanel("mario", 4, inventory,cards));
+        ProductionBoardPanel productionPanel = new ProductionBoardPanel();
+        i.setContentPane(productionPanel);
 
         a.setSize(800, 800);
         e.setSize(800, 800);
-        f.setSize(800, 800);
+        f.setSize(2400, 500);
         g.setSize(800, 800);
         h.setSize(800, 800);
+        i.setSize(800, 800);
 
         //a.setVisible(true);
         //e.setVisible(true);
         //f.setVisible(true);
-        g.setVisible(true);
+        //g.setVisible(true);
         //h.setVisible(true);
+
+        i.setVisible(true);
 
 
 

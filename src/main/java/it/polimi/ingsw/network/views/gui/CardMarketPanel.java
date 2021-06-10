@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CardMarketPanel extends JPanel {
-    JPanel[] row_1 = new JPanel[4];
-    JPanel[] row_2 = new JPanel[4];
-    JPanel[] row_3 = new JPanel[4];
-    ArrayList<JButton> buttons = new ArrayList<>();
+    private JPanel[] row_1 = new JPanel[4];
+    private JPanel[] row_2 = new JPanel[4];
+    private JPanel[] row_3 = new JPanel[4];
+    private ArrayList<JButton> buttons = new ArrayList<>();
 
 
     public CardMarketPanel(List<ProductionCard> available){
