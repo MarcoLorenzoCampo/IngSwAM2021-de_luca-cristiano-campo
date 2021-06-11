@@ -429,6 +429,7 @@ public final class GameManager {
                     currentGame.setCurrentState(PossibleGameStates.REMOVE);
                 } else {
                     currentGame.setCurrentState(PossibleGameStates.PLAYING);
+                    currentGame.getCurrentPlayer().visit(new ClearProductionAction());
                 }
             }
             onStartTurn();
