@@ -329,9 +329,10 @@ public class RealPlayer extends Observable implements Visitor {
     }
 
     @Override
-    public void visit(LorenzoAction action) {
-
+    public void visit(ClearProductionAction action) {
+        playerBoard.getProductionBoard().clearSelection();
     }
+
 
     @Override
     public void visit(RearrangeInventoryAction action) {

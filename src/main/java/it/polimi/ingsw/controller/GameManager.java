@@ -527,6 +527,7 @@ public final class GameManager {
 
             if (toBeRemoved.isEmpty()){
                 currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+                currentGame.getCurrentPlayer().visit(new ClearProductionAction());
 
             }
             onStartTurn();
