@@ -39,7 +39,8 @@ public class GUI extends ViewObservable implements IView {
     private final BufferPanel bufferPanel;
     private final BaseProductionPanel baseProductionPanel;
     private final JFrame productionPopUp;
-    //private final FinalProductionPanel finalProductionPanel;
+    private final FinalProductionPanel finalProductionPanel;
+
 
 
     private final CardMarketPanel cardMarketPanel;
@@ -76,7 +77,9 @@ public class GUI extends ViewObservable implements IView {
         setupSourceStrongbox();
 
         availableLeaderPanel = new AvailableLeaderPanel();
+        setupLeaderButtons();
 
+        finalProductionPanel = new FinalProductionPanel();
         bufferPanel= new BufferPanel();
         setBufferActionListener();
 
@@ -99,6 +102,13 @@ public class GUI extends ViewObservable implements IView {
         mainframe = new JFrame();
         initializeMainFrame();
         startGUI();
+    }
+
+    private void setupLeaderButtons() {
+        availableLeaderPanel.getButtons().get(0).addActionListener(e -> notifyObserver(o -> o.onUpdateActivateLeader(0)));
+        availableLeaderPanel.getButtons().get(1).addActionListener(e -> notifyObserver(o -> o.onUpdateActivateLeader(1)));
+        availableLeaderPanel.getButtons().get(2).addActionListener(e -> notifyObserver(o -> o.onUpdateDiscardLeader(0)));
+        availableLeaderPanel.getButtons().get(3).addActionListener(e -> notifyObserver(o -> o.onUpdateDiscardLeader(1)));
     }
 
     private void setProductionButtons() {
@@ -266,10 +276,10 @@ public class GUI extends ViewObservable implements IView {
 
         actionButtons[3].setText("Leaders");
         actionButtons[3].addActionListener(e -> {
-            buttonsPopUp.setContentPane(cardMarketPanel);
+            buttonsPopUp.setContentPane(availableLeaderPanel);
             buttonsPopUp.pack();
             buttonsPopUp.revalidate();
-            buttonsPopUp.setSize(800,1200);
+            buttonsPopUp.setSize(800,650);
             buttonsPopUp.setVisible(true);
         });
 
@@ -321,9 +331,7 @@ public class GUI extends ViewObservable implements IView {
         south.setPreferredSize(new Dimension(width, 5*height));
         south.setBackground(new Color(146, 123, 91));
         south.setLayout(new GridLayout(1,2));
-        JPanel provvisorio = new JPanel();
-        provvisorio.setOpaque(false);
-        south.add(provvisorio);
+        south.add(finalProductionPanel);
         south.add(bufferPanel);
 
         middle.add(faithTrackPanel, BorderLayout.NORTH);
@@ -359,7 +367,7 @@ public class GUI extends ViewObservable implements IView {
         messages.setOpaque(false);
         messages.setPreferredSize(new Dimension(4*width, 5*height));
         east.add(north_east, BorderLayout.NORTH);
-        east.add(messages, BorderLayout.SOUTH);
+        east.add(east_south, BorderLayout.SOUTH);
         east.add(east_center, BorderLayout.CENTER);
 
 
@@ -368,12 +376,16 @@ public class GUI extends ViewObservable implements IView {
 
     private void createWestPanel(int width, int height, JFrame mainframe) {
         JPanel west = new JPanel();
+        west.setBackground(new Color(198,160,98));
         west.setPreferredSize(new Dimension(6*width, height));
         west.setLayout(new BorderLayout());
-        JPanel west_empty = new JPanel();
-        west_empty.setBackground(new Color(198,160,98));
-        west_empty.setPreferredSize(new Dimension(5*width, 4*height));
-        west.add(west_empty, BorderLayout.NORTH);
+
+
+        JPanel west_north = (JPanel) messagePopUp.getContentPane();
+        west_north.setOpaque(false);
+        west_north.setPreferredSize(new Dimension(5*width, 4*height));
+
+        west.add(west_north, BorderLayout.NORTH);
         warehousePanel.setPreferredSize(new Dimension(5*width,9*height));
         west.add(warehousePanel, BorderLayout.CENTER);
         strongBoxPanel.setPreferredSize(new Dimension(5*width, 5*height));
@@ -650,13 +662,16 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void showInvalidAction(String errorMessage) {
-
+        messagePopUp.changeMessage(errorMessage);
     }
 
+    /*
     @Override
     public void askReplacementResource(ResourceType r1, ResourceType r2) {
 
     }
+
+     */
 
     @Override
     public void askToDiscard() throws ExecutionException {
@@ -695,17 +710,17 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void showError(String errorMessage) {
-
+        messagePopUp.changeMessage(errorMessage);
     }
 
     @Override
     public void currentTurn(String message) {
-
+        messagePopUp.changeMessage(message);
     }
 
     @Override
     public void turnEnded(String message) {
-
+        messagePopUp.changeMessage(message);
     }
 
     @Override
@@ -783,7 +798,7 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void printFinalProduction(HashMap<ResourceType, Integer> input, HashMap<ResourceType, Integer> output) {
-
+        finalProductionPanel.updateFinalProductionPanel(input, output);
     }
 
 }

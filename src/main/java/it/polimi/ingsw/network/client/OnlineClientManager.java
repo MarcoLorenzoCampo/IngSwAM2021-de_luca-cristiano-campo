@@ -385,8 +385,8 @@ public class OnlineClientManager implements ViewObserver, Observer {
     }
 
     @Override
-    public void onUpdateExchangeResource(ResourceType r1) {
-        client.sendMessage(new ExchangeResourceMessage(nickname, r1, 1));
+    public void onUpdateExchangeResource(ResourceType r1, int place) {
+        client.sendMessage(new ExchangeResourceMessage(nickname, r1, place));
     }
 
     @Override

@@ -39,7 +39,7 @@ public class MessagePopUp extends JFrame {
                 text = text.concat(iterator);
             }
             showed.setText(text);
-            this.setVisible(true);
+            //this.setVisible(true);
 
     }
 

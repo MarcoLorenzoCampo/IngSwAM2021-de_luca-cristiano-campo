@@ -446,7 +446,7 @@ public class OfflineClientManager implements ViewObserver, Observer {
      * @param r1 : resource to exchange.
      */
     @Override
-    public void onUpdateExchangeResource(ResourceType r1) {
+    public void onUpdateExchangeResource(ResourceType r1, int place) {
 
     }
 

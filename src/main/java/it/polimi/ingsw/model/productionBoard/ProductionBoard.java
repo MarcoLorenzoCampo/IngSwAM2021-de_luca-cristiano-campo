@@ -117,7 +117,12 @@ public class ProductionBoard extends Observable {
                 destination.add(input);
             }
         }
+        sortFinalProduction();
+    }
 
+    private void sortFinalProduction() {
+        Collections.sort(finalProduction.getInputResources(), Comparator.comparingInt((ResourceTag tag) -> tag.getType().ordinal()));
+        Collections.sort(finalProduction.getOutputResources(), Comparator.comparingInt((ResourceTag tag) -> tag.getType().ordinal()));
     }
 
     /**

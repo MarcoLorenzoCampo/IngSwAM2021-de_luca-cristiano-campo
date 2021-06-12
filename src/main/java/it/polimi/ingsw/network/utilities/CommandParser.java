@@ -138,6 +138,24 @@ public final class CommandParser {
                         }
                         return "ACTIVATE_EXTRA_PRODUCTION";
 
+
+                    case ("EXCHANGE"):
+                        ResourceType exchange;
+                        try {
+                            exchange = ResourceType.valueOf(cmdMembers[1]);
+                        } catch (IllegalArgumentException e) {
+                            return "\nInvalid output resource.";
+                        }
+                        if(exchange.equals(ResourceType.FAITH) || exchange.equals(ResourceType.UNDEFINED)) {
+                            return "\nPick a valid resource!\n";
+                        }
+                        try {
+                            Integer.parseInt(cmdMembers[2]);
+                        } catch (NumberFormatException e) {
+                            return "\nInvalid extra production argument.";
+                        }
+                        return "EXCHANGE";
+
                     default : return "UNKNOWN_COMMAND";
                 }
 

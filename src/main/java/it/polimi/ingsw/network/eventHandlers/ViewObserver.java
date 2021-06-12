@@ -120,7 +120,7 @@ public interface ViewObserver {
      * Sends a message containing the resource to get in exchange for a white marble.
      * @param r1: resource to exchange.
      */
-    void onUpdateExchangeResource(ResourceType r1);
+    void onUpdateExchangeResource(ResourceType r1, int place);
 
     void onUpdateDeposit(int index);
 

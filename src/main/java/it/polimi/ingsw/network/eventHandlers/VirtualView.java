@@ -67,11 +67,13 @@ public class VirtualView implements IView, Observer {
     public void showInvalidAction(String errorMessage) {
         clientHandler.sendMessage(new GenericMessageFromServer(errorMessage));
     }
-
+/*
     @Override
     public void askReplacementResource(ResourceType r1, ResourceType r2) {
 
     }
+
+ */
 
 
     @Override

@@ -54,7 +54,10 @@ public interface IView {
      * Asks the player to replace the grey marble (UNDEFINED resource) with something if he has
      * enough active leader cards.
      */
+    /*
     void askReplacementResource(ResourceType r1, ResourceType r2);
+
+     */
 
     /**
      * Asks the player to store or discard a resource that has to be deposited;

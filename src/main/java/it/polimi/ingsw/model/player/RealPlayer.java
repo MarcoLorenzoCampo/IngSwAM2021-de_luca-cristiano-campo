@@ -218,7 +218,7 @@ public class RealPlayer extends Observable implements Visitor {
                     .getInventoryManager()
                     .getBuffer()
                     .stream()
-                    .anyMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
+                    .noneMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
         }
         //notify
     }
@@ -285,6 +285,11 @@ public class RealPlayer extends Observable implements Visitor {
             resourceMarket.pickResources(action.getIndexToPickFrom(), playerBoard);
             playerBoard.getInventoryManager().whiteMarblesExchange();
             playerState.performedExclusiveAction();
+            playerState.setCanDeposit(playerBoard
+                    .getInventoryManager()
+                    .getBuffer()
+                    .stream()
+                    .noneMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
         }
     }
 

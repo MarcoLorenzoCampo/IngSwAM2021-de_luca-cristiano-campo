@@ -13,9 +13,9 @@ import java.util.ArrayList;
 public class BufferPanel extends JPanel {
 
     private ArrayList<ResourceType> buffer;
-    private JButton[] deposit_buttons;
-    private JButton[] change_buttons;
-    private String[] paths = {
+    private final JButton[] deposit_buttons;
+    private final JButton[] change_buttons;
+    private final String[] paths = {
             "./punchboard/coin.png",
             "./punchboard/shield.png",
             "./punchboard/servant.png",
@@ -80,7 +80,6 @@ public class BufferPanel extends JPanel {
         int width = this.getWidth()/5;
         int height = this.getHeight()/13;
         int x = width/2;
-        int y = height;
         ClassLoader cl = this.getClass().getClassLoader();
         String item = "";
         for (ResourceType iterator:buffer) {
@@ -110,8 +109,8 @@ public class BufferPanel extends JPanel {
                 e.printStackTrace();
                 return;
             }
-            g.drawImage(img, x,y, width/2,2*height, null);
-            x+=width;
+            g.drawImage(img, x, height, width/2,4*height, null);
+            x+=width/2;
         }
 
     }

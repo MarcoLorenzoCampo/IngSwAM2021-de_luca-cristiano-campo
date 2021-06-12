@@ -194,7 +194,7 @@ public class CLI extends ViewObservable implements IView {
     public void showInvalidAction(String errorMessage) {
         showGenericString(errorMessage);
     }
-
+/*
     @Override
     public void askReplacementResource(ResourceType r1, ResourceType r2) {
         //clearCLI();
@@ -220,6 +220,8 @@ public class CLI extends ViewObservable implements IView {
         ResourceType finalPicked = picked;
         notifyObserver(o -> o.onUpdateExchangeResource(finalPicked));
     }
+
+ */
 
     @Override
     public void askToDiscard() {
@@ -423,9 +425,15 @@ public class CLI extends ViewObservable implements IView {
                 notifyObserver(o -> o.onUpdateActivateExtraProduction(Integer.parseInt(finalCmdMembers6[1]),ResourceType.valueOf(finalCmdMembers6[2])));
                 break;
 
+
             case("ACTIVATE_BASE_PRODUCTION") :
                 String[] finalCmdMembers7 = cmdMembers;
                 notifyObserver(o -> o.onUpdateBaseActivation(ResourceType.valueOf(finalCmdMembers7[1]), ResourceType.valueOf(finalCmdMembers7[2]), ResourceType.valueOf(finalCmdMembers7[3])));
+                break;
+
+            case("EXCHANGE") :
+                String[] finalCmdMembers8 = cmdMembers;
+                notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.valueOf(finalCmdMembers8[1]),Integer.parseInt(finalCmdMembers8[2]) ));
                 break;
 
             case("END_TURN") :
