@@ -9,8 +9,9 @@ public class Tile implements Serializable {
     private final int checkpoint;
 
     /**
-     * @param index:        there are 24 tiles;
+     * @param index:        index for each of the 24 cards ;
      * @param vaticanSpace: there are 3 vatican spaces;
+     * @param checkpoint:   checkpoint for each of the 24 cards
      */
     public Tile(int index, int vaticanSpace, int checkpoint) {
         this.index = index;
