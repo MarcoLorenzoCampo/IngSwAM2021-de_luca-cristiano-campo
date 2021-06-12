@@ -27,32 +27,32 @@ public class Executor {
     }
 
     private static void createAndShowGUI() {
-        LeaderRecapPanel baseProductionPanel = new LeaderRecapPanel();
+        HashMap<ResourceType, Integer> inventory = new HashMap<>();
+        inventory.put(ResourceType.SHIELD, 100);
+        inventory.put(ResourceType.COIN, 100);
+        inventory.put(ResourceType.STONE, 100);
+        inventory.put(ResourceType.SERVANT, 100);
+        EnemyPlayerPanel baseProductionPanel = new EnemyPlayerPanel("mario", 4, inventory, new ArrayList<>());
+        EnemyPlayerPanel baseProductionPanel_1 = new EnemyPlayerPanel("marco", 8, inventory, new ArrayList<>());
+        EnemyPlayerPanel baseProductionPanel_2 = new EnemyPlayerPanel("marzio", 12, inventory, new ArrayList<>());
+        EnemyPlayerPanel baseProductionPanel_3 = new EnemyPlayerPanel("maurizio", 16, inventory, new ArrayList<>());
         JFrame frame = new JFrame();
-        frame.add(baseProductionPanel, BorderLayout.CENTER);
+        JPanel main = new JPanel();
+        main.setLayout(new GridLayout(5, 1, 0,10));
+        main.setBackground(new Color(150, 80, 0));
+        main.add(baseProductionPanel);
+        main.add(baseProductionPanel_1);
+        main.add(baseProductionPanel_2);
+        main.add(baseProductionPanel_3);
+        frame.setContentPane(main);
         frame.revalidate();
         frame.repaint();
         frame.pack();
-        frame.setSize(1500,500);
+        frame.setSize(500,2000);
         frame.setVisible(true);
-        ArrayList<LeaderCard> cards = new ArrayList<>();
-        cards.add( new ExtraProductionLeaderCard(
-                ResourceType.SERVANT,
-                2,
-                EffectType.EXTRA_PRODUCTION,
-                null,
-                null,
-                null));
-        cards.add(new ExtraProductionLeaderCard(
-                ResourceType.COIN,
-                2,
-                EffectType.EXTRA_PRODUCTION,
-                null,
-                null,
-                null));
+
         JButton update = new JButton("update");
         update.addActionListener(e -> {
-            baseProductionPanel.updateLeaderRecapPanel(cards);
         });
         frame.add(update, BorderLayout.SOUTH);
     }
