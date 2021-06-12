@@ -34,6 +34,7 @@ public class GUI extends ViewObservable implements IView {
     private final WarehousePanel warehousePanel;
     private final StrongBoxPanel strongBoxPanel;
     private final AvailableLeaderPanel availableLeaderPanel;
+    private final LeaderRecapPanel leaderRecapPanel;
     private final JButton[] actionButtons;
     private final JFrame buttonsPopUp;
     private final BufferPanel bufferPanel;
@@ -83,6 +84,7 @@ public class GUI extends ViewObservable implements IView {
         setupSourceStrongbox();
 
         availableLeaderPanel = new AvailableLeaderPanel();
+        leaderRecapPanel = new LeaderRecapPanel();
         setupLeaderButtons();
 
         finalProductionPanel = new FinalProductionPanel();
@@ -432,16 +434,16 @@ public class GUI extends ViewObservable implements IView {
             east_center.add(iterator);
         }
 
-        JPanel east_south = new JPanel();
-        east_south.setBackground(new Color(146, 123, 91));
-        east_south.setPreferredSize(new Dimension(4*width, 5*height));
-
+        //JPanel east_south = new JPanel();
+        //east_south.setBackground(new Color(146, 123, 91));
+        //east_south.setPreferredSize(new Dimension(4*width, 5*height));
+        leaderRecapPanel.setPreferredSize(new Dimension(4*width, 5*height));
 
         JPanel messages = (JPanel) messagePopUp.getContentPane();
         messages.setOpaque(false);
         messages.setPreferredSize(new Dimension(4*width, 5*height));
         east.add(north_east, BorderLayout.NORTH);
-        east.add(east_south, BorderLayout.SOUTH);
+        east.add(leaderRecapPanel, BorderLayout.SOUTH);
         east.add(east_center, BorderLayout.CENTER);
 
 
@@ -757,6 +759,7 @@ public class GUI extends ViewObservable implements IView {
         }
         else{
             availableLeaderPanel.updateAvailableLeaderPanel((ArrayList<LeaderCard>) cards);
+            leaderRecapPanel.updateLeaderRecapPanel((ArrayList<LeaderCard>) cards);
             productionBoardPanel.updateExtraProduction((ArrayList<LeaderCard>) cards);
         }
     }
