@@ -19,16 +19,45 @@ public class FaithTrack extends Observable implements Serializable {
 
     private static final long serialVersionUID = 7136541748211952620L;
 
+    /**
+     list of tiles that assemble faith track
+     */
     private final List<Tile> faithTrack = new ArrayList<>();
+
+    /**
+     * points at the end of the game
+     */
     private int finalPoints;
+
+    /**
+     * faith track marker
+     */
     private int faithMarker;
+
+    /**
+     * points due to Vatican reports
+     */
     private int currentFavorPoints;
+
+    /**
+     * the Vatican space corresponds to the number of points on the cards
+     */
     public Map<Integer, Integer> cardVaticanSpace = new HashMap<>();
 
+    /**
+     * list of checkpoints
+     */
     private final List<Integer> checkpoints = new ArrayList<>();
 
+    /**
+     * the pope tile corresponds to the vatican space having a different number of tiles
+     */
     private final Map<Integer, Integer> ranges = new HashMap<>();
 
+    /**
+     * initialization of faith marker, currentfavorpoints and finalpoints to zero
+     * initialization of faithtrack's list, checkpoint's list and cardvaticanspace's map
+     */
     public FaithTrack() {
         this.faithMarker=0;
         this.currentFavorPoints=0;
@@ -38,6 +67,9 @@ public class FaithTrack extends Observable implements Serializable {
         initCardVaticanSpace();
     }
 
+    /**
+     * filling of the faith track inserting the singles tiles
+     */
     private void initFaithTrack() {
         faithTrack.add(new SimpleTile(0, Constants.NEUTRAL, 0));
         faithTrack.add(new SimpleTile(1, Constants.NEUTRAL, 0));
@@ -66,6 +98,9 @@ public class FaithTrack extends Observable implements Serializable {
         faithTrack.add(new PopeTile(24, Constants.RED, 20));
     }
 
+    /**
+     * filling of the list of checkpoints
+     */
     private void initCheckpoint() {
         checkpoints.add(0);
         checkpoints.add(1);
@@ -78,6 +113,11 @@ public class FaithTrack extends Observable implements Serializable {
         checkpoints.add(20);
     }
 
+    /**
+     * it eventually makes space Vatican already accessed
+     * it eventually takes favor points;
+     * @param popeTileIndex: represents the corresponding Vatican Space
+     */
     public void checkVaticanCondition(int popeTileIndex) {
         PopeTile popeTile = (PopeTile) faithTrack.get(popeTileIndex);
         int range = ranges.get(popeTileIndex);
@@ -93,7 +133,6 @@ public class FaithTrack extends Observable implements Serializable {
     /**
      * it checks the type of tile;
      * if the player is the first to enter in a Vatican space, the player makes it inactive
-     * it eventually takes favor points;
      * it eventually activates vatican reports.
      */
     public void increaseFaithMarker() {
@@ -146,6 +185,10 @@ public class FaithTrack extends Observable implements Serializable {
     }
 
     //using of the map and of class constants
+
+    /**
+     * initialization of the map
+     */
     private void initCardVaticanSpace(){
         cardVaticanSpace.put(Constants.NEUTRAL, 0);
         cardVaticanSpace.put(Constants.YELLOW, 2);
@@ -183,17 +226,28 @@ public class FaithTrack extends Observable implements Serializable {
         return currentFavorPoints;
     }
 
-    //control that the player is in the Vatican space during Vatican report to earn points
+    /**
+     * control that the player is in the Vatican space during Vatican report to earn points
+     * @param popeT: pope tile
+     */
     public void receiveControl(PopeTile popeT){
         if(this.faithTrack.get(this.faithMarker).getVaticanSpace() == popeT.getVaticanSpace()){
             pickFavorPoints(popeT);
         }
     }
 
+    /**
+     * @param faithMarker: position of the player's faith marker
+     * @return true if tile is a pope tile or false otherwise
+     */
     public boolean isPopeTile(int faithMarker){
         return (faithMarker == 8) || (faithMarker == 16) || (faithMarker == 24);
     }
 
+    /**
+     * it makes pope tile and so the corresponding vatican space inactive
+     * @param index: to understand what pope tile is
+     */
     public void setPopeTileInactive(int index) {
 
         notifyObserver(new GenericMessageFromServer("You didn't gain any points from this vatican report!"));
@@ -202,6 +256,9 @@ public class FaithTrack extends Observable implements Serializable {
         pt.setIsActive(false);
     }
 
+    /**
+     * @return player's final points
+     */
     public int computeFaithTrackPoints() {
         //this.finalPoints = this.currentFavorPoints + calculationCheckPoints();
         finalPoints += currentFavorPoints;
