@@ -32,9 +32,6 @@ public class LorenzoPlayerBoard extends Observable {
         return lorenzoTokenPile;
     }
 
-    public void lorenzoMoves(int moves) {
-    }
-
     public void shuffleTokens() {
         Collections.shuffle(lorenzoTokenPile.getLorenzoTokens());
     }
