@@ -276,10 +276,32 @@ public class ProductionBoardPanel extends JPanel {
                         .filter(leaderCard -> leaderCard.getEffectType().equals(EffectType.EXTRA_PRODUCTION))
                         .filter(LeaderCard::isActive)
                         .collect(Collectors.toList());
+        if(this.extra_production.size()==0){
+            for (int i = 4; i < 6; i++) {
+                buttons[i].setEnabled(false);
+            }
+        }
+        if(this.extra_production.size()==1){
+            buttons[4].setEnabled(true);
+        }
+        if (this.extra_production.size()==2){
+            for (int i = 4; i < 6; i++) {
+                buttons[i].setEnabled(true);
+            }
+        }
         this.repaint();
     }
 
     public JButton[] getButtons() {
         return buttons;
+    }
+
+    public LeaderCard getExtraLeader(int place){
+        if (extra_production.size()<place){
+            return null;
+        }
+        else{
+            return extra_production.get(place);
+        }
     }
 }

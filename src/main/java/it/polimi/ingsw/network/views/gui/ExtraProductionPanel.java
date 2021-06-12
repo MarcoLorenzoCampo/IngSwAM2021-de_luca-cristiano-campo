@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.views.gui;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -8,77 +9,79 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
-public class BaseProductionPanel extends JPanel {
-    private final JButton[] buttons;
-    private final String path;
+
+public class ExtraProductionPanel extends JPanel {
+    private JButton[] buttons;
+    private String path;
     private final String[] resources;
-    private ArrayList<ResourceType> production;
+    private ResourceType chosen;
 
-    public BaseProductionPanel(){
+    ExtraProductionPanel(){
+        this.setLayout(new BorderLayout());
+        this.setBackground((new Color(146, 123, 91)));
         buttons = new JButton[6];
-        path = "./punchboard/empty_production.png";
+        path = "";
+        buttons = new JButton[6];
         resources = new String[]{
                 "./punchboard/coin.png",
                 "./punchboard/shield.png",
                 "./punchboard/stone.png",
                 "./punchboard/servant.png"
         };
-        production = new ArrayList<>();
+
 
         buttons[0] = new JButton("COIN");
         buttons[0].addActionListener(e -> {
-            production.add(ResourceType.COIN);
-            if(production.size()==3){
-                for (int i = 0; i < 4; i++) {
-                    buttons[i].setEnabled(false);
-                }
+            chosen=ResourceType.COIN;
+            for (int i = 0; i < 4; i++) {
+                buttons[i].setEnabled(false);
             }
+            buttons[4].setEnabled(true);
             this.repaint();
         });
 
         buttons[1] = new JButton("SHIELD");
         buttons[1].addActionListener(e -> {
-            production.add(ResourceType.SHIELD);
-            if(production.size()==3){
-                for (int i = 0; i < 4; i++) {
-                    buttons[i].setEnabled(false);
-                }
+            chosen=ResourceType.SHIELD;
+            for (int i = 0; i < 4; i++) {
+                buttons[i].setEnabled(false);
             }
+            buttons[4].setEnabled(true);
             this.repaint();
         });
 
         buttons[2] = new JButton("STONE");
         buttons[2].addActionListener(e -> {
-            production.add(ResourceType.STONE);
-            if(production.size()==3){
-                for (int i = 0; i < 4; i++) {
-                    buttons[i].setEnabled(false);
-                }
+            chosen=ResourceType.STONE;
+            for (int i = 0; i < 4; i++) {
+                buttons[i].setEnabled(false);
             }
+            buttons[4].setEnabled(true);
             this.repaint();
         });
 
         buttons[3] = new JButton("SERVANT");
         buttons[3].addActionListener(e -> {
-            production.add(ResourceType.SERVANT);
-            if(production.size()==3){
-                for (int i = 0; i < 4; i++) {
-                    buttons[i].setEnabled(false);
-                }
+            chosen=ResourceType.SERVANT;
+            for (int i = 0; i < 4; i++) {
+                buttons[i].setEnabled(false);
             }
+            buttons[4].setEnabled(true);
             this.repaint();
         });
 
         buttons[4] = new JButton("SUBMIT");
+        buttons[4].setEnabled(false);
 
         buttons[5] = new JButton("DELETE");
         buttons[5].addActionListener(e -> {
-            production.clear();
-            for (JButton iterator: buttons) {
-                iterator.setEnabled(true);
+            chosen = null;
+            for (int i = 0; i < 4; i++) {
+                buttons[i].setEnabled(true);
             }
+            buttons[4].setEnabled(false);
+            this.repaint();
         });
 
         for (JButton iterator: buttons) {
@@ -104,37 +107,63 @@ public class BaseProductionPanel extends JPanel {
         this.add(lower, BorderLayout.SOUTH);
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        paintBackground(g);
-        printProduction(g);
+    public JButton getSubmit(){
+        return buttons[4];
     }
 
-    private void printProduction(Graphics g) {
-        int width = this.getWidth() / 18;
-        int height = this.getHeight() / 10;
-        for (int i = 0; i < production.size() ; i++) {
-            switch (i){
-                case 0:
-                    drawResource(production.get(0), g, 3 * width, 2 * height, 2 * width, 2 * height);
-                break;
-                case 1:
-                    drawResource(production.get(1), g, 3 * width, 5 * height, 2 * width, 2 * height);
-
+    public void updateExtraProductionPanel(LeaderCard extraprodleader){
+        if(extraprodleader != null) {
+            switch (extraprodleader.getResource()) {
+                case COIN:
+                    path = "./front/reduced_leader_production_coin.jpg";
                     break;
-                case 2:
-                    drawResource(production.get(2), g, 11 * width, 4 * height, 2 * width, 2 * height);
-
+                case SHIELD:
+                    path = "./front/reduced_leader_production_shield.jpg";
+                    break;
+                case SERVANT:
+                    path = "./front/reduced_leader_production_servant.jpg";
+                    break;
+                case STONE:
+                    path = "./front/reduced_leader_production_stone.jpg";
                     break;
             }
+            for (JButton iterator: buttons) {
+                iterator.setEnabled(true);
+            }
+        }
+        else{
+            for (JButton iterator: buttons) {
+                iterator.setEnabled(false);
+            }
+        }
+        this.repaint();
+    }
+
+
+
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        int width = this.getWidth()/15;
+        int height = this.getHeight()/6;
+
+        if(!path.isEmpty()){
+            drawCard(g, width, height);
+        }
+        if(chosen != null){
+            drawChosen(g, width, height);
         }
     }
 
-    private void drawResource(ResourceType iterator, Graphics g, int x, int y, int width, int height) {
+
+
+
+
+    private void drawChosen(Graphics g, int width, int height) {
         ClassLoader cl = this.getClass().getClassLoader();
         String item = " ";
-        switch(iterator){
+        switch(chosen){
             case COIN:
                 item = resources[0];
                 break;
@@ -157,12 +186,10 @@ public class BaseProductionPanel extends JPanel {
             e.printStackTrace();
             return;
         }
-        g.drawImage(img, x,y, width,height, null);
-
+        g.drawImage(img, 15*width/2,2*height, 3*width/2,3*height/2, null);
     }
 
-
-    private void paintBackground(Graphics g) {
+    private void drawCard(Graphics g, int width, int height) {
         ClassLoader cl = this.getClass().getClassLoader();
         InputStream url = cl.getResourceAsStream(path);
         BufferedImage img= null;
@@ -172,21 +199,14 @@ public class BaseProductionPanel extends JPanel {
             e.printStackTrace();
             return;
         }
-        g.drawImage(img, 0,0, this.getWidth(),this.getHeight(), null);
+        g.drawImage(img, 5*width/2,height, 10*width,4*height, null);
     }
 
-    public void resetProduction(){
-        production.clear();
-        for (JButton iterator:buttons) {
-            iterator.setEnabled(true);
-        }
+    public void clearSelection(){
+        chosen = null;
     }
 
-    public ArrayList<ResourceType> getProduction() {
-        return production;
-    }
-
-    public JButton getSubmit(){
-        return buttons[4];
+    public ResourceType getChosen() {
+        return chosen;
     }
 }

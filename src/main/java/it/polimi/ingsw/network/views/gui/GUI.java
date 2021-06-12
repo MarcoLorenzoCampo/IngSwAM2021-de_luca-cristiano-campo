@@ -37,7 +37,10 @@ public class GUI extends ViewObservable implements IView {
     private final JButton[] actionButtons;
     private final JFrame buttonsPopUp;
     private final BufferPanel bufferPanel;
+    private final ExchangeResourcePanel[] exchangeResourcePanels;
+    private final JFrame exchangePopUp;
     private final BaseProductionPanel baseProductionPanel;
+    private  final ExtraProductionPanel[] extraProductionPanels;
     private final JFrame productionPopUp;
     private final FinalProductionPanel finalProductionPanel;
 
@@ -68,6 +71,9 @@ public class GUI extends ViewObservable implements IView {
         productionPopUp = new JFrame();
         productionBoardPanel = new ProductionBoardPanel();
         baseProductionPanel = new BaseProductionPanel();
+        extraProductionPanels = new ExtraProductionPanel[2];
+        extraProductionPanels[0] = new ExtraProductionPanel();
+        extraProductionPanels[1] = new ExtraProductionPanel();
         setProductionButtons();
 
         warehousePanel = new WarehousePanel();
@@ -81,6 +87,12 @@ public class GUI extends ViewObservable implements IView {
 
         finalProductionPanel = new FinalProductionPanel();
         bufferPanel= new BufferPanel();
+        exchangeResourcePanels = new ExchangeResourcePanel[4];
+        exchangeResourcePanels[0] = new ExchangeResourcePanel();
+        exchangeResourcePanels[1] = new ExchangeResourcePanel();
+        exchangeResourcePanels[2] = new ExchangeResourcePanel();
+        exchangeResourcePanels[3] = new ExchangeResourcePanel();
+        exchangePopUp = new JFrame();
         setBufferActionListener();
 
 
@@ -130,12 +142,32 @@ public class GUI extends ViewObservable implements IView {
         productionBoardPanel.getButtons()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateActivateProductionCard(2)));
 
         productionBoardPanel.getButtons()[4].addActionListener(e -> {
-
+            extraProductionPanels[0].updateExtraProductionPanel(productionBoardPanel.getExtraLeader(0));
+            productionPopUp.setContentPane(extraProductionPanels[0]);
+            productionPopUp.revalidate();
+            productionPopUp.repaint();
+            productionPopUp.setVisible(true);
         });
         productionBoardPanel.getButtons()[5].addActionListener(e -> {
-
+            extraProductionPanels[1].updateExtraProductionPanel(productionBoardPanel.getExtraLeader(1));
+            productionPopUp.setContentPane(extraProductionPanels[1]);
+            productionPopUp.revalidate();
+            productionPopUp.repaint();
+            productionPopUp.setVisible(true);
         });
         productionBoardPanel.getButtons()[6].addActionListener(e -> notifyObserver(ViewObserver::onUpdateExecuteProduction));
+
+
+        extraProductionPanels[0].getSubmit().addActionListener(e -> {
+            notifyObserver(o -> o.onUpdateActivateExtraProduction(0,extraProductionPanels[0].getChosen()));
+            productionPopUp.dispose();
+            extraProductionPanels[0].clearSelection();
+        });
+        extraProductionPanels[1].getSubmit().addActionListener(e -> {
+            notifyObserver(o -> o.onUpdateActivateExtraProduction(1, extraProductionPanels[1].getChosen()));
+            productionPopUp.dispose();
+            extraProductionPanels[0].clearSelection();
+        });
     }
 
     private void setupSourceWarehouse() {
@@ -239,6 +271,48 @@ public class GUI extends ViewObservable implements IView {
         deposit[1].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(1)));
         deposit[2].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(2)));
         deposit[3].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(3)));
+
+        JButton[] exchange = bufferPanel.getChange_buttons();
+        exchange[0].addActionListener(e -> {
+            exchangePopUp.setContentPane(exchangeResourcePanels[0]);
+            exchangePopUp.revalidate();
+            exchangePopUp.setVisible(true);
+        });
+        exchange[1].addActionListener(e -> {
+            exchangePopUp.setContentPane(exchangeResourcePanels[1]);
+            exchangePopUp.revalidate();
+            exchangePopUp.setVisible(true);
+        });
+        exchange[2].addActionListener(e -> {
+            exchangePopUp.setContentPane(exchangeResourcePanels[2]);
+            exchangePopUp.revalidate();
+            exchangePopUp.setVisible(true);
+        });
+        exchange[3].addActionListener(e -> {
+            exchangePopUp.setContentPane(exchangeResourcePanels[3]);
+            exchangePopUp.revalidate();
+            exchangePopUp.setVisible(true);
+        });
+
+        exchangeResourcePanels[0].getResources()[0].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.COIN,0)));
+        exchangeResourcePanels[0].getResources()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SHIELD,0)));
+        exchangeResourcePanels[0].getResources()[2].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SERVANT,0)));
+        exchangeResourcePanels[0].getResources()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.STONE,0)));
+
+        exchangeResourcePanels[1].getResources()[0].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.COIN,1)));
+        exchangeResourcePanels[1].getResources()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SHIELD,1)));
+        exchangeResourcePanels[1].getResources()[2].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SERVANT,1)));
+        exchangeResourcePanels[1].getResources()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.STONE,1)));
+
+        exchangeResourcePanels[2].getResources()[0].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.COIN,2)));
+        exchangeResourcePanels[2].getResources()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SHIELD,2)));
+        exchangeResourcePanels[2].getResources()[2].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SERVANT,2)));
+        exchangeResourcePanels[2].getResources()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.STONE,2)));
+
+        exchangeResourcePanels[3].getResources()[0].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.COIN,3)));
+        exchangeResourcePanels[3].getResources()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SHIELD,3)));
+        exchangeResourcePanels[3].getResources()[2].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SERVANT,3)));
+        exchangeResourcePanels[3].getResources()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.STONE,3)));
     }
 
     private void setActionListeners() {
@@ -665,13 +739,6 @@ public class GUI extends ViewObservable implements IView {
         messagePopUp.changeMessage(errorMessage);
     }
 
-    /*
-    @Override
-    public void askReplacementResource(ResourceType r1, ResourceType r2) {
-
-    }
-
-     */
 
     @Override
     public void askToDiscard() throws ExecutionException {

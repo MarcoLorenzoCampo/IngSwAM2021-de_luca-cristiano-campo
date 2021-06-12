@@ -4,6 +4,7 @@ import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.market.leaderCards.ExtraProductionLeaderCard;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.builders.ResourceBoardBuilder;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
@@ -25,14 +26,27 @@ public class Executor {
     }
 
     private static void createAndShowGUI() {
-        BaseProductionPanel baseProductionPanel = new BaseProductionPanel();
+        ExtraProductionPanel baseProductionPanel = new ExtraProductionPanel();
         JFrame frame = new JFrame();
-        frame.setContentPane(baseProductionPanel);
+        frame.add(baseProductionPanel, BorderLayout.CENTER);
         frame.revalidate();
         frame.repaint();
         frame.pack();
-        frame.setSize(500,500);
+        frame.setSize(1500,500);
         frame.setVisible(true);
+
+        JButton update = new JButton("update");
+        update.addActionListener(e -> {
+            baseProductionPanel.updateExtraProductionPanel(
+                    new ExtraProductionLeaderCard(
+                            ResourceType.SERVANT,
+                            2,
+                            EffectType.EXTRA_PRODUCTION,
+                            null,
+                            null,
+                            null));
+        });
+        frame.add(update, BorderLayout.SOUTH);
     }
 
 
