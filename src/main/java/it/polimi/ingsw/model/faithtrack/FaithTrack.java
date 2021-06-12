@@ -131,6 +131,7 @@ public class FaithTrack extends Observable implements Serializable {
 
 
     /**
+     * faith marker increases of 1 position
      * it checks the type of tile;
      * if the player is the first to enter in a Vatican space, the player makes it inactive
      * it eventually activates vatican reports.

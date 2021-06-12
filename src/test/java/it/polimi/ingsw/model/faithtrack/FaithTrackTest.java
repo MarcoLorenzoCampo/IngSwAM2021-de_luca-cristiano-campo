@@ -88,55 +88,29 @@ class FaithTrackTest {
     @Test
     void pickFavorPoints2Test() { //Considering that the player has taken only the second favor tile
         //Arrange
-        PopeTile t1 = new PopeTile(3, Constants.NEUTRAL,0);
-        PopeTile t2 = new PopeTile(14, Constants.ORANGE,0);
-        PopeTile t3 = new PopeTile(18, Constants.NEUTRAL,0);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(16);
 
         //Act
         int result1 = faithTrack.pickFavorPoints(t1);
-        int result2 = faithTrack.pickFavorPoints(t2);
-        int result3 = faithTrack.pickFavorPoints(t3);
 
         //Assert
-        assertEquals(result1, 0);
-        assertEquals(result2, 3);
-        assertEquals(result3, 3);
+        assertEquals(result1, 3);
     }
 
     @Test
     void pickFavorPoints3Test() {//Considering that the player has taken first and third favor tiles
         //Arrange
-        PopeTile t1 = new PopeTile(6, Constants.YELLOW, 0);
-        PopeTile t2 = new PopeTile(9, Constants.NEUTRAL,0);
-        PopeTile t3 = new PopeTile(23, Constants.RED,0);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(8);
+        //Tile t1 = new PopeTile(8, Constants.YELLOW);
+        PopeTile t2 = (PopeTile) faithTrack.getFaithTrack().get(24);
 
         //Act
         int result1 = faithTrack.pickFavorPoints(t1);
         int result2 = faithTrack.pickFavorPoints(t2);
-        int result3 = faithTrack.pickFavorPoints(t3);
 
         //Assert
         assertEquals(result1, 2);
-        assertEquals(result2, 2);
-        assertEquals(result3, 6);
-    }
-
-    @Test
-    void pickFavorPoints4Test() {//Considering that the player hasn't taken any points
-        //Arrange
-        PopeTile t1 = new PopeTile(3, Constants.NEUTRAL,0);
-        PopeTile t2 = new PopeTile(10, Constants.NEUTRAL,0);
-        PopeTile t3 = new PopeTile(17, Constants.NEUTRAL,0);
-
-        //Act
-        int result1 = faithTrack.pickFavorPoints(t1);
-        int result2 = faithTrack.pickFavorPoints(t2);
-        int result3 = faithTrack.pickFavorPoints(t3);
-
-        //Assert
-        assertEquals(result1, 0);
-        assertEquals(result2, 0);
-        assertEquals(result3, 0);
+        assertEquals(result2, 6);
     }
 
     @Test //need other classes
