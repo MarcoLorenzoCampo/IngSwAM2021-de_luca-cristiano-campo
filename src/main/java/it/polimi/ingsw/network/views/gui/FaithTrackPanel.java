@@ -124,17 +124,20 @@ public class FaithTrackPanel extends JPanel {
                 x += (faithMarker-11) *( 4*width/3);
             }
         }
-        if(faithMarker>=16 && faithMarker<=24){
+        if(faithMarker>=16 ){
             x+=31*width/2;
             if(faithMarker>18){
                 x += (faithMarker-18) *( 4*width/3);
+            }
+            if(faithMarker>24){
+                x += 6*( 4*width/3);
             }
         }
 
         if(faithMarker==3 || faithMarker==10 || faithMarker==17){
             y-=4*height/3;
         }
-        if((faithMarker>=4&&faithMarker<=9)||(faithMarker>=18&&faithMarker<=24)){
+        if((faithMarker>=4&&faithMarker<=9)||(faithMarker>=18)){
             y-=7*height/3;
         }
         g.drawImage(img,x,y,width, height,null);
