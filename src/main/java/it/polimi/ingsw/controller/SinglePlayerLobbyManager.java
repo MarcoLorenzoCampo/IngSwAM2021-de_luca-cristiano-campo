@@ -264,6 +264,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager, ControllerObserv
                 "Lorenzo",
                 lorenzo.getFaithPosition(),
                 null,
+                null,
                 null
         );
     }

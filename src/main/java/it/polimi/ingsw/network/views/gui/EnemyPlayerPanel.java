@@ -9,23 +9,25 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 public class EnemyPlayerPanel extends JPanel {
-    String name;
-    int faith;
-    Map<ResourceType, Integer> inventory;
-    List<EffectType> cards;
+    private String name;
+    private int faith;
+    private Map<ResourceType, Integer> inventory;
+    private List<EffectType> cards;
+    private List<ResourceType> resources;
 
 
-    public EnemyPlayerPanel(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards){
+    public EnemyPlayerPanel(String name){
         this.name = name;
-        this.faith = faithPosition;
-        this.inventory = inventory;
-        this.cards = cards;
+        this.faith = 0;
+        this.inventory = new HashMap<>();
+        this.cards = new ArrayList<>();
         this.setBackground(new Color(146, 123, 91));
     }
 
@@ -34,10 +36,14 @@ public class EnemyPlayerPanel extends JPanel {
         super.paint(g);
         int width = this.getWidth()/16;
         int height = this.getHeight()/6;
-        drawStrongbox(g, width, height);
-        if(!inventory.isEmpty()) DrawInventory(g, width, height);
         drawStrings(g, width, height);
-        drawLeaders(g, width, height);
+        if(inventory!=null) {
+            drawStrongbox(g, width, height);
+            if (!inventory.isEmpty()) DrawInventory(g, width, height);
+        }
+        if(cards!=null) {
+            drawLeaders(g, width, height);
+        }
     }
 
     private void DrawInventory(Graphics gr, int global_width, int global_height) {
@@ -126,7 +132,7 @@ public class EnemyPlayerPanel extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setFont(new Font("Monaco", Font.PLAIN, width));
-        g.drawString("Username: "+String.valueOf(this.name),0, 3*height/2);
+        g.drawString("Name: "+this.name,0, 3*height/2);
 
 
         ClassLoader cl = this.getClass().getClassLoader();
@@ -145,27 +151,72 @@ public class EnemyPlayerPanel extends JPanel {
 
     private void drawLeaders(Graphics g, int width, int height){
 
-        ClassLoader cl = this.getClass().getClassLoader();
-        String[] item = {
-                "./front/reduced_leader_production_servant",
-                "./front/reduced_leader_inventory_coin"
-        };
         int x = 0;
         int y =4*height;
-
-        for (int i = 0; i < item.length; i++) {
-            InputStream url = cl.getResourceAsStream(item[i]+".jpg");
-            BufferedImage img = null;
-            try {
-                img = ImageIO.read(url);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
+        ClassLoader cl = this.getClass().getClassLoader();
+        String path = "./front/reduced_leader_";
+        String item = "";
+        for (int i = 0; i < cards.size(); i++) {
+            switch(cards.get(i)){
+                case DISCOUNT:
+                    item = path + "discount_";
+                    break;
+                case EXTRA_INVENTORY:
+                    item = path + "inventory_";
+                    break;
+                case MARBLE_EXCHANGE:
+                    item = path + "change_";
+                    break;
+                case EXTRA_PRODUCTION:
+                    item = path + "production_";
+                    break;
             }
-            g.drawImage(img, x, y,9*width/2 , 2*height, null);
-            y+=9*width/2;
+
+            if(resources.size()==cards.size()) {
+                switch (resources.get(i)) {
+
+                    case COIN:
+                        item = item + "coin";
+                        break;
+                    case SHIELD:
+                        item = item + "shield";
+                        break;
+                    case SERVANT:
+                        item = item + "servant";
+                        break;
+                    case STONE:
+                        item = item + "stone";
+                        break;
+                }
+                InputStream url = cl.getResourceAsStream(item + ".jpg");
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                g.drawImage(img, x, y, 5 * width, 2 * height, null);
+            }
+            x += 5*width;
         }
 
 
+
+
+
+
+    }
+
+   public String getNickname(){
+        return this.name;
+   }
+
+    public void updateEnemyPlayerPanel(int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards, List<ResourceType> resourceTypes){
+        this.faith = faithPosition;
+        this.inventory = inventory;
+        this.cards = cards;
+        this.resources = resourceTypes;
+        this.repaint();
     }
 }

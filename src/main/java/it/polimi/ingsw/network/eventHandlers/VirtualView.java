@@ -155,8 +155,8 @@ public class VirtualView implements IView, Observer {
      * @param cards: leader cards owned.
      */
     @Override
-    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
-        clientHandler.sendMessage(new PeekUpdateMessage(name, faithPosition, inventory, cards));
+    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards, List<ResourceType> leader_resource) {
+        clientHandler.sendMessage(new PeekUpdateMessage(name, faithPosition, inventory, cards, leader_resource));
     }
 
     /**

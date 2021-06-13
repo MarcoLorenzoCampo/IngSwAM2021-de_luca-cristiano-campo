@@ -187,7 +187,8 @@ public class OnlineClientManager implements ViewObserver, Observer {
                             p.getName(),
                             p.getFaithPosition(),
                             p.getInventory(),
-                            p.getCards()
+                            p.getCards(),
+                            p.getResourceTypes()
                     ));
                     break;
 

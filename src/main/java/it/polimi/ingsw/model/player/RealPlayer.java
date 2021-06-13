@@ -429,6 +429,17 @@ public class RealPlayer extends Observable implements Visitor {
         return e;
     }
 
+    public List<ResourceType> reduceLeadersResource(){
+        List<ResourceType> e = new ArrayList<>();
+
+        for(LeaderCard l : ownedLeaderCards) {
+            if(l.isActive()) {
+                e.add(l.getResource());
+            }
+        }
+        return e;
+    }
+
     /**
      * @return position on the faith track
      */

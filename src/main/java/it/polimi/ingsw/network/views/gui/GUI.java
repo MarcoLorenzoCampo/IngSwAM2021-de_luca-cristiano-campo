@@ -9,6 +9,7 @@ import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.views.IView;
+import it.polimi.ingsw.network.views.cli.LightweightPlayerState;
 
 
 import javax.swing.*;
@@ -44,6 +45,7 @@ public class GUI extends ViewObservable implements IView {
     private  final ExtraProductionPanel[] extraProductionPanels;
     private final JFrame productionPopUp;
     private final FinalProductionPanel finalProductionPanel;
+    private final EnemyPlayerPopUp enemyPlayerPopUp;
 
 
 
@@ -62,6 +64,7 @@ public class GUI extends ViewObservable implements IView {
         this.isOnline = isOnline;
         initializeSetupFrame();
         initializeSetupPanels();
+        enemyPlayerPopUp = new EnemyPlayerPopUp();
 
         actionButtons = new JButton[5];
         buttonsPopUp = new JFrame();
@@ -343,10 +346,10 @@ public class GUI extends ViewObservable implements IView {
 
         actionButtons[2].setText("Enemies");
         actionButtons[2].addActionListener(e -> {
-            buttonsPopUp.setContentPane(cardMarketPanel);
+            buttonsPopUp.setContentPane(enemyPlayerPopUp);
             buttonsPopUp.pack();
             buttonsPopUp.revalidate();
-            buttonsPopUp.setSize(800,1200);
+            buttonsPopUp.setSize(600,800);
             buttonsPopUp.setVisible(true);
         });
 
@@ -676,8 +679,18 @@ public class GUI extends ViewObservable implements IView {
     }
 
     @Override
-    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
+    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards, List<ResourceType> resourceTypes) {
+        EnemyPlayerPanel enemyPlayerPanel;
 
+        //If no player with that nickname is registered in the lightweight model it's added.
+        if(enemyPlayerPopUp.getPlayerStateByName(name) == null) {
+            enemyPlayerPanel = new EnemyPlayerPanel(name);
+            enemyPlayerPopUp.addEnemyPanel(enemyPlayerPanel);
+
+        } else {
+            enemyPlayerPanel = enemyPlayerPopUp.getPlayerStateByName(name);
+        }
+        enemyPlayerPanel.updateEnemyPlayerPanel(faithPosition, inventory, cards, resourceTypes);
     }
 
     /**

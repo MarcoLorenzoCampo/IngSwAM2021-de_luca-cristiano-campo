@@ -32,13 +32,14 @@ public class Executor {
         inventory.put(ResourceType.COIN, 100);
         inventory.put(ResourceType.STONE, 100);
         inventory.put(ResourceType.SERVANT, 100);
-        EnemyPlayerPanel baseProductionPanel = new EnemyPlayerPanel("mario", 4, inventory, new ArrayList<>());
-        EnemyPlayerPanel baseProductionPanel_1 = new EnemyPlayerPanel("marco", 8, inventory, new ArrayList<>());
-        EnemyPlayerPanel baseProductionPanel_2 = new EnemyPlayerPanel("marzio", 12, inventory, new ArrayList<>());
-        EnemyPlayerPanel baseProductionPanel_3 = new EnemyPlayerPanel("maurizio", 16, inventory, new ArrayList<>());
+        EnemyPlayerPanel baseProductionPanel = new EnemyPlayerPanel("mario");
+        baseProductionPanel.updateEnemyPlayerPanel(5, inventory, new ArrayList<>(), null);
+        EnemyPlayerPanel baseProductionPanel_1 = new EnemyPlayerPanel("marco");
+        EnemyPlayerPanel baseProductionPanel_2 = new EnemyPlayerPanel("marzio");
+        EnemyPlayerPanel baseProductionPanel_3 = new EnemyPlayerPanel("Alessandro");
         JFrame frame = new JFrame();
         JPanel main = new JPanel();
-        main.setLayout(new GridLayout(5, 1, 0,10));
+        main.setLayout(new GridLayout(4, 1, 0,10));
         main.setBackground(new Color(150, 80, 0));
         main.add(baseProductionPanel);
         main.add(baseProductionPanel_1);
@@ -48,13 +49,13 @@ public class Executor {
         frame.revalidate();
         frame.repaint();
         frame.pack();
-        frame.setSize(500,2000);
+        frame.setSize(650,850);
         frame.setVisible(true);
 
         JButton update = new JButton("update");
         update.addActionListener(e -> {
         });
-        frame.add(update, BorderLayout.SOUTH);
+        //frame.add(update, BorderLayout.SOUTH);
     }
 
 

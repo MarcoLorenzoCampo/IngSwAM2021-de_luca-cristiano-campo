@@ -653,7 +653,7 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
+    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards, List<ResourceType> resources) {
 
         LightweightPlayerState playerState;
 

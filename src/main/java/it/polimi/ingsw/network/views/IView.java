@@ -148,7 +148,7 @@ public interface IView {
     /**
      * Method to send a reduced String only version of an enemy status.
      */
-    void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards);
+    void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards, List<ResourceType> resourceTypes);
 
     /**
      * Prints a reduced version of a player's inventory.
