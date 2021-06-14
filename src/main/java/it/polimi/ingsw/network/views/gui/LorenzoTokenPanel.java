@@ -33,7 +33,7 @@ public class LorenzoTokenPanel extends JPanel {
             e.printStackTrace();
             return;
         }
-        g.drawImage(img, 2*width/3,height/9, 4*width,4*height, null);
+        g.drawImage(img, 2*width/3,height/3, 4*width,7*height/2, null);
     }
 
     public void updateLorenzoToken(String token){

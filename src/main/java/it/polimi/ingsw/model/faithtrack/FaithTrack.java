@@ -124,7 +124,7 @@ public class FaithTrack extends Observable implements Serializable {
         this.faithMarker++;
 
         //Notify all observers, but only the clients will get an updated version.
-        //notifyObserver(new GenericMessageFromServer("Lorenzo's position: " + faithMarker + "\n"));
+
         notifyObserver(new LorenzoFaithTrackMessage(faithMarker));
         if(isLastTile()) notifyControllerObserver(new EndGameMessage());
 

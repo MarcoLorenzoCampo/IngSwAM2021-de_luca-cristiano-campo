@@ -28,6 +28,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager, ControllerObserv
     private final List<RealPlayer> realPlayerList;
     private final LorenzoPlayer lorenzo;
     private final GameManager gameManager;
+    private boolean first_turn;
 
     private VirtualView playerVV;
 
@@ -36,6 +37,7 @@ public class SinglePlayerLobbyManager implements ILobbyManager, ControllerObserv
         lorenzo = new LorenzoPlayer();
         realPlayerList = new ArrayList<>();
         this.gameManager = gameManager;
+        first_turn = true;
     }
 
     /**
@@ -82,10 +84,13 @@ public class SinglePlayerLobbyManager implements ILobbyManager, ControllerObserv
     public void setNextTurn() {
 
         forwardPlayerUpdates();
-
+        if(first_turn) {
+            first_turn=false;
+        }
+        else{
         playerVV.showGenericString("Lorenzo's turn now.");
-
         lorenzo.getLorenzoPlayerBoard().getAction(new LorenzoAction(lorenzo));
+        }
 
         gameManager.onStartTurn();
     }
