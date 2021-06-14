@@ -2,10 +2,7 @@ package it.polimi.ingsw.model.faithtrack;
 
 import it.polimi.ingsw.enumerations.Constants;
 import it.polimi.ingsw.network.eventHandlers.Observable;
-import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
-import it.polimi.ingsw.network.messages.serverMessages.FaithTrackMessage;
-import it.polimi.ingsw.network.messages.serverMessages.GenericMessageFromServer;
-import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
+import it.polimi.ingsw.network.messages.serverMessages.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -127,8 +124,8 @@ public class FaithTrack extends Observable implements Serializable {
         this.faithMarker++;
 
         //Notify all observers, but only the clients will get an updated version.
-        notifyObserver(new GenericMessageFromServer("Lorenzo's position: " + faithMarker + "\n"));
-
+        //notifyObserver(new GenericMessageFromServer("Lorenzo's position: " + faithMarker + "\n"));
+        notifyObserver(new LorenzoFaithTrackMessage(faithMarker));
         if(isLastTile()) notifyControllerObserver(new EndGameMessage());
 
         if(isPopeTile(faithMarker)) {

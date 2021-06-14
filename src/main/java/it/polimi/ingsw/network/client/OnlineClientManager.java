@@ -116,7 +116,12 @@ public class OnlineClientManager implements ViewObserver, Observer {
 
                 case LORENZO_TOKEN:
                     LorenzoTokenMessage l = (LorenzoTokenMessage) message;
-                    viewUpdater.execute(() -> view.printLorenzoToken(l.getLorenzoTokenReduced()));
+                    viewUpdater.execute(() -> view.printLorenzoToken(l.getLorenzoTokenReduced(), l.getColor(), l.getQuantity()));
+                    break;
+
+                case LORENZO_FAITHTRACK:
+                    LorenzoFaithTrackMessage lorenzoFaithTrack = (LorenzoFaithTrackMessage) message;
+                    viewUpdater.execute(()-> view.printLorenzoFaithTrack(lorenzoFaithTrack.getPosition()));
                     break;
 
                 case FAITH_TRACK_MESSAGE:

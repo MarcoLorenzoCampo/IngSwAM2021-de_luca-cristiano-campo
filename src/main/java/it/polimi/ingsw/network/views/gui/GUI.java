@@ -9,7 +9,7 @@ import it.polimi.ingsw.network.eventHandlers.ViewObservable;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.views.IView;
-import it.polimi.ingsw.network.views.cli.LightweightPlayerState;
+
 
 
 import javax.swing.*;
@@ -24,8 +24,8 @@ public class GUI extends ViewObservable implements IView {
 
     private final boolean isOnline;
     private final JFrame setupFrame;
-    private ArrayList<JPanel> setup;
-    private ArrayList<JPanel> leaderPanels;
+    private final ArrayList<JPanel> setup;
+    private final ArrayList<JPanel> leaderPanels;
 
 
     private final JFrame mainframe;
@@ -46,6 +46,7 @@ public class GUI extends ViewObservable implements IView {
     private final JFrame productionPopUp;
     private final FinalProductionPanel finalProductionPanel;
     private final EnemyPlayerPopUp enemyPlayerPopUp;
+    private final LorenzoTokenPanel lorenzoTokenPanel;
 
 
 
@@ -65,6 +66,7 @@ public class GUI extends ViewObservable implements IView {
         initializeSetupFrame();
         initializeSetupPanels();
         enemyPlayerPopUp = new EnemyPlayerPopUp();
+        lorenzoTokenPanel = new LorenzoTokenPanel();
 
         actionButtons = new JButton[5];
         buttonsPopUp = new JFrame();
@@ -425,9 +427,8 @@ public class GUI extends ViewObservable implements IView {
         east.setPreferredSize(new Dimension(4*width, height));
         east.setBackground(new Color(146, 123, 91));
         east.setLayout(new BorderLayout());
-        JPanel north_east = new JPanel();
-        north_east.setBackground(new Color(198,160,98));
-        north_east.setPreferredSize(new Dimension(4*width, 4*height));
+
+        lorenzoTokenPanel.setPreferredSize(new Dimension(4*width, 4*height));
 
         JPanel east_center = new JPanel();
         east_center.setBackground(new Color(202,190,152));
@@ -437,15 +438,13 @@ public class GUI extends ViewObservable implements IView {
             east_center.add(iterator);
         }
 
-        //JPanel east_south = new JPanel();
-        //east_south.setBackground(new Color(146, 123, 91));
-        //east_south.setPreferredSize(new Dimension(4*width, 5*height));
+
         leaderRecapPanel.setPreferredSize(new Dimension(4*width, 5*height));
 
         JPanel messages = (JPanel) messagePopUp.getContentPane();
         messages.setOpaque(false);
         messages.setPreferredSize(new Dimension(4*width, 5*height));
-        east.add(north_east, BorderLayout.NORTH);
+        east.add(lorenzoTokenPanel, BorderLayout.NORTH);
         east.add(leaderRecapPanel, BorderLayout.SOUTH);
         east.add(east_center, BorderLayout.CENTER);
 
@@ -850,8 +849,41 @@ public class GUI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printLorenzoToken(String lorenzoTokenReduced) {
+    public void printLorenzoToken(String lorenzoTokenReduced, it.polimi.ingsw.enumerations.Color color, int quantity) {
+        String path = "./punchboard/token_";
+        if (color != null){
+            path = path+"discard_";
+            switch (color) {
+                case GREEN:
+                    path = path+"green.png";
+                    break;
+                case BLUE:
+                    path = path+"blue.png";
+                    break;
+                case YELLOW:
+                    path = path+"yellow.png";
+                    break;
+                case PURPLE:
+                    path = path+"purple.png";
+                    break;
+            }
+        }
+        else{
+            path = path+"move_";
+            if(quantity == 1){
+                path = path +"one.png";
+            }
+            else{
+                path = path +"two.png";
+            }
+        }
+        lorenzoTokenPanel.updateLorenzoToken(path);
 
+    }
+
+    @Override
+    public void printLorenzoFaithTrack(int faithmarker) {
+        faithTrackPanel.updateLorenzo(faithmarker);
     }
 
     @Override

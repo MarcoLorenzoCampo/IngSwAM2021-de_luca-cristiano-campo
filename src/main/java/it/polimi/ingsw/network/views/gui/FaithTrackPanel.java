@@ -13,12 +13,15 @@ import java.util.ArrayList;
 
 public class FaithTrackPanel extends JPanel {
     FaithTrack faithTrack;
+    int lorenzo;
 
     public FaithTrackPanel(){
         faithTrack = null;
+        lorenzo = 0;
     }
     public FaithTrackPanel(FaithTrack track){
         this.faithTrack = track;
+        lorenzo = 0;
     }
 
     @Override
@@ -26,8 +29,9 @@ public class FaithTrackPanel extends JPanel {
         int width = this.getWidth()/26;
         int height = this.getHeight()/5;
         DrawFaithTrack(g);
+        DrawFaithMarker(g, lorenzo, width, height, false);
         if(faithTrack!=null){
-            DrawFaithMarker(g, faithTrack.getFaithMarker(), width, height);
+            DrawFaithMarker(g, faithTrack.getFaithMarker(), width, height, true);
             switch(faithTrack.getCurrentFavorPoints()){
                 case 2:
                     DrawPopeFavor(g, 2, width, height);
@@ -93,12 +97,16 @@ public class FaithTrackPanel extends JPanel {
         g.drawImage(img, x,y, 2*width,2*height, null);
     }
 
-    private void DrawFaithMarker(Graphics g, int faithMarker, int width, int height) {
+    private void DrawFaithMarker(Graphics g, int faithMarker, int width, int height, boolean player) {
         int x=width;
         int y=27*height/8;
 
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("./punchboard/faith_marker.png");
+        InputStream url;
+
+        if(player) url = cl.getResourceAsStream("./punchboard/faith_marker.png");
+        else url = cl.getResourceAsStream("./punchboard/lorenzo_faith_marker.png");
+
         BufferedImage img = null;
         try {
             img = ImageIO.read(url);
@@ -158,6 +166,11 @@ public class FaithTrackPanel extends JPanel {
 
     public void updateFaithTrackPanel(FaithTrack faithTrack){
         this.faithTrack = faithTrack;
+        this.repaint();
+    }
+
+    public void updateLorenzo(int lorenzo){
+        this.lorenzo = lorenzo;
         this.repaint();
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.eventHandlers;
 
+import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
@@ -67,14 +68,6 @@ public class VirtualView implements IView, Observer {
     public void showInvalidAction(String errorMessage) {
         clientHandler.sendMessage(new GenericMessageFromServer(errorMessage));
     }
-/*
-    @Override
-    public void askReplacementResource(ResourceType r1, ResourceType r2) {
-
-    }
-
- */
-
 
     @Override
     public void askToDiscard() {
@@ -132,8 +125,13 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void printLorenzoToken(String lorenzoTokenReduced) {
-        clientHandler.sendMessage(new LorenzoTokenMessage(lorenzoTokenReduced));
+    public void printLorenzoToken(String lorenzoTokenReduced, Color color, int quantity) {
+        clientHandler.sendMessage(new LorenzoTokenMessage(lorenzoTokenReduced, color, quantity));
+    }
+
+    @Override
+    public void printLorenzoFaithTrack(int faithmarker) {
+        clientHandler.sendMessage(new LorenzoFaithTrackMessage(faithmarker));
     }
 
     @Override

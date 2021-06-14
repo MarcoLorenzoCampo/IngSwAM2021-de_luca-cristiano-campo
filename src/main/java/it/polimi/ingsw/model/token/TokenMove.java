@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.token;
 
+import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
 
@@ -46,6 +47,16 @@ public class TokenMove extends AbstractToken {
         else{
             return "2 \uD83D\uDD42";
         }
+    }
+
+    @Override
+    public Color getColor() {
+        return null;
+    }
+
+    @Override
+    public int getQuantity() {
+        return moves;
     }
 
     @Override

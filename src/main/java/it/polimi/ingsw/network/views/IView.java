@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.views;
 
+import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
@@ -130,7 +131,13 @@ public interface IView {
      * Prints the action token lorenzo has just played.
      * @param lorenzoTokenReduced: played token.
      */
-    void printLorenzoToken(String lorenzoTokenReduced);
+    void printLorenzoToken(String lorenzoTokenReduced, Color color, int quantity);
+
+    /**
+     * Prints the position of lorenzo's Faithmarker on the faithttrack
+     * @param faithmarker: position of the faithmarker
+     */
+    void printLorenzoFaithTrack(int faithmarker);
 
     /**
      * Prints a list of all the available leaders, both place and available ones.

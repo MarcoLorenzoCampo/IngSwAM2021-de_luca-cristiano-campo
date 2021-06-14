@@ -42,6 +42,7 @@ public enum PossibleMessages {
     GAME_STATUS,
     BOARD,
     LORENZO_TOKEN,
+    LORENZO_FAITHTRACK,
     AVAILABLE_PRODUCTION_CARDS,
     LOGIN_OUTCOME,
     LOBBY_SIZE_REQUEST,
@@ -64,5 +65,5 @@ public enum PossibleMessages {
     DISCARDED_RESOURCE,
     END_GAME,
     NO_MORE_CARDS,
-    BOUGHT_7_CARDS,
+    BOUGHT_7_CARDS
 }

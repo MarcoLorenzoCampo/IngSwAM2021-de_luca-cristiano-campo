@@ -42,6 +42,16 @@ public class TokenDiscard extends AbstractToken {
         return colorCLI.escape() + "-2 \u25AF";
     }
 
+    @Override
+    public Color getColor() {
+        return color;
+    }
+
+    @Override
+    public int getQuantity() {
+        return 2;
+    }
+
     private void initColorLevel(){
         cardColor.put(Color.GREEN, ColorCLI.ANSI_GREEN);
         cardColor.put(Color.BLUE, ColorCLI.ANSI_BLUE);

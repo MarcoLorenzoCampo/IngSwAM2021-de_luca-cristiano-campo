@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.views.cli;
 
+import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
@@ -790,12 +791,17 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printLorenzoToken(String lorenzoTokenReduced) {
+    public void printLorenzoToken(String lorenzoTokenReduced, Color color, int quantity) {
 
         out.println(lorenzoTokenReduced);
 
         /*GraphicalToken graphicalToken = new GraphicalToken(lorenzoAction);
         graphicalToken.draw();*/
+    }
+
+    @Override
+    public void printLorenzoFaithTrack(int faithmarker) {
+        System.out.println("Lorenzo's position: " + faithmarker + "\n");
     }
 
     /**
