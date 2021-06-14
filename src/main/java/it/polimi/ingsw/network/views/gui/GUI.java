@@ -746,6 +746,7 @@ public class GUI extends ViewObservable implements IView {
     public void showGenericString(String genericMessage) {
         messagePopUp.changeMessage(genericMessage);
         System.out.println(genericMessage);
+        faithTrackPanel.repaint();
     }
 
     @Override

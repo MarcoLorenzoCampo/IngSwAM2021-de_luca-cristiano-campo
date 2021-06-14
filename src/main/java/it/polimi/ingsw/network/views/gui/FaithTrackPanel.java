@@ -77,11 +77,11 @@ public class FaithTrackPanel extends JPanel {
                 break;
             case 3:
                 x += 77 * width/6;
-                y += 31 * height/24;
+                y += 23 * height/24;
                 item = item.concat("3");
                 break;
             case 4:
-                x += 62 * width/3;
+                x += 20 * width;
                 y += 55 * height/24;
                 item = item.concat("4");
                 break;
