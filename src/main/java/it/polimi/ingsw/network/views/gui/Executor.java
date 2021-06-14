@@ -27,29 +27,14 @@ public class Executor {
     }
 
     private static void createAndShowGUI() {
-        HashMap<ResourceType, Integer> inventory = new HashMap<>();
-        inventory.put(ResourceType.SHIELD, 100);
-        inventory.put(ResourceType.COIN, 100);
-        inventory.put(ResourceType.STONE, 100);
-        inventory.put(ResourceType.SERVANT, 100);
-        EnemyPlayerPanel baseProductionPanel = new EnemyPlayerPanel("mario");
-        baseProductionPanel.updateEnemyPlayerPanel(5, inventory, new ArrayList<>(), null);
-        EnemyPlayerPanel baseProductionPanel_1 = new EnemyPlayerPanel("marco");
-        EnemyPlayerPanel baseProductionPanel_2 = new EnemyPlayerPanel("marzio");
-        EnemyPlayerPanel baseProductionPanel_3 = new EnemyPlayerPanel("Alessandro");
+
         JFrame frame = new JFrame();
-        JPanel main = new JPanel();
-        main.setLayout(new GridLayout(4, 1, 0,10));
-        main.setBackground(new Color(150, 80, 0));
-        main.add(baseProductionPanel);
-        main.add(baseProductionPanel_1);
-        main.add(baseProductionPanel_2);
-        main.add(baseProductionPanel_3);
-        frame.setContentPane(main);
+
+        frame.setContentPane(new LorenzoTokenPanel());
         frame.revalidate();
         frame.repaint();
         frame.pack();
-        frame.setSize(650,850);
+        frame.setSize(500,400);
         frame.setVisible(true);
 
         JButton update = new JButton("update");

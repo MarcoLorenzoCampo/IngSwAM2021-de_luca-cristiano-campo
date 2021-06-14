@@ -17,12 +17,13 @@ public class LorenzoTokenPanel extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        paintToken(g);
-    }
-
-    private void paintToken(Graphics g) {
         int width = this.getWidth()/5;
         int height = this.getHeight()/4;
+        paintToken(g, width, height);
+    }
+
+    private void paintToken(Graphics g, int width, int height) {
+
         ClassLoader cl = this.getClass().getClassLoader();
         InputStream url = cl.getResourceAsStream(path);
         BufferedImage img= null;
@@ -32,7 +33,7 @@ public class LorenzoTokenPanel extends JPanel {
             e.printStackTrace();
             return;
         }
-        g.drawImage(img, width/2,0, 4*width,4*height, null);
+        g.drawImage(img, 2*width/3,height/9, 4*width,4*height, null);
     }
 
     public void updateLorenzoToken(String token){
