@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.views;
 
+import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
@@ -50,11 +51,6 @@ public interface IView {
      */
     void showInvalidAction(String errorMessage);
 
-    /**
-     * Asks the player to replace the grey marble (UNDEFINED resource) with something if he has
-     * enough active leader cards.
-     */
-    void askReplacementResource(ResourceType r1, ResourceType r2);
 
     /**
      * Asks the player to store or discard a resource that has to be deposited;
@@ -124,10 +120,23 @@ public interface IView {
     void printFaithTrack(FaithTrack faithTrack);
 
     /**
+     * Prints the favor points obtained by the player
+     * @param pope_favor: points obtained
+     * @param current_points: current points
+     */
+    void printPopeFavor(int pope_favor, int current_points);
+
+    /**
      * Prints the action token lorenzo has just played.
      * @param lorenzoTokenReduced: played token.
      */
-    void printLorenzoToken(String lorenzoTokenReduced);
+    void printLorenzoToken(String lorenzoTokenReduced, Color color, int quantity);
+
+    /**
+     * Prints the position of lorenzo's Faithmarker on the faithttrack
+     * @param faithmarker: position of the faithmarker
+     */
+    void printLorenzoFaithTrack(int faithmarker);
 
     /**
      * Prints a list of all the available leaders, both place and available ones.
@@ -145,7 +154,7 @@ public interface IView {
     /**
      * Method to send a reduced String only version of an enemy status.
      */
-    void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards);
+    void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards, List<ResourceType> resourceTypes);
 
     /**
      * Prints a reduced version of a player's inventory.

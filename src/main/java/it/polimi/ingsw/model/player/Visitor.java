@@ -16,5 +16,5 @@ public interface Visitor {
     public void visit(PlaceLeaderAction action);
     public void visit(RearrangeInventoryAction action);
     public void visit(RemoveResourcesAction action);
-    public void visit(LorenzoAction action);
+    public void visit(ClearProductionAction action);
 }

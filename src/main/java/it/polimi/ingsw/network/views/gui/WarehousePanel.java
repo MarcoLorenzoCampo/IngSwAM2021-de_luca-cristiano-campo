@@ -28,6 +28,7 @@ public class WarehousePanel extends JPanel {
         JPanel button = new JPanel();
         button.setLayout(new FlowLayout());
         source_warehouse = new JButton("SOURCE WAREHOUSE");
+        source_warehouse.setVisible(true);
         source_warehouse.setFocusable(false);
         button.setOpaque(false);
 
@@ -41,6 +42,18 @@ public class WarehousePanel extends JPanel {
     public WarehousePanel() {
         shelves = new ArrayList<>();
         extras = new ArrayList<>();
+
+        this.setLayout(new BorderLayout());
+        JPanel button = new JPanel();
+        button.setLayout(new FlowLayout());
+        source_warehouse = new JButton("SOURCE WAREHOUSE");
+        source_warehouse.setVisible(true);
+        source_warehouse.setFocusable(false);
+        button.setOpaque(false);
+
+
+        button.add(source_warehouse);
+        this.add(button, BorderLayout.SOUTH);
     }
 
     @Override

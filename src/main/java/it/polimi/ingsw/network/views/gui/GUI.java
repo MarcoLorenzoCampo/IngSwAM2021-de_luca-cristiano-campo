@@ -6,25 +6,26 @@ import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.eventHandlers.ViewObservable;
+import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.utilities.NetworkInfoValidator;
 import it.polimi.ingsw.network.views.IView;
-import it.polimi.ingsw.network.views.cli.LightweightModel;
+
+
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class GUI extends ViewObservable implements IView {
 
-    private final LightweightModel lightweightModel;
-    private boolean isOnline;
+
+    private final boolean isOnline;
     private final JFrame setupFrame;
-    private ArrayList<JPanel> setup;
-    private ArrayList<JPanel> leaderPanels;
+    private final ArrayList<JPanel> setup;
+    private final ArrayList<JPanel> leaderPanels;
 
 
     private final JFrame mainframe;
@@ -33,44 +34,446 @@ public class GUI extends ViewObservable implements IView {
     private final ProductionBoardPanel productionBoardPanel;
     private final WarehousePanel warehousePanel;
     private final StrongBoxPanel strongBoxPanel;
-    //private final BufferPanel bufferPanel;
-    //private final FinalProductionPanel finalProductionPanel;
+    private final AvailableLeaderPanel availableLeaderPanel;
+    private final LeaderRecapPanel leaderRecapPanel;
+    private final JButton[] actionButtons;
+    private final JFrame buttonsPopUp;
+    private final BufferPanel bufferPanel;
+    private final ExchangeResourcePanel[] exchangeResourcePanels;
+    private final JFrame exchangePopUp;
+    private final BaseProductionPanel baseProductionPanel;
+    private  final ExtraProductionPanel[] extraProductionPanels;
+    private final JFrame productionPopUp;
+    private final FinalProductionPanel finalProductionPanel;
+    private final EnemyPlayerPopUp enemyPlayerPopUp;
+    private final LorenzoTokenPanel lorenzoTokenPanel;
+
+
 
     private final CardMarketPanel cardMarketPanel;
+    private final JFrame buyCardPopUp;
+    private final BuyCardPanel[]  buyCardPanels;
     private final ResourceMarketPanel resourceMarketPanel;
 
-    private MessagePopUp messagePopUp;
+    private final MessagePopUp messagePopUp;
 
     public GUI(boolean isOnline){
-        lightweightModel = new LightweightModel();
         messagePopUp = new MessagePopUp(" ");
         setupFrame = new JFrame();
         setup = new ArrayList<>();
         leaderPanels = new ArrayList<>();
         this.isOnline = isOnline;
-
         initializeSetupFrame();
         initializeSetupPanels();
+        enemyPlayerPopUp = new EnemyPlayerPopUp();
+        lorenzoTokenPanel = new LorenzoTokenPanel();
+
+        actionButtons = new JButton[5];
+        buttonsPopUp = new JFrame();
+        setActionListeners();
 
         faithTrackPanel = new FaithTrackPanel();
-        productionBoardPanel = new ProductionBoardPanel();
-        warehousePanel = new WarehousePanel();
-        strongBoxPanel = new StrongBoxPanel();
 
+        productionPopUp = new JFrame();
+        productionBoardPanel = new ProductionBoardPanel();
+        baseProductionPanel = new BaseProductionPanel();
+        extraProductionPanels = new ExtraProductionPanel[2];
+        extraProductionPanels[0] = new ExtraProductionPanel();
+        extraProductionPanels[1] = new ExtraProductionPanel();
+        setProductionButtons();
+
+        warehousePanel = new WarehousePanel();
+        setupSourceWarehouse();
+
+        strongBoxPanel = new StrongBoxPanel();
+        setupSourceStrongbox();
+
+        availableLeaderPanel = new AvailableLeaderPanel();
+        leaderRecapPanel = new LeaderRecapPanel();
+        setupLeaderButtons();
+
+        finalProductionPanel = new FinalProductionPanel();
+        bufferPanel= new BufferPanel();
+        exchangeResourcePanels = new ExchangeResourcePanel[4];
+        exchangeResourcePanels[0] = new ExchangeResourcePanel();
+        exchangeResourcePanels[1] = new ExchangeResourcePanel();
+        exchangeResourcePanels[2] = new ExchangeResourcePanel();
+        exchangeResourcePanels[3] = new ExchangeResourcePanel();
+        exchangePopUp = new JFrame();
+        setBufferActionListener();
+
+
+        buyCardPopUp = new JFrame();
+        buyCardPopUp.setSize(500,500);
         cardMarketPanel = new CardMarketPanel();
+        buyCardPanels = new BuyCardPanel[12];
+        for (int i = 0; i < 12; i++) {
+            buyCardPanels[i] = new BuyCardPanel(i);
+        }
+        setCardMarketButtons();
+        setBuyCardButtons();
+
+
         resourceMarketPanel = new ResourceMarketPanel();
+        setArrowsActionListener();
+
 
         mainframe = new JFrame();
         initializeMainFrame();
         startGUI();
     }
 
+    private void setupLeaderButtons() {
+        availableLeaderPanel.getButtons().get(0).addActionListener(e -> notifyObserver(o -> o.onUpdateActivateLeader(0)));
+        availableLeaderPanel.getButtons().get(1).addActionListener(e -> notifyObserver(o -> o.onUpdateActivateLeader(1)));
+        availableLeaderPanel.getButtons().get(2).addActionListener(e -> notifyObserver(o -> o.onUpdateDiscardLeader(0)));
+        availableLeaderPanel.getButtons().get(3).addActionListener(e -> notifyObserver(o -> o.onUpdateDiscardLeader(1)));
+    }
+
+    private void setProductionButtons() {
+        baseProductionPanel.getSubmit().addActionListener(e -> {
+            ArrayList<ResourceType> production = baseProductionPanel.getProduction();
+            notifyObserver(o -> o.onUpdateBaseActivation(production.get(0), production.get(1), production.get(2)));
+            baseProductionPanel.resetProduction();
+            productionPopUp.dispose();
+        });
+
+        productionBoardPanel.getButtons()[0].addActionListener(e -> {
+            productionPopUp.setContentPane(baseProductionPanel);
+            productionPopUp.revalidate();
+            productionPopUp.repaint();
+            productionPopUp.setVisible(true);
+        });
+        productionBoardPanel.getButtons()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateActivateProductionCard(0)));
+        productionBoardPanel.getButtons()[2].addActionListener(e -> notifyObserver(o -> o.onUpdateActivateProductionCard(1)));
+        productionBoardPanel.getButtons()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateActivateProductionCard(2)));
+
+        productionBoardPanel.getButtons()[4].addActionListener(e -> {
+            extraProductionPanels[0].updateExtraProductionPanel(productionBoardPanel.getExtraLeader(0));
+            productionPopUp.setContentPane(extraProductionPanels[0]);
+            productionPopUp.pack();
+            productionPopUp.revalidate();
+            productionPopUp.repaint();
+            productionPopUp.setSize(600, 275);
+            productionPopUp.setVisible(true);
+        });
+        productionBoardPanel.getButtons()[5].addActionListener(e -> {
+            extraProductionPanels[1].updateExtraProductionPanel(productionBoardPanel.getExtraLeader(1));
+            productionPopUp.setContentPane(extraProductionPanels[1]);
+            productionPopUp.pack();
+            productionPopUp.revalidate();
+            productionPopUp.repaint();
+            productionPopUp.setSize(600, 275);
+            productionPopUp.setVisible(true);
+        });
+        productionBoardPanel.getButtons()[6].addActionListener(e -> notifyObserver(ViewObserver::onUpdateExecuteProduction));
+
+
+        extraProductionPanels[0].getSubmit().addActionListener(e -> {
+            notifyObserver(o -> o.onUpdateActivateExtraProduction(0,extraProductionPanels[0].getChosen()));
+            productionPopUp.dispose();
+            extraProductionPanels[0].clearSelection();
+        });
+        extraProductionPanels[1].getSubmit().addActionListener(e -> {
+            notifyObserver(o -> o.onUpdateActivateExtraProduction(1, extraProductionPanels[1].getChosen()));
+            productionPopUp.dispose();
+            extraProductionPanels[1].clearSelection();
+        });
+    }
+
+    private void setupSourceWarehouse() {
+        warehousePanel.getSource_warehouse().addActionListener(e -> notifyObserver(ViewObserver::onUpdateSourceWarehouse));
+    }
+
+    private void setupSourceStrongbox() {
+        strongBoxPanel.getSource_strongbox().addActionListener(e -> notifyObserver(ViewObserver::onUpdateSourceStrongBox));
+    }
+
+    private void setCardMarketButtons() {
+        ArrayList<JButton> cards = cardMarketPanel.getButtons();
+        cards.get(0).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[0]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+        });
+        cards.get(1).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[1]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+        });
+        cards.get(2).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[2]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(3).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[3]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(4).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[4]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(5).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[5]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(6).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[6]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(7).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[7]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(8).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[8]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(9).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[9]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(10).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[10]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+        cards.get(11).addActionListener(e -> {
+            buyCardPopUp.setContentPane(buyCardPanels[11]);
+            buyCardPopUp.revalidate();
+            buyCardPopUp.setVisible(true);
+
+        });
+    }
+
+    private void setBuyCardButtons() {
+        for (BuyCardPanel iterator: buyCardPanels) {
+            JButton[] slots = iterator.getSlots();
+            for (int i = 0; i < slots.length; i++) {
+                int finalI = i;
+                slots[i].addActionListener(e -> {
+                    notifyObserver(o -> o.onUpdateBuyCard(iterator.getSelectedCard(), finalI));
+                    buyCardPopUp.dispose();
+                });
+            }
+        }
+    }
+
+    private void setBufferActionListener() {
+        JButton[] deposit = bufferPanel.getDeposit_buttons();
+        deposit[0].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(0)));
+        deposit[1].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(1)));
+        deposit[2].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(2)));
+        deposit[3].addActionListener(e -> notifyObserver(o -> o.onUpdateDeposit(3)));
+
+        JButton[] exchange = bufferPanel.getChange_buttons();
+        exchange[0].addActionListener(e -> {
+            exchangePopUp.setContentPane(exchangeResourcePanels[0]);
+            exchangePopUp.revalidate();
+            exchangePopUp.setVisible(true);
+        });
+        exchange[1].addActionListener(e -> {
+            exchangePopUp.setContentPane(exchangeResourcePanels[1]);
+            exchangePopUp.revalidate();
+            exchangePopUp.setVisible(true);
+        });
+        exchange[2].addActionListener(e -> {
+            exchangePopUp.setContentPane(exchangeResourcePanels[2]);
+            exchangePopUp.revalidate();
+            exchangePopUp.setVisible(true);
+        });
+        exchange[3].addActionListener(e -> {
+            exchangePopUp.setContentPane(exchangeResourcePanels[3]);
+            exchangePopUp.revalidate();
+            exchangePopUp.setVisible(true);
+        });
+
+        exchangeResourcePanels[0].getResources()[0].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.COIN,0)));
+        exchangeResourcePanels[0].getResources()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SHIELD,0)));
+        exchangeResourcePanels[0].getResources()[2].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SERVANT,0)));
+        exchangeResourcePanels[0].getResources()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.STONE,0)));
+
+        exchangeResourcePanels[1].getResources()[0].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.COIN,1)));
+        exchangeResourcePanels[1].getResources()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SHIELD,1)));
+        exchangeResourcePanels[1].getResources()[2].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SERVANT,1)));
+        exchangeResourcePanels[1].getResources()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.STONE,1)));
+
+        exchangeResourcePanels[2].getResources()[0].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.COIN,2)));
+        exchangeResourcePanels[2].getResources()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SHIELD,2)));
+        exchangeResourcePanels[2].getResources()[2].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SERVANT,2)));
+        exchangeResourcePanels[2].getResources()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.STONE,2)));
+
+        exchangeResourcePanels[3].getResources()[0].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.COIN,3)));
+        exchangeResourcePanels[3].getResources()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SHIELD,3)));
+        exchangeResourcePanels[3].getResources()[2].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.SERVANT,3)));
+        exchangeResourcePanels[3].getResources()[3].addActionListener(e -> notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.STONE,3)));
+    }
+
+    private void setActionListeners() {
+
+        for (int i = 0; i < 5; i++) {
+            actionButtons[i]= new JButton();
+            actionButtons[i].setFocusable(false);
+        }
+        actionButtons[0].setText("Card Market");
+        actionButtons[0].addActionListener(e -> {
+            buttonsPopUp.setContentPane(cardMarketPanel);
+            buttonsPopUp.pack();
+            buttonsPopUp.revalidate();
+            buttonsPopUp.setSize(660,800);
+            buttonsPopUp.setVisible(true);
+        });
+
+        actionButtons[1].setText("Resource Market");
+        actionButtons[1].addActionListener(e -> {
+            buttonsPopUp.setContentPane(resourceMarketPanel);
+            buttonsPopUp.pack();
+            buttonsPopUp.revalidate();
+            buttonsPopUp.setSize(660,740);
+            buttonsPopUp.setVisible(true);
+        });
+
+        actionButtons[2].setText("Enemies");
+        actionButtons[2].addActionListener(e -> {
+            buttonsPopUp.setContentPane(enemyPlayerPopUp);
+            buttonsPopUp.pack();
+            buttonsPopUp.revalidate();
+            buttonsPopUp.setSize(600,800);
+            buttonsPopUp.setVisible(true);
+        });
+
+        actionButtons[3].setText("Leaders");
+        actionButtons[3].addActionListener(e -> {
+            buttonsPopUp.setContentPane(availableLeaderPanel);
+            buttonsPopUp.pack();
+            buttonsPopUp.revalidate();
+            buttonsPopUp.setSize(800,650);
+            buttonsPopUp.setVisible(true);
+        });
+
+        actionButtons[4].setText("END TURN");
+        actionButtons[4].addActionListener(e -> notifyObserver(ViewObserver::onUpdateEndTurn));
+    }
+
+    private void setArrowsActionListener(){
+
+        JButton[] arrows = resourceMarketPanel.getArrows();
+        arrows[0].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(0)));
+        arrows[1].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(1)));
+        arrows[2].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(2)));
+        arrows[3].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(3)));
+        arrows[4].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(4)));
+        arrows[5].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(5)));
+        arrows[6].addActionListener(e -> notifyObserver(o -> o.onUpdateGetResources(6)));
+
+    }
+
     private void initializeMainFrame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        mainframe.setSize(screenSize.width,screenSize.height);
+        mainframe.setSize(screenSize.width,screenSize.height-20);
+        mainframe.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 
+        int width = screenSize.width/35;
+        int height = (screenSize.height-20)/21;
 
+        createWestPanel(width, height, mainframe);
+        createEastPanel(width, height, mainframe);
+        createMiddlePanel(width, height, mainframe);
+
+
+       mainframe.repaint();
+       mainframe.setVisible(true);
+
+
+    }
+
+    private void createMiddlePanel(int width, int height, JFrame mainframe) {
+        JPanel middle = new JPanel();
+        middle.setLayout(new BorderLayout());
+
+        faithTrackPanel.setPreferredSize(new Dimension(width, 4*height));
+        productionBoardPanel.setPreferredSize(new Dimension(width, 12*height));
+
+        JPanel south = new JPanel();
+        south.setPreferredSize(new Dimension(width, 5*height));
+        south.setBackground(new Color(146, 123, 91));
+        south.setLayout(new GridLayout(1,2));
+        south.add(finalProductionPanel);
+        south.add(bufferPanel);
+
+        middle.add(faithTrackPanel, BorderLayout.NORTH);
+        middle.add(productionBoardPanel, BorderLayout.CENTER);
+        middle.add(south, BorderLayout.SOUTH);
+
+        mainframe.add(middle);
+    }
+
+    private void createEastPanel(int width, int height, JFrame mainframe) {
+        JPanel east = new JPanel();
+        east.setPreferredSize(new Dimension(4*width, height));
+        east.setBackground(new Color(146, 123, 91));
+        east.setLayout(new BorderLayout());
+
+        lorenzoTokenPanel.setPreferredSize(new Dimension(4*width, 4*height));
+
+        JPanel east_center = new JPanel();
+        east_center.setBackground(new Color(202,190,152));
+        east_center.setPreferredSize(new Dimension(4*width,12*height));
+        east_center.setLayout(new FlowLayout());
+        for (JButton iterator: actionButtons) {
+            east_center.add(iterator);
+        }
+
+
+        leaderRecapPanel.setPreferredSize(new Dimension(4*width, 5*height));
+
+        JPanel messages = (JPanel) messagePopUp.getContentPane();
+        messages.setOpaque(false);
+        messages.setPreferredSize(new Dimension(4*width, 5*height));
+        east.add(lorenzoTokenPanel, BorderLayout.NORTH);
+        east.add(leaderRecapPanel, BorderLayout.SOUTH);
+        east.add(east_center, BorderLayout.CENTER);
+
+
+        mainframe.add(east, BorderLayout.EAST);
+    }
+
+    private void createWestPanel(int width, int height, JFrame mainframe) {
+        JPanel west = new JPanel();
+        west.setBackground(new Color(198,160,98));
+        west.setPreferredSize(new Dimension(6*width, height));
+        west.setLayout(new BorderLayout());
+
+
+        JPanel west_north = (JPanel) messagePopUp.getContentPane();
+        west_north.setOpaque(false);
+        west_north.setPreferredSize(new Dimension(5*width, 4*height));
+
+        west.add(west_north, BorderLayout.NORTH);
+        warehousePanel.setPreferredSize(new Dimension(5*width,9*height));
+        west.add(warehousePanel, BorderLayout.CENTER);
+        strongBoxPanel.setPreferredSize(new Dimension(5*width, 5*height));
+        west.add(strongBoxPanel, BorderLayout.SOUTH);
+
+        mainframe.add(west, BorderLayout.WEST);
     }
 
     private void initializeSetupPanels() {
@@ -279,8 +682,18 @@ public class GUI extends ViewObservable implements IView {
     }
 
     @Override
-    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
+    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards, List<ResourceType> resourceTypes) {
+        EnemyPlayerPanel enemyPlayerPanel;
 
+        //If no player with that nickname is registered in the lightweight model it's added.
+        if(enemyPlayerPopUp.getPlayerStateByName(name) == null) {
+            enemyPlayerPanel = new EnemyPlayerPanel(name);
+            enemyPlayerPopUp.addEnemyPanel(enemyPlayerPanel);
+
+        } else {
+            enemyPlayerPanel = enemyPlayerPopUp.getPlayerStateByName(name);
+        }
+        enemyPlayerPanel.updateEnemyPlayerPanel(faithPosition, inventory, cards, resourceTypes);
     }
 
     /**
@@ -337,17 +750,14 @@ public class GUI extends ViewObservable implements IView {
     public void showGenericString(String genericMessage) {
         messagePopUp.changeMessage(genericMessage);
         System.out.println(genericMessage);
+        faithTrackPanel.repaint();
     }
 
     @Override
     public void showInvalidAction(String errorMessage) {
-
+        JOptionPane.showMessageDialog(null, errorMessage, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
-    @Override
-    public void askReplacementResource(ResourceType r1, ResourceType r2) {
-
-    }
 
     @Override
     public void askToDiscard() throws ExecutionException {
@@ -365,7 +775,9 @@ public class GUI extends ViewObservable implements IView {
             leaderPanels.add(setupLeaderPopUp);
         }
         else{
-            //leaderPanels.get(1) = normal show leaders;
+            availableLeaderPanel.updateAvailableLeaderPanel((ArrayList<LeaderCard>) cards);
+            leaderRecapPanel.updateLeaderRecapPanel((ArrayList<LeaderCard>) cards);
+            productionBoardPanel.updateExtraProduction((ArrayList<LeaderCard>) cards);
         }
     }
 
@@ -385,17 +797,17 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void showError(String errorMessage) {
-
+        messagePopUp.changeMessage(errorMessage);
     }
 
     @Override
     public void currentTurn(String message) {
-
+        messagePopUp.changeMessage(message);
     }
 
     @Override
     public void turnEnded(String message) {
-
+        messagePopUp.changeMessage(message);
     }
 
     @Override
@@ -409,7 +821,7 @@ public class GUI extends ViewObservable implements IView {
         }
         else {
             messagePopUp.changeMessage("The first player doesn't get to pick any resource!");
-            notifyObserver(o -> o.onUpdateSetupResource(new LinkedList<ResourceType>()));
+            notifyObserver(o -> o.onUpdateSetupResource(new LinkedList<>()));
         }
     }
 
@@ -420,7 +832,7 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void showWinMatch(String winner) {
-
+        JOptionPane.showMessageDialog(null, winner + " won!\n", "WINNER", JOptionPane.PLAIN_MESSAGE);
     }
 
     @Override
@@ -436,11 +848,52 @@ public class GUI extends ViewObservable implements IView {
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
         faithTrackPanel.updateFaithTrackPanel(faithTrack);
+
+        mainframe.revalidate();
+        mainframe.repaint();
     }
 
     @Override
-    public void printLorenzoToken(String lorenzoTokenReduced) {
+    public void printPopeFavor(int pope_favor, int current_points) {
+        faithTrackPanel.updatePopeFavorPoints(current_points);
+    }
 
+    @Override
+    public void printLorenzoToken(String lorenzoTokenReduced, it.polimi.ingsw.enumerations.Color color, int quantity) {
+        String path = "./punchboard/token_";
+        if (color != null){
+            path = path+"discard_";
+            switch (color) {
+                case GREEN:
+                    path = path+"green.png";
+                    break;
+                case BLUE:
+                    path = path+"blue.png";
+                    break;
+                case YELLOW:
+                    path = path+"yellow.png";
+                    break;
+                case PURPLE:
+                    path = path+"purple.png";
+                    break;
+            }
+        }
+        else{
+            path = path+"move_";
+            if(quantity == 1){
+                path = path +"one.png";
+            }
+            else{
+                path = path +"two.png";
+            }
+        }
+        lorenzoTokenPanel.updateLorenzoToken(path);
+
+    }
+
+    @Override
+    public void printLorenzoFaithTrack(int faithmarker) {
+        faithTrackPanel.updateLorenzo(faithmarker);
     }
 
     @Override
@@ -450,7 +903,7 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void printBuffer(ArrayList<ResourceType> buffer) {
-
+        bufferPanel.updateBufferPanel(buffer);
     }
 
     @Override
@@ -465,14 +918,12 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void printProductionBoard(HashMap<Integer, ProductionCard> productionBoard) {
-
-        //DA MODIFICARE PER PRENDERE I LEADER
-        productionBoardPanel.updateProductionBoardPanel(productionBoard, new ArrayList<>());
+        productionBoardPanel.updateProductionBoardPanel(productionBoard);
     }
 
     @Override
     public void printFinalProduction(HashMap<ResourceType, Integer> input, HashMap<ResourceType, Integer> output) {
-
+        finalProductionPanel.updateFinalProductionPanel(input, output);
     }
 
 }

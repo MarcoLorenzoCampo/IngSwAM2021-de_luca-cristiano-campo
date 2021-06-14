@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.productionBoard;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.ExtraProductionLeaderCard;
@@ -14,7 +13,6 @@ import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 
-import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.ChosenProductionMessage;
 import it.polimi.ingsw.network.messages.serverMessages.ProductionBoardMessage;
 
@@ -117,11 +115,16 @@ public class ProductionBoard extends Observable {
                 destination.add(input);
             }
         }
+        sortFinalProduction();
+    }
 
+    private void sortFinalProduction() {
+        finalProduction.getInputResources().sort(Comparator.comparingInt((ResourceTag tag) -> tag.getType().ordinal()));
+        finalProduction.getOutputResources().sort(Comparator.comparingInt((ResourceTag tag) -> tag.getType().ordinal()));
     }
 
     /**
-     * moves the leader production from the playerboard to the productionboard
+     * moves the leader production from the playerBoard to the productionBoard
      * @param leaderCard -- extra production leader card activated
      */
     public void addLeaderProduction(ExtraProductionLeaderCard leaderCard){
@@ -151,10 +154,10 @@ public class ProductionBoard extends Observable {
     public void selectProductionSlot(int index){
         if(!productionSlots[index].isSelected()){
             for (ResourceTag iterator : productionSlots[index].getProductionCard().getInputResources()) {
-                updateFinalProduction(finalProduction.getInputResources(), iterator);
+                updateFinalProduction(finalProduction.getInputResources(), new ResourceTag(iterator.getType(), iterator.getQuantity()));
             }
             for (ResourceTag iterator : productionSlots[index].getProductionCard().getOutputResources()) {
-                updateFinalProduction(finalProduction.getOutputResources(), iterator);
+                updateFinalProduction(finalProduction.getOutputResources(), new ResourceTag(iterator.getType(), iterator.getQuantity()));
             }
             productionSlots[index].setSelected(true);
             notifyObserver(new ChosenProductionMessage(finalProduction));
@@ -170,13 +173,13 @@ public class ProductionBoard extends Observable {
         if(!leaderProductions.get(index).getSelected()) {
             leaderProductions.get(index).setSelected(true);
             for (ResourceTag iterator : leaderProductions.get(index).getInputResources()) {
-                updateFinalProduction(finalProduction.getInputResources(), iterator);
+                updateFinalProduction(finalProduction.getInputResources(), new ResourceTag(iterator.getType(), iterator.getQuantity()));
             }
             for (ResourceTag iterator : leaderProductions.get(index).getOutputResources()) {
                 if (iterator.getType().equals(ResourceType.UNDEFINED)) {
                     updateFinalProduction(finalProduction.getOutputResources(), new ResourceTag(output1, 1));
                 } else {
-                    updateFinalProduction(finalProduction.getOutputResources(), iterator);
+                    updateFinalProduction(finalProduction.getOutputResources(), new ResourceTag(iterator.getType(), iterator.getQuantity()));
                 }
             }
             notifyObserver(new ChosenProductionMessage(finalProduction));
@@ -201,7 +204,7 @@ public class ProductionBoard extends Observable {
 
     /**
      *
-     * @return -- generates the list of material resources
+     *  generates the list of material resources
      */
     public void executeProduction(RealPlayerBoard playerBoard){
         LinkedList<Resource> obtained = ResourceBuilder.build(finalProduction.getOutputResources());

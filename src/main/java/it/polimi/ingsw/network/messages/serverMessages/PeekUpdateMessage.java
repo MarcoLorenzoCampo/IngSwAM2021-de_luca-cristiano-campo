@@ -19,13 +19,15 @@ public class PeekUpdateMessage extends Message {
     private final int faithPosition;
     private final Map<ResourceType, Integer> inventory;
     private final List<EffectType> cards;
+    private final List<ResourceType> resourceTypes;
 
-    public PeekUpdateMessage(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
+    public PeekUpdateMessage(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards, List<ResourceType> resourceTypes) {
 
         super.setMessageType(PossibleMessages.PEEK_MESSAGE);
         super.setSenderUsername("SERVER_MESSAGE");
 
         this.cards = cards;
+        this.resourceTypes = resourceTypes;
         this.faithPosition = faithPosition;
         this.inventory = inventory;
         this.name = name;
@@ -45,5 +47,9 @@ public class PeekUpdateMessage extends Message {
 
     public List<EffectType> getCards() {
         return cards;
+    }
+
+    public List<ResourceType> getResourceTypes() {
+        return resourceTypes;
     }
 }

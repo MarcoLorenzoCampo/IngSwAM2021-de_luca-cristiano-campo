@@ -218,7 +218,7 @@ public class RealPlayer extends Observable implements Visitor {
                     .getInventoryManager()
                     .getBuffer()
                     .stream()
-                    .anyMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
+                    .noneMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
         }
         //notify
     }
@@ -285,6 +285,11 @@ public class RealPlayer extends Observable implements Visitor {
             resourceMarket.pickResources(action.getIndexToPickFrom(), playerBoard);
             playerBoard.getInventoryManager().whiteMarblesExchange();
             playerState.performedExclusiveAction();
+            playerState.setCanDeposit(playerBoard
+                    .getInventoryManager()
+                    .getBuffer()
+                    .stream()
+                    .noneMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED)));
         }
     }
 
@@ -329,9 +334,10 @@ public class RealPlayer extends Observable implements Visitor {
     }
 
     @Override
-    public void visit(LorenzoAction action) {
-
+    public void visit(ClearProductionAction action) {
+        playerBoard.getProductionBoard().clearSelection();
     }
+
 
     @Override
     public void visit(RearrangeInventoryAction action) {
@@ -418,6 +424,17 @@ public class RealPlayer extends Observable implements Visitor {
         for(LeaderCard l : ownedLeaderCards) {
             if(l.isActive()) {
                 e.add(l.getEffectType());
+            }
+        }
+        return e;
+    }
+
+    public List<ResourceType> reduceLeadersResource(){
+        List<ResourceType> e = new ArrayList<>();
+
+        for(LeaderCard l : ownedLeaderCards) {
+            if(l.isActive()) {
+                e.add(l.getResource());
             }
         }
         return e;

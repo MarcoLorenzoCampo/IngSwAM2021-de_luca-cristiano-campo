@@ -1,11 +1,14 @@
 package it.polimi.ingsw.network.eventHandlers;
 
+import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.EffectType;
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.playerMessages.TwoIntMessage;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.IClientHandler;
@@ -69,12 +72,6 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void askReplacementResource(ResourceType r1, ResourceType r2) {
-
-    }
-
-
-    @Override
     public void askToDiscard() {
         clientHandler.sendMessage(new SetupLeaderRequest());
     }
@@ -130,8 +127,13 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void printLorenzoToken(String lorenzoTokenReduced) {
-        clientHandler.sendMessage(new LorenzoTokenMessage(lorenzoTokenReduced));
+    public void printLorenzoToken(String lorenzoTokenReduced, Color color, int quantity) {
+        clientHandler.sendMessage(new LorenzoTokenMessage(lorenzoTokenReduced, color, quantity));
+    }
+
+    @Override
+    public void printLorenzoFaithTrack(int faithmarker) {
+        clientHandler.sendMessage(new LorenzoFaithTrackMessage(faithmarker));
     }
 
     @Override
@@ -153,8 +155,8 @@ public class VirtualView implements IView, Observer {
      * @param cards: leader cards owned.
      */
     @Override
-    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
-        clientHandler.sendMessage(new PeekUpdateMessage(name, faithPosition, inventory, cards));
+    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards, List<ResourceType> leader_resource) {
+        clientHandler.sendMessage(new PeekUpdateMessage(name, faithPosition, inventory, cards, leader_resource));
     }
 
     /**
@@ -201,5 +203,10 @@ public class VirtualView implements IView, Observer {
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
         clientHandler.sendMessage(new FaithTrackMessage(faithTrack));
+    }
+
+    @Override
+    public void printPopeFavor(int pope_favor, int current_points) {
+        clientHandler.sendMessage(new TwoIntMessage("SERVER_MESSAGE", PossibleMessages.POPE_FAVOR, pope_favor, current_points));
     }
 }

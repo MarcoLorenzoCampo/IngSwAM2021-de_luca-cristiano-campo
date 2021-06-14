@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.views.cli;
 
+import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
@@ -194,7 +195,7 @@ public class CLI extends ViewObservable implements IView {
     public void showInvalidAction(String errorMessage) {
         showGenericString(errorMessage);
     }
-
+/*
     @Override
     public void askReplacementResource(ResourceType r1, ResourceType r2) {
         //clearCLI();
@@ -220,6 +221,8 @@ public class CLI extends ViewObservable implements IView {
         ResourceType finalPicked = picked;
         notifyObserver(o -> o.onUpdateExchangeResource(finalPicked));
     }
+
+ */
 
     @Override
     public void askToDiscard() {
@@ -423,9 +426,15 @@ public class CLI extends ViewObservable implements IView {
                 notifyObserver(o -> o.onUpdateActivateExtraProduction(Integer.parseInt(finalCmdMembers6[1]),ResourceType.valueOf(finalCmdMembers6[2])));
                 break;
 
+
             case("ACTIVATE_BASE_PRODUCTION") :
                 String[] finalCmdMembers7 = cmdMembers;
                 notifyObserver(o -> o.onUpdateBaseActivation(ResourceType.valueOf(finalCmdMembers7[1]), ResourceType.valueOf(finalCmdMembers7[2]), ResourceType.valueOf(finalCmdMembers7[3])));
+                break;
+
+            case("EXCHANGE") :
+                String[] finalCmdMembers8 = cmdMembers;
+                notifyObserver(o -> o.onUpdateExchangeResource(ResourceType.valueOf(finalCmdMembers8[1]),Integer.parseInt(finalCmdMembers8[2]) ));
                 break;
 
             case("END_TURN") :
@@ -645,7 +654,7 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards) {
+    public void getPeek(String name, int faithPosition, Map<ResourceType, Integer> inventory, List<EffectType> cards, List<ResourceType> resources) {
 
         LightweightPlayerState playerState;
 
@@ -782,12 +791,24 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
-    public void printLorenzoToken(String lorenzoTokenReduced) {
+    public void printPopeFavor(int pope_favor, int current_points) {
+        System.out.println("You gained: " + pope_favor +
+                " points from the latest vatican report!" +
+                "\nYour vatican score is: " + current_points + "\n");
+    }
+
+    @Override
+    public void printLorenzoToken(String lorenzoTokenReduced, Color color, int quantity) {
 
         out.println(lorenzoTokenReduced);
 
         /*GraphicalToken graphicalToken = new GraphicalToken(lorenzoAction);
         graphicalToken.draw();*/
+    }
+
+    @Override
+    public void printLorenzoFaithTrack(int faithmarker) {
+        System.out.println("Lorenzo's position: " + faithmarker + "\n");
     }
 
     /**

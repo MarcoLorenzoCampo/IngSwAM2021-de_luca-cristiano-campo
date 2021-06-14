@@ -114,9 +114,7 @@ public class PlayerState {
         hasActivatedProductions = false;
         hasPickedResources = false;
         hasBoughCard = false;
-
         getHasPlacedLeaders = false;
-
         canDeposit = false;
     }
 }

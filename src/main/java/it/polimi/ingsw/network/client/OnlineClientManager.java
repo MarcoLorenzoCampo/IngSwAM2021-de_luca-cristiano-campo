@@ -116,12 +116,22 @@ public class OnlineClientManager implements ViewObserver, Observer {
 
                 case LORENZO_TOKEN:
                     LorenzoTokenMessage l = (LorenzoTokenMessage) message;
-                    viewUpdater.execute(() -> view.printLorenzoToken(l.getLorenzoTokenReduced()));
+                    viewUpdater.execute(() -> view.printLorenzoToken(l.getLorenzoTokenReduced(), l.getColor(), l.getQuantity()));
+                    break;
+
+                case LORENZO_FAITHTRACK:
+                    LorenzoFaithTrackMessage lorenzoFaithTrack = (LorenzoFaithTrackMessage) message;
+                    viewUpdater.execute(()-> view.printLorenzoFaithTrack(lorenzoFaithTrack.getPosition()));
                     break;
 
                 case FAITH_TRACK_MESSAGE:
                     FaithTrackMessage f = (FaithTrackMessage) message;
                     viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
+                    break;
+
+                case POPE_FAVOR:
+                    TwoIntMessage popefavor = (TwoIntMessage) message;
+                    viewUpdater.execute(()-> view.printPopeFavor(popefavor.getFirstNumber(), popefavor.getSecondNumber()));
                     break;
 
                 case SETUP_RESOURCES:
@@ -187,7 +197,8 @@ public class OnlineClientManager implements ViewObserver, Observer {
                             p.getName(),
                             p.getFaithPosition(),
                             p.getInventory(),
-                            p.getCards()
+                            p.getCards(),
+                            p.getResourceTypes()
                     ));
                     break;
 
@@ -228,7 +239,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
         if(message.getSize()!=0){
 
             for (int i = 0; i < message.getSize(); i++) {
-
+                
                 switch (message.getEffects().get(i)){
 
                     case DISCOUNT:
@@ -385,8 +396,8 @@ public class OnlineClientManager implements ViewObserver, Observer {
     }
 
     @Override
-    public void onUpdateExchangeResource(ResourceType r1) {
-        client.sendMessage(new ExchangeResourceMessage(nickname, r1, 1));
+    public void onUpdateExchangeResource(ResourceType r1, int place) {
+        client.sendMessage(new ExchangeResourceMessage(nickname, r1, place));
     }
 
     @Override

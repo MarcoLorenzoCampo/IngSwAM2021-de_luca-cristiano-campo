@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model.faithtrack;
 
 import it.polimi.ingsw.enumerations.Constants;
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.network.eventHandlers.Observable;
-import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
-import it.polimi.ingsw.network.messages.serverMessages.FaithTrackMessage;
-import it.polimi.ingsw.network.messages.serverMessages.GenericMessageFromServer;
-import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
+import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
+import it.polimi.ingsw.network.messages.playerMessages.TwoIntMessage;
+import it.polimi.ingsw.network.messages.serverMessages.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -167,8 +167,8 @@ public class FaithTrack extends Observable implements Serializable {
         this.faithMarker++;
 
         //Notify all observers, but only the clients will get an updated version.
-        notifyObserver(new GenericMessageFromServer("Lorenzo's position: " + faithMarker + "\n"));
 
+        notifyObserver(new LorenzoFaithTrackMessage(faithMarker));
         if(isLastTile()) notifyControllerObserver(new EndGameMessage());
 
         if(isPopeTile(faithMarker)) {
@@ -216,9 +216,10 @@ public class FaithTrack extends Observable implements Serializable {
         int points = this.cardVaticanSpace.get(indexVaticanSpace);
         currentFavorPoints += points;
 
-        notifyObserver(new GenericMessageFromServer("You gained: " + points +
-                " points from the latest vatican report!" +
-                "\nYour vatican score is: " + currentFavorPoints + "\n"));
+
+
+        notifyObserver(new TwoIntMessage("SERVER_MESSAGE", PossibleMessages.POPE_FAVOR, points, currentFavorPoints));
+
 
         popeT.setIsActive(false);
 

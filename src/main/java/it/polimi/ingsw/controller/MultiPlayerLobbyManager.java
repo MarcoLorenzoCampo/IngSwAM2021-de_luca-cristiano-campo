@@ -594,7 +594,8 @@ public class MultiPlayerLobbyManager implements ControllerObserver, ILobbyManage
                             realPlayer1.getName(),
                             realPlayer1.getFaithPosition(),
                             realPlayer1.getInventory(),
-                            realPlayer1.reduceLeaders()
+                            realPlayer1.reduceLeaders(),
+                            realPlayer1.reduceLeadersResource()
                     );
                 }
             }

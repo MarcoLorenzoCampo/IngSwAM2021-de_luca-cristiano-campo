@@ -42,6 +42,7 @@ public enum PossibleMessages {
     GAME_STATUS,
     BOARD,
     LORENZO_TOKEN,
+    LORENZO_FAITHTRACK,
     AVAILABLE_PRODUCTION_CARDS,
     LOGIN_OUTCOME,
     LOBBY_SIZE_REQUEST,
@@ -58,11 +59,12 @@ public enum PossibleMessages {
     FINAL_PRODUCTION,
     ERROR,
     PEEK_MESSAGE,
+    POPE_FAVOR,
 
     //Notification message sent by the model to the controller
     VATICAN_REPORT_NOTIFICATION,
     DISCARDED_RESOURCE,
     END_GAME,
     NO_MORE_CARDS,
-    BOUGHT_7_CARDS,
+    BOUGHT_7_CARDS
 }

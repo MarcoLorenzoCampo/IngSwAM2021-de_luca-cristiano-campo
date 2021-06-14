@@ -17,6 +17,7 @@ import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
+import it.polimi.ingsw.network.messages.playerMessages.TwoIntMessage;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
@@ -111,12 +112,22 @@ public class OfflineClientManager implements ViewObserver, Observer {
 
                 case LORENZO_TOKEN:
                     LorenzoTokenMessage l = (LorenzoTokenMessage) message;
-                    viewUpdater.execute(() -> view.printLorenzoToken(l.getLorenzoTokenReduced()));
+                    viewUpdater.execute(() -> view.printLorenzoToken(l.getLorenzoTokenReduced(), l.getColor(), l.getQuantity()));
+                    break;
+
+                case LORENZO_FAITHTRACK:
+                    LorenzoFaithTrackMessage lorenzoFaithTrack = (LorenzoFaithTrackMessage) message;
+                    viewUpdater.execute(()-> view.printLorenzoFaithTrack(lorenzoFaithTrack.getPosition()));
                     break;
 
                 case FAITH_TRACK_MESSAGE:
                     FaithTrackMessage f = (FaithTrackMessage) message;
                     viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
+                    break;
+
+                case POPE_FAVOR:
+                    TwoIntMessage popefavor = (TwoIntMessage) message;
+                    viewUpdater.execute(()-> view.printPopeFavor(popefavor.getFirstNumber(), popefavor.getSecondNumber()));
                     break;
 
                 case SETUP_RESOURCES:
@@ -446,7 +457,7 @@ public class OfflineClientManager implements ViewObserver, Observer {
      * @param r1 : resource to exchange.
      */
     @Override
-    public void onUpdateExchangeResource(ResourceType r1) {
+    public void onUpdateExchangeResource(ResourceType r1, int place) {
 
     }
 

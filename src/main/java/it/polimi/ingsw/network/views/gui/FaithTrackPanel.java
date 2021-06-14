@@ -13,12 +13,17 @@ import java.util.ArrayList;
 
 public class FaithTrackPanel extends JPanel {
     FaithTrack faithTrack;
+    int popefavor;
+    int lorenzo;
 
     public FaithTrackPanel(){
         faithTrack = null;
+        lorenzo = 0;
+        popefavor = 0;
     }
     public FaithTrackPanel(FaithTrack track){
         this.faithTrack = track;
+        lorenzo = 0;
     }
 
     @Override
@@ -26,9 +31,10 @@ public class FaithTrackPanel extends JPanel {
         int width = this.getWidth()/26;
         int height = this.getHeight()/5;
         DrawFaithTrack(g);
+        DrawFaithMarker(g, lorenzo, width, height, false);
         if(faithTrack!=null){
-            DrawFaithMarker(g, faithTrack.getFaithMarker(), width, height);
-            switch(faithTrack.getCurrentFavorPoints()){
+            DrawFaithMarker(g, faithTrack.getFaithMarker(), width, height, true);
+            switch(popefavor){
                 case 2:
                     DrawPopeFavor(g, 2, width, height);
                     break;
@@ -73,11 +79,11 @@ public class FaithTrackPanel extends JPanel {
                 break;
             case 3:
                 x += 77 * width/6;
-                y += 31 * height/24;
+                y += 23 * height/24;
                 item = item.concat("3");
                 break;
             case 4:
-                x += 62 * width/3;
+                x += 20 * width;
                 y += 55 * height/24;
                 item = item.concat("4");
                 break;
@@ -93,12 +99,16 @@ public class FaithTrackPanel extends JPanel {
         g.drawImage(img, x,y, 2*width,2*height, null);
     }
 
-    private void DrawFaithMarker(Graphics g, int faithMarker, int width, int height) {
+    private void DrawFaithMarker(Graphics g, int faithMarker, int width, int height, boolean player) {
         int x=width;
         int y=27*height/8;
 
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("./punchboard/faith_marker.png");
+        InputStream url;
+
+        if(player) url = cl.getResourceAsStream("./punchboard/faith_marker.png");
+        else url = cl.getResourceAsStream("./punchboard/lorenzo_faith_marker.png");
+
         BufferedImage img = null;
         try {
             img = ImageIO.read(url);
@@ -110,12 +120,12 @@ public class FaithTrackPanel extends JPanel {
         if(faithMarker>0 && faithMarker<9){
             if(faithMarker<2)x+=faithMarker*width+width/2;
             else{
-                if(faithMarker>=2) {
-                    x += 2 * width +width/2;
-                    if (faithMarker > 4) {
-                        x += (faithMarker-4) *( 4*width/3);
-                    }
-                }
+
+            x += 2 * width +width/2;
+            if (faithMarker > 4) {
+                x += (faithMarker-4) *( 4*width/3);
+            }
+
             }
         }
         if(faithMarker>=9 && faithMarker<16){
@@ -124,17 +134,20 @@ public class FaithTrackPanel extends JPanel {
                 x += (faithMarker-11) *( 4*width/3);
             }
         }
-        if(faithMarker>=16 && faithMarker<=24){
+        if(faithMarker>=16 ){
             x+=31*width/2;
             if(faithMarker>18){
                 x += (faithMarker-18) *( 4*width/3);
+            }
+            if(faithMarker>24){
+                x += 6*( 4*width/3);
             }
         }
 
         if(faithMarker==3 || faithMarker==10 || faithMarker==17){
             y-=4*height/3;
         }
-        if((faithMarker>=4&&faithMarker<=9)||(faithMarker>=18&&faithMarker<=24)){
+        if((faithMarker>=4&&faithMarker<=9)||(faithMarker>=18)){
             y-=7*height/3;
         }
         g.drawImage(img,x,y,width, height,null);
@@ -155,6 +168,16 @@ public class FaithTrackPanel extends JPanel {
 
     public void updateFaithTrackPanel(FaithTrack faithTrack){
         this.faithTrack = faithTrack;
+        this.repaint();
+    }
+
+    public void updateLorenzo(int lorenzo){
+        this.lorenzo = lorenzo;
+        this.repaint();
+    }
+
+    public void updatePopeFavorPoints(int current_points){
+        this.popefavor = current_points;
         this.repaint();
     }
 

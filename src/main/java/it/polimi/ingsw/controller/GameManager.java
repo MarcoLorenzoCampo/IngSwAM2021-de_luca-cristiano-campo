@@ -182,7 +182,7 @@ public final class GameManager {
 
                         if(currentPlayerState.getHasPickedResources()) {
 
-                            if(currentPlayerState.isHasTwoExchange()) {
+                            if(currentPlayerState.isHasTwoExchange()&& !currentPlayerState.CanDeposit()) {
                                 currentGame.setCurrentState(PossibleGameStates.CHANGE_COLOR);
                             }
 
@@ -429,6 +429,7 @@ public final class GameManager {
                     currentGame.setCurrentState(PossibleGameStates.REMOVE);
                 } else {
                     currentGame.setCurrentState(PossibleGameStates.PLAYING);
+                    currentGame.getCurrentPlayer().visit(new ClearProductionAction());
                 }
             }
             onStartTurn();
@@ -466,7 +467,7 @@ public final class GameManager {
     private void onChangeColor(Message message) {
         if(message.getSenderUsername().equals(currentPlayer)){
 
-            if(message.getMessageType().equals(PossibleMessages.RESOURCE)){
+            if(message.getMessageType().equals(PossibleMessages.EXCHANGE_RESOURCE)){
                 ExchangeResourceMessage colorChange = (ExchangeResourceMessage) message;
                 currentGame.getCurrentPlayer().visit(new ChangeMarbleAction(colorChange.getSenderUsername(),
                         colorChange.getExchangeWithThis(), colorChange.getIndex(), currentGame));
@@ -527,6 +528,7 @@ public final class GameManager {
 
             if (toBeRemoved.isEmpty()){
                 currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
+                currentGame.getCurrentPlayer().visit(new ClearProductionAction());
 
             }
             onStartTurn();
