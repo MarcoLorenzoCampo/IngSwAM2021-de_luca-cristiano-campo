@@ -2,11 +2,13 @@ package it.polimi.ingsw.network.eventHandlers;
 
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.EffectType;
+import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.playerMessages.TwoIntMessage;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.network.server.IClientHandler;
@@ -201,5 +203,10 @@ public class VirtualView implements IView, Observer {
     @Override
     public void printFaithTrack(FaithTrack faithTrack) {
         clientHandler.sendMessage(new FaithTrackMessage(faithTrack));
+    }
+
+    @Override
+    public void printPopeFavor(int pope_favor, int current_points) {
+        clientHandler.sendMessage(new TwoIntMessage("SERVER_MESSAGE", PossibleMessages.POPE_FAVOR, pope_favor, current_points));
     }
 }

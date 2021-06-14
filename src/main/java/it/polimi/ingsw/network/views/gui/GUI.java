@@ -151,15 +151,19 @@ public class GUI extends ViewObservable implements IView {
         productionBoardPanel.getButtons()[4].addActionListener(e -> {
             extraProductionPanels[0].updateExtraProductionPanel(productionBoardPanel.getExtraLeader(0));
             productionPopUp.setContentPane(extraProductionPanels[0]);
+            productionPopUp.pack();
             productionPopUp.revalidate();
             productionPopUp.repaint();
+            productionPopUp.setSize(600, 275);
             productionPopUp.setVisible(true);
         });
         productionBoardPanel.getButtons()[5].addActionListener(e -> {
             extraProductionPanels[1].updateExtraProductionPanel(productionBoardPanel.getExtraLeader(1));
             productionPopUp.setContentPane(extraProductionPanels[1]);
+            productionPopUp.pack();
             productionPopUp.revalidate();
             productionPopUp.repaint();
+            productionPopUp.setSize(600, 275);
             productionPopUp.setVisible(true);
         });
         productionBoardPanel.getButtons()[6].addActionListener(e -> notifyObserver(ViewObserver::onUpdateExecuteProduction));
@@ -173,7 +177,7 @@ public class GUI extends ViewObservable implements IView {
         extraProductionPanels[1].getSubmit().addActionListener(e -> {
             notifyObserver(o -> o.onUpdateActivateExtraProduction(1, extraProductionPanels[1].getChosen()));
             productionPopUp.dispose();
-            extraProductionPanels[0].clearSelection();
+            extraProductionPanels[1].clearSelection();
         });
     }
 
@@ -333,7 +337,7 @@ public class GUI extends ViewObservable implements IView {
             buttonsPopUp.setContentPane(cardMarketPanel);
             buttonsPopUp.pack();
             buttonsPopUp.revalidate();
-            buttonsPopUp.setSize(400,600);
+            buttonsPopUp.setSize(660,800);
             buttonsPopUp.setVisible(true);
         });
 
@@ -342,7 +346,7 @@ public class GUI extends ViewObservable implements IView {
             buttonsPopUp.setContentPane(resourceMarketPanel);
             buttonsPopUp.pack();
             buttonsPopUp.revalidate();
-            buttonsPopUp.setSize(400,448);
+            buttonsPopUp.setSize(660,740);
             buttonsPopUp.setVisible(true);
         });
 
@@ -751,7 +755,7 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void showInvalidAction(String errorMessage) {
-        messagePopUp.changeMessage(errorMessage);
+        JOptionPane.showMessageDialog(null, errorMessage, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
 
@@ -828,7 +832,7 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void showWinMatch(String winner) {
-
+        JOptionPane.showMessageDialog(null, winner + " won!\n", "WINNER", JOptionPane.PLAIN_MESSAGE);
     }
 
     @Override
@@ -847,6 +851,11 @@ public class GUI extends ViewObservable implements IView {
 
         mainframe.revalidate();
         mainframe.repaint();
+    }
+
+    @Override
+    public void printPopeFavor(int pope_favor, int current_points) {
+        faithTrackPanel.updatePopeFavorPoints(current_points);
     }
 
     @Override

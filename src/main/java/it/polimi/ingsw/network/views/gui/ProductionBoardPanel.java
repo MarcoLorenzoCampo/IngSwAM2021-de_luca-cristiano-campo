@@ -20,10 +20,9 @@ public class ProductionBoardPanel extends JPanel {
 
     private HashMap<Integer, ProductionCard> productionBoard;
     private ArrayList<LeaderCard> extra_production;
-    private String production_path = "./front/production_";
-    private String extra_path = "./front/leader_production_";
-    private HashMap<Integer, ArrayList<ProductionCard>> previous_productions;
-    private JButton[] buttons = new JButton[7];
+    private final String production_path = "./front/production_";
+    private final HashMap<Integer, ArrayList<ProductionCard>> previous_productions;
+    private final JButton[] buttons = new JButton[7];
 
 
     public ProductionBoardPanel(){
@@ -76,56 +75,6 @@ public class ProductionBoardPanel extends JPanel {
         this.add(execute_panel, BorderLayout.SOUTH);
     }
 
-    public ProductionBoardPanel(HashMap<Integer, ProductionCard> productionBoard){
-        this.productionBoard = productionBoard;
-        this.extra_production = new ArrayList<>();
-        this.previous_productions = new HashMap<>();
-        this.setLayout(new BorderLayout());
-
-        JPanel button_panel = new JPanel();
-        button_panel.setLayout(new GridLayout(1,6, 0,50));
-        button_panel.setOpaque(false);
-
-        JPanel execute_panel = new JPanel();
-        execute_panel.setLayout(new FlowLayout());
-        execute_panel.setOpaque(false);
-
-
-
-        buttons[0] = new JButton("BASE PRODUCTION");
-        buttons[0].setFocusable(false);
-
-        buttons[1] = new JButton("PRODUCTION 0");
-        buttons[1].setFocusable(false);
-
-        buttons[2] = new JButton("PRODUCTION 1");
-        buttons[2].setFocusable(false);
-
-        buttons[3] = new JButton("PRODUCTION 2");
-        buttons[3].setFocusable(false);
-
-        buttons[4] = new JButton("EXTRA PRODUCTION 0");
-        buttons[4].setFocusable(false);
-
-
-        buttons[5] = new JButton("EXTRA PRODUCTION 1");
-        buttons[5].setFocusable(false);
-
-
-        buttons[6] = new JButton("EXECUTE");
-        buttons[6].setFocusable(false);
-
-
-        for (int i = 0; i < 6; i++) {
-            button_panel.add(buttons[i]);
-        }
-        execute_panel.add(buttons[6]);
-
-        this.add(button_panel, BorderLayout.NORTH);
-        this.add(execute_panel, BorderLayout.SOUTH);
-
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -150,7 +99,7 @@ public class ProductionBoardPanel extends JPanel {
             if(iterator.getValue()!=null) {
                 for (ProductionCard inner_iterator : iterator.getValue()) {
                     if (inner_iterator != null) {
-                        String item = production_path + String.valueOf(inner_iterator.getId());
+                        String item = production_path + inner_iterator.getId();
                         if (inner_iterator.getId() < 16) y = 29 * height / 24;
                         else if (inner_iterator.getId() < 32) y = height;
                         else y = height / 2;
@@ -185,7 +134,7 @@ public class ProductionBoardPanel extends JPanel {
                         .collect(Collectors.toList());
         ClassLoader cl = this.getClass().getClassLoader();
         for (LeaderCard iterator : productions) {
-            String item = extra_path;
+            String item = "./front/leader_production_";
             switch (iterator.getResource()) {
 
                 case COIN:
@@ -223,7 +172,7 @@ public class ProductionBoardPanel extends JPanel {
 
         for (Map.Entry<Integer, ProductionCard> iterator : productionBoard.entrySet()) {
             if(iterator.getValue()!=null) {
-                String item = production_path+String.valueOf(iterator.getValue().getId());
+                String item = production_path+ iterator.getValue().getId();
                 if (iterator.getValue().getId() < 16) y = 29 * height / 24;
                 else if (iterator.getValue().getId() < 32) y = height;
                 else y = 19 * height / 24;

@@ -791,6 +791,13 @@ public class CLI extends ViewObservable implements IView {
     }
 
     @Override
+    public void printPopeFavor(int pope_favor, int current_points) {
+        System.out.println("You gained: " + pope_favor +
+                " points from the latest vatican report!" +
+                "\nYour vatican score is: " + current_points + "\n");
+    }
+
+    @Override
     public void printLorenzoToken(String lorenzoTokenReduced, Color color, int quantity) {
 
         out.println(lorenzoTokenReduced);

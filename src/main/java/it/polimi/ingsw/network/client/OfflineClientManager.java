@@ -17,6 +17,7 @@ import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
+import it.polimi.ingsw.network.messages.playerMessages.TwoIntMessage;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
@@ -122,6 +123,11 @@ public class OfflineClientManager implements ViewObserver, Observer {
                 case FAITH_TRACK_MESSAGE:
                     FaithTrackMessage f = (FaithTrackMessage) message;
                     viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
+                    break;
+
+                case POPE_FAVOR:
+                    TwoIntMessage popefavor = (TwoIntMessage) message;
+                    viewUpdater.execute(()-> view.printPopeFavor(popefavor.getFirstNumber(), popefavor.getSecondNumber()));
                     break;
 
                 case SETUP_RESOURCES:

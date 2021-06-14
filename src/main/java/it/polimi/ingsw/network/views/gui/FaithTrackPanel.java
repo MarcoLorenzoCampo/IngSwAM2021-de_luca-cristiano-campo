@@ -13,11 +13,13 @@ import java.util.ArrayList;
 
 public class FaithTrackPanel extends JPanel {
     FaithTrack faithTrack;
+    int popefavor;
     int lorenzo;
 
     public FaithTrackPanel(){
         faithTrack = null;
         lorenzo = 0;
+        popefavor = 0;
     }
     public FaithTrackPanel(FaithTrack track){
         this.faithTrack = track;
@@ -32,7 +34,7 @@ public class FaithTrackPanel extends JPanel {
         DrawFaithMarker(g, lorenzo, width, height, false);
         if(faithTrack!=null){
             DrawFaithMarker(g, faithTrack.getFaithMarker(), width, height, true);
-            switch(faithTrack.getCurrentFavorPoints()){
+            switch(popefavor){
                 case 2:
                     DrawPopeFavor(g, 2, width, height);
                     break;
@@ -118,12 +120,12 @@ public class FaithTrackPanel extends JPanel {
         if(faithMarker>0 && faithMarker<9){
             if(faithMarker<2)x+=faithMarker*width+width/2;
             else{
-                if(faithMarker>=2) {
-                    x += 2 * width +width/2;
-                    if (faithMarker > 4) {
-                        x += (faithMarker-4) *( 4*width/3);
-                    }
-                }
+
+            x += 2 * width +width/2;
+            if (faithMarker > 4) {
+                x += (faithMarker-4) *( 4*width/3);
+            }
+
             }
         }
         if(faithMarker>=9 && faithMarker<16){
@@ -171,6 +173,11 @@ public class FaithTrackPanel extends JPanel {
 
     public void updateLorenzo(int lorenzo){
         this.lorenzo = lorenzo;
+        this.repaint();
+    }
+
+    public void updatePopeFavorPoints(int current_points){
+        this.popefavor = current_points;
         this.repaint();
     }
 

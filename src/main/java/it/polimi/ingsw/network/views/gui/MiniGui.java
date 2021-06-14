@@ -77,10 +77,6 @@ public class MiniGui  {
         guiView.addObserver(OnlineClientManager);
     }
 
-    //addicon("production"+productioncard.getid()+".png")
-    //String name = new String();
-    //if(effecttype equals (extrainvetory) name = extra_inventory_COIN.png
-    // addicon(leader.geteffectype()+leader.getmainreosurce+".png");
 
     public void initializeOfflineGame(){
         System.out.println("OFFLINE");

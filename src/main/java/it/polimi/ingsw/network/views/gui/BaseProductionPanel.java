@@ -34,6 +34,8 @@ public class BaseProductionPanel extends JPanel {
                 for (int i = 0; i < 4; i++) {
                     buttons[i].setEnabled(false);
                 }
+                buttons[4].setEnabled(true);
+
             }
             this.repaint();
         });
@@ -45,6 +47,7 @@ public class BaseProductionPanel extends JPanel {
                 for (int i = 0; i < 4; i++) {
                     buttons[i].setEnabled(false);
                 }
+                buttons[4].setEnabled(true);
             }
             this.repaint();
         });
@@ -56,6 +59,8 @@ public class BaseProductionPanel extends JPanel {
                 for (int i = 0; i < 4; i++) {
                     buttons[i].setEnabled(false);
                 }
+                buttons[4].setEnabled(true);
+
             }
             this.repaint();
         });
@@ -67,11 +72,13 @@ public class BaseProductionPanel extends JPanel {
                 for (int i = 0; i < 4; i++) {
                     buttons[i].setEnabled(false);
                 }
+                buttons[4].setEnabled(true);
             }
             this.repaint();
         });
 
         buttons[4] = new JButton("SUBMIT");
+        buttons[4].setEnabled(false);
 
         buttons[5] = new JButton("DELETE");
         buttons[5].addActionListener(e -> {
@@ -79,6 +86,9 @@ public class BaseProductionPanel extends JPanel {
             for (JButton iterator: buttons) {
                 iterator.setEnabled(true);
             }
+            buttons[4].setEnabled(false);
+            production.clear();
+            this.repaint();
         });
 
         for (JButton iterator: buttons) {
@@ -180,6 +190,7 @@ public class BaseProductionPanel extends JPanel {
         for (JButton iterator:buttons) {
             iterator.setEnabled(true);
         }
+        buttons[4].setEnabled(false);
     }
 
     public ArrayList<ResourceType> getProduction() {

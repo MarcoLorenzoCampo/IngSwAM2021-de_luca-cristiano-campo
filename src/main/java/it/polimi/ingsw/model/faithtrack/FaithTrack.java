@@ -175,12 +175,8 @@ public class FaithTrack extends Observable implements Serializable {
         currentFavorPoints += points;
 
 
-        notifyObserver(new GenericMessageFromServer("You gained: " + points +
-                " points from the latest vatican report!" +
-                "\nYour vatican score is: " + currentFavorPoints + "\n"));
 
-
-        //notifyObserver(new TwoIntMessage("SERVER_MESSAGE", PossibleMessages.POPE_FAVOR, points, currentFavorPoints));
+        notifyObserver(new TwoIntMessage("SERVER_MESSAGE", PossibleMessages.POPE_FAVOR, points, currentFavorPoints));
 
 
         popeT.setIsActive(false);

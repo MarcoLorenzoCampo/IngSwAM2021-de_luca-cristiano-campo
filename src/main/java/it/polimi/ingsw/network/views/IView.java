@@ -51,14 +51,6 @@ public interface IView {
      */
     void showInvalidAction(String errorMessage);
 
-    /**
-     * Asks the player to replace the grey marble (UNDEFINED resource) with something if he has
-     * enough active leader cards.
-     */
-    /*
-    void askReplacementResource(ResourceType r1, ResourceType r2);
-
-     */
 
     /**
      * Asks the player to store or discard a resource that has to be deposited;
@@ -126,6 +118,13 @@ public interface IView {
      * @param faithTrack: faith track of the player.
      */
     void printFaithTrack(FaithTrack faithTrack);
+
+    /**
+     * Prints the favor points obtained by the player
+     * @param pope_favor: points obtained
+     * @param current_points: current points
+     */
+    void printPopeFavor(int pope_favor, int current_points);
 
     /**
      * Prints the action token lorenzo has just played.

@@ -129,6 +129,11 @@ public class OnlineClientManager implements ViewObserver, Observer {
                     viewUpdater.execute(() -> view.printFaithTrack(f.getFaithTrack()));
                     break;
 
+                case POPE_FAVOR:
+                    TwoIntMessage popefavor = (TwoIntMessage) message;
+                    viewUpdater.execute(()-> view.printPopeFavor(popefavor.getFirstNumber(), popefavor.getSecondNumber()));
+                    break;
+
                 case SETUP_RESOURCES:
                     SetupResourcesRequest resourcesRequest = (SetupResourcesRequest) message;
                     viewUpdater.execute(() ->
