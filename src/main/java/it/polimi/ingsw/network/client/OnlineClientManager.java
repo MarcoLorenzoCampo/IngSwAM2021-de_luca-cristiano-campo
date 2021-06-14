@@ -235,6 +235,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
 
             for (int i = 0; i < message.getSize(); i++) {
 
+
                 switch (message.getEffects().get(i)){
 
                     case DISCOUNT:
