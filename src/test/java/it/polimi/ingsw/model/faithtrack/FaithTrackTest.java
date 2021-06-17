@@ -30,40 +30,133 @@ class FaithTrackTest {
         assertNotNull(faithTrack);
     }
 
+    /**
+     *
+     */
+    @Test
+    void increaseFaithMarker1Test() {
+        //Arrange
+        faithTrack.setFaithMarker(6);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(8);
+
+        //Act
+        faithTrack.increaseFaithMarker();
+        int currentMarkerPosition = 7;
+
+        //Assert
+        assertEquals(currentMarkerPosition, faithTrack.getFaithMarker());
+        assertTrue(t1.getIsActive());
+    }
+
+    @Test
+    void increaseFaithMarker2Test() {
+        //Arrange
+        faithTrack.setFaithMarker(7);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(8);
+
+        //Act
+        faithTrack.increaseFaithMarker();
+        int currentMarkerPosition = 8;
+
+        //Assert
+        assertEquals(currentMarkerPosition, faithTrack.getFaithMarker());
+        assertFalse(t1.getIsActive());
+    }
 
     @Test
     void increaseFaithMarker3Test() {
         //Arrange
-        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(8);
-        t1.setIsActive(false);
+        faithTrack.setFaithMarker(13);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(16);
 
         //Act
-        faithTrack.setFaithMarker(7);
         faithTrack.increaseFaithMarker();
-        int currentFavorPoints = 0;
-        int currentMarkerPosition = 8;
+        int currentMarkerPosition = 14;
 
         //Assert
-        assertEquals(currentFavorPoints, faithTrack.getCurrentFavorPoints());
         assertEquals(currentMarkerPosition, faithTrack.getFaithMarker());
+        assertTrue(t1.getIsActive());
     }
 
     @Test
-    void calculationCheckPointsTest(){
+    void increaseFaithMarker4Test() {
         //Arrange
-        Tile t1 = faithTrack.getFaithTrack().get(15);
-        //Tile t1 = new PopeTile(15, Constants.ORANGE);
-        Tile t2 = faithTrack.getFaithTrack().get(20);
+        faithTrack.setFaithMarker(15);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(16);
 
         //Act
-        faithTrack.setFaithMarker(t1.getIndex());
-        int currentPosition1 = faithTrack.computeCheckpoints();
-        faithTrack.setFaithMarker(t2.getIndex());
-        int currentPosition2 = faithTrack.computeCheckpoints();
+        faithTrack.increaseFaithMarker();
+        int currentMarkerPosition = 16;
 
         //Assert
-        assertEquals(currentPosition1, 9);
-        assertEquals(currentPosition2, 12);
+        assertEquals(currentMarkerPosition, faithTrack.getFaithMarker());
+        assertFalse(t1.getIsActive());
+    }
+
+    @Test
+    void increaseFaithMarker5Test() {
+        //Arrange
+        faithTrack.setFaithMarker(18);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(24);
+
+        //Act
+        faithTrack.increaseFaithMarker();
+        int currentMarkerPosition = 19;
+
+        //Assert
+        assertEquals(currentMarkerPosition, faithTrack.getFaithMarker());
+        assertTrue(t1.getIsActive());
+    }
+
+    @Test
+    void increaseFaithMarker6Test() {
+        //Arrange
+        faithTrack.setFaithMarker(23);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(24);
+
+        //Act
+        faithTrack.increaseFaithMarker();
+        int currentMarkerPosition = 24;
+
+        //Assert
+        assertEquals(currentMarkerPosition, faithTrack.getFaithMarker());
+        assertFalse(t1.getIsActive());
+    }
+
+    @Test
+    void computeCheckpointsTest1(){
+        //Arrange
+        this.faithTrack.setFaithMarker(15);
+
+        //Act
+        int checkpoint = faithTrack.computeCheckpoints();
+
+        //Assert
+        assertEquals(checkpoint, 9);
+    }
+
+    @Test
+    void computeCheckpointsTest2(){
+        //Arrange
+        this.faithTrack.setFaithMarker(22);
+
+        //Act
+        int checkpoint = faithTrack.computeCheckpoints();
+
+        //Assert
+        assertEquals(checkpoint, 16);
+    }
+
+    @Test
+    void computeCheckpointsTest3(){
+        //Arrange
+        this.faithTrack.setFaithMarker(8);
+
+        //Act
+        int checkpoint = faithTrack.computeCheckpoints();
+
+        //Assert
+        assertEquals(checkpoint, 2);
     }
 
     @Test
@@ -116,60 +209,53 @@ class FaithTrackTest {
     @Test //need other classes
     void sendControlTest(){ }
 
-    @Test //in this case the player is in the Vatican space
-    void receiveControlTest(){
+    @Test
+    void setPopeTileInactiveTest(){
         //Arrange
-        Tile t1 = faithTrack.getFaithTrack().get(6);
-        PopeTile t2 = (PopeTile) faithTrack.getFaithTrack().get(8);
+        int popeTileIndex = 8;
 
         //Act
-        faithTrack.setFaithMarker(t1.getIndex());
-        faithTrack.receiveControl(t2);
+        faithTrack.setPopeTileInactive(popeTileIndex);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(popeTileIndex);
 
         //Assert
-        assertEquals(faithTrack.getCurrentFavorPoints(), 2);
+        assertFalse(t1.getIsActive());
+    }
+
+    @Test //in this case the player is in the Vatican space
+    void receiveControlTest1(){
+        //Arrange
+        this.faithTrack.setFaithMarker(6);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(8);
+
+        //Act
+        this.faithTrack.receiveControl(t1);
+
+        //Assert
+        assertEquals(this.faithTrack.getCurrentFavorPoints(), 2);
 
     }
 
     @Test //in this case the player isn't in the Vatican space
     void receiveControlTest2(){
         //Arrange
-        Tile t1 = faithTrack.getFaithTrack().get(3);
-        PopeTile t2 = (PopeTile) faithTrack.getFaithTrack().get(8);
+        this.faithTrack.setFaithMarker(3);
+        PopeTile t1 = (PopeTile) faithTrack.getFaithTrack().get(8);
 
         //Act
-        faithTrack.setFaithMarker(t1.getIndex());
-        faithTrack.receiveControl(t2);
+        this.faithTrack.receiveControl(t1);
 
         //Assert
-        assertEquals(faithTrack.getCurrentFavorPoints(), 0);
+        assertEquals(this.faithTrack.getCurrentFavorPoints(), 0);
 
     }
 
     @Test
-    void isPopeTileTest() {
+    void calculationFinalPointsTest1(){
         //Arrange
-        Tile t1 = new PopeTile(8, Constants.YELLOW,0);
-        Tile t2 = new PopeTile(9, Constants.NEUTRAL,0);
+        faithTrack.setFaithMarker(10);
 
         //Act
-        faithTrack.setFaithMarker(t1.getIndex());
-        boolean popeTile1 = faithTrack.isPopeTile(faithTrack.getFaithMarker());
-        faithTrack.setFaithMarker(t2.getIndex());
-        boolean simpleTile1 = faithTrack.isPopeTile(faithTrack.getFaithMarker());
-
-        //Assert
-        assertTrue(popeTile1);
-        assertFalse(simpleTile1);
-    }
-
-    @Test
-    void calculationFinalPointsTest(){
-        //Arrange
-        Tile t1 = faithTrack.getFaithTrack().get(10);
-
-        //Act
-        faithTrack.setFaithMarker(t1.getIndex());
         faithTrack.computeCheckpoints(); // it could be return 4 points
         faithTrack.setCurrentFavorPoints(5);
         faithTrack.computeFaithTrackPoints();
@@ -182,17 +268,18 @@ class FaithTrackTest {
     @Test
     void calculationFinalPointsTest2(){
         //Arrange
-        Tile t1 = faithTrack.getFaithTrack().get(19);
+        faithTrack.setFaithMarker(19);
 
         //Act
-        faithTrack.setFaithMarker(t1.getIndex());
         faithTrack.computeCheckpoints(); // it could be return 4 points
         faithTrack.setCurrentFavorPoints(2);
         faithTrack.computeFaithTrackPoints();
 
         //Assert
         assertEquals(faithTrack.getFinalPoints(), 14);
+
     }
+
 
     @Test
     void lorenzoIncreasesPosition() {
