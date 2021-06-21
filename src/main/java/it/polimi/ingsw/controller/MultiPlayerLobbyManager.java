@@ -701,7 +701,7 @@ public class MultiPlayerLobbyManager implements ControllerObserver, ILobbyManage
                 }
                 break;
 
-            default: //Ignore any other message
+            default:
                 break;
         }
     }

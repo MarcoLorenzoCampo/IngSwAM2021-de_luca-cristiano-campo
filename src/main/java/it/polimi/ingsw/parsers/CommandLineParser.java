@@ -4,9 +4,8 @@ import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
 
 /**
  * Utility class to parse cmd line:
- *  user@user:$ Class.java -port <port#> -<game_mode>
+ *  <server launch commands> -port <port#>
  */
-
 public final class CommandLineParser {
 
     /**

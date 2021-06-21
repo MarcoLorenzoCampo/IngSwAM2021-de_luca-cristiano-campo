@@ -40,21 +40,6 @@ public class LocalStream implements IClientHandler {
         gameManager.onMessage(message);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public void sameNameDisconnect() {
 

@@ -40,9 +40,6 @@ public class ClientManager implements ViewObserver, Observer {
      */
     private String nickname;
 
-    /**
-     *
-     */
     private final Executor viewUpdater;
 
     private final List<ProductionCard> allProductionCards;
