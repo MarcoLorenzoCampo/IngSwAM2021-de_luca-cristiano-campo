@@ -39,7 +39,7 @@ public class OfflineClientManager implements ViewObserver, Observer {
      */
     private String nickname;
 
-    private Client client;
+    private final Client client;
 
     private final List<ProductionCard> allProductionCards;
 

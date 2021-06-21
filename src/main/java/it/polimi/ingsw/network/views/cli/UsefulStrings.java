@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.views.cli;
 /**
  * Titles and default messages used in the CLI.
  */
-public class UsefulStrings {
+public final class UsefulStrings {
 
     private static final String logo =
                  "\n    \\  |               |                                              \n" +
