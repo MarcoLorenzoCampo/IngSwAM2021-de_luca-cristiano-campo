@@ -36,14 +36,6 @@ public class VirtualView implements IView, Observer {
         this.clientHandler = clientHandler;
     }
 
-    /**
-     * Default getter.
-     * @return clientHandler associated with this VirtualView.
-     */
-    public IClientHandler getClientHandler() {
-        return clientHandler;
-    }
-
     @Override
     public void askNickname() {
         clientHandler.sendMessage(
@@ -132,8 +124,8 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void printLorenzoFaithTrack(int faithmarker) {
-        clientHandler.sendMessage(new LorenzoFaithTrackMessage(faithmarker));
+    public void printLorenzoFaithTrack(int faithMarker) {
+        clientHandler.sendMessage(new LorenzoFaithTrackMessage(faithMarker));
     }
 
     @Override

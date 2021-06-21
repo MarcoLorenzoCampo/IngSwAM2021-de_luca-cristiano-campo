@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 /**
  * Class to handle messages sent by the client. Acts in between network and generic view.
  */
-public class OnlineClientManager implements ViewObserver, Observer {
+public class ClientManager implements ViewObserver, Observer {
 
     /**
      * Reference to the generic view chosen.
@@ -48,13 +48,26 @@ public class OnlineClientManager implements ViewObserver, Observer {
     private final List<ProductionCard> allProductionCards;
 
     /**
-     * Constructor of the client controller.
+     * Constructor of the online client controller.
      * @param view: cli or gui.
      */
-    public OnlineClientManager(IView view) {
+    public ClientManager(IView view) {
         this.view = view;
         this.allProductionCards = ProductionCardsParser.parseProductionDeck();
         viewUpdater = Executors.newSingleThreadExecutor();
+    }
+
+    /**
+     * Constructor of the offline client manager.
+     * @param view: cli or gui
+     * @param isOffline: game mode
+     */
+    public ClientManager(IView view, boolean isOffline) {
+        this.view = view;
+        this.allProductionCards = ProductionCardsParser.parseProductionDeck();
+        viewUpdater = Executors.newSingleThreadExecutor();
+        client = new Client(new LocalStream(), view);
+        client.addObserver(this);
     }
 
     /**
@@ -299,7 +312,6 @@ public class OnlineClientManager implements ViewObserver, Observer {
         return deserialized;
     }
 
-
     @Override
     public void onServerInfoUpdate(int port, String ipAddress) {
 
@@ -329,7 +341,6 @@ public class OnlineClientManager implements ViewObserver, Observer {
     public void onUpdateSetupResource(LinkedList<ResourceType> r1) {
         client.sendMessage(new SetupResourceAnswer(nickname, r1.size(), r1));
     }
-
 
     @Override
     public void onUpdateSetupLeaders(int l1, int l2) {

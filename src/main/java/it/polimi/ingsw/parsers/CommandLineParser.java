@@ -14,21 +14,20 @@ public final class CommandLineParser {
      */
     public  static boolean CmdValidator(String[] args) {
 
-        if(args.length != 3) return false;
+        int port = 0;
+
+        if(args.length != 2) return false;
 
         if(args[0].equalsIgnoreCase("-port")) {
 
             try {
-                Integer.parseInt(args[1]);
+                port = Integer.parseInt(args[1]);
             } catch(NumberFormatException nfe) {
                 return false;
             }
-        } else {
-            return false;
         }
 
-        return args[2].equalsIgnoreCase("-singlePlayer")
-                || args[2].equalsIgnoreCase("-multiPlayer");
+        return port >= 1024;
     }
 
     /**
@@ -41,7 +40,6 @@ public final class CommandLineParser {
         ServerConfigPOJO customConfig = new ServerConfigPOJO();
 
         customConfig.setPort(Integer.parseInt(args[1]));
-        customConfig.setGameMode(args[2]);
 
         return customConfig;
     }

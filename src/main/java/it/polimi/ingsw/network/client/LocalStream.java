@@ -10,8 +10,11 @@ import it.polimi.ingsw.network.messages.serverMessages.LobbySizeReply;
 import it.polimi.ingsw.network.messages.serverMessages.LobbySizeRequest;
 import it.polimi.ingsw.network.server.IClientHandler;
 
+/**
+ * Offline stream communication between Client and Controller.
+ */
 public class LocalStream implements IClientHandler {
-    private GameManager gameManager;
+    private final GameManager gameManager;
     private Client client;
 
     public LocalStream(){
@@ -28,13 +31,11 @@ public class LocalStream implements IClientHandler {
         client.forwardMessage(message);
     }
 
-
     public void handleMessage(Message message){
         if(message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)){
             gameManager.onMessage(message);
             gameManager.addVirtualView(message.getSenderUsername(), new VirtualView(this));
             gameManager.onMessage(new OneIntMessage(message.getSenderUsername(), PossibleMessages.GAME_SIZE, 1));
-
         }
         gameManager.onMessage(message);
     }

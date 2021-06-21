@@ -185,8 +185,6 @@ public class FaithTrack extends Observable implements Serializable {
         }
     }
 
-    //using of the map and of class constants
-
     /**
      * initialization of the map
      */

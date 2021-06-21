@@ -95,8 +95,6 @@ public class ClientHandler implements Runnable, IClientHandler {
     /**
      * After the client is connected and associated to a handler, a specific thread is run
      * to keep up with sent messages.
-     *
-     * There may be ping messages which will be ignored.
      */
     private void handleUserMessages() throws IOException {
 

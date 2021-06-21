@@ -9,9 +9,6 @@ import it.polimi.ingsw.network.views.cli.CLI;
 import it.polimi.ingsw.network.views.gui.MiniGui;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -197,14 +194,15 @@ public class Client extends Observable implements IClient {
 
             if(!isLocal) {
 
-                OnlineClientManager OnlineClientManager = new OnlineClientManager(cliView);
-                cliView.addObserver(OnlineClientManager);
+                ClientManager clientManager = new ClientManager(cliView);
+                cliView.addObserver(clientManager);
 
 
             } else {
 
-                OfflineClientManager OfflineClientManager = new OfflineClientManager(cliView);
-                cliView.addObserver(OfflineClientManager);
+                ClientManager clientManager = new ClientManager(cliView, true);
+                //OfflineClientManager OfflineClientManager = new OfflineClientManager(cliView);
+                cliView.addObserver(clientManager);
             }
 
             cliView.startCli();

@@ -13,17 +13,6 @@ import it.polimi.ingsw.parsers.ServerConfigParser;
 import java.util.*;
 import java.util.logging.Logger;
 
-/**
- * Accepted commands:
- *
- * user @ user:$ Class.java -port <port#>
- *
- *
- * Follow this format to use specific settings. Defaults can be checked @ server_config.json
- *
- * <port#> : int from 1024 to Integer.GET_MAX;
- *
- */
 public class Server {
 
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
