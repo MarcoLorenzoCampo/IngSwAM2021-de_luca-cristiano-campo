@@ -177,7 +177,6 @@ public final class GameManager {
                         OneIntMessage get_resources = (OneIntMessage) message;
                         //actionManager
                         //        .onReceiveAction(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame));
-
                         currentGame.getCurrentPlayer().visit(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame ));
 
                         if(currentPlayerState.getHasPickedResources()) {
