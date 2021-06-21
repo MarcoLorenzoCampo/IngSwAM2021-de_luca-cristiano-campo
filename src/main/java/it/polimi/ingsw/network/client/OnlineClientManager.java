@@ -301,7 +301,6 @@ public class OnlineClientManager implements ViewObserver, Observer {
         return deserialized;
     }
 
-
     @Override
     public void onServerInfoUpdate(int port, String ipAddress) {
 
@@ -331,7 +330,6 @@ public class OnlineClientManager implements ViewObserver, Observer {
     public void onUpdateSetupResource(LinkedList<ResourceType> r1) {
         client.sendMessage(new SetupResourceAnswer(nickname, r1.size(), r1));
     }
-
 
     @Override
     public void onUpdateSetupLeaders(int l1, int l2) {

@@ -32,16 +32,8 @@ public class VirtualView implements IView, Observer {
      * @param clientHandler: clientHandler {@link ClientHandler} each virtual view communicates
      *                     with. Messages are sent through the handler.
      */
-    public VirtualView(ClientHandler clientHandler) {
+    public VirtualView(IClientHandler clientHandler) {
         this.clientHandler = clientHandler;
-    }
-
-    /**
-     * Default getter.
-     * @return clientHandler associated with this VirtualView.
-     */
-    public IClientHandler getClientHandler() {
-        return clientHandler;
     }
 
     @Override
@@ -132,8 +124,8 @@ public class VirtualView implements IView, Observer {
     }
 
     @Override
-    public void printLorenzoFaithTrack(int faithmarker) {
-        clientHandler.sendMessage(new LorenzoFaithTrackMessage(faithmarker));
+    public void printLorenzoFaithTrack(int faithMarker) {
+        clientHandler.sendMessage(new LorenzoFaithTrackMessage(faithMarker));
     }
 
     @Override
