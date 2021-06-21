@@ -15,13 +15,12 @@ import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
-import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
-import it.polimi.ingsw.network.messages.playerMessages.TwoIntMessage;
+import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -34,17 +33,13 @@ public class OfflineClientManager implements ViewObserver, Observer {
      */
     private final IView view;
 
-    /**
-     * Manager of the offline game.
-     */
-    private final GameManager gameManager;
 
     /**
      * Name of the client.
      */
     private String nickname;
 
-    private IClient client;
+    private Client client;
 
     private final List<ProductionCard> allProductionCards;
 
@@ -54,17 +49,26 @@ public class OfflineClientManager implements ViewObserver, Observer {
     private final Executor viewUpdater;
 
     public OfflineClientManager(IView view) {
-        this.gameManager = new GameManager();
-        gameManager.setLobbyManager("singlePlayer");
+
         this.view = view;
         this.allProductionCards = ProductionCardsParser.parseProductionDeck();
         viewUpdater = Executors.newSingleThreadExecutor();
-
-        client = new OfflineClient();
+        client = new Client(new LocalStream(), view);
+        client.addObserver(this);
     }
 
+    /**
+     * Takes action based on the message type of the message received from the server.
+     * Each server response will be displayed in the CLI/GUI.
+     *
+     * See {@link it.polimi.ingsw.enumerations.PossibleMessages} for a full list of
+     * available server messages.
+     *
+     * @param message the message received from the server.
+     */
     @Override
     public void update(Message message) {
+
         if(message != null) {
             switch (message.getMessageType()) {
                 case LOBBY_SIZE_REQUEST:
@@ -101,7 +105,7 @@ public class OfflineClientManager implements ViewObserver, Observer {
                     ProductionBoardMessage productionBoard = (ProductionBoardMessage) message;
                     List<LeaderCard> leader_prod = deserializeLeaderCards(productionBoard.getExtra_productions());
                     viewUpdater.execute(() ->
-                            view.showLeaderCards(leader_prod));
+                            view.printLeaders(leader_prod));
                     viewUpdater.execute(() -> view.printProductionBoard(deserializeProductionBoard(productionBoard.getProductions())));
                     break;
 
@@ -133,22 +137,25 @@ public class OfflineClientManager implements ViewObserver, Observer {
                 case SETUP_RESOURCES:
                     SetupResourcesRequest resourcesRequest = (SetupResourcesRequest) message;
                     viewUpdater.execute(() ->
-                    {
-                        try {
-                            view.askSetupResource(resourcesRequest.getNumberOfResources());
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                            {
+                                try {
+                                    view.askSetupResource(resourcesRequest.getNumberOfResources());
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    );
                     break;
 
                 case FINAL_PRODUCTION:
                     ChosenProductionMessage finalProduction = (ChosenProductionMessage) message;
                     viewUpdater.execute(() -> view.printFinalProduction(finalProduction.getInput(), finalProduction.getOutput()));
                     break;
+
                 case AVAILABLE_PRODUCTION_CARDS:
                     AvailableCardsMessage a = (AvailableCardsMessage) message;
-                    viewUpdater.execute(() -> view.printAvailableCards(deserializeProductionCards(a.getAvailableID())));
+                    ArrayList<ProductionCard> deserializedProductions = deserializeProductionCards(a.getAvailableID());
+                    viewUpdater.execute(() -> view.printAvailableCards(deserializedProductions));
                     break;
 
                 case AVAILABLE_LEADERS:
@@ -184,6 +191,17 @@ public class OfflineClientManager implements ViewObserver, Observer {
                     viewUpdater.execute(() -> view.showError(e.getErrorMessage()));
                     break;
 
+                case PEEK_MESSAGE:
+                    PeekUpdateMessage p = (PeekUpdateMessage) message;
+                    viewUpdater.execute(() -> view.getPeek(
+                            p.getName(),
+                            p.getFaithPosition(),
+                            p.getInventory(),
+                            p.getCards(),
+                            p.getResourceTypes()
+                    ));
+                    break;
+
                 default:
                     break;
             }
@@ -196,9 +214,7 @@ public class OfflineClientManager implements ViewObserver, Observer {
             if(iterator.getValue()==-1){
                 deserialized.put(iterator.getKey(), null);
             }
-            else{
-                deserialized.put(iterator.getKey(), allProductionCards.get(iterator.getValue()));
-            }
+            deserialized.put(iterator.getKey(), allProductionCards.get(iterator.getValue()));
         }
         return  deserialized;
     }
@@ -234,6 +250,7 @@ public class OfflineClientManager implements ViewObserver, Observer {
                                         EffectType.DISCOUNT,
                                         discount,
                                         message.getResources().get(i)));
+
                         break;
 
                     case EXTRA_INVENTORY:
@@ -276,203 +293,113 @@ public class OfflineClientManager implements ViewObserver, Observer {
                                                 new ResourceTag(ResourceType.FAITH, 1)}));
                         break;
                 }
+                deserialized.get(i).deserializeActive(message.getActive().get(i));
             }
         }
         return deserialized;
     }
 
-    /**
-     * Sends a connection request to the server's IP and port.
-     *
-     * @param port      : port to connect.
-     * @param ipAddress : address of the server.
-     */
-    @Override
-    public void onServerInfoUpdate(int port, String ipAddress) {
-        //Not used in offline games.
-    }
 
-    /**
-     * Method to send a NicknameRequest message to the controller which will be
-     * accepted since is the only player available.
-     * {@link NicknameRequest}
-     *
-     * @param nickname: nickname to add to the
-     */
+    @Override
+    public void onServerInfoUpdate(int port, String ipAddress) { }
+
     @Override
     public void onUpdateNickname(String nickname) {
         this.nickname = nickname;
-        VirtualView vv = new VirtualView(null);
-        gameManager.getLobbyManager().addNewPlayer(nickname, vv);
+        client.sendMessage(new NicknameRequest(this.nickname));
     }
 
-    /**
-     * Method to send an update on the lobby size.
-     *
-     * @param gameSize : number of players expected.
-     */
     @Override
     public void onUpdateNumberOfPlayers(int gameSize) {
-        gameManager.onMessage(new OneIntMessage(nickname, PossibleMessages.GAME_SIZE, gameSize));
+        client.sendMessage(new OneIntMessage(nickname, PossibleMessages.GAME_SIZE, gameSize));
     }
 
-    /**
-     * Method to provide the server of 1 resource the client would like to start with.
-     * The number of setup resources depends on the playing order set by the Lobby Manager.
-     * {@link ILobbyManager}
-     *
-     * @param r1 : Resource chosen.
-     */
     @Override
     public void onUpdateSetupResource(LinkedList<ResourceType> r1) {
-
+        client.sendMessage(new SetupResourceAnswer(nickname, r1.size(), r1));
     }
 
-    /**
-     * Method to provide the server the index of the 2 leader cards the client would like to discard.
-     *
-     * @param l1 : first leader card.
-     * @param l2 : second leader card.
-     */
+
     @Override
     public void onUpdateSetupLeaders(int l1, int l2) {
-
+        client.sendMessage(
+                new DiscardTwoLeaders(nickname, l1, l2)
+        );
     }
 
-    /**
-     * Message to deposit a specific resource to the strongbox.
-     */
     @Override
     public void onUpdateSourceStrongBox() {
-
+        client.sendMessage(new SourceStrongboxMessage(nickname));
     }
 
-    /**
-     * Message to deposit a specific resource to the warehouse.
-     */
     @Override
     public void onUpdateSourceWarehouse() {
-
+        client.sendMessage(new SourceWarehouseMessage(nickname));
     }
 
-    /**
-     * Method to send a BaseProduction request, with specific input/output resources.
-     *
-     * @param i1 : input resource one.
-     * @param i2 : input resource two.
-     * @param o1 : output resource one.
-     */
     @Override
     public void onUpdateBaseActivation(ResourceType i1, ResourceType i2, ResourceType o1) {
-
+        client.sendMessage(new BaseProductionMessage(nickname, i1, i2, o1));
     }
 
-    /**
-     * Sends a message with the index of the production card to activate.
-     *
-     * @param c1 : index of the card.
-     */
     @Override
     public void onUpdateActivateProductionCard(int c1) {
-
+        client.sendMessage(new OneIntMessage(nickname, PossibleMessages.ACTIVATE_PRODUCTION, c1));
     }
 
-    /**
-     * Sends a message to the server with the index of the leader to discard.
-     *
-     * @param l1 : index of the leader to discard.
-     */
     @Override
     public void onUpdateDiscardLeader(int l1) {
-
+        client.sendMessage(new OneIntMessage(nickname, PossibleMessages.DISCARD_LEADER, l1));
     }
 
-    /**
-     * Sends a message to the server with the index of the leader to activate.
-     *
-     * @param l1 : index of the leader to activate.
-     */
     @Override
     public void onUpdateActivateLeader(int l1) {
-
+        client.sendMessage(new OneIntMessage(nickname, PossibleMessages.ACTIVATE_LEADER, l1));
     }
 
-    /**
-     * Sends a message to activate an extra-inventory slot.
-     *
-     * @param e1 : index of the slot to activate.
-     * @param r1 : preferred output resource.
-     */
     @Override
     public void onUpdateActivateExtraProduction(int e1, ResourceType r1) {
-
+        client.sendMessage(new ExtraProductionMessage(nickname, e1, r1));
     }
 
-    /**
-     * Sends a message to get resources from a specific arrow from market.
-     *
-     * @param r1 : row or column chosen.
-     */
     @Override
     public void onUpdateGetResources(int r1) {
-
+        client.sendMessage(new OneIntMessage(nickname, PossibleMessages.GET_RESOURCES, r1));
     }
 
-    /**
-     * Sends a message containing the index of the Production Card to buy. The card is selected from the
-     * available ones. {@link ResourceMarket}
-     *
-     * @param card : Index of the card to buy.
-     * @param slot : production slot destination.
-     */
     @Override
     public void onUpdateBuyCard(int card, int slot) {
-
+        client.sendMessage(new TwoIntMessage(nickname, PossibleMessages.BUY_PRODUCTION, card, slot));
     }
 
-    /**
-     * Sends a request to swap two shelves in the warehouse.
-     *
-     * @param shelf1: first shelf
-     * @param shelf2: second shelf
-     */
     @Override
     public void onUpdateSwap(int shelf1, int shelf2) {
-
+        client.sendMessage(new TwoIntMessage(nickname, PossibleMessages.SWAP ,shelf1, shelf2));
     }
 
-    /**
-     * Sends a request to check the state of another player.
-     *
-     * @param enemyName : player to check.
-     */
     @Override
     public void onUpdatePeek(String enemyName) {
-
+        client.sendMessage(new PeekMessage(nickname, enemyName));
     }
 
-    /**
-     * Sends a message containing the resource to get in exchange for a white marble.
-     *
-     * @param r1 : resource to exchange.
-     */
     @Override
     public void onUpdateExchangeResource(ResourceType r1, int place) {
-
+        client.sendMessage(new ExchangeResourceMessage(nickname, r1, place));
     }
 
     @Override
     public void onUpdateDeposit(int index) {
-
+        client.sendMessage(new OneIntMessage(nickname,PossibleMessages.DEPOSIT, index));
     }
 
     @Override
     public void onUpdateEndTurn() {
-
+        client.sendMessage(new EndTurnMessage(nickname));
     }
 
     @Override
     public void onUpdateExecuteProduction() {
-        
+        client.sendMessage(new ExecuteProductionMessage(nickname));
     }
+
 }

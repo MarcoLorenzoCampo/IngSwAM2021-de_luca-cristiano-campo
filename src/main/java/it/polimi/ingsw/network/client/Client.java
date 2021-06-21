@@ -27,12 +27,13 @@ import java.util.concurrent.TimeUnit;
  * Class to handle client operations.
  */
 public class Client extends Observable implements IClient {
-
+    private LocalStream localStream;
+    private boolean isLocal;
     private final IView view;
     /**
      * Socket that connects and communicates with the server's socket.
      */
-    private final Socket clientSocket;
+    private Socket clientSocket;
 
     /**
      * Streams to exchange messages {@link Message} with
@@ -44,7 +45,7 @@ public class Client extends Observable implements IClient {
     /**
      * Thread to enable reading from server.
      */
-    private final ExecutorService serverListener;
+    private ExecutorService serverListener;
 
     /**
      * Pinger thread.
@@ -59,6 +60,7 @@ public class Client extends Observable implements IClient {
      */
     public Client(int port, String IP_Address, IView view) throws IOException {
 
+        this.isLocal = false;
         this.view = view;
 
         this.clientSocket = new Socket();
@@ -79,6 +81,13 @@ public class Client extends Observable implements IClient {
             clientLogger.severe(() -> "Couldn't connect to the host.");
 
         }
+    }
+
+    public Client(LocalStream localStream, IView view){
+        this.isLocal = true;
+        this.localStream = localStream;
+        this.view = view;
+        localStream.setClient(this);
     }
 
     /**
@@ -112,21 +121,23 @@ public class Client extends Observable implements IClient {
 
     @Override
     public void sendMessage(Message message) {
+        if(!isLocal) {
+            try {
+                output.writeObject(message);
+                output.reset();
 
-        try {
-            output.writeObject(message);
-            output.reset();
+            } catch (IOException e) {
 
-        } catch (IOException e) {
-
-            clientLogger.severe(() -> "Unable to send the message.");
-            disconnect();
+                clientLogger.severe(() -> "Unable to send the message.");
+                disconnect();
+            }
+        } else {
+            localStream.handleMessage(message);
         }
     }
 
     @Override
     public void disconnect() {
-
         if (!clientSocket.isClosed()) {
             try {
                 clientSocket.close();
@@ -151,6 +162,10 @@ public class Client extends Observable implements IClient {
         } else {
             pinger.shutdownNow();
         }
+    }
+
+    public void forwardMessage(Message message){
+        notifyObserver(message);
     }
 
     //------------------------------------------ MAIN METHOD -----------------------------------------------
@@ -185,6 +200,7 @@ public class Client extends Observable implements IClient {
                 OnlineClientManager OnlineClientManager = new OnlineClientManager(cliView);
                 cliView.addObserver(OnlineClientManager);
 
+
             } else {
 
                 OfflineClientManager OfflineClientManager = new OfflineClientManager(cliView);
@@ -195,12 +211,7 @@ public class Client extends Observable implements IClient {
 
         } else {
             MiniGui miniGui = new MiniGui();
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    miniGui.initializeGame();
-                }
-            });
+            SwingUtilities.invokeLater(miniGui::initializeGame);
 
         }
     }
