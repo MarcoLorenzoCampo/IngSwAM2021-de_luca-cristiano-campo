@@ -79,7 +79,7 @@ public class MiniGui  {
         System.out.println("OFFLINE");
         this.frame.dispose();
         GUI guiView = new GUI(false);
-        OfflineClientManager OfflineClientManager = new OfflineClientManager(guiView);
+        ClientManager OfflineClientManager = new ClientManager(guiView, true);
         guiView.addObserver(OfflineClientManager);
     }
 }
