@@ -1,13 +1,10 @@
 package it.polimi.ingsw.network.views.gui;
 
-import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.client.OfflineClientManager;
-import it.polimi.ingsw.network.client.OnlineClientManager;
+import it.polimi.ingsw.network.client.ClientManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MiniGui  {
 
@@ -73,8 +70,8 @@ public class MiniGui  {
         System.out.println("ONLINE");
         this.frame.dispose();
         GUI guiView = new GUI(true);
-        OnlineClientManager OnlineClientManager = new OnlineClientManager(guiView);
-        guiView.addObserver(OnlineClientManager);
+        ClientManager ClientManager = new ClientManager(guiView);
+        guiView.addObserver(ClientManager);
     }
 
 
