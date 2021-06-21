@@ -214,9 +214,7 @@ public class OnlineClientManager implements ViewObserver, Observer {
             if(iterator.getValue()==-1){
                 deserialized.put(iterator.getKey(), null);
             }
-            else{
                 deserialized.put(iterator.getKey(), allProductionCards.get(iterator.getValue()));
-            }
         }
         return  deserialized;
     }

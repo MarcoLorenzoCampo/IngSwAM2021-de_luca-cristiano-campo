@@ -32,7 +32,7 @@ public class VirtualView implements IView, Observer {
      * @param clientHandler: clientHandler {@link ClientHandler} each virtual view communicates
      *                     with. Messages are sent through the handler.
      */
-    public VirtualView(ClientHandler clientHandler) {
+    public VirtualView(IClientHandler clientHandler) {
         this.clientHandler = clientHandler;
     }
 
