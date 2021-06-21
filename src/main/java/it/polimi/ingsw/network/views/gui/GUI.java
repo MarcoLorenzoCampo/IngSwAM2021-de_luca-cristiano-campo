@@ -710,6 +710,7 @@ public class GUI extends ViewObservable implements IView {
         setupFrame.setContentPane(setup.get(1));
         setupFrame.validate();
         setupFrame.repaint();
+        setupFrame.setVisible(true);
     }
 
     @Override
