@@ -861,7 +861,7 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void printLorenzoToken(String lorenzoTokenReduced, it.polimi.ingsw.enumerations.Color color, int quantity) {
-        String path = "./punchboard/token_";
+        String path = "punchboard/token_";
         if (color != null){
             path = path+"discard_";
             switch (color) {

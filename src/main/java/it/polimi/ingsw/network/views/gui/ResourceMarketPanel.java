@@ -14,7 +14,7 @@ public class ResourceMarketPanel extends JPanel {
     JButton[] arrows;
     ResourceType[][] resourceBoard;
     ResourceType extraMarble;
-    String path = "./punchboard/marble_";
+    String path = "punchboard/marble_";
 
     public ResourceMarketPanel(ResourceType[][] resourceBoard, ResourceType extraMarble){
         arrows = new JButton[7];
@@ -152,7 +152,7 @@ public class ResourceMarketPanel extends JPanel {
     }
     private void paintBackground(Graphics g) {
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("./punchboard/market.jpg");
+        InputStream url = cl.getResourceAsStream("punchboard/market.jpg");
         BufferedImage img= null;
         try {
             img = ImageIO.read(url);

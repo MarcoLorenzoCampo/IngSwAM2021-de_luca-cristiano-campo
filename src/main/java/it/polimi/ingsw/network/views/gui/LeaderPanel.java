@@ -13,11 +13,11 @@ import java.io.InputStream;
 public class LeaderPanel extends JPanel    {
     String path;
     public LeaderPanel(String path){
-        this.path = "./front/";
+        this.path = "front/";
         this.path = this.path.concat(path);
     }
     public LeaderPanel(LeaderCard leaderCard){
-        path = "./front/leader_";
+        path = "front/leader_";
         switch (leaderCard.getEffectType()){
 
             case DISCOUNT:

@@ -19,7 +19,7 @@ public class AvailableLeaderPanel extends JPanel {
     AvailableLeaderPanel(){
         this.setLayout(new BorderLayout());
 
-        path = "./front/leader_";
+        path = "front/leader_";
         available = new ArrayList<>();
 
         buttons = new ArrayList<>();

@@ -16,11 +16,11 @@ public class BufferPanel extends JPanel {
     private final JButton[] deposit_buttons;
     private final JButton[] change_buttons;
     private final String[] paths = {
-            "./punchboard/coin.png",
-            "./punchboard/shield.png",
-            "./punchboard/servant.png",
-            "./punchboard/stone.png",
-            "./punchboard/marble_white.png",
+            "punchboard/coin.png",
+            "punchboard/shield.png",
+            "punchboard/servant.png",
+            "punchboard/stone.png",
+            "punchboard/marble_white.png",
     };
 
     public BufferPanel(){

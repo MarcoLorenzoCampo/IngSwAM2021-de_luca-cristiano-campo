@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.game;
 
 import it.polimi.ingsw.enumerations.PossibleGameStates;
-import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.market.GameBoard;
 import it.polimi.ingsw.model.player.RealPlayer;
 
@@ -23,13 +22,6 @@ public class PlayingGame implements IGame {
 
     public void setCurrentPlayer(RealPlayer currentRealPlayer) {
         this.currentPlayer = currentRealPlayer;
-    }
-
-    /**
-     * @throws EndGameException telling the controller game is ending next turn
-     */
-    public void endGame() throws EndGameException {
-        throw new EndGameException("PlayingGame ended! " + currentPlayer.getName() + " won!");
     }
 
     /**

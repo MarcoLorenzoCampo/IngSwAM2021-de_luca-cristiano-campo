@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class LorenzoTokenPanel extends JPanel {
-    private String path = "./punchboard/token_back.png";
+    private String path = "punchboard/token_back.png";
 
     public LorenzoTokenPanel(){
         this.setBackground(new Color(198,160,98));

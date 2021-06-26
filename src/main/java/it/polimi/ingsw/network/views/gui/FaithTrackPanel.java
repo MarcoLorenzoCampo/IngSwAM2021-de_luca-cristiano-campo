@@ -70,7 +70,7 @@ public class FaithTrackPanel extends JPanel {
         int x = 0;
         int y = 0;
         ClassLoader cl = this.getClass().getClassLoader();
-        String item = "./punchboard/pope_favor";
+        String item = "punchboard/pope_favor";
         switch (tile){
             case 2:
                 x += 19 * width/3;
@@ -106,8 +106,8 @@ public class FaithTrackPanel extends JPanel {
         ClassLoader cl = this.getClass().getClassLoader();
         InputStream url;
 
-        if(player) url = cl.getResourceAsStream("./punchboard/faith_marker.png");
-        else url = cl.getResourceAsStream("./punchboard/lorenzo_faith_marker.png");
+        if(player) url = cl.getResourceAsStream("punchboard/faith_marker.png");
+        else url = cl.getResourceAsStream("punchboard/lorenzo_faith_marker.png");
 
         BufferedImage img = null;
         try {
@@ -155,7 +155,7 @@ public class FaithTrackPanel extends JPanel {
 
     private void DrawFaithTrack(Graphics g) {
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("./punchboard/faithtrack.png");
+        InputStream url = cl.getResourceAsStream("punchboard/faithtrack.png");
                 BufferedImage img= null;
         try {
             img = ImageIO.read(url);

@@ -49,17 +49,6 @@ public class RealPlayerBoard extends Observable {
     }
 
     /**
-     * Main method called to run a specific action that has to be validated before being executed.
-     * @param actionToPerform: action to be run. {@link Action}
-     */
-    public void getAction(Action actionToPerform) throws InvalidPlayerException,
-            InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, EndTurnException,
-            NoMatchingRequisitesException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
-
-        actionToPerform.isValid();
-    }
-
-    /**
      * Method to increase the number of bought cards, when the max number gets reached then
      * the observers gets notified and the end game procedure is started.
      */

@@ -1,13 +1,9 @@
 package it.polimi.ingsw.actions;
 
-import it.polimi.ingsw.controller.ActionValidator;
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.Visitor;
-
-import java.util.ArrayList;
 
 public class ActivateBaseProductionAction extends Action {
     private final PossibleAction actiontag = PossibleAction.ACTIVATE_PRODUCTION;
@@ -38,24 +34,6 @@ public class ActivateBaseProductionAction extends Action {
 
     public ResourceType getOutput() {
         return output;
-    }
-
-    @Override
-    public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
-        ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(super.getActionSender());
-        ActionValidator.validateBaseProduction(this);
-        ActionValidator.validateResourceProduction(input_1);
-        ActionValidator.validateResourceProduction(input_2);
-        ActionValidator.validateResourceProduction(output);
-        runAction();
-    }
-
-    private void runAction() {
-        game.getCurrentPlayer()
-                .getPlayerBoard()
-                .getProductionBoard()
-                .selectBaseProduction(input_1, input_2, output);
     }
 
     @Override

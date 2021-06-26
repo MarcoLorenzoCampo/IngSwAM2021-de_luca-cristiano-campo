@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
-import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.RealPlayer;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,7 +84,7 @@ class ProductionCardMarketTest {
      * available cards
      */
     @Test
-    void removeCardTest() throws EndGameException {
+    void removeCardTest() {
 
         //Arrange
         /* buying a random card from the available ones */

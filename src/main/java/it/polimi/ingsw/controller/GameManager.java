@@ -16,7 +16,6 @@ import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.server.Server;
-import it.polimi.ingsw.network.views.IView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ import java.util.Map;
 public final class GameManager {
 
     private final IGame currentGame;
-    private final ActionManager actionManager;
     private ILobbyManager lobbyManager;
 
     private boolean gameStarted = false;
@@ -47,17 +45,12 @@ public final class GameManager {
         this.currentPlayerState = currentGame.getCurrentPlayer().getPlayerState();
     }
 
-    public IView getCurrentView() {
-        return currentView;
-    }
-
     /**
      * Constructor of the game manager.
      */
     public GameManager() {
 
         this.currentGame = PlayingGame.getGameInstance();
-        this.actionManager = new ActionManager(currentGame, this);
 
         this.firstTurn = true;
         this.virtualViewLog = new HashMap<>();
@@ -76,10 +69,6 @@ public final class GameManager {
         if (gameMode.equalsIgnoreCase("multiPlayer")) {
             lobbyManager = new MultiPlayerLobbyManager(this);
         }
-    }
-
-    public ActionManager getActionManager() {
-        return actionManager;
     }
 
     public IGame getCurrentGame() {
@@ -161,10 +150,7 @@ public final class GameManager {
                         currentGame.getCurrentPlayer().visit(new BuyProductionCardAction(buy.getSenderUsername(),
                                 currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
                                 buy.getSecondNumber(), currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new BuyProductionCardAction(buy.getSenderUsername(),
-                        //                currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
-                        //                buy.getSecondNumber(), currentGame));
+
                         if(currentPlayerState.getHasBoughCard()){
                             currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
                         }
@@ -175,8 +161,6 @@ public final class GameManager {
 
                     else if(message.getMessageType().equals(PossibleMessages.GET_RESOURCES)){
                         OneIntMessage get_resources = (OneIntMessage) message;
-                        //actionManager
-                        //        .onReceiveAction(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame));
 
                         currentGame.getCurrentPlayer().visit(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame ));
 
@@ -206,16 +190,12 @@ public final class GameManager {
                                 OneIntMessage activate_prod = (OneIntMessage) message;
                                 currentGame.getCurrentPlayer().visit(new ActivateProductionAction(activate_prod.getSenderUsername(),
                                         activate_prod.getIndex(), currentGame));
-                                //actionManager
-                                //        .onReceiveAction(new ActivateProductionAction(activate_prod.getSenderUsername(),
-                                //                activate_prod.getIndex(), currentGame));
+
                                 break;
 
                             case ACTIVATE_BASE_PRODUCTION:
                                 BaseProductionMessage base_prod = (BaseProductionMessage) message;
-                                //actionManager
-                                //        .onReceiveAction(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
-                                //                base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
+
                                 currentGame.getCurrentPlayer().visit(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
                                         base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
                                 break;
@@ -224,9 +204,7 @@ public final class GameManager {
                                 ExtraProductionMessage extra_prod = (ExtraProductionMessage) message;
                                 currentGame.getCurrentPlayer().visit(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
                                         extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
-                                //actionManager
-                                //        .onReceiveAction(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
-                                //                extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
+
                                 break;
                         }
 
@@ -238,8 +216,6 @@ public final class GameManager {
                         && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
                         currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
                     }
 
                     else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_LEADER)
@@ -247,8 +223,6 @@ public final class GameManager {
                         && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
                         currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
-                        //actionManager
-                        //        .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                     }
                 }
                 onStartTurn();
@@ -335,8 +309,6 @@ public final class GameManager {
 
                 for (Resource iterator : obtained) {
                     iterator.deposit(currentGame.getCurrentPlayer().getPlayerBoard());
-                    actionManager
-                            .onReceiveAction( new DepositAction(0, message.getSenderUsername(), currentGame) );
                 }
             }
             if ((lobbyManager.turnOfPlayer(currentPlayer)+1) == lobbyManager.getLobbySize()) {
@@ -356,26 +328,16 @@ public final class GameManager {
 
             if(l1 > l2){
 
-                //actionManager
-                //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
-                //actionManager
-                //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
                 currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame) );
                 currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
             } else {
 
-                //actionManager
-                //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
-
-                //actionManager
-                //        .onReceiveAction(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
                 currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame) );
                 currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
             }
 
             if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)) {
                 currentGame.setCurrentState(PossibleGameStates.PLAYING);
-
 
                 //Before the game starts, if a player got disconnected before discarding 2 leaders,
                 // they get randomly selected and discarded.
@@ -399,16 +361,10 @@ public final class GameManager {
                 OneIntMessage activate_prod = (OneIntMessage) message;
                 currentGame.getCurrentPlayer().visit(new ActivateProductionAction(activate_prod.getSenderUsername(),
                         activate_prod.getIndex(), currentGame));
-                //actionManager
-                //        .onReceiveAction(new ActivateProductionAction(activate_prod.getSenderUsername(),
-                //                activate_prod.getIndex(), currentGame));
             }
 
             else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)) {
                 BaseProductionMessage base_prod = (BaseProductionMessage) message;
-                //actionManager
-                //        .onReceiveAction(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
-                //                base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
                 currentGame.getCurrentPlayer().visit(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
                         base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
             }
@@ -417,14 +373,10 @@ public final class GameManager {
                 ExtraProductionMessage extra_prod = (ExtraProductionMessage) message;
                 currentGame.getCurrentPlayer().visit(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
                         extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
-                //actionManager
-                //        .onReceiveAction(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
-                //                extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
             }
             else if(message.getMessageType().equals(PossibleMessages.EXECUTE_PRODUCTION)){
                 currentGame.getCurrentPlayer().visit(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
-                //actionManager
-                //        .onReceiveAction(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
+
                 if(currentGame.getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()){
                     currentGame.setCurrentState(PossibleGameStates.REMOVE);
                 } else {
@@ -444,16 +396,12 @@ public final class GameManager {
             if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                 SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
                 currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
-                //actionManager
-                //        .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
                 currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getToBeRemoved().remove(toBeRemoved.get(0));
             }
 
             else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
                 SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
                 currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
-                //actionManager
-                //        .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
                 currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getToBeRemoved().remove(toBeRemoved.get(0));
             }
 
@@ -471,9 +419,6 @@ public final class GameManager {
                 ExchangeResourceMessage colorChange = (ExchangeResourceMessage) message;
                 currentGame.getCurrentPlayer().visit(new ChangeMarbleAction(colorChange.getSenderUsername(),
                         colorChange.getExchangeWithThis(), colorChange.getIndex(), currentGame));
-                //actionManager
-                //        .onReceiveAction(new ChangeMarbleAction(colorChange.getSenderUsername(),
-                //                colorChange.getExchangeWithThis(), colorChange.getIndex(),currentGame));
             }
 
             if(currentPlayerState.CanDeposit()) {
@@ -487,8 +432,6 @@ public final class GameManager {
         if(message.getSenderUsername().equals(currentPlayer)){
             if(message.getMessageType().equals(PossibleMessages.DEPOSIT)){
                 OneIntMessage deposit = (OneIntMessage) message;
-                //actionManager
-                //        .onReceiveAction(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
                 currentGame.getCurrentPlayer().visit(new DepositAction(deposit.getIndex(), deposit.getSenderUsername(), currentGame));
                 if(currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().isEmpty()){
                     currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
@@ -503,16 +446,9 @@ public final class GameManager {
 
             ArrayList<ResourceTag> toBeRemoved = currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources();
 
-            //if (toBeRemoved.isEmpty()){
-            //    currentGame.setCurrentState(PossibleGameStates.MAIN_ACTION_DONE);
-            //    onStartTurn();
-            //}
-
             if (message.getMessageType().equals(PossibleMessages.SOURCE_STRONGBOX)){
                 SourceStrongboxMessage strongboxMessage = (SourceStrongboxMessage) message;
                 currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
-                //actionManager
-                //        .onReceiveAction(new RemoveResourcesAction(strongboxMessage.getSenderUsername(), "STRONGBOX", toBeRemoved.get(0), currentGame));
                 currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
 
             }
@@ -520,8 +456,6 @@ public final class GameManager {
             else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
                 SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
                 currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
-                //actionManager
-                //        .onReceiveAction(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
                 currentGame.getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().remove(toBeRemoved.get(0));
 
             }
@@ -539,7 +473,6 @@ public final class GameManager {
         if(message.getSenderUsername().equals(currentPlayer)){
             if(message.getMessageType().equals(PossibleMessages.END_TURN)){
                 currentGame.getCurrentPlayer().visit(new EndTurnAction(message.getSenderUsername(), currentGame));
-                //currentPlayerState.endTurnReset();
                 currentGame.setCurrentState(PossibleGameStates.PLAYING);
                 lobbyManager.setNextTurn();
             }
@@ -549,8 +482,6 @@ public final class GameManager {
                     && !currentPlayerState.getGetHasPlacedLeaders()){
                 OneIntMessage discard = (OneIntMessage) message;
                 currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
-                //actionManager
-                //        .onReceiveAction(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
                 onStartTurn();
             }
 
@@ -559,8 +490,6 @@ public final class GameManager {
                     && !currentPlayerState.getGetHasPlacedLeaders()){
                 OneIntMessage activate = (OneIntMessage) message;
                 currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
-                //actionManager
-                //        .onReceiveAction(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                 onStartTurn();
             }
             else onStartTurn();

@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 import it.polimi.ingsw.network.eventHandlers.ControllerObserver;
-import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;
@@ -422,61 +421,6 @@ public class MultiPlayerLobbyManager implements ControllerObserver, ILobbyManage
     }
 
     /**
-     * The lobby manager observes each player's faith track and warehouse, registering events.
-     * @param message: controller notification.
-     */
-    /*@Override
-    public void update(Message message) {
-
-        switch(message.getMessageType()) {
-            case VATICAN_REPORT_NOTIFICATION:
-
-                VaticanReportNotification v = (VaticanReportNotification) message;
-
-                int popeTileIndex = v.getPopeTileIndex();
-
-                for(RealPlayer realPlayer : realPlayerList) {
-
-                    if(realPlayer.getPlayerState().isConnected() && !realPlayer.getName().equals(gameManager.getCurrentPlayer())) {
-                        FaithTrack ft = realPlayer.getPlayerBoard().getFaithTrack();
-
-                        ft.checkVaticanCondition(popeTileIndex);
-                    }
-                }
-                break;
-
-            case DISCARDED_RESOURCE:
-                broadcastGenericMessage(gameManager.getCurrentPlayer() + " discarded a resource, everyone moves!");
-                for(RealPlayer realPlayer : realPlayerList) {
-                    if(realPlayer.getPlayerState().isConnected()
-                        && !realPlayer.getName().equals(gameManager.getCurrentPlayer())) {
-                        realPlayer.moveFaith();
-                    }
-                }
-                break;
-
-            case END_GAME:
-                if(!endGame) {
-                    Server.LOGGER.info("Last round started.");
-                    broadcastGenericMessage("End game started by: " + gameManager.getCurrentPlayer());
-                    endGame = true;
-                }
-                break;
-
-            case BOUGHT_7_CARDS:
-                if(!endGame) {
-                    endGame = true;
-                    Server.LOGGER.info("Last round started.");
-                    broadcastGenericMessage("End game started by: " + gameManager.getCurrentPlayer());
-                }
-                break;
-
-            default: //Ignore any other message
-                break;
-        }
-    }*/
-
-    /**
      * Method to send the stored data of a reconnected player.
      * @param nickname: player who get reconnected.
      * @param vv: virtual view of said player.
@@ -490,11 +434,6 @@ public class MultiPlayerLobbyManager implements ControllerObserver, ILobbyManage
                 gameManager.getCurrentGame().getGameBoard().getResourceMarket().getExtraMarble());
 
         vv.printLeaders(realPlayerList.get(getPlayerIndexByNickname(nickname)).getOwnedLeaderCards());
-
-        //NEED TO SEND WAREHOUSE AND PRODUCTIONS
-
-        //vv.printProductionBoard
-        //vv.printWarehouse
 
         vv.printBuffer(new ArrayList<>());
 

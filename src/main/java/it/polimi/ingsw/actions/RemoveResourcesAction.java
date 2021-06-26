@@ -1,6 +1,5 @@
 package it.polimi.ingsw.actions;
 
-import it.polimi.ingsw.controller.ActionValidator;
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
@@ -27,51 +26,6 @@ public class RemoveResourcesAction extends Action {
 
     public ResourceTag getToBeRemoved() {
         return toBeRemoved;
-    }
-
-    @Override
-    public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
-        ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(getActionSender());
-
-        runAction();
-    }
-
-    private void runAction() {
-        if(source.equals("WAREHOUSE")){
-            try {
-                game.getCurrentPlayer()
-                        .getPlayerBoard()
-                        .getInventoryManager()
-                        .removeFromWarehouse(toBeRemoved);
-            } catch (CannotRemoveResourceException e) {
-                try {
-                    game.getCurrentPlayer()
-                            .getPlayerBoard()
-                            .getInventoryManager()
-                            .removeFromStrongbox(new ResourceTag(e.getType(), e.getQuantity()));
-                } catch (CannotRemoveResourceException cannotRemoveResourceException) {
-                    cannotRemoveResourceException.printStackTrace();
-                }
-            }
-        }
-        else {
-            try {
-                game.getCurrentPlayer()
-                        .getPlayerBoard()
-                        .getInventoryManager()
-                        .removeFromStrongbox(toBeRemoved);
-            } catch (CannotRemoveResourceException e) {
-                try {
-                    game.getCurrentPlayer()
-                            .getPlayerBoard()
-                            .getInventoryManager()
-                            .removeFromWarehouse(new ResourceTag(e.getType(), e.getQuantity()));
-                } catch (CannotRemoveResourceException cannotRemoveResourceException) {
-                    cannotRemoveResourceException.printStackTrace();
-                }
-            }
-        }
     }
 
     @Override

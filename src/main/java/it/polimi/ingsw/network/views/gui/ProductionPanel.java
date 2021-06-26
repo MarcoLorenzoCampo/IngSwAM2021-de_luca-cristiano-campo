@@ -11,13 +11,13 @@ public class ProductionPanel extends JPanel {
     private String path;
 
     public ProductionPanel(String card_name){
-        this.path="./front/";
+        this.path="front/";
         this.path = path.concat(card_name);
         this.setVisible(true);
     }
 
     public ProductionPanel(int index){
-        path= new StringBuilder().append("./front/production_").append(index).toString();
+        path= "front/production_" + index;
         this.setVisible(true);
     }
 
@@ -29,8 +29,9 @@ public class ProductionPanel extends JPanel {
     private void MyDrawImage(Graphics g){
         ClassLoader cl = this.getClass().getClassLoader();
         InputStream url = cl.getResourceAsStream(path+".png");
-        BufferedImage img= null;
+        BufferedImage img;
         try {
+            assert url != null;
             img = ImageIO.read(url);
         } catch (IOException e) {
             e.printStackTrace();
