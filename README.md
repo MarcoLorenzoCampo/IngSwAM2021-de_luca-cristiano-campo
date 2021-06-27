@@ -2,6 +2,8 @@
 
 ## Software Engineering Final Examination (2020/2021)
 
+![MastersOfRenaissance](src/main/resources/readmeImages/MastersOfRenaissance.png)
+
 ### Project Description
 
 The objective of this project is to provide a playable and 
@@ -48,7 +50,7 @@ Here's a list of all the features we've implemented:
 
 ● Socket connection;
 
-● 2 Advanced Functionalities;
+● 2 Advanced Functionalities:
 
         ● Offline single player game;
         
@@ -109,20 +111,30 @@ java -jar AM38.jar -gui
 Once the Client is started, you will be prompted to chose an 
 online or offline game.
 
+![AskLocal](src/main/resources/readmeImages/AskLocalGame.png)
+
 #### Offline game:
 
 Once selected, you will be asked to chose a nickname and a 
 single player game will start.  
+
+![AskName](src/main/resources/readmeImages/AskName.png)
 Everything is run locally, no internet connection is required.
 
 #### Online game:
 Once selected, you will be asked to specify a valid 
 IP Address and Server Port to connect to (default values will be 
-shown), if the connection is successful you will be asked to input
+shown).  
+
+![AskServerInfo](src/main/resources/readmeImages/AskServerInfo.png)
+
+If the connection is successful you will be asked to input
 a valid nickname.  
 You will be then asked to chose the number of 
 players, every value between 1 and 4 is accepted.
-  
+
+![AskPlayerNumbers](src/main/resources/readmeImages/AskPlayersNumber.png)
+
 Once the number is reached, the game will start.
 
 ### Authors
