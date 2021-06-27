@@ -19,10 +19,10 @@ UML files have been made to document the progression of the project.
 
 ● [Final UML](): Complete UML to capture the whole structure of the implementation;
 
-###Javadocs
+### Javadocs
 
 Javadocs have been written for the most important methods/attributes
-of the classes. 
+of the classes.
 Read them [here]().
 
 ### Libraries and Plugins
