@@ -23,8 +23,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * Class to manage the entire playing game. It has instances of the currentGame, LobbyManager,
- * ActionManager.
+ * Class to manage the entire playing game. It has instances of the currentGame, LobbyManager.
  */
 public final class GameManager {
 
