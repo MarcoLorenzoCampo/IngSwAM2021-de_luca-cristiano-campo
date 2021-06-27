@@ -118,7 +118,8 @@ online or offline game.
 Once selected, you will be asked to chose a nickname and a 
 single player game will start.  
 
-![AskName](src/main/resources/readmeImages/AskName.png)
+![AskName](src/main/resources/readmeImages/AskName.png)  
+
 Everything is run locally, no internet connection is required.
 
 #### Online game:
@@ -127,11 +128,13 @@ IP Address and Server Port to connect to (default values will be
 shown).  
 
 ![AskServerInfo](src/main/resources/readmeImages/AskServerInfo.png)
+  
 
 If the connection is successful you will be asked to input
 a valid nickname.  
 You will be then asked to chose the number of 
 players, every value between 1 and 4 is accepted.
+  
 
 ![AskPlayerNumbers](src/main/resources/readmeImages/AskPlayersNumber.png)
 
