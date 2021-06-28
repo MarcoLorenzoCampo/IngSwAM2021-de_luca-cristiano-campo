@@ -3,7 +3,6 @@ package it.polimi.ingsw.network.views.cli.graphical;
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
-import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.network.views.cli.ColorCLI;
 
 import java.util.HashMap;
@@ -13,33 +12,26 @@ public class GraphicalDiscountLeaderCard {
     private static final int MAX_VERT_TILES = 8; //rows.
     private static final int MAX_HORIZ_TILES = 12; //cols.
 
-    private LeaderCard leaderCard;
+    private final LeaderCard leaderCard;
 
 
 
-    private String cells[][] = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
+    private final String[][] cells = new String[MAX_VERT_TILES][MAX_HORIZ_TILES];
     //final points
-    private int victoryPoints;
-    //requisiti di due carte di due colori diversi
-    private DevelopmentTag[] requirementsDevCards;
-    //descrizione potere
-    private ResourceType resourceDiscounted;
-    private ColorCLI colorRequirements1;
-    private ColorCLI getColorRequirements2;
-    private ColorCLI colorResourceDiscounted;
-    private Map<Color, ColorCLI> colorRequirementsDevCards = new HashMap<>();
-    private Map<ResourceType, ColorCLI> colorResource = new HashMap<>();
+    private final int victoryPoints;
+    private final Map<Color, ColorCLI> colorRequirementsDevCards = new HashMap<>();
+    private final Map<ResourceType, ColorCLI> colorResource = new HashMap<>();
 
     public GraphicalDiscountLeaderCard(LeaderCard leaderCard){
         initColorRequirementsDevCards();
         initColorResourceDiscounted();
         this.leaderCard = leaderCard;
         this.victoryPoints = leaderCard.getVictoryPoints();
-        this.colorRequirements1 = colorRequirementsDevCards.get(this.leaderCard.getRequirementsDevCards()[0].getColor());
-        this.getColorRequirements2 = colorRequirementsDevCards.get(this.leaderCard.getRequirementsDevCards()[1].getColor());
-        this.colorResourceDiscounted = colorResource.get(this.leaderCard.getResource());
+        ColorCLI colorRequirements1 = colorRequirementsDevCards.get(this.leaderCard.getRequirementsDevCards()[0].getColor());
+        ColorCLI getColorRequirements2 = colorRequirementsDevCards.get(this.leaderCard.getRequirementsDevCards()[1].getColor());
+        ColorCLI colorResourceDiscounted = colorResource.get(this.leaderCard.getResource());
         borderBuilding();
-        loadDiscountCard(this.colorRequirements1, this.getColorRequirements2, this.colorResourceDiscounted);
+        loadDiscountCard(colorRequirements1, getColorRequirements2, colorResourceDiscounted);
     }
 
     private void borderBuilding() {

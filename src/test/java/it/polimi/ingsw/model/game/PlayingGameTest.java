@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.game;
 
 import it.polimi.ingsw.enumerations.PossibleGameStates;
-import it.polimi.ingsw.exceptions.EndGameException;
-import it.polimi.ingsw.model.market.GameBoard;
 import it.polimi.ingsw.model.player.RealPlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,19 +33,6 @@ class PlayingGameTest {
 
         //Assert
         assertNotNull(currentGame.getCurrentPlayer());
-    }
-
-    @Test
-    void endGame() {
-        //Arrange
-        RealPlayer testPlayer;
-
-        //Act
-        testPlayer = new RealPlayer("testPlayer");
-        currentGame.setCurrentPlayer(testPlayer);
-
-        //Assert
-        assertThrows(EndGameException.class, () -> currentGame.endGame());
     }
 
     @Test

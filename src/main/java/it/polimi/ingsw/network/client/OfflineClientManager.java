@@ -1,26 +1,21 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.controller.GameManager;
-import it.polimi.ingsw.controller.ILobbyManager;
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.Level;
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.market.ProductionCard;
-import it.polimi.ingsw.model.market.ResourceMarket;
 import it.polimi.ingsw.model.market.leaderCards.*;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.ViewObserver;
-import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 import it.polimi.ingsw.network.views.IView;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -130,8 +125,8 @@ public class OfflineClientManager implements ViewObserver, Observer {
                     break;
 
                 case POPE_FAVOR:
-                    TwoIntMessage popefavor = (TwoIntMessage) message;
-                    viewUpdater.execute(()-> view.printPopeFavor(popefavor.getFirstNumber(), popefavor.getSecondNumber()));
+                    TwoIntMessage popeFavor = (TwoIntMessage) message;
+                    viewUpdater.execute(()-> view.printPopeFavor(popeFavor.getFirstNumber(), popeFavor.getSecondNumber()));
                     break;
 
                 case SETUP_RESOURCES:

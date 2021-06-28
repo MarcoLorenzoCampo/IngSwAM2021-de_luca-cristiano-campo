@@ -1,6 +1,5 @@
 package it.polimi.ingsw.actions;
 
-import it.polimi.ingsw.controller.ActionValidator;
 import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.*;
@@ -30,34 +29,6 @@ public class ChangeMarbleAction extends Action{
 
     public ResourceType getColor() {
         return color;
-    }
-
-    @Override
-    public void isValid() throws InvalidPlayerException, InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, NoMatchingRequisitesException, EndTurnException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
-        ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(super.getActionSender());
-        ActionValidator.validateColorExchange(color);
-        ActionValidator.validateIndex(index);
-
-        runAction();
-    }
-
-    private void runAction() throws EndGameException {
-        this.game.getCurrentPlayer()
-                .getPlayerBoard()
-                .getInventoryManager()
-                .customExchange(index, color);
-
-        if(!game.getCurrentPlayer()
-                .getPlayerBoard()
-                .getInventoryManager()
-                .getBuffer()
-                .stream()
-                .anyMatch(MaterialResource -> MaterialResource.getResourceType().equals(UNDEFINED))){
-            game.getCurrentPlayer()
-                    .getPlayerState()
-                    .setCanDeposit(true);
-        }
     }
 
     @Override

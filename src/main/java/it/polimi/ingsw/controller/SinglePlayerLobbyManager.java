@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.player.LorenzoPlayer;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.builders.LeaderCardsDeckBuilder;
 import it.polimi.ingsw.network.eventHandlers.ControllerObserver;
-import it.polimi.ingsw.network.eventHandlers.Observer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.serverMessages.VaticanReportNotification;

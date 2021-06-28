@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.eventHandlers;
 
-import it.polimi.ingsw.exceptions.EndGameException;
 import it.polimi.ingsw.network.messages.Message;
 
 /**

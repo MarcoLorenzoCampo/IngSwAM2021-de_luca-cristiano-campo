@@ -1,10 +1,8 @@
 package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
-import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.market.ProductionCard;
-import it.polimi.ingsw.controller.ActionValidator;
 import it.polimi.ingsw.model.player.Visitor;
 
 /**
@@ -24,8 +22,6 @@ public class BuyProductionCardAction extends Action {
     private final ProductionCard boughtCard;
     private final int destinationSlot;
 
-    private final IGame game;
-
     /**
      * Public constructor for this action.
      * @param actionSender: the Name of the player who requested this action;
@@ -36,7 +32,6 @@ public class BuyProductionCardAction extends Action {
         super.setActionSender(actionSender);
         this.boughtCard = boughtCard;
         this.destinationSlot = destinationSlot;
-        this.game = game;
     }
 
     public ProductionCard getBoughtCard() {
@@ -45,40 +40,6 @@ public class BuyProductionCardAction extends Action {
 
     public int getDestinationSlot() {
         return destinationSlot;
-    }
-
-    /**
-     * Verifies via the {@link ActionValidator} if the action can be performed.
-     * @throws InvalidPlayerException: wrong current player
-     * @throws InvalidGameStateException: wrong game state to perform this action
-     * @throws BuyCardFromMarketException: action refused because of the current player state.
-     * @throws NoMatchingRequisitesException: the player doesn't own enough resources to buy the specified card;
-     * @throws EndGameException: if this is the 7th card bought by the player;
-     * @throws InvalidProductionSlotException: the production slot isn't in a valid state to place the card;
-     */
-    @Override
-    public void isValid() throws InvalidPlayerException, InvalidGameStateException, BuyCardFromMarketException,
-            NoMatchingRequisitesException, EndGameException, InvalidProductionSlotException {
-
-        ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(getActionSender());
-        ActionValidator.validateBuyCardFromMarketAction(boughtCard);
-        ActionValidator.validateProductionSlot(destinationSlot, boughtCard);
-
-        runAction();
-    }
-
-    private void runAction() {
-        this.game.getGameBoard()
-                .getProductionCardMarket()
-                .buyCard(boughtCard);
-
-        game.getCurrentPlayer().getPlayerBoard().getInventoryManager().setToBeRemoved(boughtCard.getRequirements());
-        boughtCard.placeCard(destinationSlot, boughtCard, game.getCurrentPlayer().getPlayerBoard().getProductionBoard());
-
-        this.game.getCurrentPlayer()
-                .getPlayerState()
-                .performedExclusiveAction();
     }
 
     public PossibleAction getActionTag() {

@@ -1,9 +1,5 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.utilities.ResourceTag;
-
-import java.util.ArrayList;
-
 /**
  * Contains information about what action has be performed by the
  * player.

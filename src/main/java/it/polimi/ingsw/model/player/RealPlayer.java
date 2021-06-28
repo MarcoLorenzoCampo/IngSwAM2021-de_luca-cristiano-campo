@@ -157,7 +157,7 @@ public class RealPlayer extends Observable implements Visitor {
     @Override
     public void visit(ActivateProductionAction action) {
         if(action.getActionSender().equals(playerName)
-        && !playerBoard.getProductionBoard().getProductionSlots()[action.getSlot()].isSelected()){
+        && playerBoard.getProductionBoard().getProductionSlots()[action.getSlot()].isSelected()){
             playerBoard.getProductionBoard().selectProductionSlot(action.getSlot());
         }
         //notify not available

@@ -4,7 +4,6 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.player.RealPlayerBoard;
 import it.polimi.ingsw.model.utilities.FaithResource;
 import it.polimi.ingsw.model.utilities.MaterialResource;
-import it.polimi.ingsw.model.utilities.Reducible;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.builders.ResourceBoardBuilder;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;

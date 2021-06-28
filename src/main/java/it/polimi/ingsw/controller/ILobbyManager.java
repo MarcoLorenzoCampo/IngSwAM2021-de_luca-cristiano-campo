@@ -2,9 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
-import it.polimi.ingsw.network.messages.Message;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

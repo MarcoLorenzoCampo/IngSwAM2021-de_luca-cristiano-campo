@@ -36,12 +36,6 @@ public class InventoryManager extends Observable {
         warehouse = new Warehouse();
         strongbox = new Strongbox();
         inventory = new HashMap<>();
-        /*
-        inventory.put(ResourceType.COIN, 0);
-        inventory.put(ResourceType.STONE,0);
-        inventory.put(ResourceType.SHIELD,0);
-        inventory.put(ResourceType.SERVANT,0);
-        */
         inventory.put(ResourceType.COIN, 100);
         inventory.put(ResourceType.STONE,100);
         inventory.put(ResourceType.SHIELD,100);
@@ -75,18 +69,6 @@ public class InventoryManager extends Observable {
     }
 
     /**
-     *
-     * @return -- victory points obtained by held resources
-     */
-    public int calculateVictoryPoints(){
-        int somma = 0;
-        for (Map.Entry<ResourceType, Integer> iterator: inventory.entrySet()) {
-            somma = somma + iterator.getValue();
-        }
-        return Math.floorDiv(somma, 5);
-    }
-
-    /**
      * method invoked before deciding which marble to place first, if the exchange list is empty or contains
      * only one type then all white marbles are either deleted or changed
      */
@@ -101,10 +83,6 @@ public class InventoryManager extends Observable {
             for (MaterialResource iterator : buffer) {
                 if(iterator.getResourceType().equals(ResourceType.UNDEFINED)) iterator.setResourceType(exchange.get(0));
             }
-        }
-
-        else if(exchange.size() == 2) {
-
         }
         notifyObserver(messageUpdate());
     }
@@ -178,7 +156,7 @@ public class InventoryManager extends Observable {
      *                 this list considers all the productions as a whole, thus having one price list
      *                 containing the sum of all single prices
      */
-    public List<ResourceTag> applyDiscount(List<ResourceTag> price){
+    public void applyDiscount(List<ResourceTag> price){
         if(discount.size() != 0) {
             for (ResourceTag iterator : price) {
                 for (ResourceType discountIterator: discount) {
@@ -188,7 +166,6 @@ public class InventoryManager extends Observable {
                 }
             }
         }
-        return price;
     }
 
     /**

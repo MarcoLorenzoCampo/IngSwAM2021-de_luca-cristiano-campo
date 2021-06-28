@@ -4,9 +4,10 @@ import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.NoSuchElementException;
 
 /**
  * Class to handle clients server-side when one connects to the server's socket.
@@ -126,15 +127,6 @@ public class ClientHandler implements Runnable, IClientHandler {
         }
 
         clientSocket.close();
-    }
-
-    /**
-     * Method to check the user's connection status.
-     * @return: true if it's still connected, false otherwise
-     */
-    @Override
-    public boolean isConnected() {
-        return isConnected;
     }
 
     /**

@@ -18,7 +18,6 @@ import java.util.Map;
  */
 public class LightweightModel {
 
-    private List<ProductionCard> allProductions;
     private String reducedResourceMarket;
     private List<ProductionCard> availableCards;
     private final List<LightweightPlayerState> playerStates;
@@ -31,7 +30,7 @@ public class LightweightModel {
 
     public LightweightModel() {
         this.faithTrack = new FaithTrack();
-        this.allProductions = ProductionCardsParser.parseProductionDeck();
+        ProductionCardsParser.parseProductionDeck();
         this.playerStates = new ArrayList<>();
         this.productionBoard = new HashMap<>();
         this.shelves = new ArrayList<>();

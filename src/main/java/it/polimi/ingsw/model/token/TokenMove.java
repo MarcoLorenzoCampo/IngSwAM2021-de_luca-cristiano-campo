@@ -40,12 +40,10 @@ public class TokenMove extends AbstractToken {
     }
 
     @Override
-    public String graphicalDraw() {
+    public void graphicalDraw() {
         if(this.moves == 1){
-            return "1 \uD83D\uDD42 \uD83D\uDD04";
         }
         else{
-            return "2 \uD83D\uDD42";
         }
     }
 

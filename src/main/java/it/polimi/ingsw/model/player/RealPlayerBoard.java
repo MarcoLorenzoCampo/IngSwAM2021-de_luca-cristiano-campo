@@ -1,14 +1,11 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.actions.Action;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.productionBoard.ProductionBoard;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.Bought7CardsMessage;
-import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 
 /**
  * Main board of the player. Contains all the references to play the game.
@@ -46,17 +43,6 @@ public class RealPlayerBoard extends Observable {
         boughtCardsNumber = 0;
         productionBoard = new ProductionBoard();
         inventoryManager = new InventoryManager();
-    }
-
-    /**
-     * Main method called to run a specific action that has to be validated before being executed.
-     * @param actionToPerform: action to be run. {@link Action}
-     */
-    public void getAction(Action actionToPerform) throws InvalidPlayerException,
-            InvalidGameStateException, GetResourceFromMarketException, BuyCardFromMarketException, EndTurnException,
-            NoMatchingRequisitesException, LeaderCardException, EndGameException, InvalidProductionSlotException, MustPerformActionException {
-
-        actionToPerform.isValid();
     }
 
     /**

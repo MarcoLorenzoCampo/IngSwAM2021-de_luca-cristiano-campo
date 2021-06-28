@@ -29,8 +29,8 @@ public class VirtualView implements IView, Observer {
 
     /**
      * Class constructor.
-     * @param clientHandler: clientHandler {@link ClientHandler} each virtual view communicates
-     *                     with. Messages are sent through the handler.
+     * @param clientHandler: clientHandler {@link ClientHandler} each virtual view communicates with.
+     *                     Messages are sent through the handler.
      */
     public VirtualView(IClientHandler clientHandler) {
         this.clientHandler = clientHandler;

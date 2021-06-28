@@ -4,10 +4,8 @@ import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.market.ProductionCardMarket;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
-import it.polimi.ingsw.model.utilities.Reducible;
 import it.polimi.ingsw.network.views.cli.ColorCLI;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,14 +13,10 @@ public class TokenDiscard extends AbstractToken {
 
     private final Color color;
     private final ProductionCardMarket cardMarket;
-    private ColorCLI colorCLI;
-    private Map<Color, ColorCLI> cardColor = new HashMap<>();
-
-    private final IGame game;
+    private final Map<Color, ColorCLI> cardColor = new HashMap<>();
 
     public TokenDiscard(Color color, IGame game) {
         this.color = color;
-        this.game = game;
         this.cardMarket = game.getGameBoard().getProductionCardMarket();
     }
 
@@ -36,10 +30,9 @@ public class TokenDiscard extends AbstractToken {
     }
 
     @Override
-    public String graphicalDraw() {
+    public void graphicalDraw() {
         initColorLevel();
-        this.colorCLI = this.cardColor.get(color);
-        return colorCLI.escape() + "-2 \u25AF";
+        ColorCLI colorCLI = this.cardColor.get(color);
     }
 
     @Override

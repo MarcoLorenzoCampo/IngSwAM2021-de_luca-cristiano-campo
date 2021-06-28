@@ -5,12 +5,13 @@ import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
-import it.polimi.ingsw.network.messages.serverMessages.ErrorMessage;
 import it.polimi.ingsw.network.utilities.ServerConfigPOJO;
 import it.polimi.ingsw.parsers.CommandLineParser;
 import it.polimi.ingsw.parsers.ServerConfigParser;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class Server {

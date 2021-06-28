@@ -38,14 +38,6 @@ public class CLI extends ViewObservable implements IView {
      */
     private final LightweightModel lightweightModel;
 
-    /**
-     * Clears the terminal.
-     */
-    public static void clearCLI() {
-        System.out.print("");
-        System.out.flush();
-    }
-
     private String nickname;
     private final PrintStream out;
 
@@ -195,34 +187,6 @@ public class CLI extends ViewObservable implements IView {
     public void showInvalidAction(String errorMessage) {
         showGenericString(errorMessage);
     }
-/*
-    @Override
-    public void askReplacementResource(ResourceType r1, ResourceType r2) {
-        //clearCLI();
-
-        out.println("You just bought resources from the market." +
-                "It appears you have a choice though." +
-                "\nWhat resource would you like to get for this white marble?");
-
-        ResourceType picked = null;
-
-        do {
-            out.println("Specify a valid resource: " + r1 + ", " + r2 + " are available.");
-            out.print(">>> ");
-
-            try {
-                picked = ResourceType.valueOf(readLine());
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-        } while (picked == null || (!picked.equals(r1) && !picked.equals(r2)));
-
-        ResourceType finalPicked = picked;
-        notifyObserver(o -> o.onUpdateExchangeResource(finalPicked));
-    }
-
- */
 
     @Override
     public void askToDiscard() {
@@ -527,50 +491,6 @@ public class CLI extends ViewObservable implements IView {
         } else {
             out.println("\nYou don't have any extra production leader card!");
         }
-    /*
-        for (LeaderCard iterator: leaderCards) {
-
-            switch (iterator.getEffectType()){
-                case DISCOUNT:
-                    out.println("\n\nDISCOUNT: -1 of "+ iterator.getResource() + "\nNeeded: ");
-                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
-                        out.print("1 " + innerIterator.getColor() +"\n");
-                    }
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-
-                case EXTRA_INVENTORY:
-                    out.println("\n\nEXTRA INVENTORY: + 2 spaces of "+ iterator.getResource() + "\nNeeded: ");
-                    out.print("5 " + iterator.getRequirementsResource()[0].getType() +"\n");
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-
-                case MARBLE_EXCHANGE:
-                    out.println("\n\nMARBLE EXCHANGE: change white into "+ iterator.getResource() + "\nNeeded: ");
-                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
-                        out.print(innerIterator.getQuantity() + " " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
-                    }
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-                case EXTRA_PRODUCTION:
-                    out.println("\n\nEXTRA PRODUCTION:  "+ iterator.getResource() +" --> FAITH + UNDEFINED");
-                    out.println("Needed: ");
-                    for (DevelopmentTag innerIterator : iterator.getRequirementsDevCards()) {
-                        out.print("1 " + innerIterator.getColor() +" level: " + innerIterator.getLevel()+"\n");
-                    }
-                    if(iterator.isActive()) out.println("ACTIVE");
-                    else  out.println("NOT ACTIVE");
-                    break;
-
-            }
-
-
-        }
-
-     */
     }
 
     @Override
@@ -802,13 +722,11 @@ public class CLI extends ViewObservable implements IView {
 
         out.println(lorenzoTokenReduced);
 
-        /*GraphicalToken graphicalToken = new GraphicalToken(lorenzoAction);
-        graphicalToken.draw();*/
     }
 
     @Override
-    public void printLorenzoFaithTrack(int faithmarker) {
-        System.out.println("Lorenzo's position: " + faithmarker + "\n");
+    public void printLorenzoFaithTrack(int faithMarker) {
+        System.out.println("Lorenzo's position: " + faithMarker + "\n");
     }
 
     /**

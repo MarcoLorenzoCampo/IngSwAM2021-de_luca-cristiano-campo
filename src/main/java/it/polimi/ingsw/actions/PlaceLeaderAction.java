@@ -1,9 +1,7 @@
 package it.polimi.ingsw.actions;
 
 import it.polimi.ingsw.enumerations.PossibleAction;
-import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.game.IGame;
-import it.polimi.ingsw.controller.ActionValidator;
 import it.polimi.ingsw.model.player.Visitor;
 
 /**
@@ -33,35 +31,6 @@ public class PlaceLeaderAction extends Action {
 
     public int getLeaderToActivate() {
         return leaderToActivate;
-    }
-
-    /**
-     * Verifies via the {@link ActionValidator} if the action can be performed.
-     * @throws InvalidPlayerException: wrong current player
-     * @throws InvalidGameStateException: wrong game state to perform this action
-     * @throws LeaderCardException : action refused because of the current player state.
-     * @throws NoMatchingRequisitesException: leaderCard can't be placed since requirements aren't matched.
-     */
-    @Override
-    public void isValid() throws InvalidGameStateException, InvalidPlayerException,
-            LeaderCardException, NoMatchingRequisitesException {
-
-        ActionValidator.gameStateValidation();
-        ActionValidator.senderValidation(super.getActionSender());
-        ActionValidator.leaderValidator(leaderToActivate);
-
-        runAction();
-    }
-
-    private void runAction() {
-        this.game.getCurrentPlayer()
-                .getOwnedLeaderCards()
-                .get(leaderToActivate)
-                .setActive(game.getCurrentPlayer().getPlayerBoard());
-
-        this.game.getCurrentPlayer()
-                .getPlayerState()
-                .placedLeader();
     }
 
     public PossibleAction getActionTag() {

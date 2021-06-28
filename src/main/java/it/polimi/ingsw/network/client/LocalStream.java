@@ -4,10 +4,7 @@ import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
-import it.polimi.ingsw.network.messages.serverMessages.LobbySizeReply;
-import it.polimi.ingsw.network.messages.serverMessages.LobbySizeRequest;
 import it.polimi.ingsw.network.server.IClientHandler;
 
 /**
@@ -26,6 +23,14 @@ public class LocalStream implements IClientHandler {
         this.client = client;
     }
 
+    /**
+     * Removes a client from the server.
+     */
+    @Override
+    public void disconnect() {
+
+    }
+
     @Override
     public void sendMessage(Message message) {
         client.forwardMessage(message);
@@ -40,32 +45,7 @@ public class LocalStream implements IClientHandler {
         gameManager.onMessage(message);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public void sameNameDisconnect() {
-
-    }
-    @Override
-    public boolean isConnected() {
-        return true;
-    }
-
-    @Override
-    public void disconnect() {
-
     }
 }

@@ -13,7 +13,6 @@ public class LorenzoAction extends Action {
         this.lorenzo = lorenzo;
     }
 
-    @Override
     public void isValid() {
         lorenzo.getLorenzoPlayerBoard()
                 .getLorenzoTokenPile()

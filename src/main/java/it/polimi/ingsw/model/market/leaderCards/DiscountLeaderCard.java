@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.market.leaderCards;
 
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.RealPlayerBoard;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 

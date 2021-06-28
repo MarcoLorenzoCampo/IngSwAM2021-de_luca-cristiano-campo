@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Client extends Observable implements IClient {
     private LocalStream localStream;
-    private boolean isLocal;
+    private final boolean isLocal;
     private final IView view;
     /**
      * Socket that connects and communicates with the server's socket.
@@ -192,18 +192,18 @@ public class Client extends Observable implements IClient {
 
             CLI cliView = new CLI(isLocal);
 
+            ClientManager clientManager;
             if(!isLocal) {
 
-                ClientManager clientManager = new ClientManager(cliView);
-                cliView.addObserver(clientManager);
+                clientManager = new ClientManager(cliView);
 
 
             } else {
 
-                ClientManager clientManager = new ClientManager(cliView, true);
+                clientManager = new ClientManager(cliView, true);
                 //OfflineClientManager OfflineClientManager = new OfflineClientManager(cliView);
-                cliView.addObserver(clientManager);
             }
+            cliView.addObserver(clientManager);
 
             cliView.startCli();
 
