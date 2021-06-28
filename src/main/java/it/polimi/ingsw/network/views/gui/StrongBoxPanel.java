@@ -57,7 +57,7 @@ public class StrongBoxPanel extends JPanel {
 
     private void DrawStrongbox(Graphics g) {
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("./punchboard/strongbox.png");
+        InputStream url = cl.getResourceAsStream("punchboard/strongbox.png");
                 BufferedImage img= null;
         try {
             img = ImageIO.read(url);
@@ -75,7 +75,7 @@ public class StrongBoxPanel extends JPanel {
         Color color = null;
         ClassLoader cl = this.getClass().getClassLoader();
         for (Map.Entry<ResourceType,Integer> iterator : inventory.entrySet()) {
-            String item = "./punchboard/";
+            String item = "punchboard/";
             switch(iterator.getKey()){
 
                 case COIN:

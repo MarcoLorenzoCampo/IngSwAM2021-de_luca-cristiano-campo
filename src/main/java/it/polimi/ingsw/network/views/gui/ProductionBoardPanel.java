@@ -20,7 +20,7 @@ public class ProductionBoardPanel extends JPanel {
 
     private HashMap<Integer, ProductionCard> productionBoard;
     private ArrayList<LeaderCard> extra_production;
-    private final String production_path = "./front/production_";
+    private final String production_path = "front/production_";
     private final HashMap<Integer, ArrayList<ProductionCard>> previous_productions;
     private final JButton[] buttons = new JButton[7];
 
@@ -134,7 +134,7 @@ public class ProductionBoardPanel extends JPanel {
                         .collect(Collectors.toList());
         ClassLoader cl = this.getClass().getClassLoader();
         for (LeaderCard iterator : productions) {
-            String item = "./front/leader_production_";
+            String item = "front/leader_production_";
             switch (iterator.getResource()) {
 
                 case COIN:
@@ -193,7 +193,7 @@ public class ProductionBoardPanel extends JPanel {
 
     private void paintBackground(Graphics g) {
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("./punchboard/production_board.png");
+        InputStream url = cl.getResourceAsStream("punchboard/production_board.png");
         BufferedImage img= null;
         try {
             img = ImageIO.read(url);

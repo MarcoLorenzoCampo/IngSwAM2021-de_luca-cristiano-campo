@@ -178,6 +178,8 @@ public final class GameManager {
                         //actionManager
                         //        .onReceiveAction(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame));
                         currentGame.getCurrentPlayer().visit(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame ));
+                        new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame ).accept(currentGame.getCurrentPlayer());
+
 
                         if(currentPlayerState.getHasPickedResources()) {
 

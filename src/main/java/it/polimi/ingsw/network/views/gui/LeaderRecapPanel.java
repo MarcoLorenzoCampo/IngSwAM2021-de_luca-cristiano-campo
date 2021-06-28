@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class LeaderRecapPanel extends JPanel {
 
     private ArrayList<LeaderCard> available;
-    private final String path = "./front/reduced_leader_";
+    private final String path = "front/reduced_leader_";
 
     public LeaderRecapPanel(){
         available = new ArrayList<>();

@@ -27,11 +27,11 @@ public class FinalProductionPanel extends JPanel {
         button.setLayout(new FlowLayout());
         
         resources = new String[]{
-                "./punchboard/coin.png",
-                "./punchboard/shield.png",
-                "./punchboard/servant.png",
-                "./punchboard/stone.png",
-                "./punchboard/faith_marker.png"};
+                "punchboard/coin.png",
+                "punchboard/shield.png",
+                "punchboard/servant.png",
+                "punchboard/stone.png",
+                "punchboard/faith_marker.png"};
 
         clear = new JButton("CLEAR");
         clear.setFocusable(false);
@@ -153,7 +153,7 @@ public class FinalProductionPanel extends JPanel {
         int width = this.getWidth()/10;
         int height = this.getHeight()/5;
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("./punchboard/empty_production.png");
+        InputStream url = cl.getResourceAsStream("punchboard/empty_production.png");
         BufferedImage img= null;
         try {
             img = ImageIO.read(url);

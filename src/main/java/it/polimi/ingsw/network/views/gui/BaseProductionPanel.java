@@ -18,12 +18,12 @@ public class BaseProductionPanel extends JPanel {
 
     public BaseProductionPanel(){
         buttons = new JButton[6];
-        path = "./punchboard/empty_production.png";
+        path = "punchboard/empty_production.png";
         resources = new String[]{
-                "./punchboard/coin.png",
-                "./punchboard/shield.png",
-                "./punchboard/stone.png",
-                "./punchboard/servant.png"
+                "punchboard/coin.png",
+                "punchboard/shield.png",
+                "punchboard/stone.png",
+                "punchboard/servant.png"
         };
         production = new ArrayList<>();
 

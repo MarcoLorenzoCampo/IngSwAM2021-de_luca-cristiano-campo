@@ -24,10 +24,10 @@ public class ExtraProductionPanel extends JPanel {
         path = "";
         buttons = new JButton[6];
         resources = new String[]{
-                "./punchboard/coin.png",
-                "./punchboard/shield.png",
-                "./punchboard/stone.png",
-                "./punchboard/servant.png"
+                "punchboard/coin.png",
+                "punchboard/shield.png",
+                "punchboard/stone.png",
+                "punchboard/servant.png"
         };
 
 
@@ -115,16 +115,16 @@ public class ExtraProductionPanel extends JPanel {
         if(extraprodleader != null) {
             switch (extraprodleader.getResource()) {
                 case COIN:
-                    path = "./front/reduced_leader_production_coin.jpg";
+                    path = "front/reduced_leader_production_coin.jpg";
                     break;
                 case SHIELD:
-                    path = "./front/reduced_leader_production_shield.jpg";
+                    path = "front/reduced_leader_production_shield.jpg";
                     break;
                 case SERVANT:
-                    path = "./front/reduced_leader_production_servant.jpg";
+                    path = "front/reduced_leader_production_servant.jpg";
                     break;
                 case STONE:
-                    path = "./front/reduced_leader_production_stone.jpg";
+                    path = "front/reduced_leader_production_stone.jpg";
                     break;
             }
             for (JButton iterator: buttons) {

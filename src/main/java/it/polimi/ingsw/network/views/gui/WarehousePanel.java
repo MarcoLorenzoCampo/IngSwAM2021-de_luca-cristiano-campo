@@ -15,10 +15,10 @@ public class WarehousePanel extends JPanel {
     ArrayList<ResourceType> shelves;
     ArrayList<ResourceType> extras;
     String[] resources = {
-            "./punchboard/coin.png",
-            "./punchboard/shield.png",
-            "./punchboard/servant.png",
-            "./punchboard/stone.png",
+            "punchboard/coin.png",
+            "punchboard/shield.png",
+            "punchboard/servant.png",
+            "punchboard/stone.png",
 
     };
 
@@ -87,7 +87,7 @@ public class WarehousePanel extends JPanel {
 
     private void paintBackground(Graphics g) {
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("./punchboard/warehouse.png");
+        InputStream url = cl.getResourceAsStream("punchboard/warehouse.png");
                 BufferedImage img= null;
         try {
             img = ImageIO.read(url);

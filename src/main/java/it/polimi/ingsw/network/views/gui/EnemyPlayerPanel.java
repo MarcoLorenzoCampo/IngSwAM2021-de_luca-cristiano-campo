@@ -56,7 +56,7 @@ public class EnemyPlayerPanel extends JPanel {
         Color color = null;
         ClassLoader cl = this.getClass().getClassLoader();
         for (Map.Entry<ResourceType,Integer> iterator : inventory.entrySet()) {
-            String item = "./punchboard/";
+            String item = "punchboard/";
             switch (iterator.getKey()) {
 
                 case COIN:
@@ -117,7 +117,7 @@ public class EnemyPlayerPanel extends JPanel {
 
     private void drawStrongbox(Graphics g, int width, int height) {
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("./punchboard/strongbox.png");
+        InputStream url = cl.getResourceAsStream("punchboard/strongbox.png");
         BufferedImage img= null;
         try {
             img = ImageIO.read(url);
@@ -136,7 +136,7 @@ public class EnemyPlayerPanel extends JPanel {
 
 
         ClassLoader cl = this.getClass().getClassLoader();
-        InputStream url = cl.getResourceAsStream("./punchboard/enemy_faith.png");
+        InputStream url = cl.getResourceAsStream("punchboard/enemy_faith.png");
                 BufferedImage img= null;
         try {
             img = ImageIO.read(url);
@@ -154,7 +154,7 @@ public class EnemyPlayerPanel extends JPanel {
         int x = 0;
         int y =4*height;
         ClassLoader cl = this.getClass().getClassLoader();
-        String path = "./front/reduced_leader_";
+        String path = "front/reduced_leader_";
         String item = "";
         for (int i = 0; i < cards.size(); i++) {
             switch(cards.get(i)){
