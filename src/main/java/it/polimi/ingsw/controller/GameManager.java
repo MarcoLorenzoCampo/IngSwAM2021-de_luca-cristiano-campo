@@ -320,6 +320,7 @@ public final class GameManager {
 
                 for (Resource iterator : obtained) {
                     iterator.deposit(currentGame.getCurrentPlayer().getPlayerBoard());
+                    new DepositAction(0, message.getSenderUsername(), currentGame).accept(currentGame.getCurrentPlayer());
                 }
             }
             if ((lobbyManager.turnOfPlayer(currentPlayer)+1) == lobbyManager.getLobbySize()) {
