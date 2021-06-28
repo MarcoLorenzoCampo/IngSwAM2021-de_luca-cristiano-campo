@@ -146,6 +146,11 @@ public final class GameManager {
                     if(message.getMessageType().equals(PossibleMessages.BUY_PRODUCTION)){
                         TwoIntMessage buy = (TwoIntMessage) message;
 
+
+                        //new BuyProductionCardAction(buy.getSenderUsername(),
+                        //        currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
+                        //        buy.getSecondNumber(), currentGame)
+                        //        .accept(currentGame.getCurrentPlayer());
                         currentGame.getCurrentPlayer().visit(new BuyProductionCardAction(buy.getSenderUsername(),
                                 currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
                                 buy.getSecondNumber(), currentGame));
@@ -160,7 +165,7 @@ public final class GameManager {
 
                     else if(message.getMessageType().equals(PossibleMessages.GET_RESOURCES)){
                         OneIntMessage get_resources = (OneIntMessage) message;
-
+                        //new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame ).accept(currentGame.getCurrentPlayer());
                         currentGame.getCurrentPlayer().visit(new GetResourceFromMarketAction(get_resources.getSenderUsername(),get_resources.getIndex(), currentGame ));
 
                         if(currentPlayerState.getHasPickedResources()) {
@@ -187,6 +192,8 @@ public final class GameManager {
                         switch (message.getMessageType()){
                             case ACTIVATE_PRODUCTION:
                                 OneIntMessage activate_prod = (OneIntMessage) message;
+
+                                //new ActivateProductionAction(activate_prod.getSenderUsername(),activate_prod.getIndex(), currentGame).accept(currentGame.getCurrentPlayer());
                                 currentGame.getCurrentPlayer().visit(new ActivateProductionAction(activate_prod.getSenderUsername(),
                                         activate_prod.getIndex(), currentGame));
 
@@ -194,13 +201,16 @@ public final class GameManager {
 
                             case ACTIVATE_BASE_PRODUCTION:
                                 BaseProductionMessage base_prod = (BaseProductionMessage) message;
-
+                                //new ActivateBaseProductionAction(base_prod.getSenderUsername(),
+                                //        base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame).accept(currentGame.getCurrentPlayer());
                                 currentGame.getCurrentPlayer().visit(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
                                         base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
                                 break;
 
                             case ACTIVATE_EXTRA_PRODUCTION:
                                 ExtraProductionMessage extra_prod = (ExtraProductionMessage) message;
+                                //new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
+                                //        extra_prod.getIndex(), extra_prod.getOutput(), currentGame).accept(currentGame.getCurrentPlayer());
                                 currentGame.getCurrentPlayer().visit(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
                                         extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
 
@@ -214,6 +224,7 @@ public final class GameManager {
                         && currentPlayerState.getHasPlaceableLeaders()
                         && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage discard = (OneIntMessage) message;
+                        //new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame).accept(currentGame.getCurrentPlayer());
                         currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(discard.getSenderUsername(), discard.getIndex(), currentGame));
                     }
 
@@ -221,6 +232,7 @@ public final class GameManager {
                         && currentPlayerState.getHasPlaceableLeaders()
                         && !currentPlayerState.getGetHasPlacedLeaders()){
                         OneIntMessage activate = (OneIntMessage) message;
+                        //new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame).accept(currentGame.getCurrentPlayer());
                         currentGame.getCurrentPlayer().visit(new PlaceLeaderAction(activate.getSenderUsername(), activate.getIndex(), currentGame));
                     }
                 }
@@ -327,10 +339,13 @@ public final class GameManager {
 
             if(l1 > l2){
 
+                //new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame).accept(currentGame.getCurrentPlayer());
+                //new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame).accept(currentGame.getCurrentPlayer());
                 currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame) );
                 currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
             } else {
-
+                //new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame).accept(currentGame.getCurrentPlayer());
+                //new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame).accept(currentGame.getCurrentPlayer());
                 currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame) );
                 currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
             }
@@ -358,28 +373,38 @@ public final class GameManager {
         if(message.getSenderUsername().equals(currentPlayer)) {
             if(message.getMessageType().equals(PossibleMessages.ACTIVATE_PRODUCTION)) {
                 OneIntMessage activate_prod = (OneIntMessage) message;
+
+                //new ActivateProductionAction(activate_prod.getSenderUsername(),
+                //        activate_prod.getIndex(), currentGame).accept(currentGame.getCurrentPlayer());
                 currentGame.getCurrentPlayer().visit(new ActivateProductionAction(activate_prod.getSenderUsername(),
                         activate_prod.getIndex(), currentGame));
             }
 
             else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)) {
                 BaseProductionMessage base_prod = (BaseProductionMessage) message;
+                //new ActivateBaseProductionAction(base_prod.getSenderUsername(),
+                //        base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame).accept(currentGame.getCurrentPlayer());
                 currentGame.getCurrentPlayer().visit(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
                         base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
             }
 
             else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
                 ExtraProductionMessage extra_prod = (ExtraProductionMessage) message;
+
+                //new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
+                //        extra_prod.getIndex(), extra_prod.getOutput(), currentGame).accept(currentGame.getCurrentPlayer());
                 currentGame.getCurrentPlayer().visit(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
                         extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
             }
             else if(message.getMessageType().equals(PossibleMessages.EXECUTE_PRODUCTION)){
+                //new ExecuteProductionAction(message.getSenderUsername(), currentGame).accept(currentGame.getCurrentPlayer());
                 currentGame.getCurrentPlayer().visit(new ExecuteProductionAction(message.getSenderUsername(), currentGame));
 
                 if(currentGame.getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()){
                     currentGame.setCurrentState(PossibleGameStates.REMOVE);
                 } else {
                     currentGame.setCurrentState(PossibleGameStates.PLAYING);
+                    new ClearProductionAction().accept(currentGame.getCurrentPlayer());
                     currentGame.getCurrentPlayer().visit(new ClearProductionAction());
                 }
             }
