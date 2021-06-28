@@ -8,12 +8,6 @@ import it.polimi.ingsw.network.messages.Message;
 public interface IClientHandler {
 
     /**
-     * Basic boolean check for connections.
-     * @return: true if connected
-     */
-    boolean isConnected();
-
-    /**
      * Removes a client from the server.
      */
     void disconnect();

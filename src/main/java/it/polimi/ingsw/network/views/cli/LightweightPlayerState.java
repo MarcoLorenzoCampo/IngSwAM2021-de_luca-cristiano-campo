@@ -2,9 +2,7 @@ package it.polimi.ingsw.network.views.cli;
 
 import it.polimi.ingsw.enumerations.EffectType;
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.market.ProductionCard;
-import it.polimi.ingsw.model.market.leaderCards.LeaderCard;
 
 import java.util.ArrayList;
 import java.util.HashMap;

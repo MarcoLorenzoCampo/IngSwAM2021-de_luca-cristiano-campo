@@ -22,7 +22,7 @@ public class ProductionSlot {
     }
 
     public boolean isSelected() {
-        return selected;
+        return !selected;
     }
 
     public Level getLevel() {

@@ -1,14 +1,11 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.game.PlayingGame;
-import it.polimi.ingsw.actions.Action;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
+import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.productionBoard.ProductionBoard;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.Bought7CardsMessage;
-import it.polimi.ingsw.network.messages.serverMessages.EndGameMessage;
 
 /**
  * Main board of the player. Contains all the references to play the game.

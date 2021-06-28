@@ -45,14 +45,6 @@ public abstract class Observable {
     }
 
     /**
-     * Method to remove a registered controller observer.
-     * @param observer: controller observer to remove.
-     */
-    public void removeObserver(ControllerObserver observer) {
-        controllerObservers.remove(observer);
-    }
-
-    /**
      * Notifies all the observers by invoking the update() method to send them a Message
      * {@link Message}.
      *

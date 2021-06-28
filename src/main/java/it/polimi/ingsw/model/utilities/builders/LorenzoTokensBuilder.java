@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.token.TokenDiscard;
 import it.polimi.ingsw.model.token.TokenMove;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public final class LorenzoTokensBuilder {
 

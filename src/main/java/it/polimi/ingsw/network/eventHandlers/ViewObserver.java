@@ -4,7 +4,6 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Class to observe the view. On information updates calls specific routines.

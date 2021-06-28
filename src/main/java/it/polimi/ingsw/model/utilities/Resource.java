@@ -3,8 +3,6 @@ package it.polimi.ingsw.model.utilities;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.player.RealPlayerBoard;
 
-import java.util.Objects;
-
 public abstract class Resource {
 
     private ResourceType resourceType;

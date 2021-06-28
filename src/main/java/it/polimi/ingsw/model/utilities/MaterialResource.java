@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.utilities;
 
 import it.polimi.ingsw.enumerations.ResourceType;
-import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.player.RealPlayerBoard;
 
 public class MaterialResource extends Resource {

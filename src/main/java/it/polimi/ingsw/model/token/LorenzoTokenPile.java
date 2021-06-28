@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.utilities.builders.LorenzoTokensBuilder;
 import it.polimi.ingsw.network.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.LorenzoTokenMessage;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class LorenzoTokenPile extends Observable {

@@ -3,18 +3,18 @@ package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.actions.*;
 
 public interface Visitor {
-    public void visit(ActivateProductionAction action);
-    public void visit(ActivateExtraProductionAction action);
-    public void visit(ActivateBaseProductionAction action);
-    public void visit(BuyProductionCardAction action);
-    public void visit(ChangeMarbleAction action);
-    public void visit(DepositAction action);
-    public void visit(DiscardLeaderCardAction action);
-    public void visit(EndTurnAction action);
-    public void visit(ExecuteProductionAction action);
-    public void visit(GetResourceFromMarketAction action);
-    public void visit(PlaceLeaderAction action);
-    public void visit(RearrangeInventoryAction action);
-    public void visit(RemoveResourcesAction action);
-    public void visit(ClearProductionAction action);
+    void visit(ActivateProductionAction action);
+    void visit(ActivateExtraProductionAction action);
+    void visit(ActivateBaseProductionAction action);
+    void visit(BuyProductionCardAction action);
+    void visit(ChangeMarbleAction action);
+    void visit(DepositAction action);
+    void visit(DiscardLeaderCardAction action);
+    void visit(EndTurnAction action);
+    void visit(ExecuteProductionAction action);
+    void visit(GetResourceFromMarketAction action);
+    void visit(PlaceLeaderAction action);
+    void visit(RearrangeInventoryAction action);
+    void visit(RemoveResourcesAction action);
+    void visit(ClearProductionAction action);
 }
