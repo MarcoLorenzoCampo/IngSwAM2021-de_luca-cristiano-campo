@@ -5,10 +5,7 @@ import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.Visitor;
 
 /**
- * Action to activate a LeaderCard. Verifies different steps:
- * 1) Validating the game state;
- * 2) Validating the sender matches the current player;
- * 3) Validating card can be placed and requirements are matched.
+ * Action to activate a LeaderCard.
  */
 public class PlaceLeaderAction extends Action {
 

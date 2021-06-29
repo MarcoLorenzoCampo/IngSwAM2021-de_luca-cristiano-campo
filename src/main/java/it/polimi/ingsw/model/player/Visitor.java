@@ -2,6 +2,10 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.actions.*;
 
+/**
+ * interface used to implement the visitor pattern, the player acts as a visitor
+ * that visits the actions
+ */
 public interface Visitor {
     void visit(ActivateProductionAction action);
     void visit(ActivateExtraProductionAction action);

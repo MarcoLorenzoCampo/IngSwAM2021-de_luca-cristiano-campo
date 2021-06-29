@@ -5,6 +5,10 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.Visitor;
 
+/**
+ * Represents the activation of the base production, it holds the inputs and the outputs defined
+ * by the player.
+ */
 public class ActivateBaseProductionAction extends Action {
     private final PossibleAction actiontag = PossibleAction.ACTIVATE_PRODUCTION;
 

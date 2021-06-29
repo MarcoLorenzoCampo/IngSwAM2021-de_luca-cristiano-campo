@@ -23,19 +23,21 @@ public class LocalStream implements IClientHandler {
         this.client = client;
     }
 
+
     /**
-     * Removes a client from the server.
+     * takes message from game manager and sends it to the client
+     * @param message: data sent from the game manager
      */
-    @Override
-    public void disconnect() {
-
-    }
-
     @Override
     public void sendMessage(Message message) {
         client.forwardMessage(message);
     }
 
+    /**
+     * takes message from the client and sends it to the game manager.
+     * Executes some interactions that the player doesn't have to do during a local game
+     * @param message: data sent from the client
+     */
     public void handleMessage(Message message){
         if(message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)){
             gameManager.onMessage(message);
@@ -47,5 +49,11 @@ public class LocalStream implements IClientHandler {
 
     @Override
     public void sameNameDisconnect() {
+        //UNUSED
+    }
+
+    @Override
+    public void disconnect() {
+        //UNUSED
     }
 }

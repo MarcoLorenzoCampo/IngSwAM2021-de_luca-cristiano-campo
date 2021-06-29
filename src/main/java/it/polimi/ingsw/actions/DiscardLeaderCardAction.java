@@ -5,6 +5,10 @@ import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.Visitor;
 
+/**
+ * Action used to discard a leader and gain one faith point,
+ * it holds the index of the leader the player wants to discard
+ */
 public class DiscardLeaderCardAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.DISCARD_LEADER_CARD;

@@ -265,6 +265,15 @@ public final class GameManager {
         }
     }
 
+
+    /**
+     * Method that defines what the controller needs to do based on the message received,
+     * knowing that the state of the game is SETUP. It initializes the players and asks the first player to
+     * set the game size
+     *
+     * @param message: message received from the player, holds the information on the action
+     *                the player wants to take
+     */
     private void onSetup(Message message) {
         //it's the first turn and a nickname request is sent by the client.
         if (firstTurn && message.getMessageType().equals(PossibleMessages.SEND_NICKNAME)) {
@@ -285,6 +294,14 @@ public final class GameManager {
         }
     }
 
+    /**
+     * Method that defines what the controller needs to do based on the message received,
+     * knowing that the state of the game is SETUP_SIZE. Accepts only the message that has the
+     * game size. After the game size is set returns to the setup phase
+     *
+     * @param message: message received from the player, holds the information on the action
+     *                the player wants to take
+     */
     private void onSetupSize(Message message) {
         if (message.getMessageType().equals(PossibleMessages.GAME_SIZE) && firstTurn) {
             OneIntMessage oneIntMessage = (OneIntMessage) message;
@@ -309,6 +326,14 @@ public final class GameManager {
         }
     }
 
+    /**
+     * Method that defines what the controller needs to do based on the message received,
+     * knowing that the state of the game is SETUP_RESOURCES. Gives the player the resource
+     * they have chosen
+     *
+     * @param message: message received from the player, holds the information on the action
+     *                the player wants to take
+     */
     private void onSetupResources(Message message) {
         if (message.getMessageType().equals(PossibleMessages.SETUP_RESOURCES) && message.getSenderUsername().equals(currentPlayer)) {
             SetupResourceAnswer setupResourceAnswer = (SetupResourceAnswer) message;
@@ -330,6 +355,14 @@ public final class GameManager {
         }
     }
 
+    /**
+     * Method that defines what the controller needs to do based on the message received,
+     * knowing that the state of the game is SETUP_LEADERS, initializes the owned leader cards
+     * of each player based on the ones the player has sent to discard
+     *
+     * @param message: message received from the player, holds the information on the action
+     *                the player wants to take
+     */
     private void onSetupLeader(Message message) {
         if(message.getMessageType().equals(PossibleMessages.SETUP_LEADERS)) {
 
@@ -370,6 +403,16 @@ public final class GameManager {
         }
     }
 
+    /**
+     * Method that defines what the controller needs to do based on the message received,
+     * knowing that the state of the game is ACTIVATE_PRODUCTION. Accepts only messages that
+     * activate another production to activate or a message to activate the final production.
+     * if the production is executed than the state becomes REMOVE otherwise it returs to PLAYING
+     * and acts as if the player hasn't chosen yet which action to perform
+     *
+     * @param message: message received from the player, holds the information on the action
+     *                the player wants to take
+     */
     private void onActivateProduction(Message message) {
         if(message.getSenderUsername().equals(currentPlayer)) {
             if(message.getMessageType().equals(PossibleMessages.ACTIVATE_PRODUCTION)) {
@@ -413,6 +456,14 @@ public final class GameManager {
         }
     }
 
+    /**
+     * Method that defines what the controller needs to do based on the message received,
+     * knowing that the state of the game is BUY_CARD. Accepts only messages to remove resources
+     * to pay for the production card bought
+     *
+     * @param message: message received from the player, holds the information on the action
+     *                the player wants to take
+     */
     private void onBuyCard(Message message) {
         if(message.getSenderUsername().equals(currentPlayer)) {
 
@@ -439,6 +490,15 @@ public final class GameManager {
         }
     }
 
+    /**
+     * Method that defines what the controller needs to do based on the message received,
+     * knowing that the state of the game is CHANGE_COLOR. The game goes into this state only if
+     * the current player has more than one exchange power. Accepts only messages to change the color
+     * of white marbles, it changes the state only when the buffer doesn't hold any white marble
+     *
+     * @param message: message received from the player, holds the information on the action
+     *                the player wants to take
+     */
     private void onChangeColor(Message message) {
         if(message.getSenderUsername().equals(currentPlayer)){
 
@@ -456,6 +516,14 @@ public final class GameManager {
         }
     }
 
+    /**
+     * Method that defines what the controller needs to do based on the message received,
+     * knowing that the state of the game is DEPOSIT. Accepts only deposit actions, doesn't move
+     * forward until the buffer is empty
+     *
+     * @param message: message received from the player, holds the information on the action
+     *                the player wants to take
+     */
     private void onDeposit(Message message) {
         if(message.getSenderUsername().equals(currentPlayer)){
             if(message.getMessageType().equals(PossibleMessages.DEPOSIT)){
@@ -470,6 +538,14 @@ public final class GameManager {
         onStartTurn();
     }
 
+    /**
+     * Method that defines what the controller needs to do based on the message received,
+     * knowing that the state of the game is REMOVE. Accepts only remove actions, doesn't move until
+     * all input resources in the final production have been removed from the player's inventory
+     *
+     * @param message: message received from the player, holds the information on the action
+     *                the player wants to take
+     */
     private void onRemove(Message message) {
         if(message.getSenderUsername().equals(currentPlayer)) {
 
@@ -501,6 +577,14 @@ public final class GameManager {
         }
     }
 
+    /**
+     * Method that defines what the controller needs to do based on the message received,
+     * knowing that the state of the game is MAIN_ACTION_DONE. Represents the state in which the player has
+     * executed one main action, the player can now either discard/place a leader card or end their turn
+     *
+     * @param message: message received from the player, holds the information on the action
+     *                the player wants to take
+     */
     private void onMainActionDone(Message message) {
         if(message.getSenderUsername().equals(currentPlayer)){
             if(message.getMessageType().equals(PossibleMessages.END_TURN)){

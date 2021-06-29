@@ -222,6 +222,11 @@ public class ClientManager implements ViewObserver, Observer {
         }
     }
 
+    /**
+     * Method to create the production board from the information sent
+     * @param productionSlots: map that holds the index of the slot and the id of the production card held
+     * @return: map that holds the index of the slot and the concrete production card held
+     */
     private HashMap<Integer, ProductionCard> deserializeProductionBoard(HashMap<Integer, Integer> productionSlots){
         HashMap<Integer, ProductionCard> deserialized = new HashMap<>();
         for (Map.Entry<Integer,Integer> iterator: productionSlots.entrySet()) {
@@ -234,6 +239,11 @@ public class ClientManager implements ViewObserver, Observer {
         return  deserialized;
     }
 
+    /**
+     * Method that creates the concrete production cards from the IDs sent
+     * @param availableID: list of the IDs of the available cards
+     * @return: list of concrete cards associated with said IDs
+     */
     private ArrayList<ProductionCard> deserializeProductionCards(ArrayList<Integer> availableID) {
         ArrayList<ProductionCard> available = new ArrayList<>();
         for (Integer iterator: availableID) {

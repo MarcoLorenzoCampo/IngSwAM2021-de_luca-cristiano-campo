@@ -4,8 +4,9 @@ package it.polimi.ingsw.actions;
 import it.polimi.ingsw.exceptions.*;
 
 /**
- * Actions are messages sent by the GUI/CLI to the controller, they are validated and run if possible.
- * Action is abstract, and other specific actions extend it.
+ * Actions are objects sent from the controller to the player, each action represents a series of methods
+ * to change the model, each action holds the information necessary to make these methods work.
+ * They map user actions to model updates
  */
 public abstract class Action implements Visitable {
 

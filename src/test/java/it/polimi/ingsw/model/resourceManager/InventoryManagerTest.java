@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model.resourceManager;
 
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.MaterialResource;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -29,6 +31,10 @@ class InventoryManagerTest {
         testRealPlayer = new RealPlayer("testRealPlayer");
         PlayingGame.getGameInstance().setCurrentPlayer(testRealPlayer);
         inventoryManager = testRealPlayer.getPlayerBoard().getInventoryManager();
+        testRealPlayer.getPlayerBoard().getInventoryManager().getStrongbox().getInventory().put(ResourceType.COIN, 0);
+        testRealPlayer.getPlayerBoard().getInventoryManager().getStrongbox().getInventory().put(ResourceType.STONE,0);
+        testRealPlayer.getPlayerBoard().getInventoryManager().getStrongbox().getInventory().put(ResourceType.SHIELD,0);
+        testRealPlayer.getPlayerBoard().getInventoryManager().getStrongbox().getInventory().put(ResourceType.SERVANT,0);
     }
 
     @Test
@@ -51,10 +57,6 @@ class InventoryManagerTest {
                         toBeAdded.size()),
                 () -> assertNotNull(inventoryManager.getBuffer())
         );
-    }
-
-    @Test
-    void inventoryTest() {
     }
 
     @Test
@@ -89,10 +91,35 @@ class InventoryManagerTest {
 
     @Test
     void removeFromBuffer() {
+        //Arrange
+        inventoryManager.deposit(new MaterialResource(ResourceType.COIN));
+        int old_size;
+
+        //Act
+        old_size = inventoryManager.getBuffer().size();
+        inventoryManager.removeFromBuffer(0);
+
+        //Assert
+        assertAll(
+                () -> assertNotEquals(0 , old_size),
+                () -> assertEquals(0, inventoryManager.getBuffer().size())
+        );
     }
 
     @Test
     void addResourceToWarehouse() {
+        //Arrange
+        inventoryManager.deposit(new MaterialResource(ResourceType.COIN));
+        int old_size;
+
+        //Act
+        old_size = inventoryManager.getBuffer().size();
+
+        //Assert
+        assertAll(
+                () -> assertNotEquals(0 , old_size),
+                () -> assertEquals(0, inventoryManager.getBuffer().size())
+        );
     }
 
     @Test
@@ -101,10 +128,6 @@ class InventoryManagerTest {
 
     @Test
     void discountPrice() {
-    }
-
-    @Test
-    void updateRemoveInventory() {
     }
 
     @Test

@@ -138,7 +138,7 @@ public class InventoryManager extends Observable {
     }
 
     /**
-     *
+     *adds all the resources from the buffer to the strongbox
      *
      */
     public void addResourceToStrongbox(){
@@ -168,15 +168,17 @@ public class InventoryManager extends Observable {
         }
     }
 
-    /**
-     *
-     * @param discountedPrice -- price of whole production generated from discountedPriceMethod
-     */
-    public void updateRemoveInventory(List<ResourceTag> discountedPrice){
+    ///**
+    // *
+    // * @param discountedPrice -- price of whole production generated from discountedPriceMethod
+    // */
+    /*public void updateRemoveInventory(List<ResourceTag> discountedPrice){
         for (ResourceTag iterator : discountedPrice) {
             inventory.put(iterator.getType(), (inventory.get(iterator.getType()))-iterator.getQuantity());
         }
     }
+
+     */
 
     /**
      *
