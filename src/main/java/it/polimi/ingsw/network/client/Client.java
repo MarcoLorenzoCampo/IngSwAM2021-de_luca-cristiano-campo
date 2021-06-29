@@ -195,7 +195,7 @@ public class Client extends Observable implements IClient {
             ClientManager clientManager;
             if(!isLocal) {
 
-                clientManager = new ClientManager(cliView);
+                clientManager = new ClientManager(cliView, false);
 
 
             } else {

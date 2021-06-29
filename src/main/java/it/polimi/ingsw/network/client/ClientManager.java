@@ -44,18 +44,20 @@ public class ClientManager implements ViewObserver, Observer {
 
     private final List<ProductionCard> allProductionCards;
 
-    /**
-     * Constructor of the online client controller.
-     * @param view: cli or gui.
-     */
-    public ClientManager(IView view) {
+    ///**
+    // * Constructor of the online client controller.
+    // * @param view: cli or gui.
+    // */
+    /*public ClientManager(IView view) {
         this.view = view;
         this.allProductionCards = ProductionCardsParser.parseProductionDeck();
         viewUpdater = Executors.newSingleThreadExecutor();
     }
 
+     */
+
     /**
-     * Constructor of the offline client manager.
+     * Constructor of the client manager.
      * @param view: cli or gui
      * @param isOffline: game mode
      */
@@ -63,8 +65,10 @@ public class ClientManager implements ViewObserver, Observer {
         this.view = view;
         this.allProductionCards = ProductionCardsParser.parseProductionDeck();
         viewUpdater = Executors.newSingleThreadExecutor();
-        client = new Client(new LocalStream(), view);
-        client.addObserver(this);
+        if(isOffline){
+            client = new Client(new LocalStream(), view);
+            client.addObserver(this);
+        }
     }
 
     /**

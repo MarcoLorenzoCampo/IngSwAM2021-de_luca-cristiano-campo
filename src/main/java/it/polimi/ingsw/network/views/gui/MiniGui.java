@@ -70,7 +70,7 @@ public class MiniGui  {
         System.out.println("ONLINE");
         this.frame.dispose();
         GUI guiView = new GUI(true);
-        ClientManager ClientManager = new ClientManager(guiView);
+        ClientManager ClientManager = new ClientManager(guiView, false);
         guiView.addObserver(ClientManager);
     }
 

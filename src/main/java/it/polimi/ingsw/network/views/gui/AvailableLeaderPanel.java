@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class AvailableLeaderPanel extends JPanel {
     private ArrayList<LeaderCard> available;
-    private ArrayList<JButton> buttons;
-    private String path;
+    private final ArrayList<JButton> buttons;
+    private final String path;
 
 
     AvailableLeaderPanel(){
@@ -152,8 +152,12 @@ public class AvailableLeaderPanel extends JPanel {
     public void updateAvailableLeaderPanel(ArrayList<LeaderCard> available){
         this.available = available;
         if(this.available.size()==1){
-            buttons.get(2).setVisible(false);
+            buttons.get(1).setVisible(false);
             buttons.get(3).setVisible(false);
+            if(this.available.get(0).isActive()){
+                buttons.get(0).setVisible(false);
+                buttons.get(2).setVisible(false);
+            }
         }
         else if (this.available.size()==0){
             for (JButton iterator : buttons) {
