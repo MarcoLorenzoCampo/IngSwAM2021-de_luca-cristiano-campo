@@ -339,12 +339,6 @@ public class RealPlayer extends Observable implements Visitor {
     }
 
 
-    @Override
-    public void visit(RearrangeInventoryAction action) {
-
-    }
-
-
     private boolean productionResourceValidator(ResourceType wantedType){
         return !wantedType.equals(ResourceType.FAITH) && !wantedType.equals(ResourceType.UNDEFINED);
     }

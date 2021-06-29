@@ -13,15 +13,12 @@ public class ActivateBaseProductionAction extends Action {
     private final ResourceType input_2;
     private final ResourceType output;
 
-    private final IGame game;
-
-    public ActivateBaseProductionAction (String actionSender,ResourceType one, ResourceType two , ResourceType out, IGame game){
+    public ActivateBaseProductionAction (String actionSender,ResourceType one, ResourceType two , ResourceType out){
 
         super.setActionSender(actionSender);
         this.input_1 = one;
         this.input_2 = two;
         this.output = out;
-        this.game = game;
     }
 
     public ResourceType getInput_1() {

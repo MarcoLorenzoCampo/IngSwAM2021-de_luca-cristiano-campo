@@ -10,13 +10,13 @@ public class ActivateExtraProductionAction extends Action {
     private final int slot;
     private final ResourceType output;
 
-    private final IGame game;
 
-    public ActivateExtraProductionAction(String actionSender, int slot, ResourceType output, IGame game) {
+
+    public ActivateExtraProductionAction(String actionSender, int slot, ResourceType output) {
         super.setActionSender(actionSender);
         this.slot = slot;
         this.output = output;
-        this.game = game;
+
     }
 
     public ResourceType getOutput() {

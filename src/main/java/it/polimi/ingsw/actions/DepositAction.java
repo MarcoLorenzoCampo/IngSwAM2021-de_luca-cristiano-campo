@@ -9,12 +9,10 @@ public class DepositAction extends Action{
     private final PossibleAction actionTag = PossibleAction.DEPOSIT;
     private final int index;
 
-    private final IGame game;
 
-    public DepositAction(int index, String actionSender, IGame game) {
+    public DepositAction(int index, String actionSender) {
         this.index = index;
         super.setActionSender(actionSender);
-        this.game = game;
     }
 
     public int getIndex() {

@@ -9,7 +9,7 @@ public class ActivateProductionAction extends Action {
     private final PossibleAction actionTag = PossibleAction.ACTIVATE_PRODUCTION;
     private final int slot;
 
-    public ActivateProductionAction(String sender, int number, IGame current){
+    public ActivateProductionAction(String sender, int number){
         super.setActionSender(sender);
         this.slot = number;
     }

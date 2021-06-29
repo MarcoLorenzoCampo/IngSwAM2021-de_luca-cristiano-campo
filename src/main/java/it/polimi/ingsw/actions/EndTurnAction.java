@@ -15,11 +15,9 @@ public class EndTurnAction extends Action {
 
     private static final PossibleAction actionTag = PossibleAction.END_TURN;
 
-    private final IGame game;
 
-    public EndTurnAction(String actionSender, IGame game) {
+    public EndTurnAction(String actionSender) {
         super.setActionSender(actionSender);
-        this.game = game;
 
     }
 

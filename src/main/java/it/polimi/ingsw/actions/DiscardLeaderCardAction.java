@@ -12,12 +12,10 @@ public class DiscardLeaderCardAction extends Action {
 
     private final int leaderToDiscard;
 
-    private final IGame game;
 
-    public DiscardLeaderCardAction(String actionSender, int leaderToDiscard, IGame game) {
+    public DiscardLeaderCardAction(String actionSender, int leaderToDiscard) {
         super.setActionSender(actionSender);
         this.leaderToDiscard = leaderToDiscard;
-        this.game = game;
     }
 
     public int getLeaderToDiscard() {

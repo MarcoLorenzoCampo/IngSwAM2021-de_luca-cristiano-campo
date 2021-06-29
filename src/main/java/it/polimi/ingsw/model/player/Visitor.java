@@ -14,7 +14,6 @@ public interface Visitor {
     void visit(ExecuteProductionAction action);
     void visit(GetResourceFromMarketAction action);
     void visit(PlaceLeaderAction action);
-    void visit(RearrangeInventoryAction action);
     void visit(RemoveResourcesAction action);
     void visit(ClearProductionAction action);
 }

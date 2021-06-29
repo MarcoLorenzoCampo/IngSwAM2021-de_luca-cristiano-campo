@@ -6,11 +6,10 @@ import it.polimi.ingsw.model.player.Visitor;
 
 public class ExecuteProductionAction extends Action {
     private final PossibleAction actionTag = PossibleAction.EXECUTE_PRODUCTION;
-    private final IGame game;
 
-    public ExecuteProductionAction(String actionSender, IGame game) {
+
+    public ExecuteProductionAction(String actionSender) {
         super.setActionSender(actionSender);
-        this.game = game;
     }
 
     @Override

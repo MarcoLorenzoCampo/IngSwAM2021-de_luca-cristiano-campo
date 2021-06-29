@@ -14,13 +14,12 @@ public class ChangeMarbleAction extends Action{
     private final ResourceType color;
     private final int index;
 
-    private final IGame game;
 
-    public ChangeMarbleAction(String sender, ResourceType type, int number, IGame current){
+
+    public ChangeMarbleAction(String sender, ResourceType type, int number){
         super.setActionSender(sender);
         this.color = type;
         this.index = number;
-        this.game = current;
     }
 
     public int getIndex() {

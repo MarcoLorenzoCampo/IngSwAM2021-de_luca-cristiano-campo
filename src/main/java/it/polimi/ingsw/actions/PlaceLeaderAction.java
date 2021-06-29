@@ -16,17 +16,16 @@ public class PlaceLeaderAction extends Action {
 
     private final int leaderToActivate;
 
-    private final IGame game;
+
 
     /**
      * Public builder for this action.
      * @param actionSender: the Name of the player who requested this action;
      * @param leaderToActivate: Card index to activate;
      */
-    public PlaceLeaderAction(String actionSender, int leaderToActivate, IGame game) {
+    public PlaceLeaderAction(String actionSender, int leaderToActivate) {
         super.setActionSender(actionSender);
         this.leaderToActivate = leaderToActivate;
-        this.game = game;
     }
 
     public int getLeaderToActivate() {

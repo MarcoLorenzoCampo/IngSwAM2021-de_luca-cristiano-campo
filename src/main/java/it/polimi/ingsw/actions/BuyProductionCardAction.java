@@ -28,7 +28,7 @@ public class BuyProductionCardAction extends Action {
      * @param boughtCard: card to be purchased;
      * @param destinationSlot: destination slot in the ProductionBoard;
      */
-    public BuyProductionCardAction(String actionSender, ProductionCard boughtCard, int destinationSlot, IGame game) {
+    public BuyProductionCardAction(String actionSender, ProductionCard boughtCard, int destinationSlot) {
         super.setActionSender(actionSender);
         this.boughtCard = boughtCard;
         this.destinationSlot = destinationSlot;
