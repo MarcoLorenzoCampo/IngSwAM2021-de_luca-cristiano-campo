@@ -771,14 +771,16 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
-        if(leaderPanels.isEmpty()){
+        if(cards.size()==4){
+        //if(leaderPanels.isEmpty()){
             JPanel setupLeaderPopUp = setupLeaderPopUp(cards);
             leaderPanels.add(setupLeaderPopUp);
         }
         else{
-            availableLeaderPanel.updateAvailableLeaderPanel((ArrayList<LeaderCard>) cards);
-            leaderRecapPanel.updateLeaderRecapPanel((ArrayList<LeaderCard>) cards);
-            productionBoardPanel.updateExtraProduction((ArrayList<LeaderCard>) cards);
+            printLeaders(cards);
+            //availableLeaderPanel.updateAvailableLeaderPanel((ArrayList<LeaderCard>) cards);
+            //leaderRecapPanel.updateLeaderRecapPanel((ArrayList<LeaderCard>) cards);
+            //productionBoardPanel.updateExtraProduction((ArrayList<LeaderCard>) cards);
         }
     }
 
@@ -899,7 +901,9 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void printLeaders(List<LeaderCard> leaderCards) {
-
+        availableLeaderPanel.updateAvailableLeaderPanel((ArrayList<LeaderCard>) leaderCards);
+        leaderRecapPanel.updateLeaderRecapPanel((ArrayList<LeaderCard>) leaderCards);
+        productionBoardPanel.updateExtraProduction((ArrayList<LeaderCard>) leaderCards);
     }
 
     @Override
