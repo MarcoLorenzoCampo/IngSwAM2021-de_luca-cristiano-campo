@@ -44,6 +44,10 @@ public final class GameManager {
         this.currentPlayerState = currentGame.getCurrentPlayer().getPlayerState();
     }
 
+    public VirtualView getCurrentView() {
+        return currentView;
+    }
+
     /**
      * Constructor of the game manager.
      */
