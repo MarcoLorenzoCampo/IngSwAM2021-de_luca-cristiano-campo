@@ -29,6 +29,15 @@ public class ResourcesPopUp extends JPanel implements ActionListener {
 
     public ResourcesPopUp( int number){
         this.number = number;
+        mainPanel.setOpaque(false);
+        titlePanel.setOpaque(false);
+        centralPanel.setOpaque(false);
+        buttonPanel.setOpaque(false);
+        inputPanel.setOpaque(false);
+        firstRow.setOpaque(false);
+        bottomPanel.setOpaque(false);
+        secondRow.setOpaque(false);
+        submitPanel.setOpaque(false);
         title.setText("YOU HAVE " + number + " RESOURCES TO PICK");
 
         STONEButton.setFocusable(false);

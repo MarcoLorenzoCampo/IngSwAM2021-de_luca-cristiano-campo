@@ -7,7 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MiniGui  {
-
+    int width;
+    int height;
     JFrame frame;
     JPanel panel;
     JLabel label;
@@ -17,9 +18,10 @@ public class MiniGui  {
     boolean option;
 
     public MiniGui(){
-
+        width = 500;
+        height = 700;
         isChosen = false;
-
+/*
         frame = new JFrame();
         panel = new JPanel();
         label = new JLabel();
@@ -56,6 +58,60 @@ public class MiniGui  {
         frame.add(panel);
         frame.add(online);
         frame.add(offline);
+
+
+
+ */
+        frame = new JFrame();
+        panel = new StartPanel();
+        panel.setLayout(new BorderLayout());
+
+        JPanel innerPanel = new JPanel();
+        innerPanel.setPreferredSize(new Dimension(width, 10*width/11));
+        innerPanel.setLayout(new BorderLayout(0, width/5));
+        innerPanel.setOpaque(false);
+
+        JPanel inner_buttons = new JPanel();
+        inner_buttons.setOpaque(false);
+
+
+        online = new JButton();
+        offline = new JButton();
+        label = new JLabel();
+
+        //online.setBounds(50,160,120,40);
+        online.setText("ONLINE");
+        online.setFocusable(false);
+        online.setPreferredSize(new Dimension(3*width/10, width/10));
+
+
+        //offline.setBounds(230,160,120,40);
+        offline.setText("OFFLINE");
+        offline.setFocusable(false);
+        offline.setPreferredSize(new Dimension(3*width/10, width/10));
+
+
+        label.setFont(new Font("Monaco", Font.PLAIN, width/10));
+        label.setText("<html>Do you want to play<BR> online or offline?</html>");
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
+
+        innerPanel.add(label, BorderLayout.NORTH);
+        inner_buttons.add(online);
+        inner_buttons.add(offline);
+        innerPanel.add(inner_buttons, BorderLayout.CENTER);
+
+        panel.add(innerPanel, BorderLayout.SOUTH);
+
+
+        frame.setContentPane(panel);
+        frame.setResizable(false);
+        frame.repaint();
+        frame.revalidate();
+        frame.pack();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(dim.width/2-width/2, dim.height/2-4*height/7);
+        frame.setSize(width, height);
     }
 
     public void initializeGame(){
@@ -70,7 +126,7 @@ public class MiniGui  {
         System.out.println("ONLINE");
         this.frame.dispose();
         GUI guiView = new GUI(true);
-        ClientManager ClientManager = new ClientManager(guiView);
+        ClientManager ClientManager = new ClientManager(guiView, false);
         guiView.addObserver(ClientManager);
     }
 

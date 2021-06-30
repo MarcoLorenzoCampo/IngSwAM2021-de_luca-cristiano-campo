@@ -4,6 +4,9 @@ import it.polimi.ingsw.enumerations.ResourceType;
 
 import java.io.Serializable;
 
+/**
+ * Class that defines the concep of <Resource, Quantity>
+ */
 public class ResourceTag extends Tag implements Serializable {
     private static final long serialVersionUID = -6385279486823380885L;
     private ResourceType type;

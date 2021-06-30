@@ -5,18 +5,22 @@ import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.Visitor;
 
+/**
+ * Represents the activation of one of the productions granted by an ExtraProductionLeader,
+ * it holds the slot in which the card is stored and the output wanted
+ */
 public class ActivateExtraProductionAction extends Action {
     private final PossibleAction actionTag = PossibleAction.ACTIVATE_PRODUCTION;
     private final int slot;
     private final ResourceType output;
 
-    private final IGame game;
 
-    public ActivateExtraProductionAction(String actionSender, int slot, ResourceType output, IGame game) {
+
+    public ActivateExtraProductionAction(String actionSender, int slot, ResourceType output) {
         super.setActionSender(actionSender);
         this.slot = slot;
         this.output = output;
-        this.game = game;
+
     }
 
     public ResourceType getOutput() {

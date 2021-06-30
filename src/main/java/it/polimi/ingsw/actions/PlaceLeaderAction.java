@@ -5,10 +5,7 @@ import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.Visitor;
 
 /**
- * Action to activate a LeaderCard. Verifies different steps:
- * 1) Validating the game state;
- * 2) Validating the sender matches the current player;
- * 3) Validating card can be placed and requirements are matched.
+ * Action to activate a LeaderCard.
  */
 public class PlaceLeaderAction extends Action {
 
@@ -16,17 +13,16 @@ public class PlaceLeaderAction extends Action {
 
     private final int leaderToActivate;
 
-    private final IGame game;
+
 
     /**
      * Public builder for this action.
      * @param actionSender: the Name of the player who requested this action;
      * @param leaderToActivate: Card index to activate;
      */
-    public PlaceLeaderAction(String actionSender, int leaderToActivate, IGame game) {
+    public PlaceLeaderAction(String actionSender, int leaderToActivate) {
         super.setActionSender(actionSender);
         this.leaderToActivate = leaderToActivate;
-        this.game = game;
     }
 
     public int getLeaderToActivate() {

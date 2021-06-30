@@ -12,12 +12,15 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Disabled
 public class StrongboxTest {
     Strongbox strongbox;
     
     @BeforeEach
-    void setStrongbox(){ strongbox = new Strongbox(); }
+    void setStrongbox(){ strongbox = new Strongbox();
+        strongbox.getInventory().put(ResourceType.COIN, 0);
+        strongbox.getInventory().put(ResourceType.STONE,0);
+        strongbox.getInventory().put(ResourceType.SHIELD,0);
+        strongbox.getInventory().put(ResourceType.SERVANT,0);}
 
     @Test
     void addResourceTest(){
@@ -32,7 +35,7 @@ public class StrongboxTest {
         assertEquals(2, (int) strongbox.getInventory().get(ResourceType.COIN));
     }
 
-    @Disabled
+
     @Test
     void removeResourceAllowedTest(){
         //Arrange
@@ -47,7 +50,7 @@ public class StrongboxTest {
         assertEquals(0, (int) strongbox.getInventory().get(ResourceType.COIN));
     }
 
-    @Disabled
+
     @Test
     void removeResourceNotAllowedTest(){
         //Arrange

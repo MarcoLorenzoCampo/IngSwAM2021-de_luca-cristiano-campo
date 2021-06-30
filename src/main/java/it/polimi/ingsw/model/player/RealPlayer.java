@@ -154,6 +154,11 @@ public class RealPlayer extends Observable implements Visitor {
         return victoryPoints;
     }
 
+    /**
+     * Adds the chosen production to the final production only if said production wasn't previously selected,
+     * otherwise doesn't do anything
+     * @param action: action to be performed
+     */
     @Override
     public void visit(ActivateProductionAction action) {
         if(action.getActionSender().equals(playerName)
@@ -163,6 +168,11 @@ public class RealPlayer extends Observable implements Visitor {
         //notify not available
     }
 
+    /**
+     * Adds the chose extra production to the final production only if said production wasn't previously selected
+     * and the resource wanted isn't FAITH not UNDEFINED
+     * @param action
+     */
     @Override
     public void visit(ActivateExtraProductionAction action) {
         if(action.getActionSender().equals(playerName)
@@ -173,7 +183,11 @@ public class RealPlayer extends Observable implements Visitor {
         //notify not available
     }
 
-
+    /**
+     * Adds the chose based production to the final production only id said production wasn't previously selected
+     * and the resources specified aren't FAITH nor UNDEFINED
+     * @param action
+     */
     @Override
     public void visit(ActivateBaseProductionAction action) {
         if(action.getActionSender().equals(playerName)
@@ -187,6 +201,11 @@ public class RealPlayer extends Observable implements Visitor {
         //Notify production non available
     }
 
+    /**
+     * Buys the selected card from the market only if there is a place in which to put the card
+     * and if the player has enough resources to pay for the selected card
+     * @param action
+     */
     @Override
     public void visit(BuyProductionCardAction action) {
         if(action.getActionSender().equals(playerName)
@@ -206,6 +225,12 @@ public class RealPlayer extends Observable implements Visitor {
         }
     }
 
+    /**
+     * Changes the white marble in the selected position with the type specified only if in said position there is a
+     * white marble and the specified type is one granted by the exchange powers active. When the buffer is emptied of
+     * the white marbles it sets the state of the player so that the controller knows to change to the deposit state
+     * @param action
+     */
     @Override
     public void visit(ChangeMarbleAction action) {
         if(action.getActionSender().equals(playerName)
@@ -223,6 +248,11 @@ public class RealPlayer extends Observable implements Visitor {
         //notify
     }
 
+    /**
+     * Deposits the resource in the specified index into the warehouse, if the warehouse cannot hold said resource
+     * then it eliminates it from the buffer and notifies the controller to give all other players a faith point
+     * @param action
+     */
     @Override
     public void visit(DepositAction action) {
         if(action.getActionSender().equals(playerName)
@@ -239,6 +269,11 @@ public class RealPlayer extends Observable implements Visitor {
 
     }
 
+    /**
+     * Discards leader card in position index only if there is a leader card in said position and the leader
+     * card is not active, this gives the player one faith point
+     * @param action
+     */
     @Override
     public void visit(DiscardLeaderCardAction action) {
         if(action.getActionSender().equals(playerName)
@@ -258,6 +293,10 @@ public class RealPlayer extends Observable implements Visitor {
         }
     }
 
+    /**
+     * Resets the player state
+     * @param action
+     */
     @Override
     public void visit(EndTurnAction action) {
         if(action.getActionSender().equals(playerName)
@@ -266,6 +305,11 @@ public class RealPlayer extends Observable implements Visitor {
         }
     }
 
+    /**
+     * Executes the chosen productions only if the player has enough resources to pay for the input, puts the output
+     * into the strongbox
+     * @param action
+     */
     @Override
     public void visit(ExecuteProductionAction action) {
         if(action.getActionSender().equals(playerName)
@@ -276,6 +320,10 @@ public class RealPlayer extends Observable implements Visitor {
         }
     }
 
+    /**
+     * Gets the resources from the column/row specified
+     * @param action
+     */
     @Override
     public void visit(GetResourceFromMarketAction action) {
         if(action.getActionSender().equals(playerName)
@@ -293,6 +341,11 @@ public class RealPlayer extends Observable implements Visitor {
         }
     }
 
+    /**
+     * Activates the leader in the defined position only if there is a leader, the leader is not active
+     * and all the requirements of the leader are met
+     * @param action
+     */
     @Override
     public void visit(PlaceLeaderAction action) {
         if(action.getActionSender().equals(playerName)
@@ -304,6 +357,11 @@ public class RealPlayer extends Observable implements Visitor {
         }
     }
 
+    /**
+     * Removes the resource from the source specified, if the source doesn't hold enough to satisfy the
+     * removal than the remaining units are removed from the other source
+     * @param action
+     */
     @Override
     public void visit(RemoveResourcesAction action) {
         if(action.getActionSender().equals(playerName)
@@ -333,15 +391,13 @@ public class RealPlayer extends Observable implements Visitor {
         }
     }
 
+    /**
+     * Clears the productionboard
+     * @param action
+     */
     @Override
     public void visit(ClearProductionAction action) {
         playerBoard.getProductionBoard().clearSelection();
-    }
-
-
-    @Override
-    public void visit(RearrangeInventoryAction action) {
-
     }
 
 

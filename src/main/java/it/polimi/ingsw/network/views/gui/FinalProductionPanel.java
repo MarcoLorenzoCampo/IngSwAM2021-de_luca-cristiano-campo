@@ -8,13 +8,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FinalProductionPanel extends JPanel {
     private HashMap<ResourceType, Integer> input;
     private HashMap<ResourceType, Integer> output;
-    private String[] resources;
+    private final String[] resources;
     JButton clear;
 
     FinalProductionPanel(){
@@ -102,7 +104,7 @@ public class FinalProductionPanel extends JPanel {
             }
             g.drawImage(img, x,y, width,height, null);
             g.setStroke(new BasicStroke(height));
-            g.drawString(new StringBuilder().append("x ").append(String.valueOf(iterator.getValue())).toString(), x+3*width/2, y+height);
+            g.drawString("x " + iterator.getValue(), x+3*width/2, y+height);
             y+= 3*height/2;
         }
 
@@ -114,8 +116,16 @@ public class FinalProductionPanel extends JPanel {
         int y = 3*height/2;
         ClassLoader cl = this.getClass().getClassLoader();
         String item = " ";
+        ArrayList<ResourceType> temp = new ArrayList<>();
+
         for (Map.Entry<ResourceType, Integer> iterator:input.entrySet()) {
-            switch (iterator.getKey()) {
+            temp.add(iterator.getKey());
+        }
+        Collections.sort(temp);
+
+        for (ResourceType iterator : temp ) {
+
+            switch (iterator) {
                 case COIN:
                     item = resources[0];
                     break;
@@ -143,8 +153,9 @@ public class FinalProductionPanel extends JPanel {
             }
             g.drawImage(img, x,y, width,height, null);
             g.setStroke(new BasicStroke(height));
-            g.drawString(new StringBuilder().append("x ").append(String.valueOf(iterator.getValue())).toString(), x+3*width/2, y+height);
+            g.drawString("x " + input.get(iterator).toString(), x+3*width/2, y+height);
             y+= 3*height/2;
+
         }
 
     }

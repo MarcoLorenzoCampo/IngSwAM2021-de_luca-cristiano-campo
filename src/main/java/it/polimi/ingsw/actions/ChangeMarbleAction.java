@@ -8,19 +8,22 @@ import it.polimi.ingsw.model.player.Visitor;
 
 import static it.polimi.ingsw.enumerations.ResourceType.UNDEFINED;
 
+/**
+ * Action to change a white marble when the choice is given (two exchange powers active)
+ * it has the color in which to change and the position of the white marble to change in the buffer
+ */
 public class ChangeMarbleAction extends Action{
     private final PossibleAction actionTag = PossibleAction.CHANGE_COLOR;
 
     private final ResourceType color;
     private final int index;
 
-    private final IGame game;
 
-    public ChangeMarbleAction(String sender, ResourceType type, int number, IGame current){
+
+    public ChangeMarbleAction(String sender, ResourceType type, int number){
         super.setActionSender(sender);
         this.color = type;
         this.index = number;
-        this.game = current;
     }
 
     public int getIndex() {

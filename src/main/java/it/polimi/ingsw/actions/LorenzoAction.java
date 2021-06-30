@@ -4,6 +4,9 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
 import it.polimi.ingsw.model.player.Visitor;
 
+/**
+ * Action to indicate that lorenzo needs to execute the token on top of its pile
+ */
 public class LorenzoAction extends Action {
 
     private final PossibleAction actionTag = PossibleAction.LORENZO_ACTION;

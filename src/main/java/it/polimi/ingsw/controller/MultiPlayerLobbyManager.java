@@ -432,7 +432,8 @@ public class MultiPlayerLobbyManager implements ControllerObserver, ILobbyManage
         vv.printResourceMarket(gameManager.getCurrentGame().getGameBoard().getResourceMarket().getResourceBoard(),
                 gameManager.getCurrentGame().getGameBoard().getResourceMarket().getExtraMarble());
 
-        vv.printLeaders(realPlayerList.get(getPlayerIndexByNickname(nickname)).getOwnedLeaderCards());
+        //vv.printLeaders(realPlayerList.get(getPlayerIndexByNickname(nickname)).getOwnedLeaderCards());
+        vv.showLeaderCards(realPlayerList.get(getPlayerIndexByNickname(nickname)).getOwnedLeaderCards());
 
         vv.printBuffer(new ArrayList<>());
 

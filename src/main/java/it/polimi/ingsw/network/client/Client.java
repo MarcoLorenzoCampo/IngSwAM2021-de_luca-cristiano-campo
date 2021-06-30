@@ -116,6 +116,10 @@ public class Client extends Observable implements IClient {
         });
     }
 
+    /**
+     * Method used to send messages to the game manager during an offline game
+     * @param message: message to send.
+     */
     @Override
     public void sendMessage(Message message) {
         if(!isLocal) {
@@ -161,6 +165,11 @@ public class Client extends Observable implements IClient {
         }
     }
 
+    /**
+     * Message that holds the updates of the client view
+     *
+     * @param message: message sent from the game manager
+     */
     public void forwardMessage(Message message){
         notifyObserver(message);
     }
@@ -195,7 +204,7 @@ public class Client extends Observable implements IClient {
             ClientManager clientManager;
             if(!isLocal) {
 
-                clientManager = new ClientManager(cliView);
+                clientManager = new ClientManager(cliView, false);
 
 
             } else {

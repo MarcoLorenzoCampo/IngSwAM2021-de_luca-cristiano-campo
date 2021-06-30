@@ -6,18 +6,20 @@ import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.Visitor;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 
+/**
+ * Action to remove resources either from the warehouse or the strongbox
+ */
 public class RemoveResourcesAction extends Action {
     private final PossibleAction actionTag = PossibleAction.REMOVE_RESOURCE;
     private final String source;
     private final ResourceTag toBeRemoved;
 
-    private final IGame game;
 
-    public RemoveResourcesAction(String actionSender, String source_message, ResourceTag toBeRemoved, IGame game) {
+    public RemoveResourcesAction(String actionSender, String source_message, ResourceTag toBeRemoved) {
         super.setActionSender(actionSender);
         this.source = source_message;
         this.toBeRemoved = toBeRemoved;
-        this.game = game;
+
     }
 
     public String getSource() {

@@ -24,6 +24,7 @@ public class GUI extends ViewObservable implements IView {
 
     private final boolean isOnline;
     private final JFrame setupFrame;
+    private StartPanel startPanel;
     private final ArrayList<JPanel> setup;
     private final ArrayList<JPanel> leaderPanels;
 
@@ -60,6 +61,7 @@ public class GUI extends ViewObservable implements IView {
     public GUI(boolean isOnline){
         messagePopUp = new MessagePopUp(" ");
         setupFrame = new JFrame();
+        startPanel = new StartPanel();
         setup = new ArrayList<>();
         leaderPanels = new ArrayList<>();
         this.isOnline = isOnline;
@@ -477,6 +479,9 @@ public class GUI extends ViewObservable implements IView {
     }
 
     private void initializeSetupPanels() {
+        //onlineLoginPopUp().setOpaque(false);
+        //nicknamePopUp().setOpaque(false);
+        //playerNumberPopUp().setOpaque(false);
         setup.add(onlineLoginPopUp());
         setup.add(nicknamePopUp());
         setup.add(playerNumberPopUp());
@@ -484,6 +489,8 @@ public class GUI extends ViewObservable implements IView {
 
     private JPanel resourcesPopUp(int quantity) {
         ResourcesPopUp resourcesPopUp = new ResourcesPopUp(quantity);
+        resourcesPopUp.setOpaque(false);
+        resourcesPopUp.setPreferredSize(new Dimension(500, 440));
         resourcesPopUp.getSUBMITButton().addActionListener(e ->{
             LinkedList<ResourceType> send = new LinkedList<>();
             if(!resourcesPopUp.getTextField1().getText().isEmpty() && resourcesPopUp.getNumber()==2){
@@ -507,13 +514,17 @@ public class GUI extends ViewObservable implements IView {
     private JPanel playerNumberPopUp() {
         JPanel playerNumberPopUp = new JPanel();
         playerNumberPopUp.setLayout(new BorderLayout(5, 20));
+        playerNumberPopUp.setOpaque(false);
+        playerNumberPopUp.setPreferredSize(new Dimension(500, 430));
 
-        JLabel numberOfPlayers = new JLabel("Select the number of players");
+        JLabel numberOfPlayers = new JLabel("<html>   Select the<BR>number of players</html>");
+        numberOfPlayers.setFont(new Font("Monaco", Font.PLAIN, 50));
         numberOfPlayers.setHorizontalAlignment(SwingConstants.CENTER);
         numberOfPlayers.setVerticalAlignment(SwingConstants.TOP);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setSize(420,120);
+        buttonPanel.setSize(420,250);
+        buttonPanel.setOpaque(false);
 
         JButton one = new JButton("1");
         one.setSize(105,60);
@@ -561,15 +572,25 @@ public class GUI extends ViewObservable implements IView {
 
     private JPanel onlineLoginPopUp() {
         JPanel onlineLoginPopUp = new JPanel();
-        onlineLoginPopUp.setLayout(new BorderLayout(5, 20));
+        onlineLoginPopUp.setLayout(new BorderLayout(5, 10));
+        onlineLoginPopUp.setPreferredSize(new Dimension(500, 440));
+        onlineLoginPopUp.setOpaque(false);
 
         JPanel title = new JPanel();
+        title.setOpaque(false);
 
         JPanel central = new JPanel();
+        central.setOpaque(false);
         central.setLayout(new BorderLayout(5, 30));
+
         JPanel upperCentral = new JPanel();
+        upperCentral.setOpaque(false);
+
         JPanel lowerCentral = new JPanel();
+        lowerCentral.setOpaque(false);
+
         JPanel bottom = new JPanel();
+        bottom.setOpaque(false);
 
 
         JLabel title_1 = new JLabel("<html>INSERT SOCKET PORT NUMBER AND IP ADDRESS<br>DEFAULT IS: <br><br>SOCKET = 2200<BR>IP = 0.0.0.0</html>");
@@ -628,15 +649,20 @@ public class GUI extends ViewObservable implements IView {
     private JPanel nicknamePopUp() {
         JPanel nicknamePopUp = new JPanel();
         nicknamePopUp.setLayout(new BorderLayout(5, 20));
+        nicknamePopUp.setPreferredSize(new Dimension(500, 440));
+        nicknamePopUp.setOpaque(false);
 
         JPanel north = new JPanel();
         north.setLayout(new FlowLayout());
+        north.setOpaque(false);
 
         JPanel center = new JPanel();
         center.setLayout(new FlowLayout());
+        center.setOpaque(false);
 
         JPanel south = new JPanel();
         south.setLayout(new FlowLayout());
+        south.setOpaque(false);
 
 
         JLabel title = new JLabel("<html>CHOOSE A USERNAME</html>");
@@ -663,18 +689,25 @@ public class GUI extends ViewObservable implements IView {
     }
 
     private void initializeSetupFrame() {
-        setupFrame.setSize(800,800);
+        int width = 500;
+        int height = 700;
+        setupFrame.setSize(width,height);
         setupFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setupFrame.setTitle("SETUP");
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setupFrame.setLocation(dim.width/2-width/2, dim.height/2-4*height/7);
     }
 
     private void startGUI() {
         if(isOnline){
-            setupFrame.setContentPane(onlineLoginPopUp());
+            startPanel.add(onlineLoginPopUp(), BorderLayout.SOUTH);
+            //setupFrame.setContentPane(onlineLoginPopUp());
+            setupFrame.setContentPane(startPanel);
             setupFrame.pack();
             setupFrame.revalidate();
             setupFrame.repaint();
             setupFrame.getContentPane().setVisible(true);
+            setupFrame.setSize(500, 700);
             setupFrame.setVisible(true);
         } else {
             askNickname();
@@ -707,8 +740,9 @@ public class GUI extends ViewObservable implements IView {
     @Override
     public void askNickname() {
         setupFrame.getContentPane().removeAll();
-        setupFrame.setContentPane(setup.get(1));
-        setupFrame.validate();
+        startPanel.update(setup.get(1));
+        setupFrame.setContentPane(startPanel);
+        setupFrame.revalidate();
         setupFrame.repaint();
         setupFrame.setVisible(true);
     }
@@ -719,11 +753,23 @@ public class GUI extends ViewObservable implements IView {
             notifyObserver(o -> o.onUpdateNumberOfPlayers(1));
 
         } else {
+
             setupFrame.getContentPane().removeAll();
-            setupFrame.setContentPane(setup.get(2));
+            startPanel.update(setup.get(2));
+            setupFrame.setContentPane(startPanel);
             setupFrame.revalidate();
             setupFrame.repaint();
             setupFrame.setVisible(true);
+
+           /* startPanel.update(setup.get(2));
+            setupFrame.getContentPane().removeAll();
+            //setupFrame.setContentPane(setup.get(2));
+            setupFrame.setContentPane(startPanel);
+            setupFrame.revalidate();
+            setupFrame.repaint();
+            setupFrame.setVisible(true);
+
+            */
         }
     }
 
@@ -763,7 +809,9 @@ public class GUI extends ViewObservable implements IView {
     @Override
     public void askToDiscard() throws ExecutionException {
         setupFrame.getContentPane().removeAll();
-        setupFrame.setContentPane(leaderPanels.get(0));
+        startPanel.add(leaderPanels.get(0), BorderLayout.SOUTH);
+        setupFrame.setContentPane(startPanel);
+        //setupFrame.setContentPane(leaderPanels.get(0));
         setupFrame.revalidate();
         setupFrame.repaint();
         setupFrame.setVisible(true);
@@ -771,11 +819,13 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void showLeaderCards(List<LeaderCard> cards) {
-        if(leaderPanels.isEmpty()){
+        if(cards.size()==4){
+        //if(leaderPanels.isEmpty()){
             JPanel setupLeaderPopUp = setupLeaderPopUp(cards);
             leaderPanels.add(setupLeaderPopUp);
         }
         else{
+            //printLeaders(cards);
             availableLeaderPanel.updateAvailableLeaderPanel((ArrayList<LeaderCard>) cards);
             leaderRecapPanel.updateLeaderRecapPanel((ArrayList<LeaderCard>) cards);
             productionBoardPanel.updateExtraProduction((ArrayList<LeaderCard>) cards);
@@ -784,6 +834,8 @@ public class GUI extends ViewObservable implements IView {
 
     private JPanel setupLeaderPopUp(List<LeaderCard> available) {
        SetupLeaderPopUp setupLeaderPopUp = new SetupLeaderPopUp(available);
+       setupLeaderPopUp.setPreferredSize(new Dimension(500, 450));
+       //setupLeaderPopUp.setOpaque(false);
        setupLeaderPopUp.getSubmit_button().addActionListener(e->{
            ArrayList<Integer> selected = new ArrayList<>();
            for (int i = 0; i < setupLeaderPopUp.getCheckBoxes().length; i++) {
@@ -814,11 +866,22 @@ public class GUI extends ViewObservable implements IView {
     @Override
     public void askSetupResource(int number) throws ExecutionException {
         if(number!=0) {
+
+
+            setupFrame.getContentPane().removeAll();
+            startPanel.update(resourcesPopUp(number));
+            setupFrame.setContentPane(startPanel);
+            setupFrame.revalidate();
+            setupFrame.repaint();
+            setupFrame.setVisible(true);
+           /*
             setupFrame.getContentPane().removeAll();
             setupFrame.setContentPane(resourcesPopUp(number));
             setupFrame.revalidate();
             setupFrame.repaint();
             setupFrame.setVisible(true);
+
+            */
         }
         else {
             messagePopUp.changeMessage("The first player doesn't get to pick any resource!");
@@ -899,7 +962,9 @@ public class GUI extends ViewObservable implements IView {
 
     @Override
     public void printLeaders(List<LeaderCard> leaderCards) {
-
+        //availableLeaderPanel.updateAvailableLeaderPanel((ArrayList<LeaderCard>) leaderCards);
+        //leaderRecapPanel.updateLeaderRecapPanel((ArrayList<LeaderCard>) leaderCards);
+        //productionBoardPanel.updateExtraProduction((ArrayList<LeaderCard>) leaderCards);
     }
 
     @Override

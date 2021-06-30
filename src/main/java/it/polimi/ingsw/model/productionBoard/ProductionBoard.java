@@ -212,6 +212,12 @@ public class ProductionBoard extends Observable {
         }
     }
 
+    /**
+     * Method used by the player to see if the production can be executed or not
+     *
+     * @param inventory: player's complete inventory
+     * @return: returs true if the production can be executed, otherwise false
+     */
     public boolean validateFinalProduction(InventoryManager inventory){
         for (ResourceTag iterator: finalProduction.getInputResources()) {
             if(iterator.getQuantity() > inventory.getInventory().get(iterator.getType()))

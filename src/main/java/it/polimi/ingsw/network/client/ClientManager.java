@@ -44,18 +44,20 @@ public class ClientManager implements ViewObserver, Observer {
 
     private final List<ProductionCard> allProductionCards;
 
-    /**
-     * Constructor of the online client controller.
-     * @param view: cli or gui.
-     */
-    public ClientManager(IView view) {
+    ///**
+    // * Constructor of the online client controller.
+    // * @param view: cli or gui.
+    // */
+    /*public ClientManager(IView view) {
         this.view = view;
         this.allProductionCards = ProductionCardsParser.parseProductionDeck();
         viewUpdater = Executors.newSingleThreadExecutor();
     }
 
+     */
+
     /**
-     * Constructor of the offline client manager.
+     * Constructor of the client manager.
      * @param view: cli or gui
      * @param isOffline: game mode
      */
@@ -63,8 +65,10 @@ public class ClientManager implements ViewObserver, Observer {
         this.view = view;
         this.allProductionCards = ProductionCardsParser.parseProductionDeck();
         viewUpdater = Executors.newSingleThreadExecutor();
-        client = new Client(new LocalStream(), view);
-        client.addObserver(this);
+        if(isOffline){
+            client = new Client(new LocalStream(), view);
+            client.addObserver(this);
+        }
     }
 
     /**
@@ -218,6 +222,11 @@ public class ClientManager implements ViewObserver, Observer {
         }
     }
 
+    /**
+     * Method to create the production board from the information sent
+     * @param productionSlots: map that holds the index of the slot and the id of the production card held
+     * @return: map that holds the index of the slot and the concrete production card held
+     */
     private HashMap<Integer, ProductionCard> deserializeProductionBoard(HashMap<Integer, Integer> productionSlots){
         HashMap<Integer, ProductionCard> deserialized = new HashMap<>();
         for (Map.Entry<Integer,Integer> iterator: productionSlots.entrySet()) {
@@ -230,6 +239,11 @@ public class ClientManager implements ViewObserver, Observer {
         return  deserialized;
     }
 
+    /**
+     * Method that creates the concrete production cards from the IDs sent
+     * @param availableID: list of the IDs of the available cards
+     * @return: list of concrete cards associated with said IDs
+     */
     private ArrayList<ProductionCard> deserializeProductionCards(ArrayList<Integer> availableID) {
         ArrayList<ProductionCard> available = new ArrayList<>();
         for (Integer iterator: availableID) {

@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.utilities;
 
 import java.util.ArrayList;
 
+/**
+ * Class that defines the concep of a production
+ */
 public class BaseProduction {
 
     private ArrayList<ResourceTag> inputResources;

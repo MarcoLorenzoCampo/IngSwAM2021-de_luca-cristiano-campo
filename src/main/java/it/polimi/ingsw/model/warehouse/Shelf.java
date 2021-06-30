@@ -5,6 +5,10 @@ import it.polimi.ingsw.model.utilities.ResourceTag;
 
 import static it.polimi.ingsw.enumerations.ResourceType.UNDEFINED;
 
+/**
+ * Define a container that can only hold up to a maxCapacity and can only hold Resources of a specific type.
+ * When it's empty the type is defined by the first resource placed
+ */
 
 public class Shelf  {
     private ResourceTag element;

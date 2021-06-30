@@ -4,13 +4,15 @@ import it.polimi.ingsw.enumerations.PossibleAction;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.player.Visitor;
 
+/**
+ * action that executes all the productions chosen by the player
+ */
 public class ExecuteProductionAction extends Action {
     private final PossibleAction actionTag = PossibleAction.EXECUTE_PRODUCTION;
-    private final IGame game;
 
-    public ExecuteProductionAction(String actionSender, IGame game) {
+
+    public ExecuteProductionAction(String actionSender) {
         super.setActionSender(actionSender);
-        this.game = game;
     }
 
     @Override
