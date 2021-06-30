@@ -14,14 +14,17 @@ public class SetupLeaderPopUp extends JPanel {
     public SetupLeaderPopUp(List<LeaderCard> available){
 
         this.setLayout(new BorderLayout());
+        this.setOpaque(false);
 
         JPanel title = new JPanel();
+        title.setOpaque(false);
         title.setLayout(new FlowLayout());
         JLabel text = new JLabel("CHOOSE TWO LEADERS TO DISCARD");
         title.add(text);
 
         JPanel submit = new JPanel();
         submit.setLayout(new FlowLayout());
+        submit.setOpaque(false);
 
 
         submit_button = new JButton("SUBMIT");
@@ -30,6 +33,7 @@ public class SetupLeaderPopUp extends JPanel {
 
 
         JPanel center = new JPanel();
+        center.setOpaque(false);
         center.setLayout(new GridLayout(2, 4,10,0));
         LeaderPanel leader_0 = new LeaderPanel(available.get(0));
         center.add(leader_0);
@@ -47,6 +51,7 @@ public class SetupLeaderPopUp extends JPanel {
         JCheckBox zero = new JCheckBox();
         zero.setFocusable(false);
         zero.setHorizontalAlignment(SwingConstants.CENTER);
+        zero.setOpaque(false);
         zero.addActionListener(e -> {
             int count = 0;
             for (JCheckBox iterator: checkBoxes) {
@@ -63,6 +68,7 @@ public class SetupLeaderPopUp extends JPanel {
         JCheckBox one = new JCheckBox();
         one.setFocusable(false);
         one.setHorizontalAlignment(SwingConstants.CENTER);
+        one.setOpaque(false);
         one.addActionListener(e -> {
             int count = 0;
             for (JCheckBox iterator: checkBoxes) {
@@ -79,6 +85,7 @@ public class SetupLeaderPopUp extends JPanel {
         JCheckBox two = new JCheckBox();
         two.setFocusable(false);
         two.setHorizontalAlignment(SwingConstants.CENTER);
+        two.setOpaque(false);
         two.addActionListener(e -> {
             int count = 0;
             for (JCheckBox iterator: checkBoxes) {
@@ -96,6 +103,7 @@ public class SetupLeaderPopUp extends JPanel {
         JCheckBox three = new JCheckBox();
         three.setFocusable(false);
         three.setHorizontalAlignment(SwingConstants.CENTER);
+        three.setOpaque(false);
         three.addActionListener(e -> {
             int count = 0;
             for (JCheckBox iterator: checkBoxes) {
