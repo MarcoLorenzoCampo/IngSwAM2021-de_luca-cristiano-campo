@@ -18,11 +18,6 @@ public class RealPlayerBoard extends Observable {
     private int boughtCardsNumber;
 
     /**
-     * Name of the player who owns this board.
-     */
-    private final String owner;
-
-    /**
      * Reference to the player's faith track.
      */
     private final FaithTrack faithTrack;
@@ -37,8 +32,7 @@ public class RealPlayerBoard extends Observable {
      */
     private final InventoryManager inventoryManager;
 
-    public RealPlayerBoard(String owner) {
-        this.owner = owner;
+    public RealPlayerBoard() {
         faithTrack = new FaithTrack();
         boughtCardsNumber = 0;
         productionBoard = new ProductionBoard();

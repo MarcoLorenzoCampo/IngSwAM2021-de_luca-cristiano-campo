@@ -223,8 +223,9 @@ public class ClientManager implements ViewObserver, Observer {
         for (Map.Entry<Integer,Integer> iterator: productionSlots.entrySet()) {
             if(iterator.getValue()==-1){
                 deserialized.put(iterator.getKey(), null);
-            }
+            } else {
                 deserialized.put(iterator.getKey(), allProductionCards.get(iterator.getValue()));
+            }
         }
         return  deserialized;
     }

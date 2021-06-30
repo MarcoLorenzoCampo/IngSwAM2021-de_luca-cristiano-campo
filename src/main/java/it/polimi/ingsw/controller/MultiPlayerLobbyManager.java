@@ -136,7 +136,6 @@ public class MultiPlayerLobbyManager implements ControllerObserver, ILobbyManage
         showStartingUpdates();
 
         gameManager.onStartTurn();
-        //setDefaultResources();
     }
 
     /**
