@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.game.PlayingGame;
 import it.polimi.ingsw.model.inventoryManager.InventoryManager;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.MaterialResource;
+import it.polimi.ingsw.model.utilities.ResourceTag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -109,21 +110,42 @@ class InventoryManagerTest {
     @Test
     void addResourceToWarehouse() {
         //Arrange
-        inventoryManager.deposit(new MaterialResource(ResourceType.COIN));
-        int old_size;
+        inventoryManager.deposit(new MaterialResource(ResourceType.SHIELD));
+        inventoryManager.deposit(new MaterialResource(ResourceType.SHIELD));
+        inventoryManager.getInventory().put(ResourceType.SHIELD, 2);
+        inventoryManager.getWarehouse().getShelves().get(2).setElement(new ResourceTag(ResourceType.SHIELD, 2));
 
         //Act
-        old_size = inventoryManager.getBuffer().size();
+        assertDoesNotThrow(()->{inventoryManager.addResourceToWarehouse(0);});
+        DiscardResourceException exception = assertThrows(DiscardResourceException.class,  ()->{inventoryManager.addResourceToWarehouse(0);});
+        //simulating the action resolves the exception
+        inventoryManager.removeFromBuffer(0);
 
         //Assert
         assertAll(
-                () -> assertNotEquals(0 , old_size),
-                () -> assertEquals(0, inventoryManager.getBuffer().size())
+                () -> assertEquals(0, inventoryManager.getBuffer().size()),
+                () -> assertEquals(3, inventoryManager.getInventory().get(ResourceType.SHIELD)),
+                () -> assertEquals(3, inventoryManager.getWarehouse().getShelves().get(2).getQuantity())
         );
     }
 
     @Test
     void addResourceToStrongbox() {
+        //Arrange
+        inventoryManager.deposit(new MaterialResource(ResourceType.SHIELD));
+        inventoryManager.deposit(new MaterialResource(ResourceType.SHIELD));
+
+        //Act
+        inventoryManager.addResourceToStrongbox();
+
+        //Assert
+        assertAll(
+                () -> assertEquals(0, inventoryManager.getBuffer().size()),
+                () -> assertEquals(2, inventoryManager.getInventory().get(ResourceType.SHIELD)),
+                () -> assertEquals(2, inventoryManager.getStrongbox().getInventory().get(ResourceType.SHIELD))
+        );
+
+
     }
 
     @Test
