@@ -147,7 +147,7 @@ class GameManagerTest {
         assertEquals(PossibleGameStates.PLAYING, gameManager.getCurrentGame().getCurrentState().getGameState());
     }
     @Test
-    void Discard(){
+    void DiscardAtFirst(){
         fullSetup();
         playerOne = gameManager.getLobbyManager().getRealPlayerList().get(0).getName();
         playerTwo = gameManager.getLobbyManager().getRealPlayerList().get(1).getName();
@@ -159,6 +159,35 @@ class GameManagerTest {
                 ()->assertEquals(false, gameManager.getCurrentGame().getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()),
                 ()->assertEquals(1, gameManager.getCurrentGame().getCurrentPlayer().getFaithPosition())
         );
+    }
+
+    @Test
+    void DiscardAtLast(){
+        fullSetup();
+        playerOne = gameManager.getLobbyManager().getRealPlayerList().get(0).getName();
+        playerTwo = gameManager.getLobbyManager().getRealPlayerList().get(1).getName();
+        assertEquals(playerOne, gameManager.getCurrentPlayer());
+
+        gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.GET_RESOURCES, 6));
+        assertEquals(PossibleGameStates.DEPOSIT, gameManager.getCurrentGame().getCurrentState().getGameState());
+        for (int i = 0; i < gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().size(); i++){
+            gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DEPOSIT, 0));
+        }
+        gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DEPOSIT, 0));
+        assertAll(
+                ()->assertEquals(PossibleGameStates.MAIN_ACTION_DONE, gameManager.getCurrentGame().getCurrentState().getGameState()),
+                ()->assertEquals(0, gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().size()),
+                ()->assertEquals(true, gameManager.getCurrentGame().getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction())
+        );
+        assertEquals(playerOne, gameManager.getCurrentPlayer());
+        gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DISCARD_LEADER, 0));
+        assertAll(
+                ()->assertEquals(PossibleGameStates.MAIN_ACTION_DONE, gameManager.getCurrentGame().getCurrentState().getGameState()),
+                ()->assertEquals(true, gameManager.getCurrentGame().getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction()),
+                ()->assertEquals(1, gameManager.getCurrentGame().getCurrentPlayer().getOwnedLeaderCards().size())
+        );
+
+
     }
 
     @Test
