@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -45,6 +46,8 @@ public class SocketServer implements Runnable {
     @Override
     public void run() {
         try {
+
+
             serverSocket = new ServerSocket(port);
 
             Server.LOGGER.info("Server started: " + serverSocket.getLocalSocketAddress()

@@ -174,11 +174,13 @@ class GameManagerTest {
             gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DEPOSIT, 0));
         }
         gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DEPOSIT, 0));
+        gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DEPOSIT, 0));
         assertAll(
                 ()->assertEquals(PossibleGameStates.MAIN_ACTION_DONE, gameManager.getCurrentGame().getCurrentState().getGameState()),
                 ()->assertEquals(0, gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().size()),
                 ()->assertEquals(true, gameManager.getCurrentGame().getCurrentPlayer().getPlayerState().hasPerformedExclusiveAction())
         );
+        assertEquals(playerOne, gameManager.getCurrentPlayer());
         assertEquals(playerOne, gameManager.getCurrentPlayer());
         gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DISCARD_LEADER, 0));
         assertAll(
@@ -202,6 +204,7 @@ class GameManagerTest {
         for (int i = 0; i < gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().size(); i++){
             gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DEPOSIT, 0));
         }
+        gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DEPOSIT, 0));
         gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DEPOSIT, 0));
         assertAll(
                 ()->assertEquals(PossibleGameStates.MAIN_ACTION_DONE, gameManager.getCurrentGame().getCurrentState().getGameState()),

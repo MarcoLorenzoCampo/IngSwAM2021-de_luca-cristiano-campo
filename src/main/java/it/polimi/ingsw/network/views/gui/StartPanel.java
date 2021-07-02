@@ -12,6 +12,7 @@ public class StartPanel extends JPanel{
 
     public StartPanel(){
         this.setLayout(new BorderLayout());
+        this.setOpaque(true);
     }
 
     @Override
@@ -37,6 +38,9 @@ public class StartPanel extends JPanel{
         this.removeAll();
         this.setLayout(new BorderLayout());
         this.validate();
+        JPanel center = new JPanel();
+        center.setOpaque(false);
+        this.add(center, BorderLayout.CENTER);
         this.add(panel, BorderLayout.SOUTH);
         this.validate();
         this.repaint();

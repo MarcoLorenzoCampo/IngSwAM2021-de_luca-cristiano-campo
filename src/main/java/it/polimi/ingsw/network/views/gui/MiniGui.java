@@ -10,7 +10,7 @@ public class MiniGui  {
     int width;
     int height;
     JFrame frame;
-    JPanel panel;
+    StartPanel panel;
     JLabel label;
     JButton online;
     JButton offline;
@@ -101,17 +101,16 @@ public class MiniGui  {
         inner_buttons.add(offline);
         innerPanel.add(inner_buttons, BorderLayout.CENTER);
 
-        panel.add(innerPanel, BorderLayout.SOUTH);
-
-
+        panel.update(innerPanel);
+        //panel.add(innerPanel, BorderLayout.SOUTH);
         frame.setContentPane(panel);
         frame.setResizable(false);
-        frame.repaint();
         frame.revalidate();
         frame.pack();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(dim.width/2-width/2, dim.height/2-4*height/7);
         frame.setSize(width, height);
+        frame.repaint();
     }
 
     public void initializeGame(){
