@@ -23,7 +23,7 @@ UML files have been made to document the progression of the project.
 ### Communication Protocol
 
 The Communication Protocol we decided to implement can be checked
-[here](deliveries/COMMUNICATION PROTOCOL.pdf).
+[here](deliveries/CommunicationProtocol.pdf).
 ### Libraries and Plugins
 
 ```
