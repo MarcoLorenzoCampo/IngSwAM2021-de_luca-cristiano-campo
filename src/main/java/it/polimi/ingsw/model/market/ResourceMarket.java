@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.builders.ResourceBoardBuilder;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
-import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.ResourceMarketMessage;
 import it.polimi.ingsw.parsers.ResourceMarketParser;
 

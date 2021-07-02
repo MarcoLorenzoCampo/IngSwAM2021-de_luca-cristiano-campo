@@ -2,7 +2,7 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.model.player.RealPlayer;
-import it.polimi.ingsw.network.eventHandlers.VirtualView;
+import it.polimi.ingsw.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.NicknameRequest;
 import it.polimi.ingsw.network.utilities.ServerConfigPOJO;

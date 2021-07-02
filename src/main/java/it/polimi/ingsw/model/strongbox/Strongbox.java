@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.strongbox;
 import it.polimi.ingsw.enumerations.ResourceType;
 import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.model.utilities.ResourceTag;
-import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.eventHandlers.Observable;
 
 import java.util.HashMap;
 import java.util.Map;

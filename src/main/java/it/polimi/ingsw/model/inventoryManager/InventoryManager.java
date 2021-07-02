@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.warehouse.Shelf;
 import it.polimi.ingsw.model.warehouse.Warehouse;
-import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.BufferMessage;
 import it.polimi.ingsw.network.messages.serverMessages.StrongboxMessage;
 import it.polimi.ingsw.network.messages.serverMessages.WarehouseMessage;

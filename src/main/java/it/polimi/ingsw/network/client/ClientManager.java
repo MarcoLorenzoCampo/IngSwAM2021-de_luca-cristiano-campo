@@ -5,13 +5,13 @@ import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.*;
 import it.polimi.ingsw.model.utilities.DevelopmentTag;
 import it.polimi.ingsw.model.utilities.ResourceTag;
-import it.polimi.ingsw.network.eventHandlers.Observer;
-import it.polimi.ingsw.network.eventHandlers.ViewObserver;
+import it.polimi.ingsw.eventHandlers.Observer;
+import it.polimi.ingsw.eventHandlers.ViewObserver;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.playerMessages.*;
 
 import it.polimi.ingsw.network.messages.serverMessages.*;
-import it.polimi.ingsw.network.views.IView;
+import it.polimi.ingsw.views.IView;
 import it.polimi.ingsw.parsers.ProductionCardsParser;
 
 import java.io.IOException;

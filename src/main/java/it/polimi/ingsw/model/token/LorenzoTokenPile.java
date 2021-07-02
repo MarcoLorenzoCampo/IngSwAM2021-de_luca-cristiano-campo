@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.token;
 
 import it.polimi.ingsw.model.player.LorenzoPlayer;
 import it.polimi.ingsw.model.utilities.builders.LorenzoTokensBuilder;
-import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.LorenzoTokenMessage;
 
 import java.util.List;

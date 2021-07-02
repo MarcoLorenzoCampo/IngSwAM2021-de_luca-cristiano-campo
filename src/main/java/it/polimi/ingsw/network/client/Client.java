@@ -1,12 +1,12 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.PingMessage;
-import it.polimi.ingsw.network.views.IView;
-import it.polimi.ingsw.network.views.cli.MiniCli;
-import it.polimi.ingsw.network.views.cli.CLI;
-import it.polimi.ingsw.network.views.gui.MiniGui;
+import it.polimi.ingsw.views.IView;
+import it.polimi.ingsw.views.cli.MiniCli;
+import it.polimi.ingsw.views.cli.CLI;
+import it.polimi.ingsw.views.gui.MiniGui;
 
 import javax.swing.*;
 import java.io.IOException;
