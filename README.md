@@ -16,10 +16,14 @@ pattern.
 
 UML files have been made to document the progression of the project.  
   
-● [Initial UML](): Basic *model* implementation made during the first _design_ phase;  
+● [Initial UML](deliveries/InitialModelUML.png): Basic *model* implementation made during the first _design_ phase;  
 
-● [Final UML](): Complete UML to capture the whole structure of the implementation;
+● [Final UML](deliveries/CompleteFinalUML.png): Complete UML to capture the whole structure of the implementation;
 
+### Communication Protocol
+
+The Communication Protocol we decided to implement can be checked
+[here](deliveries/COMMUNICATION PROTOCOL.pdf).
 ### Libraries and Plugins
 
 ```
