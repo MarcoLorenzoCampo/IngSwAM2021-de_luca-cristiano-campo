@@ -25,7 +25,7 @@ class LeaderCardTest {
         LeaderCard extraInventory = null;
         ExtraProductionLeaderCard extraProd = null;
         LeaderCard exchange = null;
-        RealPlayerBoard rpb = new RealPlayerBoard("test");
+        RealPlayerBoard rpb = new RealPlayerBoard();
 
         for(LeaderCard l : testDeck) {
             if(l instanceof DiscountLeaderCard) discount = l;

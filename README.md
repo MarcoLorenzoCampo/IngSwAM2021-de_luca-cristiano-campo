@@ -8,7 +8,8 @@
 
 The objective of this project is to provide a playable and 
 distributed Java implementation
-of the game [Masters Of Renaissance](https://craniointernational.com/products/masters-of-renaissance/), following the Model-View-Controller
+of the game [Masters Of Renaissance](https://craniointernational.com/products/masters-of-renaissance/)
+(*Maestri del Rinascimento*), following the Model-View-Controller
 pattern.
 
 ### UML
@@ -46,9 +47,9 @@ Here's a list of all the features we've implemented:
 
 ● 2 Advanced Functionalities:
 
-        ● Offline single player game;
+        ➢ Offline single player game;
         
-        ● Player reconnection;
+        ➢ Player reconnection;
 ```
 
 ## Executing the Jar file

@@ -41,10 +41,10 @@ class ResourceMarketTest {
         //Assert
         assertAll(
                 () -> assertThrows(IndexOutOfBoundsException.class,
-                        () -> resourceMarket.pickResources(positiveBoundBreaker, new RealPlayerBoard("test"))),
+                        () -> resourceMarket.pickResources(positiveBoundBreaker, new RealPlayerBoard())),
 
                 () -> assertThrows(IndexOutOfBoundsException.class,
-                        () -> resourceMarket.pickResources(negativeBoundBreaker, new RealPlayerBoard("test")))
+                        () -> resourceMarket.pickResources(negativeBoundBreaker, new RealPlayerBoard()))
         );
     }
 
@@ -62,9 +62,9 @@ class ResourceMarketTest {
         //Assert
         assertAll(
                 () -> assertDoesNotThrow(
-                        () -> resourceMarket.pickResources(acceptedBoundColumn, new RealPlayerBoard("test"))),
+                        () -> resourceMarket.pickResources(acceptedBoundColumn, new RealPlayerBoard())),
                 () -> assertDoesNotThrow(
-                        () -> resourceMarket.pickResources(acceptedBoundRow, new RealPlayerBoard("test")))
+                        () -> resourceMarket.pickResources(acceptedBoundRow, new RealPlayerBoard()))
         );
     }
 

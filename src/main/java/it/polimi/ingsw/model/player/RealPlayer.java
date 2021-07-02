@@ -63,7 +63,7 @@ public class RealPlayer extends Observable implements Visitor {
      */
     public RealPlayer(String name) {
 
-        this.playerBoard = new RealPlayerBoard(name);
+        this.playerBoard = new RealPlayerBoard();
         this.playerName = name;
         this.playerState = new PlayerState();
         this.ownedLeaderCards = new LinkedList<>();
@@ -465,10 +465,6 @@ public class RealPlayer extends Observable implements Visitor {
 
     private boolean finalProductionValidator() {
         return playerBoard.getProductionBoard().validateFinalProduction(playerBoard.getInventoryManager());
-    }
-
-    public void getPeek() {
-
     }
 
     /**
