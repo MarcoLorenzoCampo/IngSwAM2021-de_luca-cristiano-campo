@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.actions.LorenzoAction;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.token.LorenzoTokenPile;
-import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.eventHandlers.Observable;
 
 import java.util.Collections;
 

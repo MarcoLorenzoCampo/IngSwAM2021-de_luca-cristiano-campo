@@ -4,7 +4,7 @@ import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.model.game.IGame;
 import it.polimi.ingsw.model.market.ProductionCardMarket;
 import it.polimi.ingsw.model.player.LorenzoPlayer;
-import it.polimi.ingsw.network.views.cli.ColorCLI;
+import it.polimi.ingsw.views.cli.ColorCLI;
 
 import java.util.HashMap;
 import java.util.Map;

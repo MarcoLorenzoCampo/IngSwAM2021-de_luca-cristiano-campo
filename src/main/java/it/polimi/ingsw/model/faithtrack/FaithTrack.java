@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.faithtrack;
 
 import it.polimi.ingsw.enumerations.Constants;
 import it.polimi.ingsw.enumerations.PossibleMessages;
-import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.playerMessages.TwoIntMessage;
 import it.polimi.ingsw.network.messages.serverMessages.*;
 

@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.enumerations.Color;
 import it.polimi.ingsw.enumerations.Level;
-import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.AvailableCardsMessage;
 import it.polimi.ingsw.network.messages.serverMessages.NoMoreCardsMessage;
 import it.polimi.ingsw.parsers.ProductionCardsParser;

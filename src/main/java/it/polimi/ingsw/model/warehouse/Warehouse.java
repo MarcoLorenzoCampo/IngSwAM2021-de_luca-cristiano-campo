@@ -5,7 +5,7 @@ import it.polimi.ingsw.exceptions.CannotRemoveResourceException;
 import it.polimi.ingsw.exceptions.DiscardResourceException;
 import it.polimi.ingsw.model.utilities.MaterialResource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
-import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.eventHandlers.Observable;
 
 import java.util.*;
 import java.util.stream.Collectors;

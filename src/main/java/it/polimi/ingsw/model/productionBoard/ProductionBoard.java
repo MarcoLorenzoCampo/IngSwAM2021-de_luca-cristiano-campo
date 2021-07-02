@@ -11,7 +11,7 @@ import it.polimi.ingsw.model.utilities.BaseProduction;
 import it.polimi.ingsw.model.utilities.Resource;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.model.utilities.builders.ResourceBuilder;
-import it.polimi.ingsw.network.eventHandlers.Observable;
+import it.polimi.ingsw.eventHandlers.Observable;
 import it.polimi.ingsw.network.messages.serverMessages.ChosenProductionMessage;
 import it.polimi.ingsw.network.messages.serverMessages.ProductionBoardMessage;
 

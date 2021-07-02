@@ -2,7 +2,7 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.enumerations.PossibleMessages;
-import it.polimi.ingsw.network.eventHandlers.VirtualView;
+import it.polimi.ingsw.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.OneIntMessage;
 import it.polimi.ingsw.network.server.IClientHandler;

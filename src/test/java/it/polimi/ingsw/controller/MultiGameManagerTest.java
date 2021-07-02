@@ -1,13 +1,12 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.actions.ActivateProductionAction;
 import it.polimi.ingsw.enumerations.*;
 import it.polimi.ingsw.model.market.ProductionCard;
 import it.polimi.ingsw.model.market.leaderCards.ExtraInventoryLeaderCard;
 import it.polimi.ingsw.model.market.leaderCards.ExtraProductionLeaderCard;
 import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.ResourceTag;
-import it.polimi.ingsw.network.eventHandlers.VirtualView;
+import it.polimi.ingsw.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.*;
 import it.polimi.ingsw.network.server.IClientHandler;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import static it.polimi.ingsw.enumerations.Color.BLUE;
 import static it.polimi.ingsw.enumerations.Color.GREEN;
 import static it.polimi.ingsw.enumerations.ResourceType.*;
 import static org.junit.jupiter.api.Assertions.*;
