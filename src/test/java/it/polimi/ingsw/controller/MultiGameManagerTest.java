@@ -1,10 +1,12 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.enumerations.Level;
-import it.polimi.ingsw.enumerations.PossibleGameStates;
-import it.polimi.ingsw.enumerations.PossibleMessages;
-import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.actions.ActivateProductionAction;
+import it.polimi.ingsw.enumerations.*;
+import it.polimi.ingsw.model.market.ProductionCard;
+import it.polimi.ingsw.model.market.leaderCards.ExtraInventoryLeaderCard;
+import it.polimi.ingsw.model.market.leaderCards.ExtraProductionLeaderCard;
 import it.polimi.ingsw.model.player.RealPlayer;
+import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.network.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.playerMessages.*;
@@ -13,10 +15,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
+import static it.polimi.ingsw.enumerations.Color.BLUE;
 import static it.polimi.ingsw.enumerations.Color.GREEN;
-import static it.polimi.ingsw.enumerations.ResourceType.SHIELD;
+import static it.polimi.ingsw.enumerations.ResourceType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MultiGameManagerTest {
@@ -259,8 +263,118 @@ class MultiGameManagerTest {
             gameManager.onMessage(new SourceStrongboxMessage(playerOne));
         }
         gameManager.onMessage(new SourceStrongboxMessage(playerOne));
+        gameManager.onMessage(new SourceStrongboxMessage(playerOne));
+        gameManager.onMessage(new SourceStrongboxMessage(playerOne));
         assertAll(
                 () -> assertEquals(PossibleGameStates.MAIN_ACTION_DONE, gameManager.getCurrentGame().getCurrentState().getGameState())
         );
+    }
+
+    @Test
+    void ExtraProduction(){
+        fullSetup();
+        playerOne = gameManager.getLobbyManager().getRealPlayerList().get(0).getName();
+        playerTwo = gameManager.getLobbyManager().getRealPlayerList().get(1).getName();
+        assertEquals(playerOne, gameManager.getCurrentPlayer());
+
+        ResourceTag[] input = new ResourceTag[1];
+        input[0] = new ResourceTag(SHIELD, 1);
+        ResourceTag[] output = new ResourceTag[2];
+        output[0] = new ResourceTag(FAITH, 1);
+        output[1] = new ResourceTag(UNDEFINED,1);
+        gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getProductionBoard().addLeaderProduction(new ExtraProductionLeaderCard(SHIELD, 1,EffectType.EXTRA_PRODUCTION,null,input, output));
+
+        gameManager.onMessage(new ExtraProductionMessage(playerOne,0 , SHIELD));
+        assertEquals(PossibleGameStates.ACTIVATE_PRODUCTION, gameManager.getCurrentGame().getCurrentState().getGameState());
+        gameManager.onMessage(new ExecuteProductionMessage(playerOne));
+        assertEquals(PossibleGameStates.REMOVE, gameManager.getCurrentGame().getCurrentState().getGameState());
+        gameManager.onMessage(new SourceStrongboxMessage(playerOne));
+
+        assertAll(
+                () -> assertEquals(PossibleGameStates.MAIN_ACTION_DONE, gameManager.getCurrentGame().getCurrentState().getGameState()),
+                () -> assertEquals(100, gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().getInventory().get(SHIELD)),
+                () -> assertNotNull(gameManager.getCurrentView())
+        );
+    }
+
+    @Test
+    void activateBoughtProduction(){
+        fullSetup();
+        playerOne = gameManager.getLobbyManager().getRealPlayerList().get(0).getName();
+        playerTwo = gameManager.getLobbyManager().getRealPlayerList().get(1).getName();
+        assertEquals(playerOne, gameManager.getCurrentPlayer());
+
+        ProductionCard bought = gameManager.getCurrentGame().getGameBoard().getProductionCardMarket().getAvailableCards().get(0);
+        gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getProductionBoard().placeProductionCard(0, bought);
+
+        gameManager.onMessage(new OneIntMessage(playerOne,PossibleMessages.ACTIVATE_PRODUCTION, 0));
+        assertEquals(PossibleGameStates.ACTIVATE_PRODUCTION, gameManager.getCurrentGame().getCurrentState().getGameState());
+        gameManager.onMessage(new ExecuteProductionMessage(playerOne));
+        assertEquals(PossibleGameStates.REMOVE, gameManager.getCurrentGame().getCurrentState().getGameState());
+        for (int i = 0; i < gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getProductionBoard().getFinalProduction().getInputResources().size(); i++) {
+            gameManager.onMessage(new SourceStrongboxMessage(playerOne));
+        }
+        gameManager.onMessage(new SourceStrongboxMessage(playerOne));
+        gameManager.onMessage(new SourceStrongboxMessage(playerOne));
+        assertAll(
+                () -> assertEquals(PossibleGameStates.MAIN_ACTION_DONE, gameManager.getCurrentGame().getCurrentState().getGameState()),
+                () -> assertNotNull(gameManager.getCurrentView())
+        );
+    }
+
+    @Test
+    void placeLeader(){
+        fullSetup();
+        playerOne = gameManager.getLobbyManager().getRealPlayerList().get(0).getName();
+        playerTwo = gameManager.getLobbyManager().getRealPlayerList().get(1).getName();
+        assertEquals(playerOne, gameManager.getCurrentPlayer());
+
+        gameManager.getCurrentGame().getCurrentPlayer().getOwnedLeaderCards().remove(0);
+        ResourceTag[] requirements = new ResourceTag[1];
+        requirements[0]= new ResourceTag(SERVANT, 5);
+        gameManager.getCurrentGame().getCurrentPlayer().getOwnedLeaderCards().add(0, new ExtraInventoryLeaderCard(1,EffectType.EXTRA_INVENTORY, requirements, null, SHIELD));
+
+        gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.ACTIVATE_LEADER, 0));
+        assertAll(
+                () -> assertEquals(PossibleGameStates.PLAYING, gameManager.getCurrentGame().getCurrentState().getGameState()),
+                () -> assertTrue(gameManager.getCurrentGame().getCurrentPlayer().getOwnedLeaderCards().get(0).isActive()),
+                () -> assertEquals(4,gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().getWarehouse().getShelves().size()),
+                () -> assertEquals(SHIELD,gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().getWarehouse().getShelves().get(3).getType())
+        );
+    }
+
+    @Test
+    void changeColor(){
+        fullSetup();
+        playerOne = gameManager.getLobbyManager().getRealPlayerList().get(0).getName();
+        playerTwo = gameManager.getLobbyManager().getRealPlayerList().get(1).getName();
+        assertEquals(playerOne, gameManager.getCurrentPlayer());
+
+        gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().addExchangeLeader(SHIELD);
+        gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().addExchangeLeader(COIN);
+        boolean found = false;
+        int index=0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                if(!found && gameManager.getCurrentGame().getGameBoard().getResourceMarket().getResourceBoard()[i][j].equals(UNDEFINED)){
+                    found=true;
+                    index=j;
+                }
+            }
+        }
+        gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.GET_RESOURCES, index));
+        assertEquals(PossibleGameStates.CHANGE_COLOR, gameManager.getCurrentGame().getCurrentState().getGameState());
+        ArrayList<Integer> exchangeable = new ArrayList<>();
+        for (int i = 0; i < gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().size(); i++) {
+            gameManager.onMessage(new ExchangeResourceMessage(playerOne, SHIELD, i));
+        }
+        assertEquals(PossibleGameStates.DEPOSIT, gameManager.getCurrentGame().getCurrentState().getGameState());
+        for (int i = 0; i < gameManager.getCurrentGame().getCurrentPlayer().getPlayerBoard().getInventoryManager().getBuffer().size(); i++) {
+            gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DEPOSIT, 0));
+        }
+        gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.DEPOSIT, 0));
+        assertEquals(PossibleGameStates.MAIN_ACTION_DONE, gameManager.getCurrentGame().getCurrentState().getGameState());
+
+
     }
 }
