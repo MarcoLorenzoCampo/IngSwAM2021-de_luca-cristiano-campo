@@ -902,6 +902,7 @@ public class GUI extends ViewObservable implements IView {
     @Override
     public void showWinMatch(String winner) {
         JOptionPane.showMessageDialog(null, winner + " won!\n", "WINNER", JOptionPane.PLAIN_MESSAGE);
+        System.exit(0);
     }
 
     @Override

@@ -155,9 +155,7 @@ public final class GameManager {
                                 currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
                                 buy.getSecondNumber())
                                 .accept(currentGame.getCurrentPlayer());
-                        //currentGame.getCurrentPlayer().visit(new BuyProductionCardAction(buy.getSenderUsername(),
-                        //        currentGame.getGameBoard().getProductionCardMarket().getAvailableCards().get(buy.getFirstNumber()),
-                        //        buy.getSecondNumber(), currentGame));
+
 
                         if(currentPlayerState.getHasBoughCard()){
                             currentGame.setCurrentState(PossibleGameStates.BUY_CARD);
@@ -198,8 +196,7 @@ public final class GameManager {
                                 OneIntMessage activate_prod = (OneIntMessage) message;
 
                                 new ActivateProductionAction(activate_prod.getSenderUsername(),activate_prod.getIndex()).accept(currentGame.getCurrentPlayer());
-                                //currentGame.getCurrentPlayer().visit(new ActivateProductionAction(activate_prod.getSenderUsername(),
-                                //        activate_prod.getIndex(), currentGame));
+
 
                                 break;
 
@@ -207,16 +204,14 @@ public final class GameManager {
                                 BaseProductionMessage base_prod = (BaseProductionMessage) message;
                                 new ActivateBaseProductionAction(base_prod.getSenderUsername(),
                                         base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput()).accept(currentGame.getCurrentPlayer());
-                                //currentGame.getCurrentPlayer().visit(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
-                                //        base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
+
                                 break;
 
                             case ACTIVATE_EXTRA_PRODUCTION:
                                 ExtraProductionMessage extra_prod = (ExtraProductionMessage) message;
                                 new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
                                         extra_prod.getIndex(), extra_prod.getOutput()).accept(currentGame.getCurrentPlayer());
-                                //currentGame.getCurrentPlayer().visit(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
-                                //        extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
+
 
                                 break;
                         }
@@ -379,13 +374,11 @@ public final class GameManager {
 
                 new DiscardLeaderCardAction(d.getSenderUsername(), l1).accept(currentGame.getCurrentPlayer());
                 new DiscardLeaderCardAction(d.getSenderUsername(), l2).accept(currentGame.getCurrentPlayer());
-                //currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame) );
-                //currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame));
+
             } else {
                 new DiscardLeaderCardAction(d.getSenderUsername(), l2).accept(currentGame.getCurrentPlayer());
                 new DiscardLeaderCardAction(d.getSenderUsername(), l1).accept(currentGame.getCurrentPlayer());
-                //currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l2, currentGame) );
-                //currentGame.getCurrentPlayer().visit(new DiscardLeaderCardAction(d.getSenderUsername(), l1, currentGame));
+
             }
 
             if(lobbyManager.getRealPlayerList().get(lobbyManager.getLobbySize()-1).getName().equals(currentPlayer)) {
@@ -411,7 +404,7 @@ public final class GameManager {
      * Method that defines what the controller needs to do based on the message received,
      * knowing that the state of the game is ACTIVATE_PRODUCTION. Accepts only messages that
      * activate another production to activate or a message to activate the final production.
-     * if the production is executed than the state becomes REMOVE otherwise it returs to PLAYING
+     * if the production is executed than the state becomes REMOVE otherwise it returns to PLAYING
      * and acts as if the player hasn't chosen yet which action to perform
      *
      * @param message: message received from the player, holds the information on the action
@@ -424,16 +417,14 @@ public final class GameManager {
 
                 new ActivateProductionAction(activate_prod.getSenderUsername(),
                         activate_prod.getIndex()).accept(currentGame.getCurrentPlayer());
-                //currentGame.getCurrentPlayer().visit(new ActivateProductionAction(activate_prod.getSenderUsername(),
-                //        activate_prod.getIndex(), currentGame));
+
             }
 
             else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_BASE_PRODUCTION)) {
                 BaseProductionMessage base_prod = (BaseProductionMessage) message;
                 new ActivateBaseProductionAction(base_prod.getSenderUsername(),
                         base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput()).accept(currentGame.getCurrentPlayer());
-                //currentGame.getCurrentPlayer().visit(new ActivateBaseProductionAction(base_prod.getSenderUsername(),
-                //        base_prod.getInput1(), base_prod.getInput2(), base_prod.getOutput(), currentGame));
+
             }
 
             else if(message.getMessageType().equals(PossibleMessages.ACTIVATE_EXTRA_PRODUCTION)){
@@ -441,8 +432,7 @@ public final class GameManager {
 
                 new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
                         extra_prod.getIndex(), extra_prod.getOutput()).accept(currentGame.getCurrentPlayer());
-                //currentGame.getCurrentPlayer().visit(new ActivateExtraProductionAction(extra_prod.getSenderUsername(),
-                //        extra_prod.getIndex(), extra_prod.getOutput(), currentGame));
+
             }
             else if(message.getMessageType().equals(PossibleMessages.EXECUTE_PRODUCTION)){
                 new ExecuteProductionAction(message.getSenderUsername()).accept(currentGame.getCurrentPlayer());
@@ -483,7 +473,6 @@ public final class GameManager {
             else if(message.getMessageType().equals(PossibleMessages.SOURCE_WAREHOUSE)){
                 SourceWarehouseMessage warehouseMessage = (SourceWarehouseMessage) message;
                 new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0)).accept(currentGame.getCurrentPlayer());
-                //currentGame.getCurrentPlayer().visit(new RemoveResourcesAction(warehouseMessage.getSenderUsername(),"WAREHOUSE" , toBeRemoved.get(0), currentGame));
                 currentGame.getCurrentPlayer().getPlayerBoard().getInventoryManager().getToBeRemoved().remove(toBeRemoved.get(0));
             }
 
@@ -509,8 +498,7 @@ public final class GameManager {
             if(message.getMessageType().equals(PossibleMessages.EXCHANGE_RESOURCE)){
                 ExchangeResourceMessage colorChange = (ExchangeResourceMessage) message;
                 new ChangeMarbleAction(colorChange.getSenderUsername(), colorChange.getExchangeWithThis(), colorChange.getIndex()).accept(currentGame.getCurrentPlayer());
-                //currentGame.getCurrentPlayer().visit(new ChangeMarbleAction(colorChange.getSenderUsername(),
-                //        colorChange.getExchangeWithThis(), colorChange.getIndex(), currentGame));
+
             }
 
             if(currentPlayerState.CanDeposit()) {
@@ -673,7 +661,14 @@ public final class GameManager {
     public void resetFSM() {
         Server.LOGGER.info("Game ended, preparing the server for a new game . . .");
         PlayingGame.terminate();
-
+        firstTurn = true;
+        gameStarted = false;
+        currentPlayer = "";
+        currentPlayerState = null;
+        currentView = null;
+        virtualViewLog.clear();
+        currentGame.setCurrentState(PossibleGameStates.SETUP);
+        //lobbyManager = null;
     }
 
     /**

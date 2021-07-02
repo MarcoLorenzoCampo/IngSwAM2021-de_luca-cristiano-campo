@@ -210,7 +210,6 @@ public class Client extends Observable implements IClient {
             } else {
 
                 clientManager = new ClientManager(cliView, true);
-                //OfflineClientManager OfflineClientManager = new OfflineClientManager(cliView);
             }
             cliView.addObserver(clientManager);
 

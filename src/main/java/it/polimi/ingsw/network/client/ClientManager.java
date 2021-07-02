@@ -44,17 +44,6 @@ public class ClientManager implements ViewObserver, Observer {
 
     private final List<ProductionCard> allProductionCards;
 
-    ///**
-    // * Constructor of the online client controller.
-    // * @param view: cli or gui.
-    // */
-    /*public ClientManager(IView view) {
-        this.view = view;
-        this.allProductionCards = ProductionCardsParser.parseProductionDeck();
-        viewUpdater = Executors.newSingleThreadExecutor();
-    }
-
-     */
 
     /**
      * Constructor of the client manager.

@@ -1,7 +1,6 @@
 it\polimi\ingsw\views\gui\FinalProductionPanel.class
 it\polimi\ingsw\views\cli\constants\GraphicalResourceConstants.class
 it\polimi\ingsw\actions\DiscardLeaderCardAction.class
-it\polimi\ingsw\network\client\OfflineClientManager.class
 it\polimi\ingsw\views\gui\BaseProductionPanel$1.class
 it\polimi\ingsw\model\market\leaderCards\ExtraProductionLeaderCard.class
 it\polimi\ingsw\views\gui\ProductionBoardPanel.class
@@ -183,7 +182,6 @@ it\polimi\ingsw\views\gui\AvailableLeaderPanel$1.class
 it\polimi\ingsw\controller\MultiPlayerLobbyManager$1.class
 it\polimi\ingsw\model\game\IGame.class
 it\polimi\ingsw\model\utilities\builders\ResourceBoardBuilder.class
-it\polimi\ingsw\network\client\OfflineClientManager$1.class
 it\polimi\ingsw\network\messages\serverMessages\GenericMessageFromServer.class
 it\polimi\ingsw\views\gui\BuyCardPanel.class
 it\polimi\ingsw\actions\ClearProductionAction.class
