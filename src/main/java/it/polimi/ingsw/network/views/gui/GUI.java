@@ -24,7 +24,7 @@ public class GUI extends ViewObservable implements IView {
 
     private final boolean isOnline;
     private final JFrame setupFrame;
-    private StartPanel startPanel;
+    private final StartPanel startPanel;
     private final ArrayList<JPanel> setup;
     private final ArrayList<JPanel> leaderPanels;
 
@@ -144,6 +144,7 @@ public class GUI extends ViewObservable implements IView {
             productionPopUp.setContentPane(baseProductionPanel);
             productionPopUp.revalidate();
             productionPopUp.repaint();
+            productionPopUp.setSize(500, 300);
             productionPopUp.setVisible(true);
         });
         productionBoardPanel.getButtons()[1].addActionListener(e -> notifyObserver(o -> o.onUpdateActivateProductionCard(0)));
@@ -289,21 +290,25 @@ public class GUI extends ViewObservable implements IView {
         exchange[0].addActionListener(e -> {
             exchangePopUp.setContentPane(exchangeResourcePanels[0]);
             exchangePopUp.revalidate();
+            exchangePopUp.setSize(500,300);
             exchangePopUp.setVisible(true);
         });
         exchange[1].addActionListener(e -> {
             exchangePopUp.setContentPane(exchangeResourcePanels[1]);
             exchangePopUp.revalidate();
+            exchangePopUp.setSize(500,300);
             exchangePopUp.setVisible(true);
         });
         exchange[2].addActionListener(e -> {
             exchangePopUp.setContentPane(exchangeResourcePanels[2]);
             exchangePopUp.revalidate();
+            exchangePopUp.setSize(500,300);
             exchangePopUp.setVisible(true);
         });
         exchange[3].addActionListener(e -> {
             exchangePopUp.setContentPane(exchangeResourcePanels[3]);
             exchangePopUp.revalidate();
+            exchangePopUp.setSize(500,300);
             exchangePopUp.setVisible(true);
         });
 
