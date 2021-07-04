@@ -94,6 +94,9 @@ class MultiGameManagerTest {
                 () -> assertEquals(PossibleGameStates.SETUP_RESOURCES, gameManager.getCurrentGame().getCurrentState().getGameState())
         );
 
+        for(RealPlayer realPlayer : gameManager.getLobbyManager().getRealPlayerList()) {
+            realPlayer.getPlayerBoard().testSetup();
+        }
     }
 
 

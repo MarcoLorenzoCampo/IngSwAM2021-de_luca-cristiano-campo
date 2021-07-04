@@ -17,16 +17,11 @@ public class Strongbox extends Observable {
      */
     public Strongbox (){
         this.strongbox = new HashMap<>();
-        /*
+
         strongbox.put(ResourceType.COIN, 0);
         strongbox.put(ResourceType.STONE,0);
         strongbox.put(ResourceType.SHIELD,0);
         strongbox.put(ResourceType.SERVANT,0);
-                 */
-        strongbox.put(ResourceType.COIN, 100);
-        strongbox.put(ResourceType.STONE,100);
-        strongbox.put(ResourceType.SHIELD,100);
-        strongbox.put(ResourceType.SERVANT,100);
     }
 
 
@@ -62,5 +57,19 @@ public class Strongbox extends Observable {
      */
     public Map<ResourceType, Integer> getInventory(){
         return this.strongbox;
+    }
+
+    /**
+     * Method to set the default strongbox resources for test purposes.
+     * @param coin: number of coins;
+     * @param shield: number of shields;
+     * @param servant: number of servants;
+     * @param stone: number of stones;
+     */
+    public void setTestInventory(int coin, int shield, int servant, int stone) {
+        strongbox.put(ResourceType.COIN, coin);
+        strongbox.put(ResourceType.SHIELD, shield);
+        strongbox.put(ResourceType.SERVANT, servant);
+        strongbox.put(ResourceType.STONE, stone);
     }
 }
