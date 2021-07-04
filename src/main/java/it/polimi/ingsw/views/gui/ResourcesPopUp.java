@@ -55,6 +55,7 @@ public class ResourcesPopUp extends JPanel implements ActionListener {
         SUBMITButton = new JButton("SUBMIT");
         DELETEButton = new JButton("DELETE");
 
+
         mainPanel.setOpaque(false);
         titlePanel.setOpaque(false);
         centralPanel.setOpaque(false);
