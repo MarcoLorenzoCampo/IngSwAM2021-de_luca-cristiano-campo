@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.enumerations.PossibleGameStates;
 import it.polimi.ingsw.enumerations.PossibleMessages;
 import it.polimi.ingsw.enumerations.ResourceType;
+import it.polimi.ingsw.model.player.RealPlayer;
 import it.polimi.ingsw.model.utilities.ResourceTag;
 import it.polimi.ingsw.eventHandlers.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
@@ -56,6 +57,10 @@ public class SingleGameManagerTest {
         gameManager.addVirtualView(playerOne, view1);
         assertEquals(PossibleGameStates.SETUP_SIZE, gameManager.getCurrentGame().getCurrentState().getGameState());
         gameManager.onMessage(new OneIntMessage(playerOne, PossibleMessages.GAME_SIZE, 1));
+
+        for(RealPlayer realPlayer : gameManager.getLobbyManager().getRealPlayerList()) {
+            realPlayer.getPlayerBoard().testSetup();
+        }
 
         //ASSERT
         assertAll(

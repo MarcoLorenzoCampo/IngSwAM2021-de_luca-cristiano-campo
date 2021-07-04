@@ -59,4 +59,12 @@ public class RealPlayerBoard extends Observable {
     public InventoryManager getInventoryManager() {
         return inventoryManager;
     }
+
+
+    /**
+     * Method to set up warehouse and strongbox for testing purposes only.
+     */
+    public void testSetup() {
+        inventoryManager.getStrongbox().setTestInventory(100, 100, 100, 100);
+    }
 }
