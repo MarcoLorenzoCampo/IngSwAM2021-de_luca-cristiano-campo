@@ -18,10 +18,10 @@ public class Strongbox extends Observable {
     public Strongbox (){
         this.strongbox = new HashMap<>();
 
-        strongbox.put(ResourceType.COIN, 50);
-        strongbox.put(ResourceType.STONE, 50);
-        strongbox.put(ResourceType.SHIELD, 50);
-        strongbox.put(ResourceType.SERVANT, 50);
+        strongbox.put(ResourceType.COIN, 0);
+        strongbox.put(ResourceType.STONE, 0);
+        strongbox.put(ResourceType.SHIELD, 0);
+        strongbox.put(ResourceType.SERVANT, 0);
     }
 
 

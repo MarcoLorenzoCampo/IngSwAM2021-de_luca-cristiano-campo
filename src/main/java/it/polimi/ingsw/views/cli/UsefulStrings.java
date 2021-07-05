@@ -52,6 +52,7 @@ public final class UsefulStrings {
                     "\n - 'PEEK <enemy nickname>': Checks on one of your enemies." +
                     "\n               What you can see: Active Leaders, Faith Track position, their total resources owned." +
                     "\n - 'PEEK Lorenzo': Works in single player only. Shows Lorenzo's faith track position." +
+                    "\n - 'EXCHANGE <ResourceType> <int>': To change white marble in specified resource type."+
                     "\n\n‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗‗\n\n";
 
     public static String getLogo() {

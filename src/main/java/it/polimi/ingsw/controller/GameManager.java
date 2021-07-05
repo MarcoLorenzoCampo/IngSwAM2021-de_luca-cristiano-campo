@@ -644,7 +644,7 @@ public final class GameManager {
                 break;
 
             case REMOVE:
-                currentView.currentTurn("\nThe production was successful! Type 'REMOVE' followed by the source.");
+                currentView.currentTurn("\nThe production was successful! Type 'SOURCE' followed by WAREHOUSE or STRONGBOX");
                 break;
 
             case MAIN_ACTION_DONE:

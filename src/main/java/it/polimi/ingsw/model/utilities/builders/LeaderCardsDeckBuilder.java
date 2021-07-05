@@ -168,7 +168,7 @@ public final class LeaderCardsDeckBuilder {
         ));
 
 
-        //Collections.shuffle(leaderCardsDeck);
+        Collections.shuffle(leaderCardsDeck);
         return leaderCardsDeck;
     }
 }
