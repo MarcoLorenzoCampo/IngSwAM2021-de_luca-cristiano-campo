@@ -36,10 +36,10 @@ public class InventoryManager extends Observable {
         warehouse = new Warehouse();
         strongbox = new Strongbox();
         inventory = new HashMap<>();
-        inventory.put(ResourceType.COIN, 100);
-        inventory.put(ResourceType.STONE,100);
-        inventory.put(ResourceType.SHIELD,100);
-        inventory.put(ResourceType.SERVANT,100);
+        inventory.put(ResourceType.COIN,0);
+        inventory.put(ResourceType.STONE,0);
+        inventory.put(ResourceType.SHIELD,0);
+        inventory.put(ResourceType.SERVANT,0);
         exchange = new ArrayList<>();
         discount =new ArrayList<>();
     }

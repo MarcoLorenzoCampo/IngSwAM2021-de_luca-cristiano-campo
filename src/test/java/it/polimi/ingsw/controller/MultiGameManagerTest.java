@@ -97,6 +97,14 @@ class MultiGameManagerTest {
         for(RealPlayer realPlayer : gameManager.getLobbyManager().getRealPlayerList()) {
             realPlayer.getPlayerBoard().testSetup();
         }
+
+        for(RealPlayer realPlayer : gameManager.getLobbyManager().getRealPlayerList()) {
+            realPlayer.getPlayerBoard().getInventoryManager().getInventory().put(COIN, 100);
+            realPlayer.getPlayerBoard().getInventoryManager().getInventory().put(SHIELD, 100);
+            realPlayer.getPlayerBoard().getInventoryManager().getInventory().put(SERVANT, 100);
+            realPlayer.getPlayerBoard().getInventoryManager().getInventory().put(STONE, 100);
+        }
+
     }
 
 
