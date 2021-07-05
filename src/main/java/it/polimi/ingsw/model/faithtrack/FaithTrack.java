@@ -120,7 +120,7 @@ public class FaithTrack extends Observable implements Serializable {
         PopeTile popeTile = (PopeTile) faithTrack.get(popeTileIndex);
         int range = ranges.get(popeTileIndex);
 
-        if(faithMarker <= (popeTileIndex - range)) {
+        if(faithMarker < (popeTileIndex - range)) {
             setPopeTileInactive(popeTileIndex);
         } else {
             pickFavorPoints(popeTile);
@@ -162,23 +162,25 @@ public class FaithTrack extends Observable implements Serializable {
      * to the player.
      */
     public void lorenzoIncreasesFaithMarker() {
-        this.faithMarker++;
 
-        //Notify all observers, but only the clients will get an updated version.
+        if(faithMarker < 24) {
+            this.faithMarker++;
 
-        notifyObserver(new LorenzoFaithTrackMessage(faithMarker));
-        if(isLastTile()) notifyControllerObserver(new EndGameMessage());
+            //Notify all observers, but only the clients will get an updated version.
+            notifyObserver(new LorenzoFaithTrackMessage(faithMarker));
+            if (isLastTile()) notifyControllerObserver(new EndGameMessage());
 
-        if(isPopeTile(faithMarker)) {
+            if (isPopeTile(faithMarker)) {
 
-            PopeTile currentTile = (PopeTile) this.faithTrack.get(faithMarker);
+                PopeTile currentTile = (PopeTile) this.faithTrack.get(faithMarker);
 
-            if(currentTile.getIsActive()) {
+                if (currentTile.getIsActive()) {
 
-                ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
+                    ((PopeTile) this.faithTrack.get(faithMarker)).setIsActive(false);
 
-                //Notifying the controller he needs to start a vatican report session.
-                notifyControllerObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
+                    //Notifying the controller he needs to start a vatican report session.
+                    notifyControllerObserver(new VaticanReportNotification(faithMarker, ranges.get(faithMarker)));
+                }
             }
         }
     }
@@ -201,7 +203,11 @@ public class FaithTrack extends Observable implements Serializable {
      * @return points due to checkpoints
      */
     public int computeCheckpoints() {
-        return faithTrack.get(this.faithMarker).getCheckpoint();
+        if(faithMarker <= 24) {
+            return faithTrack.get(this.faithMarker).getCheckpoint();
+        } else {
+            return 20;
+        }
     }
 
     /**

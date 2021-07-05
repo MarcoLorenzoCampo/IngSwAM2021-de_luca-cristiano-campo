@@ -22,6 +22,8 @@ public final class LeaderCardsDeckBuilder {
 
         List<LeaderCard> leaderCardsDeck = new LinkedList<>();
 
+        //ALE
+
         leaderCardsDeck.add(new MarbleExchangeLeaderCard(
                 5,
                 EffectType.MARBLE_EXCHANGE,
@@ -54,6 +56,11 @@ public final class LeaderCardsDeckBuilder {
                         new DevelopmentTag(1, Color.YELLOW, Level.ANY)},
                 ResourceType.STONE
         ));
+
+
+
+
+        //MARCO
 
         leaderCardsDeck.add(new DiscountLeaderCard(
                 2,
@@ -88,6 +95,11 @@ public final class LeaderCardsDeckBuilder {
                 ResourceType.SERVANT
         ));
 
+
+
+
+        //MARIO
+
         leaderCardsDeck.add(new ExtraProductionLeaderCard(
                 ResourceType.COIN,
                 4,
@@ -96,6 +108,13 @@ public final class LeaderCardsDeckBuilder {
                 new ResourceTag[] {new ResourceTag(ResourceType.COIN, 1)},
                 new ResourceTag[] {new ResourceTag(ResourceType.UNDEFINED, 1),
                         new ResourceTag(ResourceType.FAITH, 1),}
+        ));
+        leaderCardsDeck.add(new ExtraInventoryLeaderCard(
+                3,
+                EffectType.EXTRA_INVENTORY,
+                new ResourceTag[] {new ResourceTag(ResourceType.STONE, 5)},
+                null,
+                ResourceType.SERVANT
         ));
         leaderCardsDeck.add(new ExtraProductionLeaderCard(
                 ResourceType.STONE,
@@ -125,13 +144,7 @@ public final class LeaderCardsDeckBuilder {
                         new ResourceTag(ResourceType.FAITH, 1)}
         ));
 
-                leaderCardsDeck.add(new ExtraInventoryLeaderCard(
-                3,
-                EffectType.EXTRA_INVENTORY,
-                new ResourceTag[] {new ResourceTag(ResourceType.STONE, 5)},
-                null,
-                ResourceType.SERVANT
-        ));
+
         leaderCardsDeck.add(new ExtraInventoryLeaderCard(
                 3,
                 EffectType.EXTRA_INVENTORY,
@@ -153,6 +166,7 @@ public final class LeaderCardsDeckBuilder {
                 null,
                 ResourceType.STONE
         ));
+
 
         Collections.shuffle(leaderCardsDeck);
         return leaderCardsDeck;
