@@ -177,6 +177,7 @@ public class Server {
             } else {
                 LOGGER.info(() -> "Removed a client before the login phase.");
             }
+
         }
     }
 

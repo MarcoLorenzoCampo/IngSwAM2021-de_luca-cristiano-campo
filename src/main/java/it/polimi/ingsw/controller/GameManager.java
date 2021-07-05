@@ -745,4 +745,6 @@ public final class GameManager {
     public Map<String, VirtualView> getVirtualViewLog() {
         return virtualViewLog;
     }
+
+
 }

@@ -40,6 +40,8 @@ public class GameBoard {
         return gameBoardInstance;
     }
 
+
+
     public ResourceMarket getResourceMarket() {
         return resourceMarket;
     }

@@ -120,7 +120,7 @@ public class MultiPlayerLobbyManager implements ControllerObserver, ILobbyManage
     @Override
     public void setPlayingOrder() {
 
-        Collections.shuffle(realPlayerList);
+        //Collections.shuffle(realPlayerList);
         realPlayerList.get(0).setFirstToPlay();
         PlayingGame.getGameInstance().setCurrentPlayer(realPlayerList.get(0));
 
