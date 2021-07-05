@@ -705,7 +705,8 @@ public class GUI extends ViewObservable implements IView {
 
     private void startGUI() {
         if(isOnline){
-            startPanel.add(onlineLoginPopUp(), BorderLayout.SOUTH);
+            startPanel.update(onlineLoginPopUp());
+            //startPanel.add(onlineLoginPopUp(), BorderLayout.SOUTH);
             //setupFrame.setContentPane(onlineLoginPopUp());
             setupFrame.setContentPane(startPanel);
             setupFrame.pack();
@@ -814,7 +815,8 @@ public class GUI extends ViewObservable implements IView {
     @Override
     public void askToDiscard() throws ExecutionException {
         setupFrame.getContentPane().removeAll();
-        startPanel.add(leaderPanels.get(0), BorderLayout.SOUTH);
+        startPanel.update(leaderPanels.get(0));
+        //startPanel.add(leaderPanels.get(0), BorderLayout.SOUTH);
         setupFrame.setContentPane(startPanel);
         //setupFrame.setContentPane(leaderPanels.get(0));
         setupFrame.revalidate();
