@@ -2,6 +2,8 @@
 
 ## Software Engineering Final Examination (2020/2021)
 
+Score: 30/30L 
+
 ![MastersOfRenaissance](src/main/resources/readmeImages/MastersOfRenaissance.png)
 
 ### Project Description
